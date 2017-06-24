@@ -1,5 +1,5 @@
 <?php
-//archivo de connexion a la bd
+//archivo de connexion a la bd de happy
 require"../../externo/plugins/PDOModel.php";
 
 $pdomodel = new PDOModel();
