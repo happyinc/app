@@ -4,6 +4,8 @@ class Sessions{
 	
 	public function __construct(){ }
 
+    //Care pito
+
 	//INIT para iniciar las sesiones
 	public function init(){
 		@session_start();
