@@ -1,4 +1,5 @@
 <?php
+//archivo de connexion a la bd
 require"../../externo/plugins/PDOModel.php";
 
 $pdomodel = new PDOModel();
