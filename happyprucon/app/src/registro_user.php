@@ -57,19 +57,12 @@ License: You must have a valid license purchased only from themeforest(the above
 	<?php 
 	   
 $objSe->init();
-if($kitse=isset($_SESSION['login_via']['status']))
-{
-	if($kitse=='Phone'){ 			
 		
-		 $cell = $_SESSION['phone']['national_number'];	
-			
-	}
-	else if($kitse =='Email')
-	{
-		 $correo = $_SESSION['email']['address'];		
-		  
-	}
-}
+		
+		$cell = $_SESSION['phone']['national_number'];	
+		
+		$correo = $_SESSION['email']['address'];
+
 
 ?>
     <body class=" login">
