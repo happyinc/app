@@ -29,7 +29,7 @@
 				$_SESSION['phone']['national_number'] = $user_info->phone->national_number;	
 				$_SESSION['login_via']['status'] = "Phone";	
 				
-				header("Location: ../src/registro_user.php");
+				header("Location: login_success.php");
 			    exit;
 								
 			
@@ -42,7 +42,7 @@
 				$_SESSION['email']['address'] = $user_info->email->address;
 				$_SESSION['login_via']['status'] = "Email";
 				
-				header("Location: ../src/registro_user.php");
+				header("Location: login_success.php");
 				exit();				
 				
 			}
@@ -59,7 +59,7 @@
 			$_SESSION['error']['status'] = true;
 			$_SESSION['error']['message'] = $get_authorize_token['curl_result']->error->message;
 			
-			header("Location:  ../src/logueo.html", true, 301);
+			header("Location:  ../src/admin_2_material_design/logueo.html", true, 301);
 			exit();			
 			
 			//echo $get_authorize_token['curl_result']->error->message;
@@ -70,7 +70,7 @@
 		$_SESSION['error']['status'] = true;
 		$_SESSION['error']['message'] = "Illegal Access this page!!!!";
 		
-		header("Location:  ../src/logueo.html", true, 301);
+		header("Location:  ../src/admin_2_material_design/logueo.html", true, 301);
 		exit();			
 			
 	}

@@ -98,11 +98,11 @@ class Verificar{
 												$this->objSe->init();
 												$this->objSe->set('id',$ultima_sesion);
 												
-												echo "<script> window.location.assign('../../app/src/index.php'); </script>";
+												echo "<script> window.location.assign('../../app/src/admin_2_material_design/index.php'); </script>";
 											}
 											else
 											{
-												echo "<script> window.location.assign('../../app/src/index.php'); </script>";
+												echo "<script> window.location.assign('../../app/src/admin_2_material_design/index.php'); </script>";
 											}
 									}else{
 										$fallo = $res_usu[0]["acceso_fallido"]+1;
@@ -119,28 +119,28 @@ class Verificar{
 										$insertSe["ip"] = $_SERVER['REMOTE_ADDR'];
 										$objConn->insert("sesion", $insertSe);	
 										echo "<script> alert('La contraseña no es valida, intentos fallidos # $fallo');
-									window.location.assign('../../app/src/logueo.html');</script>";
+									window.location.assign('../../app/src/admin_2_material_design/logueo.html');</script>";
 										}
 								}else{
 									echo "<script> alert('Usuario inactivo');
-									window.location.assign('../../app/src/logueo.html');</script>";
+									window.location.assign('../../app/src/admin_2_material_design/logueo.html');</script>";
 								}		
 							}else{
 								echo "<script> alert('Por favor contacte al administrador');
-								window.location.assign('../../app/src/logueo.html');</script>";
+								window.location.assign('../../app/src/admin_2_material_design/logueo.html');</script>";
 							}
 						}else{
 							echo "<script> alert('Correo invalido');
-							window.location.assign('../../app/src/logueo.html');</script>";		
+							window.location.assign('../../app/src/admin_2_material_design/logueo.html');</script>";		
 						}
 					}else
 						{
 							echo "<script> alert('Acceso Denegado');
-							window.location.assign('../../app/src/logueo.html');</script>";
+							window.location.assign('../../app/src/admin_2_material_design/logueo.html');</script>";
 						}
 				}else{
 					echo "<script> alert('Error: no tienes acceso al api');
-							window.location.assign('../../app/src/logueo.html');</script>";
+							window.location.assign('../../app/src/admin_2_material_design/logueo.html');</script>";
 				}		
 			}
 		
