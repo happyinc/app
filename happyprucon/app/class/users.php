@@ -43,10 +43,10 @@ class Users{
 			
 			if($objConn != ""){
 				echo "<script> alert('Registrado correctamente');
-						window.location.assign('../../app/src/logueo.html');</script>";
+						window.location.assign('../../app/src/admin_2_material_design/logueo.html');</script>";
 			}else{
 				echo "<script> alert('Usuario ya existe');
-						window.location.assign('../../app/src/logueo.html');</script>";
+						window.location.assign('../../app/src/admin_2_material_design/logueo.html');</script>";
 			}
 
 		}
@@ -72,10 +72,10 @@ class Users{
 
             if($objConn != ""){
                 echo "<script> alert('Usuario actualizado correctamente');
-                            window.location.assign('../../app/src/logueo.html');</script>";
+                            window.location.assign('../../app/src/admin_2_material_design/logueo.html');</script>";
             }else{
                 echo "<script> alert('No se pudo actualizar');
-                            window.location.assign('../../app/src/logueo.html');</script>";
+                            window.location.assign('../../app/src/admin_2_material_design/logueo.html');</script>";
             }
 
         }
@@ -88,10 +88,10 @@ class Users{
 
             if($objConn != ""){
                 echo "<script> alert('Usuario eliminado correctamente');
-                                window.location.assign('../../app/src/logueo.html');</script>";
+                                window.location.assign('../../app/src/admin_2_material_design/logueo.html');</script>";
             }else{
                 echo "<script> alert('No se pudo eliminar');
-                                window.location.assign('../../app/src/logueo.html');</script>";
+                                window.location.assign('../../app/src/admin_2_material_design/logueo.html');</script>";
             }
 
         }

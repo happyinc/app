@@ -17,6 +17,6 @@ $objSe->destroy();
 
 
 
-header('Location: ../src/logueo.html');
+header('Location: ../src/admin_2_material_design/logueo.html');
 
 ?>
