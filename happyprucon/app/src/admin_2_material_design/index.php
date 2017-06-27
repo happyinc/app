@@ -1,3 +1,19 @@
+<?php
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+require'../../class/sessions.php';
+$objSe = new Sessions();
+$objSe->init();
+
+$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+
+if($rol<>2){
+    echo "<script> alert('Usuario no autorizado');
+					window.location.assign('logueo.html');</script>";
+}
+?>
+<?php
+include("../../../externo/plugins/PDOModel.php");
+?>
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
