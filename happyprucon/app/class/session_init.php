@@ -3,9 +3,11 @@
 //nos conectamos a la base de datos
 require'sessions.php';
 
-require'../../seguridad/users.php';
 
-$objuser = new Users();
-$objuser->login_in();
+
+require'../../seguridad/verificar.php';
+
+$objver = new Verificar();
+$objver->login_in();
 
 ?>
