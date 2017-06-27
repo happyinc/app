@@ -45,6 +45,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="../../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN PAGE LEVEL STYLES -->
+		<link href="../../../externo/plugins/bootstrap-social-gh-pages/bootstrap-social.css" rel="stylesheet" type="text/css" />
         <link href="../../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
@@ -79,11 +80,11 @@ License: You must have a valid license purchased only from themeforest(the above
     <body class=" login">
         <!-- BEGIN LOGIN -->
         <div class="content">
+			<div align="center"><a href="logueo.html">
+                    <img src="../../../externo/img/logo-default.png" width="230px" alt="" /> </a>
+                </div><br />
             <!-- BEGIN LOGIN FORM -->
             <form class="login-form" action="../../class/session_init.php" method="post"><br />
-                <!--<div align="center"><a href="logueo.html">
-                    <img src="../assets/pages/img/logo-default.png" width="220px" alt="" /> </a>
-                </div><br /><br />-->
                 <div class="alert alert-danger display-hide">
                     <button class="close" data-close="alert"></button>
                     <span> Ingrese usuario y contraseña </span>
@@ -96,7 +97,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <input type="email" class="form-control" name="usern" id="usern">
 													<label for="form_control_1">Correo Electrónico</label>
                                                 </div>
-                                            </div>
+                </div>
 											<!-- Campo escondido de la key  -->
 											<input type="hidden" class="form-control" name="txtkey" id="txtkey" value="" >
                 
@@ -108,27 +109,30 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <input type="password" class="form-control" name="passwd" id="passwd">
                                                     <label for="form_control_1">Contraseña</label>
                                                 </div>
-                                            </div>
-                <div class="form-actions">
-                    <label>
-                        <a href="javascript:;" id="forget-password"> Olvidaste tu contraseña ?</a>
-                        <span></span>
-                    </label>
-                    <button type="submit"  class="btn blue pull-right" name="logueo" id="logueo" > INGRESAR </button>
                 </div>
-                <div class="login-options">
+                <div>
+                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+                    <button type="submit"  class="btn btn-circle red-flamingo btn-block bold" name="logueo" id="logueo" > INICIAR SESIÓN </button>
+					</div>
+					<div class="col-lg-12 col-md-12 col-xs-12" style="text-align: center; margin-bottom: 20px">
+                        <a href="javascript:;" id="forget-password" class="bold" style="color: #520d9b"> ¿Olvidaste tu contraseña?</a>
+                    </div>
+					<h4 style="text-align: center; margin-bottom: 20px ">-- O --</h4>
+				</div>
+				
+                <div class="row">
                     
                     <ul class="social-icons">
-                        <li>
-                            <a class="facebook" data-original-title="facebook" > </a>
-                        </li>
-                        <li>
-                            <a onclick="loginWithEmail();" class="twitter" data-original-title="Twitter" > </a>
-                        </li>
-                        <li>
-                            <a onclick="loginWithSMS();" class="googleplus" data-original-title="Goole Plus" > </a>
-                        </li>
-                    </ul>
+                        <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+						<a type="submit"  class="btn btn-block btn-social  btn-circle blue-steel" style="text-align: center" ><span class="fa fa-facebook"></span> INGRESA CON FACEBOOK </a>
+						</div>
+						<div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+						<a type="submit"  class="btn btn-block btn-social btn-circle red-mint" style="text-align: center" onclick="loginWithEmail();" ><span class="fa fa-envelope"></span> INGRESA CON TU CORREO </a>
+						</div>
+						<div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+						<a type="submit"  class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center" onclick="loginWithSMS();" ><span class="fa fa-tablet"></span> INGRESA CON TU CELULAR </a>
+						</div>
+					</ul>
 					
 				</div>			
             </form>
@@ -142,12 +146,18 @@ License: You must have a valid license purchased only from themeforest(the above
             <form class="forget-form" action="index.html" method="post">
                 <h3>Se te olvidó tu contraseña ?</h3>
                 <p> Introduzca su dirección de correo electrónico a continuación para restablecer su contraseña. </p>
-                <div class="form-group">
-                      <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Correo Electrónico" name="email" />
+                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <div class="input-group left-addon">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </span>
+                                                    <input type="email" class="form-control" name="mailforget" id="mailforget">
+													<label for="form_control_1">Correo Electrónico</label>
+                                                </div>
                 </div>
                 <div class="form-actions">
                     <button type="button" id="back-btn" class="btn grey-salsa btn-outline"> Atras </button>
-                    <button type="submit" class="btn blue pull-right"> Enviar </button>
+                    <button type="submit" class="btn btn-circle red-flamingo pull-right"> Enviar </button>
                 </div>
             </form>
             <!-- END FORGOT PASSWORD FORM -->
