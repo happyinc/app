@@ -42,7 +42,28 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="../../assets/layouts/layout2/css/themes/blue.min.css" rel="stylesheet" type="text/css" id="style_color" />
         <link href="../../assets/layouts/layout2/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.ico" /> </head>
+        <link rel="shortcut icon" href="favicon.ico" /> 
+		 <?
+		 include ("../../../externo/plugins/PDOModel.php");
+		 
+		/* if(isset($_POST["formulario"]) && $_POST["formulario"] == "crear_producto")
+		 {
+			 var_dump();
+			$insertEmpData["categoria"] = $_POST["categoria"];
+			$insertEmpData["nombre"] = $_POST["nombre"]; 
+			$insertEmpData["descripcion"] = $_POST["descripcion"];
+			$insertEmpData["precio"] = $_POST["precio"];
+			//$insertEmpData["foto"] = $_POST["foto"];
+			$insertEmpData["fecha"] = date("Y-m-d H:i:s"); 
+			$insertEmpData["estado"] = 1; 
+			$pdomodel->insert("producto", $insertEmpData);
+			
+		 }*/
+			
+		 
+		?>
+		
+		</head>
     <!-- END HEAD -->
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
@@ -203,8 +224,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
                     <!-- END THEME PANEL -->
-                    <h1 class="page-title"> Blank Page Layout
-                        <small>blank page layout</small>
+                    <h1 class="page-title"> Crear producto
+                        <small>creacion de producto</small>
                     </h1>
                     <div class="page-bar">
                         <ul class="page-breadcrumb">
@@ -223,10 +244,127 @@ License: You must have a valid license purchased only from themeforest(the above
                         </ul>
                         
                     <!-- END PAGE HEADER-->
+					</div>
+
+                    <div class="portlet-body form">
+						<form role="form" class="form-horizontal" name="crear_producto"  id="crear_producto" action="crear_producto.php" enctype="multipart/form-data" method="post">
+                            <div class="form-body">
+
+                                <div class="form-group form-md-line-input has-danger">
+                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                        <div class="input-icon">
+                                            <select class="form-control" id="categoria" name="categoria">
+                                                    <option value="">Seleccione la categoria</option>
+                                                    <?
+														$pdomodel = new PDOModel();
+														$pdomodel->columns = array("id,nombre");
+														$pdomodel->where("estado", 1);
+														$pdomodel->orderByCols = array("nombre");
+														$result =  $pdomodel->select("bienes");
+                                                        var_dump($pdomodel); die;
+                                                        while($rs2=mysql_fetch_array($result))
+                                                        {
+                                                                ?><option value="<? echo $rs2["id"]?>"><? echo $rs2["nombre"] ?></option><?
+                                                        }
+                                                    ?>
+                                                </select>
+                                                <div class="form-control-focus"> </div>
+                                                <span class="help-block">Seleccione la categoria del producto a crear</span>
+                                                <i class="fa fa-clone"></i>
+									
+                                        </div>
+                                    </div>
+                                </div>
+								
+								<div class="form-group form-md-line-input has-danger">
+                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                        <div class="input-icon">
+                                            <select class="form-control" id="subcategoria" name="subcategoria">
+                                                    <option value="">Seleccione la subcategoria</option>
+                                                    <option value="1">Option 1</option>
+                                                    <option value="2">Option 2</option>
+                                                    <option value="3">Option 3</option>
+                                                    <option value="4">Option 4</option>
+                                                </select>
+                                                <div class="form-control-focus"> </div>
+                                                <span class="help-block">Seleccione la subcategoria del producto a crear</span>
+                                                <i class="fa fa-clone"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-md-line-input has-danger">
+                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                        <div class="input-icon">
+                                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto">
+                                                <div class="form-control-focus"> </div>
+                                                <span class="help-block required">Digite el nombre del producto a crear *</span>
+                                                <i class="fa fa-tags"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-md-line-input has-danger">
+                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                        <div class="input-icon">
+                                            <textarea class="form-control" rows="3" id="descripcion" name="descripcion" placeholder="Descripcion del producto"></textarea>
+                                                <div class="form-control-focus"> </div>
+                                                <span class="help-block">Digite la descripcion del producto a crear</span>
+                                                <i class="fa fa-file-text-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-md-line-input has-danger">
+                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                        <div class="input-icon">
+                                            <input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del producto">
+                                                <div class="form-control-focus"> </div>
+                                                <span class="help-block required">Digite el valor del producto a crear *</span>
+                                                <i class="fa fa-money"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-md-line-input has-danger">
+                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                        <div class="input-icon">
+                                            <div>
+                                            <label class="control-label col-md-3">¿Tiene composicion?
+                                                <span class="required"> * </span>
+                                            </label>
+                                            </div>
+                                            <div class="md-radio-inline">
+                                                    <div class="md-radio">
+                                                        <input type="radio" id="si" name="si" class="md-radiobtn" value="si">
+                                                        <label for="radio6">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> Si</label>
+                                                    </div>
+                                                    <div class="md-radio">
+                                                        <input type="radio" id="no" name="no" class="md-radiobtn" value="no"checked="">
+                                                        <label for="radio7">
+                                                            <span></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span> No </label>
+                                                    </div>
+                                            </div>
+                                            <i class="fa fa-list-alt"></i>
+                                        </div>
+                                    </div>
+                                </div>
+								
+                                <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+									<input type="button" class="btn green button-submit" onclick="javascript: validar();" name="guardar" id="guardar" value="Crear producto"/>
+                                    <input type="hidden" id="formulario" name="formulario" value="crear_producto"/>
+								</div>
+                                
+                            </div>
+                        </form>
+                    </div>
                     
                 </div>
-
-                
                 <!-- END CONTENT BODY -->
             </div>
             <!-- END CONTENT -->
