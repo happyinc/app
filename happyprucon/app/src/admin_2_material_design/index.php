@@ -5,11 +5,16 @@ $objSe = new Sessions();
 $objSe->init();
 
 $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
-if($rol<>2){
-    echo "<script> alert('Usuario no autorizado');
+if($rol==2){
+    echo "<script> alert('Bienvenido!! $fullname');</script>";
+}else{
+	echo "<script> alert('Usuario no autorizado');
 					window.location.assign('logueo.html');</script>";
+	
 }
+
 ?>
 <?php
 include("../../../externo/plugins/PDOModel.php");

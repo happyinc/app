@@ -78,10 +78,8 @@ class Verificar{
 											$this->objSe->set('correo', $res_usu[0]['correo']);
 											$this->objSe->set('id_roles', $res_usu[0]['id_roles']);
 											
-											
+											$fullname = $res_usu[0]['nombre_completo'];
 											$rol = $res_usu[0]['id_roles'];
-											
-											echo "<script> alert('Bienvenido!!');</script>";
 											
 											//Verificación de roles
 											if($rol == 2)

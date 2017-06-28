@@ -28,7 +28,7 @@ class Users{
 			$insertUserData["id_doc"] = $_POST['tipodoc'];
 			$insertUserData["id_termino"] = 1;
 			$insertUserData["id_estado"] = 1;
-			$insertUserData["id_roles"] = 1;
+			$insertUserData["id_roles"] = $_POST['roles'];
 			$insertUserData["nombre_completo"] = $_POST['fullname']." ".$_POST['lastname'];
 			$insertUserData["nombre"] = $_POST['fullname'];
 			$insertUserData["apellido"] = $_POST['lastname'];
