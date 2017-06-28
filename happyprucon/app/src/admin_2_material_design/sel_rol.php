@@ -31,6 +31,8 @@ License: You must have a valid license purchased only from themeforest(the above
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="Preview page of Metronic Admin Theme #2 for " name="description" />
         <meta content="" name="author" />
+		<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+        <script src="https://sdk.accountkit.com/es_LA/sdk.js"></script>
 		<!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
         <link href="../../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -48,85 +50,48 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="../../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN PAGE LEVEL STYLES -->
+		<link href="../../../externo/plugins/bootstrap-social-gh-pages/bootstrap-social.css" rel="stylesheet" type="text/css" />
         <link href="../../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.ico" /> </head>
+        <link rel="shortcut icon" href="favicon.ico" />
+		</head>
     <!-- END HEAD -->
 	<?php 
 	   
-$objSe->init();
-		
-		
-		$cell = $_SESSION['phone']['national_number'];	
-		
-		$correo = $_SESSION['email']['address'];
-		
-		$rol_emp = $_POST['emprende'];
-		
-		$rol_cli = $_POST['cliente'];
-		
-		
-?>
+		$objSe->init();
+				
+				
+				$cell = $_SESSION['phone']['national_number'];	
+				
+				$correo = $_SESSION['email']['address'];
+
+
+	?>
     <body class=" login">
         <!-- BEGIN LOGIN -->
         <div class="content">
+			<div align="center"><a href="logueo.html">
+                    <img src="../../../externo/img/logo-default.png" width="230px" alt="" /> </a>
+                </div><br />
             <!-- BEGIN LOGIN FORM -->
-            <form class="login-form" action="../../class/registrar.php" method="post">
-                <h3>Regístrate</h3>
-                <br />
-                <div class="form-group">
-                    <label class="control-label visible-ie8 visible-ie9">Seleccione tipo documento</label>
-                    <select name="tipodoc" class="form-control">
-                        <option value="">Seleccione tipo documento</option>
-                        <option value="1">Cedula de ciudadania</option>
-                        <option value="2">Cedula de extranjeria</option>
-                        <option value="3">Pasaporte</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="control-label visible-ie8 visible-ie9">Identificación</label>
-                    <input class="form-control placeholder-no-fix" type="number" placeholder="Identificación" name="cedula" value="<?php echo $rol_cli; ?>" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label visible-ie8 visible-ie9">Nombres</label>
-                    <input class="form-control placeholder-no-fix" type="text" placeholder="Nombres" name="fullname" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label visible-ie8 visible-ie9">Apellidos</label>
-                    <input class="form-control placeholder-no-fix" type="text" placeholder="Apellidos" name="lastname" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label visible-ie8 visible-ie9">Celular</label>
-                    <input class="form-control placeholder-no-fix" type="number" placeholder="Celular" name="cell" value="<?php echo $cell; ?>" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label visible-ie8 visible-ie9">Correo Electrónico</label>
-                    <input class="form-control placeholder-no-fix" type="email" autocomplete="off" placeholder="Correo Electrónico" name="username" value="<?php echo $correo; ?>" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label visible-ie8 visible-ie9">Contraseña</label>
-                    <input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="password" placeholder="Contraseña" name="password" />
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="input-group">
-                            <div class="icheck-inline">
-                                <label>
-                                    <input type="radio" name="genero" value="Masculino" class="icheck"> Masculino </label>
-                                <label>
-                                    <input type="radio" name="genero" value="Femenino" checked class="icheck"> Femenino </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <a href="selec_log.html" id="register-back-btn" type="button" class="btn grey-salsa btn-outline"> Atras </a>
-                    <button type="submit" id="register-submit-btn" class="btn blue pull-right" name="registrar" id="registrar"> Regístrate </button>
-                </div>
-            </form>
-            <!-- END LOGIN FORM -->
+            <form class="login-form" action="registro_user.php" method="post"><br />
+               <div class="row">
+                    
+                    <ul class="social-icons">
+                        <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+						<button type="submit"  class="btn btn-circle red-flamingo btn-block bold" name="cliente" id="cliente" value="3" > CLIENTE </button>
+						</div>
+						<div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+						<button type="submit"  class="btn btn-circle purple-studio btn-block bold" name="emprende" id="emprede" value="2" > EMPRENDEDOR </button>
+						</div>
+					</ul>
+					
+				</div>
+			</form>
+			
+			<!-- END LOGIN FORM -->
         </div>
         <!-- END LOGIN -->
         <!--[if lt IE 9]>
@@ -135,7 +100,7 @@ $objSe->init();
 <script src="../assets/global/plugins/ie8.fix.min.js"></script> 
 <![endif]-->
         <!-- BEGIN CORE PLUGINS -->
-        <script src="../../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+		<script src="../../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
         <script src="../../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="../../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
         <script src="../../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
