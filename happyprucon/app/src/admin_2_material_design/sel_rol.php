@@ -78,15 +78,23 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- BEGIN LOGIN FORM -->
             <form class="login-form" action="registro_user.php" method="post"><br />
                <div class="row">
-                    
-                    <ul class="social-icons">
+                        
                         <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
-						<button type="submit"  class="btn btn-circle red-flamingo btn-block bold" name="cliente" id="cliente" value="3" > CLIENTE </button>
+						<input type="hidden" name="cliente" id="cliente" value="3"/>
+						<button type="submit"  class="btn btn-circle red-flamingo btn-block bold" > CLIENTE </button>
 						</div>
+					
+				</div>
+			</form>
+			
+			<form name="empre" action="registro_user.php" method="post"><br />
+               <div class="row">
+                        
 						<div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
-						<button type="submit"  class="btn btn-circle purple-studio btn-block bold" name="emprende" id="emprede" value="2" > EMPRENDEDOR </button>
+						<input type="hidden" name="emprende" id="emprende" value="2" />
+						<button type="submit"  class="btn btn-circle purple-studio btn-block bold" > EMPRENDEDOR </button>
 						</div>
-					</ul>
+					
 					
 				</div>
 			</form>

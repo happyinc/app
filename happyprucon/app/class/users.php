@@ -57,7 +57,7 @@ class Users{
             $updateUserData["id_doc"] = $_POST['tipodoc'];
             $updateUserData["id_termino"] = 1;
             $updateUserData["id_estado"] = 1;
-            $updateUserData["id_roles"] = 1;
+            $updateUserData["id_roles"] = $_POST['roles'];
             $updateUserData["nombre_completo"] = $_POST['fullname']." ".$_POST['lastname'];
             $updateUserData["nombre"] = $_POST['fullname'];
             $updateUserData["apellido"] = $_POST['lastname'];

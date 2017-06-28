@@ -64,9 +64,14 @@ $objSe->init();
 		$correo = $_SESSION['email']['address'];
 		
 		$rol_emp = $_POST['emprende'];
+		if($rol_emp != ""){
+			$rol = $rol_emp;
+		}
 		
 		$rol_cli = $_POST['cliente'];
-		
+		if($rol_cli != ""){
+			$rol = $rol_cli;
+		}
 		
 ?>
     <body class=" login">
@@ -87,10 +92,11 @@ $objSe->init();
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Identificación</label>
-                    <input class="form-control placeholder-no-fix" type="number" placeholder="Identificación" name="cedula" value="<?php echo $rol_cli; ?>" />
+                    <input class="form-control placeholder-no-fix" type="number" placeholder="Identificación" name="cedula" />
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Nombres</label>
+					<input class="form-control placeholder-no-fix" type="hidden" name="roles" value="<?php echo $rol; ?>"/>
                     <input class="form-control placeholder-no-fix" type="text" placeholder="Nombres" name="fullname" />
                 </div>
                 <div class="form-group">
