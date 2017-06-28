@@ -1,3 +1,7 @@
+<?php
+error_reporting(E_ALL ^ E_NOTICE);
+require_once'../../../externo/plugins/PDOModel.php';
+ ?>
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
@@ -33,6 +37,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="../../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
+		<link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
         <!-- BEGIN THEME GLOBAL STYLES -->
         <link href="../../assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="../../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
@@ -43,23 +48,89 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="../../assets/layouts/layout2/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" /> 
-		 <?
-		 include ("../../../externo/plugins/PDOModel.php");
 		 
-		/* if(isset($_POST["formulario"]) && $_POST["formulario"] == "crear_producto")
-		 {
-			 var_dump();
-			$insertEmpData["categoria"] = $_POST["categoria"];
-			$insertEmpData["nombre"] = $_POST["nombre"]; 
-			$insertEmpData["descripcion"] = $_POST["descripcion"];
-			$insertEmpData["precio"] = $_POST["precio"];
-			//$insertEmpData["foto"] = $_POST["foto"];
-			$insertEmpData["fecha"] = date("Y-m-d H:i:s"); 
-			$insertEmpData["estado"] = 1; 
-			$pdomodel->insert("producto", $insertEmpData);
+		 
+			<script type="text/javascript">
+
+			function mostrarReferencia(){
+				if (document.crear_producto.composicion[0].checked == true) {
+					document.getElementById('dat_com').style.display='block';
+				} 
+				else {
+					document.getElementById('dat_com').style.display='none';
+				}
+			}
 			
-		 }*/
 			
+			function comprueba_extension(formulario, archivo) { 
+			   extensiones_permitidas = new Array(".png", ".jpg", ".jpeg", ".bmp"); 
+			   mierror = ""; 
+			   if (!archivo) { 
+				  //Si no tengo archivo, es que no se ha seleccionado un archivo en el formulario 
+					mierror = "No has seleccionado ningún archivo"; 
+			   }else{ 
+				  //recupero la extensión de este nombre de archivo 
+				  extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase(); 
+				  //alert (extension); 
+				  //compruebo si la extensión está entre las permitidas 
+				  permitida = false; 
+				  for (var i = 0; i < extensiones_permitidas.length; i++) { 
+					 if (extensiones_permitidas[i] == extension) { 
+					 permitida = true; 
+					 break; 
+					 } 
+				  } 
+				  if (!permitida) { 
+					 mierror = "Comprueba la extensión de los archivos a subir. \nSólo se pueden subir archivos con extensiones: " + extensiones_permitidas.join(); 
+					}else{ 
+						//submito! 
+					 alert ("Todo correcto."); 
+					 formulario.submit(); 
+					 return 1; 
+					} 
+			   } 
+			   //si estoy aqui es que no se ha podido submitir 
+			   alert (mierror); 
+			   return 0; 
+			}
+			</script>
+			
+	    <?
+		 $usuario=$_SESSION["id_usuario"];
+	
+		if(isset($_POST["guardar"])&& isset($_POST["formulario"]) && $_POST["formulario"] == "crear_producto" ){
+			if($_POST["guardar"] == 'crear_producto'){
+				$objConn = new PDOModel();
+				$insertEmpData["categoria"] = $_POST["categoria"];
+				$insertEmpData["nombre"] = $_POST["nombre"]; 
+				$insertEmpData["descripcion"] = $_POST["descripcion"];
+				$insertEmpData["precio"] = $_POST["precio"];
+				//$insertEmpData["foto"] = $_POST["foto"];
+				$insertEmpData["fecha"] = date("Y-m-d H:i:s"); 
+				$insertEmpData["id_estado"] = 1; 
+				$objConn->insert('producto', $insertEmpData);
+				
+				if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
+					$ruta_archivo_a_subir = $_FILES['foto']['tmp_name'];
+
+                    $directorio = "producto/".$usuario."/".$id_producto."";
+                    if(file_exists($directorio)) 
+                    {
+                                  
+                    } 
+                    else 
+                    {
+                        mkdir($directorio, 0777, true);
+                    }
+                        
+                    $ruta_destino = $directorio. '/' . $_FILES['foto']['name'];
+                    if( move_uploaded_file($ruta_archivo_a_subir, $ruta_destino) )
+                    {
+
+                    }
+				}
+			}
+		}		
 		 
 		?>
 		
@@ -85,42 +156,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- END RESPONSIVE MENU TOGGLER -->
                 <!-- BEGIN PAGE ACTIONS -->
                 <!-- DOC: Remove "hide" class to enable the page header actions -->
-                <div class="page-actions">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-circle btn-outline red dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-plus"></i>&nbsp;
-                            <span class="hidden-sm hidden-xs">New&nbsp;</span>&nbsp;
-                            <i class="fa fa-angle-down"></i>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="icon-docs"></i> New Post </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="icon-tag"></i> New Comment </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="icon-share"></i> Share </a>
-                            </li>
-                            <li class="divider"> </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="icon-flag"></i> Comments
-                                    <span class="badge badge-success">4</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="icon-users"></i> Feedbacks
-                                    <span class="badge badge-danger">2</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+               
                 <!-- END PAGE ACTIONS -->
 				<!-- BEGIN HEADER -->
 					<?
@@ -148,10 +184,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!-- BEGIN PAGE HEADER-->
                     <!-- BEGIN THEME PANEL -->
                     <div class="theme-panel">
-                        <div class="toggler tooltips" data-container="body" data-placement="left" data-html="true" data-original-title="Click to open advance theme customizer panel">
-                            <i class="icon-settings"></i>
-                        </div>
-                        <div class="toggler-close">
+						<div class="toggler-close">
                             <i class="icon-close"></i>
                         </div>
                         <div class="theme-options">
@@ -256,24 +289,21 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <select class="form-control" id="categoria" name="categoria">
                                                     <option value="">Seleccione la categoria</option>
                                                     <?
-														$pdomodel = new PDOModel();
-														$pdomodel->columns = array("id,nombre");
-														$pdomodel->where("estado", 1);
-														$pdomodel->orderByCols = array("nombre");
-														$result =  $pdomodel->select("bienes");
-                                                        var_dump($pdomodel); die;
-                                                        while($rs2=mysql_fetch_array($result))
-                                                        {
-                                                                ?><option value="<? echo $rs2["id"]?>"><? echo $rs2["nombre"] ?></option><?
-                                                        }
+														$objCat = new PDOModel();
+														$objCat->where("id_estado", 1);
+														$objCat->orderByCols = array("nombre");
+														$result =  $objCat->select("bienes");
+														foreach($result as $item){
+
+																?><option value="<? echo $item["id"]?>"><? echo $item["nombre"]?></option><?
+														}	
                                                     ?>
-                                                </select>
-                                                <div class="form-control-focus"> </div>
-                                                <span class="help-block">Seleccione la categoria del producto a crear</span>
-                                                <i class="fa fa-clone"></i>
-									
-                                        </div>
-                                    </div>
+                                            </select>
+                                            <div class="form-control-focus"> </div>
+                                            <span class="help-block">Seleccione la categoria del producto a crear</span>
+                                            <i class="fa fa-clone"></i>
+										</div>
+									</div>
                                 </div>
 								
 								<div class="form-group form-md-line-input has-danger">
@@ -281,6 +311,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="input-icon">
                                             <select class="form-control" id="subcategoria" name="subcategoria">
                                                     <option value="">Seleccione la subcategoria</option>
+													<?
+														/*//$objConn = new PDOModel();
+														$objConn->andOrOperator = "AND";
+														$objConn->where("id_estado", 1);
+														//$objConn->where("id_bienes", $_POST["categoria"]);
+														$objConn->orderByCols = array("nombre");
+														$result =  $objConn->select("categoria");
+														foreach($result as $item){
+
+																?><option value="<? echo $item["id"]?>"><? echo $item["descripcion"]?></option><?
+														}	*/
+                                                    ?>
                                                     <option value="1">Option 1</option>
                                                     <option value="2">Option 2</option>
                                                     <option value="3">Option 3</option>
@@ -334,29 +376,59 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <span class="required"> * </span>
                                             </label>
                                             </div>
-                                            <div class="md-radio-inline">
-                                                    <div class="md-radio">
-                                                        <input type="radio" id="si" name="si" class="md-radiobtn" value="si">
-                                                        <label for="radio6">
-                                                            <span></span>
-                                                            <span class="check"></span>
-                                                            <span class="box"></span> Si</label>
-                                                    </div>
-                                                    <div class="md-radio">
-                                                        <input type="radio" id="no" name="no" class="md-radiobtn" value="no"checked="">
-                                                        <label for="radio7">
-                                                            <span></span>
-                                                            <span class="check"></span>
-                                                            <span class="box"></span> No </label>
-                                                    </div>
+                                            <div class="radio-list">
+                                                <label> <input type="radio" id="composicion_0" name="composicion" value="si" data-title="si" onclick="mostrarReferencia();"/>Si</label>
+                                                <label> <input type="radio" id="composicion_1" name="composicion" value="no" data-title="no" checked onclick="mostrarReferencia();"/> No </label>
                                             </div>
                                             <i class="fa fa-list-alt"></i>
                                         </div>
                                     </div>
                                 </div>
-								
+								<div id="dat_com">
+									<div class="form-group form-md-line-input has-danger">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+										
+										</div>
+									</div>
+									<?
+									/*$objCat = new PDOModel();
+									$objCat->where("id_composicion", $_POST["comp"]);
+									$objCat->orderByCols = array("nombre");
+									$result =  $objCat->select("composicion_producto");
+									foreach($result as $item){*/
+
+										?><option value="<? echo $item["id"]?>"><? echo $item["nombre"]?></option>
+									<?//}	?>
+									<div class="form-group form-md-line-input has-danger">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<div class="input-icon">
+												<textarea class="form-control" rows="3" id="lista" name="lista"><? echo $do["primer_status"]; ?></textarea>
+													
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group form-md-line-input has-danger">
+                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+										<div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
+                                                <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
+                                            <div>
+                                                <span class="btn default btn-file">
+                                                    <span class="fileinput-new"> Select image </span>
+                                                    <span class="fileinput-exists"> Change </span>
+                                                    <input type="file" name="foto" id="foto"> </span>
+													<input  class="btn blue" type=button name="Submit" value="Enviar" onclick="comprueba_extension(this.form, this.form.foto.value)"> 
+                                                <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                            </div> 
+                                        </div>
+									</div>
+                                </div>
                                 <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-									<input type="button" class="btn green button-submit" onclick="javascript: validar();" name="guardar" id="guardar" value="Crear producto"/>
+									<!--<input type="button" class="btn green button-submit" onclick="javascript: validar();" name="guardar" id="guardar" value="Crear producto"/>-->
+								
+									<button type="submit" class="btn blue" name="guardar" id="guardar" value="guardar"> Crear producto </button>
                                     <input type="hidden" id="formulario" name="formulario" value="crear_producto"/>
 								</div>
                                 
@@ -391,6 +463,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- END CORE PLUGINS -->
             <!-- BEGIN THEME GLOBAL SCRIPTS -->
             <script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
+			<script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
             <!-- END THEME GLOBAL SCRIPTS -->
             <!-- BEGIN THEME LAYOUT SCRIPTS -->
             <script src="../../assets/layouts/layout2/scripts/layout.min.js" type="text/javascript"></script>

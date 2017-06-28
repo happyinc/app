@@ -440,8 +440,8 @@ Class PDOModel {
      * return   array                                   returns array as result of query.
      */
     public function select($dbTableName) {
-			//var_dump($dbTableName);die;
-			//var_dump($dbTableName);die;
+			
+			
         try {
             $this->sql = $this->getSelectQuery($dbTableName);
 			$stmt = $this->dbObj->prepare($this->sql);
