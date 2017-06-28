@@ -58,7 +58,7 @@ $objSe->init();
 						
 					}else{
 						echo "<script> alert('Telefono no se encuentra registrado');
-							window.location.assign('../../app/src/admin_2_material_design/registro_user.php');</script>";
+							window.location.assign('../../app/src/admin_2_material_design/sel_rol.php');</script>";
 							
 							$cell = $_SESSION['phone']['national_number'];
 					}
@@ -111,7 +111,7 @@ $objSe->init();
 						
 					}else{
 						echo "<script> alert('Email no se encuentra registrado');
-							window.location.assign('../../app/src/admin_2_material_design/registro_user.php');</script>";
+							window.location.assign('../../app/src/admin_2_material_design/sel_rol.php');</script>";
 							
 							$correo = $_SESSION['email']['address'];
 					}
