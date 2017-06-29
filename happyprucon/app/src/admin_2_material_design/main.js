@@ -1,14 +1,14 @@
 $(function() {
 
-	var app_id = '321796101590357';
+	var app_id = '128324841091354';
 	var scopes = 'email, user_friends, user_online_presence';
 
-	var btn_login = '<a href="#" id="login-face" type="submit"  class="btn btn-block btn-social  btn-circle blue-steel" style="text-align: center" ><span class="fa fa-facebook"></span> INGRESA CON FACEBOOK </a>';
+	var btn_login = '<a href="#" id="login" class="btn btn-block btn-social  btn-circle blue-steel" style="text-align: center" ><span class="fa fa-facebook"></span> INGRESA CON FACEBOOK </a>';
 
 	var div_session = "<div id='facebook-session'>"+
 					  "<strong></strong>"+
 					  "<img>"+
-					  "<a href='#' id='logout-face' type='submit'  class='btn btn-block btn-social  btn-circle blue-steel' style='text-align: center'  > CERRAR SESIÓN </a>"+
+					  "<a href='#' id='logout' class='btn btn-block btn-social  btn-circle blue-steel' style='text-align: center'  > CERRAR SESIÓN </a>"+
 					  "</div>";
 
 	window.fbAsyncInit = function() {
@@ -44,11 +44,16 @@ $(function() {
   	}
 
   	var getFacebookData =  function() {
-  		FB.api('/me', function(response) {
+  		FB.api('/me', 'GET',
+		{"fields":"email,first_name,last_name,id,gender"},
+		function(response) {
 	  		$('#login').after(div_session);
 	  		$('#login').remove();
 	  		$('#facebook-session strong').text("Bienvenido: "+response.name);
-	  		$('#facebook-session img').attr('src','http://graph.facebook.com/'+response.id+'/picture?type=large');
+			$('#facebook-session img').attr('src','http://graph.facebook.com/'+response.id+'/picture?type=large');
+			
+			
+			
 	  	});
   	}
 

@@ -17,9 +17,9 @@ class FacebookAccountKitApiResponse
 		
 		$this->code = $ResponseCode;
 		
-		$this->app_id = "321796101590357";
+		$this->app_id = "128324841091354";
 		
-		$this->app_secret = "068219a7847e1621b303d396b6f6999b";
+		$this->app_secret = "afc4bd121b42a08de9810857e6f01af5";
 		
 		$this->access_token = "AA|{$this->app_id}|{$this->app_secret}";	
 
