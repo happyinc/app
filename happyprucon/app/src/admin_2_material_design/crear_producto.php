@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-require_once'../../../externo/plugins/PDOModel.php';
+
  ?>
 <!DOCTYPE html>
 <!-- 
@@ -24,44 +24,29 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN HEAD -->
 
     <head>
-        <meta charset="utf-8" />
-        <title>Metronic Admin Theme #2 | Blank Page Layout</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <meta content="Preview page of Metronic Admin Theme #2 for blank page layout" name="description" />
-        <meta content="" name="author" />
-        <!-- BEGIN GLOBAL MANDATORY STYLES -->
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
-        <!-- END GLOBAL MANDATORY STYLES -->
-		<link href="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
-        <!-- BEGIN THEME GLOBAL STYLES -->
-        <link href="../../assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
-        <link href="../../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
-        <!-- END THEME GLOBAL STYLES -->
-        <!-- BEGIN THEME LAYOUT STYLES -->
-        <link href="../../assets/layouts/layout2/css/layout.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/layouts/layout2/css/themes/blue.min.css" rel="stylesheet" type="text/css" id="style_color" />
-        <link href="../../assets/layouts/layout2/css/custom.min.css" rel="stylesheet" type="text/css" />
-        <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.ico" /> 
+        <?php
+		include "include_css.php";
+		require_once'../../../externo/plugins/PDOModel.php';
+		?>
 		 
 		 
-			<script type="text/javascript">
-
+		<script type="text/javascript">
+			//funcion que oculta y muestra div eniendo en cuenta la opcion seleccionada por el usuario
 			function mostrarReferencia(){
 				if (document.crear_producto.composicion[0].checked == true) {
 					document.getElementById('dat_com').style.display='block';
 				} 
+				else if (document.crear_producto.composicion[0].checked == false || document.crear_producto.composicion[1].checked == true){
+					document.getElementById('dat_com').style.display='none';
+				}
+				
 				else {
 					document.getElementById('dat_com').style.display='none';
 				}
+				
 			}
 			
-			
+			//funcion que comprueba el tipo de archivo permitid a subir
 			function comprueba_extension(formulario, archivo) { 
 			   extensiones_permitidas = new Array(".png", ".jpg", ".jpeg", ".bmp"); 
 			   mierror = ""; 
@@ -89,10 +74,10 @@ License: You must have a valid license purchased only from themeforest(the above
 					 return 1; 
 					} 
 			   } 
-			   //si estoy aqui es que no se ha podido submitir 
+			   //si estoy aqui es que no se ha podido hace el submit
 			   alert (mierror); 
 			   return 0; 
-			}
+			} 
 			</script>
 			
 	    <?
@@ -141,7 +126,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
-            <div class="page-header-inner ">
+            <div class="page-header-inner">
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="index.html">
@@ -278,164 +263,145 @@ License: You must have a valid license purchased only from themeforest(the above
                         
                     <!-- END PAGE HEADER-->
 					</div>
-
-                    <div class="portlet-body form">
-						<form role="form" class="form-horizontal" name="crear_producto"  id="crear_producto" action="crear_producto.php" enctype="multipart/form-data" method="post">
-                            <div class="form-body">
-
-                                <div class="form-group form-md-line-input has-danger">
-                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                        <div class="input-icon">
-                                            <select class="form-control" id="categoria" name="categoria">
-                                                    <option value="">Seleccione la categoria</option>
-                                                    <?
+					<div class="portlet light">
+						<div class="portlet-body form">
+							<form role="form" class="form-horizontal form-bordered" name="crear_producto"  id="crear_producto" action="crear_producto.php" enctype="multipart/form-data" method="post">
+								<div class="form-body">
+									<div class="form-group form-md-line-input has-danger">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<div class="input-icon">
+												<select class="form-control" id="select_selectsplitter1" name="select_selectsplitter1">
+													<?
 														$objCat = new PDOModel();
 														$objCat->where("id_estado", 1);
 														$objCat->orderByCols = array("nombre");
 														$result =  $objCat->select("bienes");
 														foreach($result as $item){
-
-																?><option value="<? echo $item["id"]?>"><? echo $item["nombre"]?></option><?
-														}	
-                                                    ?>
-                                            </select>
-                                            <div class="form-control-focus"> </div>
-                                            <span class="help-block">Seleccione la categoria del producto a crear</span>
-                                            <i class="fa fa-clone"></i>
-										</div>
-									</div>
-                                </div>
-								
-								<div class="form-group form-md-line-input has-danger">
-                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                        <div class="input-icon">
-                                            <select class="form-control" id="subcategoria" name="subcategoria">
-                                                    <option value="">Seleccione la subcategoria</option>
-													<?
-														/*//$objConn = new PDOModel();
-														$objConn->andOrOperator = "AND";
-														$objConn->where("id_estado", 1);
-														//$objConn->where("id_bienes", $_POST["categoria"]);
-														$objConn->orderByCols = array("nombre");
-														$result =  $objConn->select("categoria");
-														foreach($result as $item){
-
-																?><option value="<? echo $item["id"]?>"><? echo $item["descripcion"]?></option><?
-														}	*/
-                                                    ?>
-                                                    <option value="1">Option 1</option>
-                                                    <option value="2">Option 2</option>
-                                                    <option value="3">Option 3</option>
-                                                    <option value="4">Option 4</option>
-                                                </select>
-                                                <div class="form-control-focus"> </div>
-                                                <span class="help-block">Seleccione la subcategoria del producto a crear</span>
-                                                <i class="fa fa-clone"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group form-md-line-input has-danger">
-                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                        <div class="input-icon">
-                                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto">
-                                                <div class="form-control-focus"> </div>
-                                                <span class="help-block required">Digite el nombre del producto a crear *</span>
-                                                <i class="fa fa-tags"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group form-md-line-input has-danger">
-                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                        <div class="input-icon">
-                                            <textarea class="form-control" rows="3" id="descripcion" name="descripcion" placeholder="Descripcion del producto"></textarea>
-                                                <div class="form-control-focus"> </div>
-                                                <span class="help-block">Digite la descripcion del producto a crear</span>
-                                                <i class="fa fa-file-text-o"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group form-md-line-input has-danger">
-                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                        <div class="input-icon">
-                                            <input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del producto">
-                                                <div class="form-control-focus"> </div>
-                                                <span class="help-block required">Digite el valor del producto a crear *</span>
-                                                <i class="fa fa-money"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group form-md-line-input has-danger">
-                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                        <div class="input-icon">
-                                            <div>
-                                            <label class="control-label col-md-3">¿Tiene composicion?
-                                                <span class="required"> * </span>
-                                            </label>
-                                            </div>
-                                            <div class="radio-list">
-                                                <label> <input type="radio" id="composicion_0" name="composicion" value="si" data-title="si" onclick="mostrarReferencia();"/>Si</label>
-                                                <label> <input type="radio" id="composicion_1" name="composicion" value="no" data-title="no" checked onclick="mostrarReferencia();"/> No </label>
-                                            </div>
-                                            <i class="fa fa-list-alt"></i>
-                                        </div>
-                                    </div>
-                                </div>
-								<div id="dat_com">
-									<div class="form-group form-md-line-input has-danger">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-										
-										</div>
-									</div>
-									<?
-									/*$objCat = new PDOModel();
-									$objCat->where("id_composicion", $_POST["comp"]);
-									$objCat->orderByCols = array("nombre");
-									$result =  $objCat->select("composicion_producto");
-									foreach($result as $item){*/
-
-										?><option value="<? echo $item["id"]?>"><? echo $item["nombre"]?></option>
-									<?//}	?>
-									<div class="form-group form-md-line-input has-danger">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="input-icon">
-												<textarea class="form-control" rows="3" id="lista" name="lista"><? echo $do["primer_status"]; ?></textarea>
-													
+															?><optgroup label="<? echo $item["nombre"]?>"><?
+																$objCat->andOrOperator = "AND";
+																$objCat->where("id_bienes", $item["id"]);
+																$objCat->where("id_estado", 1);
+																$objCat->orderByCols = array("descripcion");
+																$result1 =  $objCat->select("categoria");
+																
+																foreach($result1 as $item1){
+																	?><option value="<? echo $item1["id"]?>"><? echo $item1["descripcion"]?></option><?
+																}
+																?>
+															</optgroup><?
+														}
+															
+													?>
+														
+												</select>
+												<div class="form-control-focus"> </div>
+												<span class="help-block">Seleccione la categoria del producto a crear</span>
+												<i class="fa fa-clone"></i>
 											</div>
 										</div>
 									</div>
-								</div>
-								<div class="form-group form-md-line-input has-danger">
-                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-										<div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
-                                                <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
-                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
-                                            <div>
-                                                <span class="btn default btn-file">
-                                                    <span class="fileinput-new"> Select image </span>
-                                                    <span class="fileinput-exists"> Change </span>
-                                                    <input type="file" name="foto" id="foto"> </span>
-													<input  class="btn blue" type=button name="Submit" value="Enviar" onclick="comprueba_extension(this.form, this.form.foto.value)"> 
-                                                <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
-                                            </div> 
-                                        </div>
+									
+									<div class="form-group form-md-line-input has-danger">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<div class="input-icon">
+												<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto">
+													<div class="form-control-focus"> </div>
+													<span class="help-block required">Digite el nombre del producto a crear *</span>
+													<i class="fa fa-tags"></i>
+											</div>
+										</div>
 									</div>
-                                </div>
-                                <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-									<!--<input type="button" class="btn green button-submit" onclick="javascript: validar();" name="guardar" id="guardar" value="Crear producto"/>-->
-								
-									<button type="submit" class="btn blue" name="guardar" id="guardar" value="guardar"> Crear producto </button>
-                                    <input type="hidden" id="formulario" name="formulario" value="crear_producto"/>
+
+									<div class="form-group form-md-line-input has-danger">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<div class="input-icon">
+												<textarea class="form-control" rows="3" id="descripcion" name="descripcion" placeholder="Descripcion del producto"></textarea>
+													<div class="form-control-focus"> </div>
+													<span class="help-block">Digite la descripcion del producto a crear</span>
+													<i class="fa fa-file-text-o"></i>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group form-md-line-input has-danger">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<div class="input-icon">
+												<input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del producto">
+													<div class="form-control-focus"> </div>
+													<span class="help-block required">Digite el valor del producto a crear *</span>
+													<i class="fa fa-money"></i>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group form-md-line-input has-danger">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<div class="input-icon">
+												<div>
+												<label class="control-label col-md-3">¿Tiene composicion?
+													<span class="required"> * </span>
+												</label>
+												</div>
+												<div class="radio-list">
+													<label> <input type="radio" id="composicion_0" name="composicion" value="si" data-title="si" onclick="mostrarReferencia();"/>Si</label>
+													<label> <input type="radio" id="composicion_1" name="composicion" value="no" data-title="no" checked onclick="mostrarReferencia();"/> No </label>
+												</div>
+												<i class="fa fa-list-alt"></i>
+											</div>
+										</div>
+									</div>
+									<div id="dat_com" style="display:none;" >
+										<div class="form-group form-md-line-input has-danger">
+											<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											
+											</div>
+										</div>
+										<?
+										/*$objCat = new PDOModel();
+										$objCat->where("id_composicion", $_POST["comp"]);
+										$objCat->orderByCols = array("nombre");
+										$result =  $objCat->select("composicion_producto");
+										foreach($result as $item){*/
+
+											?><option value="<? echo $item["id"]?>"><? echo $item["nombre"]?></option>
+										<?//}	?>
+										<div class="form-group form-md-line-input has-danger">
+											<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+												<div class="input-icon">
+													<textarea class="form-control" rows="3" id="lista" name="lista"><? echo $do["primer_status"]; ?></textarea>
+														
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group form-md-line-input has-danger">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<div class="fileinput fileinput-new" data-provides="fileinput">
+												<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
+													<img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
+												<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
+												<div>
+													<span class="btn default btn-file">
+														<span class="fileinput-new"> Select image </span>
+														<span class="fileinput-exists"> Change </span>
+														<input type="file" name="foto" id="foto"> </span>
+														<input  class="btn blue" type=button name="Submit" value="Enviar" onclick="comprueba_extension(this.form, this.form.foto.value)"> 
+													<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+												</div> 
+											</div>
+										</div>
+									</div>
+									<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+										<!--<input type="button" class="btn green button-submit" onclick="javascript: validar();" name="guardar" id="guardar" value="Crear producto"/>-->
+									
+										<button type="submit" class="btn blue" name="guardar" id="guardar" value="guardar"> Crear producto </button>
+										<input type="hidden" id="formulario" name="formulario" value="crear_producto"/>
+									</div>
+									
 								</div>
-                                
-                            </div>
-                        </form>
+							</form>
+						</div>
                     </div>
-                    
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
@@ -454,32 +420,11 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../assets/global/plugins/ie8.fix.min.js"></script> 
 <![endif]-->
             <!-- BEGIN CORE PLUGINS -->
-            <script src="../../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-            <script src="../../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-            <script src="../../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-            <script src="../../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-            <script src="../../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-            <script src="../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-            <!-- END CORE PLUGINS -->
-            <!-- BEGIN THEME GLOBAL SCRIPTS -->
-            <script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
-			<script src="../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
-            <!-- END THEME GLOBAL SCRIPTS -->
-            <!-- BEGIN THEME LAYOUT SCRIPTS -->
-            <script src="../../assets/layouts/layout2/scripts/layout.min.js" type="text/javascript"></script>
-            <script src="../../assets/layouts/layout2/scripts/demo.min.js" type="text/javascript"></script>
-            <script src="../../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
-            <script src="../../assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
-            <!-- END THEME LAYOUT SCRIPTS -->
-            <script>
-                $(document).ready(function()
-                {
-                    $('#clickmewow').click(function()
-                    {
-                        $('#radio1003').attr('checked', 'checked');
-                    });
-                })
-            </script>
+            <?
+            include "include_js.php";
+			?> 
+			<script src="../../assets/global/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js" type="text/javascript"></script>
+			<script src="../../assets/pages/scripts/components-bootstrap-select-splitter.min.js" type="text/javascript"></script>
     </body>
 
 </html>
