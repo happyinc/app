@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-include '../../class/sessions.php';
+include '../class/sessions.php';
 $objSe = new Sessions();
  ?>
 <!DOCTYPE html>
@@ -33,52 +33,69 @@ License: You must have a valid license purchased only from themeforest(the above
         <meta content="" name="author" />
 		<!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <link href="../../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL STYLES -->
-        <link href="../../assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
-        <link href="../../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN PAGE LEVEL STYLES -->
-        <link href="../../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" /> </head>
     <!-- END HEAD -->
 	<?php 
-	   
+	$acep_terms = $_POST['acepta'];
+
 $objSe->init();
-		
-		
+        //variables recibidas para registro facebook
+            $user_face = isset($_SESSION['nom-face']) ? $_SESSION['nom-face'] : null ;
+            $ape_face = isset($_SESSION['ape-face']) ? $_SESSION['ape-face'] : null ;
+            $mail_face = isset($_SESSION['mail']) ? $_SESSION['mail'] : null ;
+
+        //variables de sesion para accounkit
 		$cell = $_SESSION['phone']['national_number'];	
 		
 		$correo = $_SESSION['email']['address'];
-		
-		$rol_emp = $_POST['emprende'];
+
+        $rol_emp = isset($_SESSION['emprende']) ? $_SESSION['emprende'] : null ;
+        $rol_cli = isset($_SESSION['cliente']) ? $_SESSION['cliente'] : null ;
+
+		//variables recibidas del rol escogido
 		if($rol_emp != ""){
 			$rol = $rol_emp;
 		}
-		
-		$rol_cli = $_POST['cliente'];
+
 		if($rol_cli != ""){
 			$rol = $rol_cli;
 		}
-		
+
+		//condicionales para unificar variables de correo
+		if($correo != ""){
+		    $mail = $correo;
+        }
+
+        if($mail_face != ""){
+		    $mail = $mail_face;
+        }
+
+
 ?>
     <body class=" login">
         <!-- BEGIN LOGIN -->
         <div class="content">
             <!-- BEGIN LOGIN FORM -->
-            <form class="login-form" action="../../class/registrar.php" method="post">
+            <form class="login-form" action="../class/registrar.php" method="post">
                 <h3>Regístrate</h3>
                 <br />
                 <div class="form-group">
@@ -96,12 +113,13 @@ $objSe->init();
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Nombres</label>
-					<input class="form-control placeholder-no-fix" type="hidden" name="roles" value="<?php echo $rol; ?>"/>
-                    <input class="form-control placeholder-no-fix" type="text" placeholder="Nombres" name="fullname" />
+					<input class="form-control placeholder-no-fix" type="text" name="roles" value="<?php echo $rol; ?>"/>
+                    <input class="form-control placeholder-no-fix" type="text" name="acep-terms" value="<?php echo $acep_terms; ?>"/>
+                    <input class="form-control placeholder-no-fix" type="text" placeholder="Nombres" name="fullname" value="<?php echo $user_face; ?>" />
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Apellidos</label>
-                    <input class="form-control placeholder-no-fix" type="text" placeholder="Apellidos" name="lastname" />
+                    <input class="form-control placeholder-no-fix" type="text" placeholder="Apellidos" name="lastname" value="<?php echo $ape_face; ?>" />
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Celular</label>
@@ -109,7 +127,7 @@ $objSe->init();
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Correo Electrónico</label>
-                    <input class="form-control placeholder-no-fix" type="email" autocomplete="off" placeholder="Correo Electrónico" name="username" value="<?php echo $correo; ?>" />
+                    <input class="form-control placeholder-no-fix" type="email" autocomplete="off" placeholder="Correo Electrónico" name="username" value="<?php echo $mail; ?>" />
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Contraseña</label>
@@ -141,25 +159,25 @@ $objSe->init();
 <script src="../assets/global/plugins/ie8.fix.min.js"></script> 
 <![endif]-->
         <!-- BEGIN CORE PLUGINS -->
-        <script src="../../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <script src="../../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
-        <script src="../../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
+        <script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
+        <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
-        <script src="../../assets/pages/scripts/login.min.js" type="text/javascript"></script>
+        <script src="../assets/pages/scripts/login.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <!-- END THEME LAYOUT SCRIPTS -->

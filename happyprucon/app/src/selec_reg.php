@@ -28,25 +28,27 @@ License: You must have a valid license purchased only from themeforest(the above
         <meta content="" name="author" />
 		<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
         <script src="https://sdk.accountkit.com/es_LA/sdk.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="main.js"></script>
 		<!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <link href="../../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL STYLES -->
-        <link href="../../assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
-        <link href="../../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN PAGE LEVEL STYLES -->
-		<link href="../../../externo/plugins/bootstrap-social-gh-pages/bootstrap-social.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
+		<link href="../../externo/plugins/bootstrap-social-gh-pages/bootstrap-social.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
@@ -58,36 +60,55 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN LOGIN -->
         <div class="content">
 			<div align="center"><a href="logueo.html">
-                    <img src="../../../externo/img/logo-default.png" width="230px" alt="" /> </a>
+                    <img src="../../externo/img/logo-default.png" width="230px" alt="" /> </a>
                 </div><br />
             <!-- BEGIN LOGIN FORM -->
-            <form class="login-form" action="" method="post"><br />
-               <div class="row">
-                    
-                    <ul class="social-icons">
-                        <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 15px">
-						<a type="submit"  class="btn btn-block btn-social  btn-circle blue-steel" style="text-align: center" ><span class="fa fa-facebook"></span> REGISTRATE CON FACEBOOK </a>
-						</div>
-						<div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 15px">
-						<a type="submit"  class="btn btn-block btn-social btn-circle red-mint" style="text-align: center" onclick="loginWithEmail();" ><span class="fa fa-envelope"></span> REGISTRATE CON CORREO </a>
-						</div>
-						<div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 15px">
-						<a type="submit"  class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center" onclick="loginWithSMS();" ><span class="fa fa-tablet"></span> REGISTRATE CON CELULAR </a>
-						</div>
-					</ul>
-					
-				</div>
-				<div class="row" style="margin-top: 80px">
+            <form name="form-face" id="for-face" action="../../seguridad/verificarf.php" method="post">
+                <div class="row">
+                    <!--Campos escondidos para envio de datos de facebook -->
+
+                    <input type="hidden" name="nom-face" id="nom-face">
+                    <input type="hidden" name="ape-face" id="ape-face">
+                    <input type="hidden" name="mail" id="mail">
+
+                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+                        <a href="#" type="submit" id="login" class="btn btn-block btn-social  btn-circle blue-steel" style="text-align: center" ><span class="fa fa-facebook"></span> REGISTRATE CON FACEBOOK </a>
+                    </div>
+                    <script>
+                        (function(d, s, id){
+                            var js, fjs = d.getElementsByTagName(s)[0];
+                            if (d.getElementById(id)) {return;}
+                            js = d.createElement(s); js.id = id;
+                            js.src = "//connect.facebook.net/es_ES/sdk.js";
+                            fjs.parentNode.insertBefore(js, fjs);
+                        }(document, 'script', 'facebook-jssdk'));
+
+                    </script>
+                </div>
+            </form>
+            <div class="row">
+
+                <div class="social-icons">
+                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+                        <button onclick="loginWithEmail();" class="btn btn-block btn-social btn-circle red-mint" style="text-align: center" ><span class="fa fa-envelope"></span> REGISTRATE CON TU CORREO </button>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+                        <button onclick="loginWithSMS();" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center" ><span class="fa fa-tablet"></span> REGISTRATE CON TU CELULAR </button>
+                    </div>
+                    <form id="accountkit_form" name="accountkit_form" action="../class/fb_api_response.php" method="POST" style="display: none;">
+                        <input type="hidden" id="code" name="code">
+                        <input type="hidden" id="csrf_nonce" name="csrf_nonce">
+                        <input type="submit" value="Submit" hidden>
+                    </form>
+                </div>
+            </div>
+            <form class="login-form" action="" method="post">
+               	<div class="row" style="margin-top: 30px">
 					<div class="col-lg-12 col-md-12 col-xs-12" style="text-align: center; margin-bottom: 20px">
                         <a href="logueo.html" id="forget-password" class="bold" style="color: #520d9b"> YA TENGO UNA CUENTA</a>
                     </div>
 				</div>	
             </form>
-			<form id="accountkit_form" name="accountkit_form" action="../../class/fb_api_response.php" method="POST" style="display: none;">
-					<input type="hidden" id="code" name="code">
-					<input type="hidden" id="csrf_nonce" name="csrf_nonce">
-					<input type="submit" value="Submit" hidden>
-					</form>
 			<!-- END LOGIN FORM -->
         </div>
         <!-- END LOGIN -->
@@ -137,25 +158,25 @@ License: You must have a valid license purchased only from themeforest(the above
 		  	AccountKit.login("EMAIL", {}, loginCallback);
 		  }
 		</script>
-        <script src="../../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <script src="../../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
-        <script src="../../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
+        <script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
+        <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
-        <script src="../../assets/pages/scripts/login.min.js" type="text/javascript"></script>
+        <script src="../assets/pages/scripts/login.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <!-- END THEME LAYOUT SCRIPTS -->
