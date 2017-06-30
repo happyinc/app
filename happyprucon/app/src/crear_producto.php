@@ -136,7 +136,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="index.html">
-                        <img src="../../assets/layouts/layout2/img/logo-default.png" alt="logo" class="logo-default" /> </a>
+                        <img src="../assets/layouts/layout2/img/logo-default.png" alt="logo" class="logo-default" /> </a>
                     <div class="menu-toggler sidebar-toggler">
                         <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
                     </div>
@@ -358,13 +358,14 @@ License: You must have a valid license purchased only from themeforest(the above
 										<div class="form-group form-md-line-input">
 											<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 												<div class="input-icon">
-												<input type="text" class="form-control" id="comp" name="comp" placeholder="Seleccione la composicion">
+												<input type="text" class="form-control" id="comp" name="comp" autocomplete="off" spellcheck="false" dir="auto" placeholder="Seleccione la composicion">
 													<div class="form-control-focus"> </div>
 													<span class="help-block required">Seleccionne la composicion del producto *</span>
 													<i class="fa fa-list-ul"></i>
 												</div>
 											</div>
 										</div>
+										
 										<?
 										/*$objCat = new PDOModel();
 										$objCat->where("id_composicion", $_POST["comp"]);
@@ -433,7 +434,8 @@ License: You must have a valid license purchased only from themeforest(the above
 			?> 
 			<script src="../assets/global/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js" type="text/javascript"></script>
 			<script src="../assets/pages/scripts/components-bootstrap-select-splitter.min.js" type="text/javascript"></script>
-			<script src="../assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
+			<script src="../assets/global/plugins/typeahead/handlebars.min.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
 			<script src="../assets/pages/scripts/components-typeahead.min.js" type="text/javascript"></script>
 			<script>
 			// fucion que persnaliza el select dependiente de la categoria
@@ -453,7 +455,36 @@ License: You must have a valid license purchased only from themeforest(the above
 
 			}();
 			
-			//
+			 var handleTwitterTypeahead = function() {
+		//select que busca e inserta
+        // Example #1
+        // instantiate the bloodhound suggestion engine
+        var numbers = new Bloodhound({
+          datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.num); },
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          local: [
+            { num: 'metronic' },
+            { num: 'keenthemes' },
+            { num: 'metronic theme' },
+            { num: 'metronic template' },
+            { num: 'keenthemes team' }
+          ]
+        });
+         
+        // initialize the bloodhound suggestion engine
+        numbers.initialize();
+         
+        // instantiate the typeahead UI
+        if (App.isRTL()) {
+          $('#comp').attr("dir", "rtl");  
+        }
+        $('#comp').typeahead(null, {
+          displayKey: 'num',
+          hint: (App.isRTL() ? false : true),
+          source: numbers.ttAdapter()
+        });
+
+    }
 	</script>
     </body>
 
