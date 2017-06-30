@@ -445,37 +445,37 @@ License: You must have a valid license purchased only from themeforest(the above
 				};
 
 			}();
-			
+		
 			 var handleTwitterTypeahead = function() {
-		//select que busca e inserta
-        // Example #1
-        // instantiate the bloodhound suggestion engine
-        var numbers = new Bloodhound({
-          datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.num); },
-          queryTokenizer: Bloodhound.tokenizers.whitespace,
-          local: [
-            { num: 'metronic' },
-            { num: 'keenthemes' },
-            { num: 'metronic theme' },
-            { num: 'metronic template' },
-            { num: 'keenthemes team' }
-          ]
-        });
-         
-        // initialize the bloodhound suggestion engine
-        numbers.initialize();
-         
-        // instantiate the typeahead UI
-        if (App.isRTL()) {
-          $('#comp').attr("dir", "rtl");  
-        }
-        $('#comp').typeahead(null, {
-          displayKey: 'num',
-          hint: (App.isRTL() ? false : true),
-          source: numbers.ttAdapter()
-        });
+				//select que busca e inserta
+				// Example #1
+				// instantiate the bloodhound suggestion engine
+				var numbers = new Bloodhound({
+				  datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.num); },
+				  queryTokenizer: Bloodhound.tokenizers.whitespace,
+				  local: [
+					{ num: 'metronic' },
+					{ num: 'keenthemes' },
+					{ num: 'metronic theme' },
+					{ num: 'metronic template' },
+					{ num: 'keenthemes team' }
+				  ]
+				});
+				 
+				// initialize the bloodhound suggestion engine
+				numbers.initialize();
+				 
+				// instantiate the typeahead UI
+				if (App.isRTL()) {
+				  $('#comp').attr("dir", "rtl");  
+				}
+				$('#comp').typeahead(null, {
+				  displayKey: 'num',
+				  hint: (App.isRTL() ? false : true),
+				  source: numbers.ttAdapter()
+				});
 
-    }
+			}
 	</script>
     </body>
 
