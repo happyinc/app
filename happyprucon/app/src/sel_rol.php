@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-include '../../class/sessions.php';
+include '../class/sessions.php';
 $objSe = new Sessions();
  ?>
 <!DOCTYPE html>
@@ -35,23 +35,23 @@ License: You must have a valid license purchased only from themeforest(the above
         <script src="https://sdk.accountkit.com/es_LA/sdk.js"></script>
 		<!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <link href="../../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL STYLES -->
-        <link href="../../assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
-        <link href="../../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN PAGE LEVEL STYLES -->
-		<link href="../../../externo/plugins/bootstrap-social-gh-pages/bootstrap-social.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
+		<link href="../../externo/plugins/bootstrap-social-gh-pages/bootstrap-social.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
@@ -61,8 +61,10 @@ License: You must have a valid license purchased only from themeforest(the above
 	<?php 
 	   
 		$objSe->init();
-				
-				
+            $user_face = isset($_SESSION['nom-face']) ? $_SESSION['nom-face'] : null ;
+            $ape_face = isset($_SESSION['ape-face']) ? $_SESSION['ape-face'] : null ;
+            $mail_face = isset($_SESSION['mail']) ? $_SESSION['mail'] : null ;
+
 				$cell = $_SESSION['phone']['national_number'];	
 				
 				$correo = $_SESSION['email']['address'];
@@ -73,10 +75,10 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN LOGIN -->
         <div class="content">
 			<div align="center"><a href="logueo.html">
-                    <img src="../../../externo/img/logo-default.png" width="230px" alt="" /> </a>
+                    <img src="../../externo/img/logo-default.png" width="230px" alt="" /> </a>
                 </div><br />
             <!-- BEGIN LOGIN FORM -->
-            <form class="login-form" action="registro_user.php" method="post"><br />
+            <form class="login-form" action="terms_cond.php" method="post"><br />
                <div class="row">
                         
                         <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
@@ -87,7 +89,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				</div>
 			</form>
 			
-			<form name="empre" action="registro_user.php" method="post"><br />
+			<form name="empre" action="terms_cond.php" method="post"><br />
                <div class="row">
                         
 						<div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
@@ -108,25 +110,25 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../assets/global/plugins/ie8.fix.min.js"></script> 
 <![endif]-->
         <!-- BEGIN CORE PLUGINS -->
-		<script src="../../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+		<script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <script src="../../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
-        <script src="../../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
+        <script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
+        <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
-        <script src="../../assets/pages/scripts/login.min.js" type="text/javascript"></script>
+        <script src="../assets/pages/scripts/login.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <!-- END THEME LAYOUT SCRIPTS -->

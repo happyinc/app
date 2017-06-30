@@ -21,13 +21,14 @@ var ComponentsTypeahead = function () {
          
         // instantiate the typeahead UI
         if (App.isRTL()) {
-          $('#typeahead_example_1').attr("dir", "rtl");  
+          $('#comp').attr("dir", "rtl");  
         }
-        $('#typeahead_example_1').typeahead(null, {
+        $('#comp').typeahead(null, {
           displayKey: 'num',
           hint: (App.isRTL() ? false : true),
           source: numbers.ttAdapter()
         });
+		
 
         // Example #2
         var countries = new Bloodhound({

@@ -49,16 +49,16 @@ $objSe->init();
 											$objSe->init();
 											$objSe->set('id',$ultima_sesion);
 											
-											echo "<script> window.location.assign('../../app/src/admin_2_material_design/index.php'); </script>";
+											echo "<script> window.location.assign('../../app/src/index.php'); </script>";
 										}
 										else
 										{
-											echo "<script> window.location.assign('../../app/src/admin_2_material_design/index.php'); </script>";
+											echo "<script> window.location.assign('../../app/src/index.php'); </script>";
 										}
 						
 					}else{
 						echo "<script> alert('Telefono no se encuentra registrado');
-							window.location.assign('../../app/src/admin_2_material_design/sel_rol.php');</script>";
+							window.location.assign('../../app/src/sel_rol.php');</script>";
 							
 							$cell = $_SESSION['phone']['national_number'];
 					}
@@ -102,16 +102,16 @@ $objSe->init();
 											$objSe->init();
 											$objSe->set('id',$ultima_sesion);
 											
-											echo "<script> window.location.assign('../../app/src/admin_2_material_design/index.php'); </script>";
+											echo "<script> window.location.assign('../../app/src/index.php'); </script>";
 										}
 										else
 										{
-											echo "<script> window.location.assign('../../app/src/admin_2_material_design/index.php'); </script>";
+											echo "<script> window.location.assign('../../app/src/index.php'); </script>";
 										}
 						
 					}else{
 						echo "<script> alert('Email no se encuentra registrado');
-							window.location.assign('../../app/src/admin_2_material_design/sel_rol.php');</script>";
+							window.location.assign('../../app/src/sel_rol.php');</script>";
 							
 							$correo = $_SESSION['email']['address'];
 					}
