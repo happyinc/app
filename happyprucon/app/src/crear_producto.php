@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL ^ E_NOTICE);
 
  ?>
 <!DOCTYPE html>
@@ -79,6 +79,12 @@ License: You must have a valid license purchased only from themeforest(the above
 			   return 0; 
 			} 
 			
+			$(function() {
+				$('#comp').autocomplete({
+					source: 'completar.php'
+				});
+				
+			});
 			</script>
 			
 	    <?
@@ -99,7 +105,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				$archivo_size
 				?>
                <script type="text/javascript">//alert("el tamaño de la imagen es: <? echo $aa?> ")</script>
-			   <script type="text/javascript">alert("el tamaño de la imagen es: <? echo $archivo_size?> ")</script>
+			   <script type="text/javascript">//alert("el tamaño de la imagen es: <? echo $archivo_size?> ")</script>
                <? 
 				if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
 					$ruta_archivo_a_subir = $_FILES['foto']['tmp_name'];
@@ -150,7 +156,7 @@ License: You must have a valid license purchased only from themeforest(the above
                
                 <!-- END PAGE ACTIONS -->
 				<!-- BEGIN HEADER -->
-					<?
+					<?php
 						include "cabecera.php";
 					?>
 				<!-- END HEADER -->
@@ -164,7 +170,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN CONTAINER -->
         <div class="page-container">
 			<!-- BEGIN SIDEBAR -->
-			<?
+			<?php
 					include "menu.php";
 			?>
 			<!-- END SIDEBAR -->
@@ -277,13 +283,13 @@ License: You must have a valid license purchased only from themeforest(the above
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
 												<select class="form-control" id="categoria" name="categoria">
-													<?
+													<?php
 														$objCat = new PDOModel();
 														$objCat->where("id_estado", 1);
 														$objCat->orderByCols = array("nombre");
 														$result =  $objCat->select("bienes");
 														foreach($result as $item){
-															?><optgroup label="<? echo $item["nombre"]?>"><?
+															?><optgroup label="<?php echo $item["nombre"]?>"> <?php
 																$objCat->andOrOperator = "AND";
 																$objCat->where("id_bienes", $item["id"]);
 																$objCat->where("id_estado", 1);
@@ -291,10 +297,10 @@ License: You must have a valid license purchased only from themeforest(the above
 																$result1 =  $objCat->select("categoria");
 																
 																foreach($result1 as $item1){
-																	?><option value="<? echo $item1["id"]?>"><? echo $item1["descripcion"]?></option><?
+																	?><option value="<?php echo $item1["id"]?>"><?php echo $item1["descripcion"]?></option><?php
 																}
 																?>
-															</optgroup><?
+															</optgroup><?php
 														}
 													?>
 												</select>
@@ -369,7 +375,7 @@ License: You must have a valid license purchased only from themeforest(the above
 										<div class="form-group form-md-line-input">
 											<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 												<div class="input-icon">
-													<textarea class="form-control" rows="3" id="lista" name="lista"><? echo $do["primer_status"]; ?></textarea>
+													<textarea class="form-control" rows="3" id="lista" name="lista"><? echo "pp"?></textarea>
 														
 												</div>
 											</div>
@@ -410,7 +416,7 @@ License: You must have a valid license purchased only from themeforest(the above
         </div>
         <!-- END CONTAINER -->
 		 <!-- BEGIN FOOTER -->
-        <?
+        <?php
             include "footer.php";
         ?>
         <!-- END FOOTER -->
@@ -420,14 +426,15 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../assets/global/plugins/ie8.fix.min.js"></script> 
 <![endif]-->
             <!-- BEGIN CORE PLUGINS -->
-            <?
+            <?php
             include "include_js.php";
 			?> 
 			<script src="../assets/global/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js" type="text/javascript"></script>
 			<script src="../assets/pages/scripts/components-bootstrap-select-splitter.min.js" type="text/javascript"></script>
 			<script src="../assets/global/plugins/typeahead/handlebars.min.js" type="text/javascript"></script>
             <script src="../assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
-			<script src="../assets/pages/scripts/components-typeahead.js" type="text/javascript"></script>
+			 <!--<script src="../assets/pages/scripts/components-typeahead.js" type="text/javascript"></script>
+			<script src="../assets/pages/scripts/select-input.js" type="text/javascript"></script>-->
 			<script>
 			// fucion que persnaliza el select dependiente de la categoria
 			var ComponentsBootstrapSelectSplitter = function() {
@@ -446,11 +453,12 @@ License: You must have a valid license purchased only from themeforest(the above
 
 			}();
 		
-			 var handleTwitterTypeahead = function() {
-				//select que busca e inserta
+			//select que busca e inserta
+			 //var handleTwitterTypeahead = function() {
+				
 				// Example #1
 				// instantiate the bloodhound suggestion engine
-				var numbers = new Bloodhound({
+				/*var numbers = new Bloodhound({
 				  datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.num); },
 				  queryTokenizer: Bloodhound.tokenizers.whitespace,
 				  local: [
@@ -475,7 +483,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				  source: numbers.ttAdapter()
 				});
 
-			}
+			}*/
 	</script>
     </body>
 
