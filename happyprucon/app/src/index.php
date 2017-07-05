@@ -4,6 +4,7 @@ require'../class/sessions.php';
 $objSe = new Sessions();
 $objSe->init();
 
+$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
 $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 

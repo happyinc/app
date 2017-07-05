@@ -113,8 +113,10 @@ $objSe->init();
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Nombres</label>
-					<input class="form-control placeholder-no-fix" type="text" name="roles" value="<?php echo $rol; ?>"/>
-                    <input class="form-control placeholder-no-fix" type="text" name="acep-terms" value="<?php echo $acep_terms; ?>"/>
+
+                    <!--Campos escondidos de rol y aceptacion de terminos-->
+					<input class="form-control placeholder-no-fix" type="hidden" name="roles" value="<?php echo $rol; ?>"/>
+                    <input class="form-control placeholder-no-fix" type="hidden" name="acep-terms" value="<?php echo $acep_terms; ?>"/>
                     <input class="form-control placeholder-no-fix" type="text" placeholder="Nombres" name="fullname" value="<?php echo $user_face; ?>" />
                 </div>
                 <div class="form-group">

@@ -70,6 +70,8 @@ date_default_timezone_set("America/Bogota");
 											$objConn->where("id", $res_usu[0]['id']);
 											$objConn->update("usuarios", $updateUser);		
 												
+										    $rol = $res_usu[0]['id_roles'];
+
 												
 												//Verificación de roles
 												if($rol == 2)
@@ -84,8 +86,11 @@ date_default_timezone_set("America/Bogota");
 													$ultima_sesion = $objConn->lastInsertId;
 													
 													$objSe->init();
-													$objSe->set('id',$ultima_sesion);
-													
+													$objSe->set('id', $res_usu[0]['id']);
+													$objSe->set('correo', $res_usu[0]['correo']);
+													$objSe->set('id_roles', $res_usu[0]['id_roles']);
+													$objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
+																									
 													echo "<script> window.location.assign('../app/src/index.php'); </script>";
 												}
 												else

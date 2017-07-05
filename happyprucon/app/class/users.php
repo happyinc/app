@@ -26,7 +26,7 @@ class Users{
 
 			$objConn = new PDOModel();
 			$insertUserData["id_doc"] = $_POST['tipodoc'];
-			$insertUserData["id_termino"] = 1;
+			$insertUserData["id_termino"] = $_POST['acep-terms'];
 			$insertUserData["id_estado"] = 1;
 			$insertUserData["id_roles"] = $_POST['roles'];
 			$insertUserData["nombre_completo"] = $_POST['fullname']." ".$_POST['lastname'];
@@ -37,6 +37,10 @@ class Users{
 			$insertUserData["correo"] = $_POST['username'];
 			$insertUserData["password"] = md5($_POST['password']);
 			$insertUserData["numero_doc"] = $_POST['cedula'];
+            $insertUserData["foto_perfil"] = $_POST['foto_perfil'];
+            $insertUserData["direccion"] = $_POST['direccion'];
+            $insertUserData["latitud"] = $_POST['latitud'];
+            $insertUserData["longitud"] = $_POST['longitu'];
 			$insertUserData["token"] = 'yositokuqita';
 			//$objConn->executeQuery("CALL insert_usu(@in)",$insertUserData);
 			$objConn->insert($this->dbTableName, $insertUserData);

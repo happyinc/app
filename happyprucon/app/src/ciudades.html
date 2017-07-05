@@ -1,0 +1,22 @@
+<html>
+<head>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places" type="text/javascript"></script>
+    <script type="text/javascript">
+        function initialize() {
+            var options = {
+                types: ['(regions)'],
+                componentRestrictions: {country: "co"}
+            };
+            var input = document.getElementById('searchTextField');
+            var autocomplete = new google.maps.places.Autocomplete(input , options);
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+</head>
+<body>
+<div class = "row">
+    <input id="searchTextField" type="text" size="50" placeholder="Ingrese el Nombre de la Ciudad" autocomplete="on">
+</div>
+</body>
+</html>
