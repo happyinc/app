@@ -46,7 +46,15 @@ date_default_timezone_set("America/Bogota");
 								$objConn = new PDOModel(); 
 								$objConn->where("correo",$username);
 								$res_usu =  $objConn->select("usuarios");
-								
+								$objSe->init();
+												$objSe->set('id', $res_usu[0]['id']);
+												$objSe->set('correo', $res_usu[0]['correo']);
+												$objSe->set('id_roles', $res_usu[0]['id_roles']);
+												$objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
+												
+												$fullname = $res_usu[0]['nombre_completo'];
+												$rol = $res_usu[0]['id_roles'];
+												$usu_id = $res_usu[0]['id'];
 								if($res_usu[0]["acceso_fallido"] <= 3){	
 									
 									//verificación de estado de usuario
@@ -62,8 +70,8 @@ date_default_timezone_set("America/Bogota");
 											$objConn->where("id", $res_usu[0]['id']);
 											$objConn->update("usuarios", $updateUser);		
 												
-												
-												$rol = $res_usu[0]['id_roles'];
+										    $rol = $res_usu[0]['id_roles'];
+
 												
 												//Verificación de roles
 												if($rol == 2)
