@@ -37,6 +37,10 @@ class Users{
 			$insertUserData["correo"] = $_POST['username'];
 			$insertUserData["password"] = md5($_POST['password']);
 			$insertUserData["numero_doc"] = $_POST['cedula'];
+            $insertUserData["foto_perfil"] = $_POST['foto_perfil'];
+            $insertUserData["direccion"] = $_POST['direccion'];
+            $insertUserData["latitud"] = $_POST['latitud'];
+            $insertUserData["longitud"] = $_POST['longitu'];
 			$insertUserData["token"] = 'yositokuqita';
 			//$objConn->executeQuery("CALL insert_usu(@in)",$insertUserData);
 			$objConn->insert($this->dbTableName, $insertUserData);

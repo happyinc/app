@@ -32,13 +32,13 @@ License: You must have a valid license purchased only from themeforest(the above
     <meta content="Preview page of Metronic Admin Theme #2 for bootstrap form wizard demos using Twitter Bootstrap Wizard Plugin" name="description" />
     <meta content="" name="author" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
+    <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
     <!-- BEGIN PAGE LEVEL PLUGINS -->
     <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
@@ -54,6 +54,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../assets/layouts/layout2/css/custom.min.css" rel="stylesheet" type="text/css" />
     <!-- END THEME LAYOUT STYLES -->
     <link rel="shortcut icon" href="favicon.ico" />
+    <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAOTpZg3Uhl0AItmrXORFIsGfJQNJiLHGg" type="text/javascript"></script>
 </head>
 <!-- END HEAD -->
 <?php
@@ -95,6 +96,67 @@ if($mail_face != ""){
 ?>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
+<script>
+    //funcion que comprueba el tipo de archivo permitid a subir
+    function comprueba_extension(formulario, archivo) {
+        extensiones_permitidas = new Array(".png", ".jpg", ".jpeg", ".bmp");
+        mierror = "";
+        if (!archivo) {
+            //Si no tengo archivo, es que no se ha seleccionado un archivo en el formulario
+            mierror = "No has seleccionado ningún archivo";
+        }else{
+            //recupero la extensión de este nombre de archivo
+            extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase();
+            //alert (extension);
+            //compruebo si la extensión está entre las permitidas
+            permitida = false;
+            for (var i = 0; i < extensiones_permitidas.length; i++) {
+                if (extensiones_permitidas[i] == extension) {
+                    permitida = true;
+                    break;
+                }
+            }
+            if (!permitida) {
+                mierror = "Comprueba la extensión de los archivos a subir. \nSólo se pueden subir archivos con extensiones: " + extensiones_permitidas.join();
+            }else{
+                //submito!
+                //alert ("Todo correcto.");
+                formulario.submit();
+                return 1;
+            }
+        }
+        //si estoy aqui es que no se ha podido hace el submit
+        alert (mierror);
+        return 0;
+    }
+
+
+</script>
+
+<script type="text/javascript">//alert("el tamaño de la imagen es: <? echo $aa?> ")</script>
+<script type="text/javascript">//alert("el tamaño de la imagen es: <? echo $archivo_size?> ")</script>
+<?
+if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
+    $ruta_archivo_a_subir = $_FILES['foto']['tmp_name'];
+
+    $directorio = "usuario/".$usuario."/".$id_producto."";
+    if(file_exists($directorio))
+    {
+
+    }
+    else
+    {
+        mkdir($directorio, 0777, true);
+    }
+
+    $ruta_destino = $directorio. '/' . $_FILES['foto']['name'];
+    if( move_uploaded_file($ruta_archivo_a_subir, $ruta_destino))
+    {
+
+    }
+}
+
+?>
 <!-- BEGIN HEADER & CONTENT DIVIDER -->
 <div class="clearfix"> </div>
 <!-- END HEADER & CONTENT DIVIDER -->
@@ -157,6 +219,25 @@ if($mail_face != ""){
                                             <div class="alert alert-success display-none">
                                                 <button class="close" data-dismiss="alert"></button> Your form validation is successful! </div>
                                             <div class="tab-pane active" id="tab1">
+
+                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                    <label class="control-label col-md-4"></label>
+                                                    <div class="input-group left-addon col-md-4">
+                                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
+                                                                <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
+                                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
+                                                            <div>
+													<span class="btn default btn-file" style="visibility: hidden">
+														<span class="fileinput-new">  </span>
+														<span class="fileinput-exists">  </span>
+														<input type="file" name="foto" id="foto"> </span>
+
+                                                                <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput" style="visibility: hidden"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                                 <div class="form-group form-md-line-input has-info form-md-floating-label">
                                                     <label class="control-label col-md-3"></label>
@@ -329,7 +410,44 @@ if($mail_face != ""){
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="tab3">
+                                                <script type="text/javascript">
+                                                    function initialize() {
+                                                        var options = {
+                                                            types: ['(regions)'],
+                                                            componentRestrictions: {country: "co"}
+                                                        };
+                                                        var input = document.getElementById('ciudad');
+                                                        var autocomplete = new google.maps.places.Autocomplete(input , options);
+                                                    }
+                                                    google.maps.event.addDomListener(window, 'load', initialize);
 
+
+                                                    var mostrarUbicacion = function() {
+                                                        var ciudade;
+                                                        ciudade = document.getElementById('resciu').value = document.getElementById('ciudad').value;
+                                                        var dir;
+                                                        dir = document.getElementById('resdir').value = document.getElementById('direccion').value;
+
+                                                        var ubica = ciudade+","+dir;
+                                                        // Creamos el objeto geodecoder
+                                                        var geocoder = new google.maps.Geocoder();
+
+                                                        address = document.getElementById('search').value=ubica;
+                                                        if (address != '') {
+                                                            // Llamamos a la función geodecode pasandole la dirección que hemos introducido en la caja de texto.
+                                                            geocoder.geocode({'address': address}, function (results, status) {
+                                                                if (status == 'OK') {
+                                                                    // Mostramos las coordenadas obtenidas en el p con id coordenadas
+                                                                    document.getElementById('latitud').value = results[0].geometry.location.lat();
+                                                                    document.getElementById('longitu').value = results[0].geometry.location.lng();
+
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+
+
+                                                </script>
                                                 <h3 class="block">TU UBICACIÓN</h3>
                                                 <div class="form-group form-md-line-input has-info form-md-floating-label">
                                                     <label class="control-label col-md-3"></label>
@@ -337,20 +455,9 @@ if($mail_face != ""){
                                                         <span class="input-group-addon">
                                                         <i class="fa fa-flag"></i>
                                                         </span>
-                                                        <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on">
-                                                        <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAOTpZg3Uhl0AItmrXORFIsGfJQNJiLHGg" type="text/javascript"></script>
-                                                        <script type="text/javascript">
-                                                            function initialize() {
-                                                                var options = {
-                                                                    types: ['(regions)'],
-                                                                    componentRestrictions: {country: "co"}
-                                                                };
-                                                                var input = document.getElementById('ciudad');
-                                                                var autocomplete = new google.maps.places.Autocomplete(input , options);
-                                                            }
-                                                            google.maps.event.addDomListener(window, 'load', initialize);
-                                                        </script>
-                                                            <input type="text" name="resciu" id="resciu" >
+                                                        <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" />
+                                                        <!-- Campo escondido que toma valor de ciudad -->
+                                                        <input type="text" name="resciu" id="resciu" >
                                                     </div>
                                                 </div>
 
@@ -376,42 +483,16 @@ if($mail_face != ""){
                                                         <span class="input-group-addon">
                                                         <i class="fa fa-map-signs"></i>
                                                         </span>
-                                                        <input type="text" class="form-control" name="direccion" id="direccion"/>
-                                                        <input type="text" name="resdir" id="resdir">
+                                                        <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();"/>
                                                         <label>Dirección</label>
+                                                        <!-- Campo escondido que toma valor de direccion -->
+                                                        <input type="text" name="resdir" id="resdir">
                                                     </div>
+                                                    <div><input type="text" id="search"/></div>
+                                                    <!-- Campos escondidos que toman valores de coordenadas -->
+                                                    <div><input type="text" id="latitud" name="latitud"/></div>
+                                                    <div><input type="text" id="longitu" name="longitu"/></div>
                                                 </div>
-
-
-                                                <script>
-
-
-                                                    mapa = {
-                                                        // función que se ejecuta al pulsar el botón buscar dirección
-                                                        getCoords : function()
-                                                        {
-                                                            // Creamos el objeto geodecoder
-                                                            var geocoder = new google.maps.Geocoder();
-
-                                                            address = document.getElementById('search').value;
-                                                            if(address!='')
-                                                            {
-                                                                // Llamamos a la función geodecode pasandole la dirección que hemos introducido en la caja de texto.
-                                                                geocoder.geocode({ 'address': address}, function(results, status)
-                                                                {
-                                                                    if (status == 'OK')
-                                                                    {
-                                                                        // Mostramos las coordenadas obtenidas en el p con id coordenadas
-                                                                        document.getElementById("coordenadas").innerHTML='Coordenadas:   '+results[0].geometry.location.lat()+', '+results[0].geometry.location.lng();
-
-                                                                    }
-                                                                });
-                                                            }
-                                                        }
-                                                    }
-                                                </script>
-                                                <div><p id="coordenadas"></p></div>
-                                                <input type="text" id="search"> <input type="button" value="Buscar Dirección" onclick="mapa.getCoords()">
                                             </div>
                                             <div class="tab-pane" id="tab4">
                                                 <h3 class="block">FOTOS DEL SITIO</h3>
@@ -465,7 +546,7 @@ if($mail_face != ""){
     <script src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
     <!-- END CORE PLUGINS -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
     <script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
     <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
     <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
@@ -474,6 +555,7 @@ if($mail_face != ""){
     <!-- BEGIN THEME GLOBAL SCRIPTS -->
     <script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
     <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
     <!-- END THEME GLOBAL SCRIPTS -->
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
     <script src="../assets/pages/scripts/wizard-user.js" type="text/javascript"></script>
