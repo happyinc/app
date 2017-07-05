@@ -32,7 +32,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <meta content="Preview page of Metronic Admin Theme #2 for bootstrap form wizard demos using Twitter Bootstrap Wizard Plugin" name="description" />
     <meta content="" name="author" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <script type="text/javascript" src="https://maps.google.com/maps/api/js"></script>
+
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
@@ -350,7 +350,7 @@ if($mail_face != ""){
                                                             }
                                                             google.maps.event.addDomListener(window, 'load', initialize);
                                                         </script>
-
+                                                            <input type="text" name="resciu" id="resciu" >
                                                     </div>
                                                 </div>
 
@@ -377,12 +377,14 @@ if($mail_face != ""){
                                                         <i class="fa fa-map-signs"></i>
                                                         </span>
                                                         <input type="text" class="form-control" name="direccion" id="direccion"/>
+                                                        <input type="text" name="resdir" id="resdir">
                                                         <label>Dirección</label>
                                                     </div>
                                                 </div>
 
 
                                                 <script>
+
 
                                                     mapa = {
                                                         // función que se ejecuta al pulsar el botón buscar dirección
@@ -401,11 +403,7 @@ if($mail_face != ""){
                                                                     {
                                                                         // Mostramos las coordenadas obtenidas en el p con id coordenadas
                                                                         document.getElementById("coordenadas").innerHTML='Coordenadas:   '+results[0].geometry.location.lat()+', '+results[0].geometry.location.lng();
-                                                                        // Posicionamos el marcador en las coordenadas obtenidas
-                                                                        mapa.marker.setPosition(results[0].geometry.location);
-                                                                        // Centramos el mapa en las coordenadas obtenidas
-                                                                        mapa.map.setCenter(mapa.marker.getPosition());
-                                                                        agendaForm.showMapaEventForm();
+
                                                                     }
                                                                 });
                                                             }
@@ -413,7 +411,7 @@ if($mail_face != ""){
                                                     }
                                                 </script>
                                                 <div><p id="coordenadas"></p></div>
-                                                <input type="text" id="search"> <input type="button" value="Buscar Dirección" onClick="mapa.getCoords()">
+                                                <input type="text" id="search"> <input type="button" value="Buscar Dirección" onclick="mapa.getCoords()">
                                             </div>
                                             <div class="tab-pane" id="tab4">
                                                 <h3 class="block">FOTOS DEL SITIO</h3>
