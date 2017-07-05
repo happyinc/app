@@ -1,6 +1,17 @@
 <?php
-//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+require'../class/sessions.php';
+$objSe = new Sessions();
+$objSe->init();
 
+$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
+//$usu_id=isset($_SESSION['id']) ? $_SESSION['id']:null;
+
+if($rol!=2){
+    echo "<script> alert('Usuario no autorizado');
+					window.location.assign('logueo.html');</script>";
+}	
  ?>
 <!DOCTYPE html>
 <!-- 
@@ -28,8 +39,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		include "include_css.php";
 		require_once'../../externo/plugins/PDOModel.php';
 		?>
-		<link href="../assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css"/>
-		 
+		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script> 
 		<script type="text/javascript">
 			//funcion que oculta y muestra div eniendo en cuenta la opcion seleccionada por el usuario
 			function mostrarReferencia(){
@@ -46,7 +56,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				
 			}
 			
-			//funcion que comprueba el tipo de archivo permitid a subir
+			//funcion que comprueba el tipo de archivo permitido a subir
 			function comprueba_extension(formulario, archivo) { 
 			   extensiones_permitidas = new Array(".png", ".jpg", ".jpeg", ".bmp"); 
 			   mierror = ""; 
@@ -67,8 +77,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				  } 
 				  if (!permitida) { 
 					 mierror = "Comprueba la extensión de los archivos a subir. \nSólo se pueden subir archivos con extensiones: " + extensiones_permitidas.join(); 
-					}else{ 
-						//submito! 
+					}else{
 					 //alert ("Todo correcto."); 
 					 formulario.submit(); 
 					 return 1; 
@@ -79,34 +88,78 @@ License: You must have a valid license purchased only from themeforest(the above
 			   return 0; 
 			} 
 			
-			$(function() {
-				$('#comp').autocomplete({
-					source: 'completar.php'
+			// para buscar e insertar composiciones 
+			$(document).ready(function(){
+				var maxField = 10; //Input fields increment limitation
+				var addButton = $('.add_button'); //Add button selector
+				var wrapper = $('.field_wrapper'); //Input field wrapper
+				var fieldHTML = '<div>'+
+				'<select class="form-control" id="field_name[]" name="field_name[]">'+
+				'<option selected="selected" value=""></option>'+
+					<?
+					$objConn1 = new PDOModel();
+					$objConn1->where("id_estado", 1);
+					$objConn1->orderByCols = array("nombre");
+					$result2 =  $objConn1->select("composicion");
+					foreach($result2 as $item2)
+					{
+						?>'<option value="<?php echo $item2["id"]?>"><?php echo $item2["nombre"]?></option>'+<?php
+					}
+					?>
+				'</select>'+
+				'<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div>'; 
+				var x = 1; //Initial field counter is 1
+				$(addButton).click(function(){ //Once add button is clicked
+					if(x < maxField){ //Check maximum number of input fields
+						x++; //Increment field counter
+						$(wrapper).append(fieldHTML); // Add field html
+					}
 				});
-				
+				$(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
+				e.preventDefault();
+				$(this).parent('div').remove(); //Remove field html
+				x--; //Decrement field counter
+				});
 			});
 			</script>
 			
 	    <?
-		 $usuario=$_SESSION["id_usuario"];
+		
+	 $usuario=5;
 	
-	
-		if(isset($_POST["guardar"])&& isset($_POST["formulario"]) && $_POST["formulario"] == "crear_producto" ){
-			if($_POST["guardar"] == 'crear_producto'){
-				$objConn = new PDOModel();
-				$insertEmpData["categoria"] = $_POST["categoria"];
-				$insertEmpData["nombre"] = $_POST["nombre"]; 
-				$insertEmpData["descripcion"] = $_POST["descripcion"];
-				$insertEmpData["precio"] = $_POST["precio"];
-				$insertEmpData["fecha"] = date("Y-m-d H:i:s"); 
-				$insertEmpData["id_estado"] = 1; 
-				$objConn->insert('producto', $insertEmpData);
-				//$aa=filesize($_POST['foto']);
-				$archivo_size
-				?>
-               <script type="text/javascript">//alert("el tamaño de la imagen es: <? echo $aa?> ")</script>
-			   <script type="text/javascript">//alert("el tamaño de la imagen es: <? echo $archivo_size?> ")</script>
+		if(isset($_POST["formulario"]) && $_POST["formulario"] == "crear_producto" ){
+			
+			?>
+               <script type="text/javascript">alert("categoria: <? echo $_POST["categoria"]?> ")</script>
+			   <script type="text/javascript">alert("nombre: <? echo $_POST["nombre"]?> ")</script>
+			   <script type="text/javascript">alert("descripcion: <? echo $_POST["descripcion"]?> ")</script>
+			   <script type="text/javascript">alert("precio: <? echo $_POST["precio"]?> ")</script>
+			   <script type="text/javascript">alert("fecha: <? echo date("Y-m-d H:i:s")?> ")</script>
+			   <script type="text/javascript">alert("id_usu_crea: <? echo $usuario?> ")</script>
+			   <script type="text/javascript">alert("foto: <? echo $_POST['foto']?> ")</script>
                <? 
+				$objConn = new PDOModel();
+				$insertData["categoria"] = $_POST["categoria"];
+				$insertData["id_estado"] = 1;
+				$insertData["nombre"] = $_POST["nombre"]; 
+				$insertData["descripcion"] = $_POST["descripcion"];
+				$insertData["precio"] = $_POST["precio"];
+				$insertData["fecha"] = date("Y-m-d H:i:s"); 
+				$insertData["id_usu_crea"] = $usuario;
+				$objConn->insert('producto', $insertData);
+				//$aa=filesize($_POST['foto']);
+				//$archivo_size
+				
+				$id_producto= $objConn->lastInsertId;
+				
+				$objConn->where("id", 1);
+				$result =  $objConn->select("producto");
+				foreach($result as $item){
+				
+					$id_producto= $item["id"];
+				}
+														
+				
 				if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
 					$ruta_archivo_a_subir = $_FILES['foto']['tmp_name'];
 
@@ -126,7 +179,7 @@ License: You must have a valid license purchased only from themeforest(the above
  
                     }
 				}
-			}
+			
 		}		
 		 
 		?>
@@ -310,7 +363,7 @@ License: You must have a valid license purchased only from themeforest(the above
 											</div>
 										</div>
 									</div>
-									
+								
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
@@ -363,11 +416,10 @@ License: You must have a valid license purchased only from themeforest(the above
 									<div id="dat_com" style="display:none;" >
 										<div class="form-group form-md-line-input">
 											<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-												<div class="input-icon">
-												<input type="text" class="form-control" id="comp" name="comp" autocomplete="off" spellcheck="false" dir="auto" placeholder="Seleccione la composicion">
-													<div class="form-control-focus"> </div>
-													<span class="help-block required">Seleccionne la composicion del producto *</span>
-													<i class="fa fa-list-ul"></i>
+												<div class="field_wrapper">
+													Seleccione la composicion del producto
+													<span class="required"> * </span>
+													<a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus-circle fa-2"></i></a>
 												</div>
 											</div>
 										</div>
@@ -380,6 +432,7 @@ License: You must have a valid license purchased only from themeforest(the above
 												</div>
 											</div>
 										</div>
+										
 									</div>
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
@@ -389,9 +442,10 @@ License: You must have a valid license purchased only from themeforest(the above
 												<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
 												<div>
 													<span class="btn default btn-file">
-														<span class="fileinput-new"> Select image </span>
-														<span class="fileinput-exists"> Change </span>
-														<input type="file" name="foto" id="foto"> </span>
+														<span class="fileinput-new"> Seleccione la imagen </span>
+														<span class="fileinput-exists"> Cambiar </span>
+														<input type="file" name="foto" id="foto"> 
+													</span>
 														<input  class="btn blue" type=button name="Submit" value="Enviar" onclick="comprueba_extension(this.form, this.form.foto.value)"> 
 													<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
 												</div> 
@@ -431,10 +485,6 @@ License: You must have a valid license purchased only from themeforest(the above
 			?> 
 			<script src="../assets/global/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js" type="text/javascript"></script>
 			<script src="../assets/pages/scripts/components-bootstrap-select-splitter.min.js" type="text/javascript"></script>
-			<script src="../assets/global/plugins/typeahead/handlebars.min.js" type="text/javascript"></script>
-            <script src="../assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
-			 <!--<script src="../assets/pages/scripts/components-typeahead.js" type="text/javascript"></script>
-			<script src="../assets/pages/scripts/select-input.js" type="text/javascript"></script>-->
 			<script>
 			// fucion que persnaliza el select dependiente de la categoria
 			var ComponentsBootstrapSelectSplitter = function() {
@@ -453,37 +503,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 			}();
 		
-			//select que busca e inserta
-			 //var handleTwitterTypeahead = function() {
-				
-				// Example #1
-				// instantiate the bloodhound suggestion engine
-				/*var numbers = new Bloodhound({
-				  datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.num); },
-				  queryTokenizer: Bloodhound.tokenizers.whitespace,
-				  local: [
-					{ num: 'metronic' },
-					{ num: 'keenthemes' },
-					{ num: 'metronic theme' },
-					{ num: 'metronic template' },
-					{ num: 'keenthemes team' }
-				  ]
-				});
-				 
-				// initialize the bloodhound suggestion engine
-				numbers.initialize();
-				 
-				// instantiate the typeahead UI
-				if (App.isRTL()) {
-				  $('#comp').attr("dir", "rtl");  
-				}
-				$('#comp').typeahead(null, {
-				  displayKey: 'num',
-				  hint: (App.isRTL() ? false : true),
-				  source: numbers.ttAdapter()
-				});
-
-			}*/
+			
 	</script>
     </body>
 
