@@ -23,11 +23,7 @@ $objSe->init();
 						$objConn = new PDOModel(); 
 						$objConn->where("telefono",$cell);
 						$res_usu =  $objConn->select("usuarios");
-						
-						$objSe->init();
-						$objSe->set('id', $res_usu[0]['id']);
-						$objSe->set('id_roles', $res_usu[0]['id_roles']);
-										
+
 						$rol = $res_usu[0]['id_roles'];
 						$id_usu = $res_usu[0]['id'];		
 						
@@ -45,9 +41,10 @@ $objSe->init();
 											$insertSe["ip"] = $_SERVER['REMOTE_ADDR'];
 											$objConn->insert("sesion", $insertSe);
 											$ultima_sesion = $objConn->lastInsertId;
-											
-											$objSe->init();
-											$objSe->set('id',$ultima_sesion);
+
+                                            $objSe->init();
+                                            $objSe->set('id', $res_usu[0]['id']);
+                                            $objSe->set('id_roles', $res_usu[0]['id_roles']);
 											
 											echo "<script> window.location.assign('../../app/src/index.php'); </script>";
 										}
@@ -76,11 +73,7 @@ $objSe->init();
 						$objConn = new PDOModel(); 
 						$objConn->where("correo",$correo);
 						$res_usu =  $objConn->select("usuarios");
-						
-						$objSe->init();
-						$objSe->set('id', $res_usu[0]['id']);
-						$objSe->set('id_roles', $res_usu[0]['id_roles']);
-										
+
 						$rol = $res_usu[0]['id_roles'];
 						$id_usu = $res_usu[0]['id'];		
 						
@@ -98,9 +91,10 @@ $objSe->init();
 											$insertSe["ip"] = $_SERVER['REMOTE_ADDR'];
 											$objConn->insert("sesion", $insertSe);
 											$ultima_sesion = $objConn->lastInsertId;
-											
-											$objSe->init();
-											$objSe->set('id',$ultima_sesion);
+
+                                            $objSe->init();
+                                            $objSe->set('id', $res_usu[0]['id']);
+                                            $objSe->set('id_roles', $res_usu[0]['id_roles']);
 											
 											echo "<script> window.location.assign('../../app/src/index.php'); </script>";
 										}

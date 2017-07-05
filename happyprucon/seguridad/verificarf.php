@@ -22,10 +22,6 @@ $result =  $objConn->select("usuarios");
         $objConn->where("correo",$mail_face);
         $res_usu =  $objConn->select("usuarios");
 
-        $objSe->init();
-        $objSe->set('id', $res_usu[0]['id']);
-        $objSe->set('id_roles', $res_usu[0]['id_roles']);
-
         $rol = $res_usu[0]['id_roles'];
         $id_usu = $res_usu[0]['id'];
 
@@ -45,7 +41,8 @@ $result =  $objConn->select("usuarios");
             $ultima_sesion = $objConn->lastInsertId;
 
             $objSe->init();
-            $objSe->set('id',$ultima_sesion);
+            $objSe->set('id', $res_usu[0]['id']);
+            $objSe->set('id_roles', $res_usu[0]['id_roles']);
 
             echo "<script> window.location.assign('../app/src/index.php'); </script>";
         }
