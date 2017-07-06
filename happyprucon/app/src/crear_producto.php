@@ -4,9 +4,10 @@ require'../class/sessions.php';
 $objSe = new Sessions();
 $objSe->init();
 
+$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
 $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
-//$usu_id=isset($_SESSION['id']) ? $_SESSION['id']:null;
+
 
 if($rol!=2){
     echo "<script> alert('Usuario no autorizado');
@@ -93,7 +94,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				var maxField = 10; //Input fields increment limitation
 				var addButton = $('.add_button'); //Add button selector
 				var wrapper = $('.field_wrapper'); //Input field wrapper
-				var fieldHTML = '<div>'+
+				var fieldHTML = '<form role="form" class="form-horizontal" name="lista_composicion"  id="lista_composicion" action="crear_producto.php" enctype="multipart/form-data" method="post"><div>'+
 				'<select class="form-control" id="field_name[]" name="field_name[]">'+
 				'<option selected="selected" value=""></option>'+
 					<?
@@ -107,7 +108,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					}
 					?>
 				'</select>'+
-				'<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div>'; 
+				'<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div></form>'; 
 				var x = 1; //Initial field counter is 1
 				$(addButton).click(function(){ //Once add button is clicked
 					if(x < maxField){ //Check maximum number of input fields
@@ -125,40 +126,26 @@ License: You must have a valid license purchased only from themeforest(the above
 			
 	    <?
 		
-	 $usuario=5;
+	 //$usuario=5;
 	
 		if(isset($_POST["formulario"]) && $_POST["formulario"] == "crear_producto" ){
 			
 			?>
-               <script type="text/javascript">alert("categoria: <? echo $_POST["categoria"]?> ")</script>
-			   <script type="text/javascript">alert("nombre: <? echo $_POST["nombre"]?> ")</script>
-			   <script type="text/javascript">alert("descripcion: <? echo $_POST["descripcion"]?> ")</script>
-			   <script type="text/javascript">alert("precio: <? echo $_POST["precio"]?> ")</script>
-			   <script type="text/javascript">alert("fecha: <? echo date("Y-m-d H:i:s")?> ")</script>
-			   <script type="text/javascript">alert("id_usu_crea: <? echo $usuario?> ")</script>
-			   <script type="text/javascript">alert("foto: <? echo $_POST['foto']?> ")</script>
+			   <script type="text/javascript">//alert("foto: <? echo $_POST['foto']?> ")</script>
                <? 
 				$objConn = new PDOModel();
-				$insertData["categoria"] = $_POST["categoria"];
+				$insertData["id_categoria"] = $_POST["categoria"];
 				$insertData["id_estado"] = 1;
 				$insertData["nombre"] = $_POST["nombre"]; 
 				$insertData["descripcion"] = $_POST["descripcion"];
 				$insertData["precio"] = $_POST["precio"];
 				$insertData["fecha"] = date("Y-m-d H:i:s"); 
-				$insertData["id_usu_crea"] = $usuario;
+				$insertData["id_usu_crea"] = $usu_id ;
 				$objConn->insert('producto', $insertData);
 				//$aa=filesize($_POST['foto']);
 				//$archivo_size
-				
 				$id_producto= $objConn->lastInsertId;
-				
-				$objConn->where("id", 1);
-				$result =  $objConn->select("producto");
-				foreach($result as $item){
-				
-					$id_producto= $item["id"];
-				}
-														
+													
 				
 				if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
 					$ruta_archivo_a_subir = $_FILES['foto']['tmp_name'];
@@ -178,6 +165,16 @@ License: You must have a valid license purchased only from themeforest(the above
                     {
  
                     }
+				}
+				if($_POST["composicion"]=="si"){
+					
+					foreach($_POST['field_name[]'] as $item2)
+					{
+						?><script type="text/javascript">alert("entre al")</script> <?
+						$insertDataComp["id_composicion"] = $item2;
+						$insertDataComp["id_producto"] = $id_producto;
+						$objConn->insert('composicion_producto', $insertDataComp);
+					}
 				}
 			
 		}		
