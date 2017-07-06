@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
 include '../class/sessions.php';
+require_once'../../externo/plugins/PDOModel.php';
 $objSe = new Sessions();
 ?>
 <!DOCTYPE html>
@@ -171,7 +172,7 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
             <!-- END PAGE HEADER-->
             <div class="col-lg-12">
                 <div class="col-md-12">
-                    <div class="portlet light " id="">
+                    <div class="portlet light " id="form_wizard_1">
                         <div class="portlet-title">
 
 
@@ -221,19 +222,19 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
                                             <div class="tab-pane active" id="tab1">
 
                                                 <div class="form-group form-md-line-input has-info form-md-floating-label">
-                                                    <label class="control-label col-md-4"></label>
-                                                    <div class="input-group left-addon col-md-4">
+                                                    <label class="control-label col-md-4 col-xs-2"></label>
+                                                    <div class="input-group left-addon col-md-4 col-xs-2">
                                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                                             <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
                                                                 <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
                                                             <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
                                                             <div>
-													<span class="btn default btn-file" style="visibility: hidden">
-														<span class="fileinput-new">  </span>
-														<span class="fileinput-exists">  </span>
+													<span class="btn default btn-file">
+														<span class="fileinput-new"> Select image </span>
+														<span class="fileinput-exists"> Change </span>
 														<input type="file" name="foto" id="foto"> </span>
 
-                                                                <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput" style="visibility: hidden"></a>
+                                                                <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -342,72 +343,78 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="tab2">
-                                                <h3 class="block">TU ESPECIALIDAD</h3>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3">Fullname
-                                                        <span class="required"> * </span>
-                                                    </label>
-                                                    <div class="col-md-4">
-                                                        <input type="text" class="form-control" name="fullname" />
-                                                        <span class="help-block"> Provide your fullname </span>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3">Phone Number
-                                                        <span class="required"> * </span>
-                                                    </label>
-                                                    <div class="col-md-4">
-                                                        <input type="text" class="form-control" name="phone" />
-                                                        <span class="help-block"> Provide your phone number </span>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3">Gender
-                                                        <span class="required"> * </span>
-                                                    </label>
-                                                    <div class="col-md-4">
-                                                        <div class="radio-list">
-                                                            <label>
-                                                                <input type="radio" name="gender" value="M" data-title="Male" /> Male </label>
-                                                            <label>
-                                                                <input type="radio" name="gender" value="F" data-title="Female" /> Female </label>
+                                                <h3 class="block bold" style="color: #520d9b">TU ESPECIALIDAD</h3>
+                                                <!-- BEGIN ACCORDION PORTLET-->
+
+                                                    <div class="portlet-body">
+                                                        <div class="panel-group accordion" id="accordion1">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading">
+                                                                    <?php
+                                                                    $objCat = new PDOModel();
+                                                                    $objCat->where("id", 1);
+                                                                    $result =  $objCat->select("bienes");
+                                                                    foreach($result as $item){
+                                                                        ?><h4 class="panel-title bold">
+                                                                        <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1" value="<?php echo $item["id"]?>"><?php echo $item["nombre"]?></a>
+                                                                        </h4><?php
+
+                                                                    }
+                                                                    ?>
+
+                                                                </div>
+                                                                <div id="collapse_1" class="panel-collapse collapse">
+                                                                    <div class="panel-body">
+                                                                        <?php
+                                                                        $objCat->andOrOperator = "AND";
+                                                                        $objCat->where("id_bienes", $item["id"]);
+                                                                        $objCat->where("id_estado", 1);
+                                                                        $objCat->orderByCols = array("descripcion");
+                                                                        $result1 =  $objCat->select("categoria");
+                                                                        foreach($result1 as $item1){
+                                                                            ?><button value="<?php echo $item1["id"]?>"><?php echo $item1["descripcion"]?></button><?php
+                                                                        }
+                                                                        ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading">
+                                                                    <?php
+                                                                    $objCat = new PDOModel();
+                                                                    $objCat->where("id", 2);
+                                                                    $result =  $objCat->select("bienes");
+                                                                    foreach($result as $item){
+                                                                        ?><h4 class="panel-title bold">
+                                                                        <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_2" value="<?php echo $item["id"]?>"><?php echo $item["nombre"]?></a>
+                                                                        </h4><?php
+
+                                                                    }
+                                                                    ?>
+
+                                                                </div>
+                                                                <div id="collapse_2" class="panel-collapse collapse">
+                                                                    <div class="panel-body">
+                                                                        <?php
+                                                                        $objCat->andOrOperator = "AND";
+                                                                        $objCat->where("id_bienes", $item["id"]);
+                                                                        $objCat->where("id_estado", 1);
+                                                                        $objCat->orderByCols = array("descripcion");
+                                                                        $result1 =  $objCat->select("categoria");
+                                                                        foreach($result1 as $item1){
+                                                                            ?><option value="<?php echo $item1["id"]?>"><?php echo $item1["descripcion"]?></option><?php
+                                                                        }
+                                                                        ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+
                                                         </div>
-                                                        <div id="form_gender_error"> </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3">Address
-                                                        <span class="required"> * </span>
-                                                    </label>
-                                                    <div class="col-md-4">
-                                                        <input type="text" class="form-control" name="address" />
-                                                        <span class="help-block"> Provide your street address </span>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3">City/Town
-                                                        <span class="required"> * </span>
-                                                    </label>
-                                                    <div class="col-md-4">
-                                                        <input type="text" class="form-control" name="city" />
-                                                        <span class="help-block"> Provide your city or town </span>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3">Country</label>
-                                                    <div class="col-md-4">
-                                                        <select name="country" id="country_list" class="form-control">
-                                                            <option value=""></option>
-                                                            <option value="AF">Afghanistan</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3">Remarks</label>
-                                                    <div class="col-md-4">
-                                                        <textarea class="form-control" rows="3" name="remarks"></textarea>
-                                                    </div>
-                                                </div>
+
+                                                <!-- END ACCORDION PORTLET-->
                                             </div>
                                             <div class="tab-pane" id="tab3">
                                                 <script type="text/javascript">
@@ -448,7 +455,7 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
 
 
                                                 </script>
-                                                <h3 class="block">TU UBICACIÓN</h3>
+                                                <h3 class="block bold" style="color: #520d9b">TU UBICACIÓN</h3>
                                                 <div class="form-group form-md-line-input has-info form-md-floating-label">
                                                     <label class="control-label col-md-3"></label>
                                                     <div class="input-group left-addon col-md-4">
@@ -495,13 +502,25 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="tab4">
-                                                <h3 class="block">FOTOS DEL SITIO</h3>
+                                                <h3 class="block bold" style="color: #520d9b">FOTOS DEL SITIO</h3>
+                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                    <label class="control-label col-md-4 col-xs-4"></label>
+                                                    <div class="input-group left-addon col-md-4 col-xs-4">
+                                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
+                                                                <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
+                                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
+                                                            <div>
+													<span class="btn default btn-file">
+														<span class="fileinput-new"> Select image </span>
+														<span class="fileinput-exists"> Change </span>
+														<input type="file" name="foto" id="foto"> </span>
 
-
-
-
-
-
+                                                                <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
