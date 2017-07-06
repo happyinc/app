@@ -168,10 +168,9 @@ License: You must have a valid license purchased only from themeforest(the above
 				}
 				if($_POST["composicion"]=="si"){
 					
-					foreach($_POST['field_name[]'] as $item2)
+					foreach($_POST['field_name'] as $clave => $valor)
 					{
-						?><script type="text/javascript">alert("entre al")</script> <?
-						$insertDataComp["id_composicion"] = $item2;
+						$insertDataComp["id_composicion"] = $valor;
 						$insertDataComp["id_producto"] = $id_producto;
 						$objConn->insert('composicion_producto', $insertDataComp);
 					}
