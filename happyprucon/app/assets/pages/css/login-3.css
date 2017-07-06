@@ -13,12 +13,12 @@ Login page
 
 .login .content {
   background-color: #fff;
-  width: 400px;
+  width: 360px;
   margin: 0 auto;
   margin-bottom: 0px;
   padding: 30px;
-  padding-top: 20px;
-  padding-bottom: 15px;
+  padding-top: 30px;
+  padding-bottom: 30px;
   -webkit-border-radius: 7px;
   -moz-border-radius: 7px;
   -ms-border-radius: 7px;

@@ -89,7 +89,7 @@ Class PDOModel {
      * 
      */
     public function __construct() {
-        //$this->connect('happyhappyinc.com','bd_happy','bd_happy2017*','bd_happy');
+        $this->connect('happyhappyinc.com','bd_happy','bd_happy2017*','bd_happy');
     }
 
     /**
@@ -440,6 +440,7 @@ Class PDOModel {
      * return   array                                   returns array as result of query.
      */
     public function select($dbTableName) {
+			
 			
         try {
             $this->sql = $this->getSelectQuery($dbTableName);

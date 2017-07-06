@@ -28,6 +28,8 @@ License: You must have a valid license purchased only from themeforest(the above
         <meta content="" name="author" />
 		<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
         <script src="https://sdk.accountkit.com/es_LA/sdk.js"></script>
+		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="main.js"></script>
 		<!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
         <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -45,11 +47,12 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN PAGE LEVEL STYLES -->
+		<link href="../../externo/plugins/bootstrap-social-gh-pages/bootstrap-social.css" rel="stylesheet" type="text/css" />
         <link href="../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="../../externo/img/favicon.ico" />
+        <link rel="shortcut icon" href="favicon.ico" />
 		<script>
 		
 		var fecha=new Date();
@@ -77,13 +80,12 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- END HEAD -->
 	
     <body class=" login">
-        <!-- BEGIN LOGIN -->
-        <div class="content">
+		<div class="content">
+			<div align="center"><a href="logueo.html">
+                    <img src="../../externo/img/logo-default.png" width="230px" alt="" /> </a>
+                </div><br />
             <!-- BEGIN LOGIN FORM -->
-            <form class="login-form" action="../class/session_init.php" method="post"><br />
-                <!--<div align="center"><a href="logueo.html">
-                    <img src="../assets/pages/img/logo-default.png" width="220px" alt="" /> </a>
-                </div><br /><br />-->
+            <form class="login-form" action="../../seguridad/verificar.php" method="post"><br />
                 <div class="alert alert-danger display-hide">
                     <button class="close" data-close="alert"></button>
                     <span> Ingrese usuario y contraseña </span>
@@ -94,60 +96,131 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <i class="fa fa-envelope"></i>
                                                     </span>
                                                     <input type="email" class="form-control" name="usern" id="usern">
-													<label for="form_control_1">Correo Electrónico</label>
+													<label>Correo Electrónico</label>
                                                 </div>
-                                            </div>
+                </div>
 											<!-- Campo escondido de la key  -->
 											<input type="hidden" class="form-control" name="txtkey" id="txtkey" value="" >
-                
+											<input type="hidden" id="formulario" name="formulario" value="w">
+
 				<div class="form-group form-md-line-input has-info form-md-floating-label">
                                                 <div class="input-group left-addon">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-key"></i>
                                                     </span>
                                                     <input type="password" class="form-control" name="passwd" id="passwd">
-                                                    <label for="form_control_1">Contraseña</label>
+                                                    <label>Contraseña</label>
                                                 </div>
-                                            </div>
-                <div class="form-actions">
-                    <label>
-                        <a href="javascript:;" id="forget-password"> Olvidaste tu contraseña ?</a>
-                        <span></span>
-                    </label>
-                    <button type="submit"  class="btn blue pull-right" name="logueo" id="logueo" > INGRESAR </button>
                 </div>
-                <div class="login-options">
-                    
-                    <ul class="social-icons">
-                        <li>
-                            <a class="facebook" data-original-title="facebook" > </a>
-                        </li>
-                        <li>
-                            <a onclick="loginWithEmail();" class="twitter" data-original-title="Twitter" > </a>
-                        </li>
-                        <li>
-                            <a onclick="loginWithSMS();" class="googleplus" data-original-title="Goole Plus" > </a>
-                        </li>
-                    </ul>
-					
-				</div>			
+
+
+                <div>
+                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+					<button type="submit"  class="btn btn-circle red-flamingo btn-block bold" name="logueo" id="logueo" > INICIAR SESIÓN </button>
+					</div>
+					<div class="col-lg-12 col-md-12 col-xs-12" style="text-align: center; margin-bottom: 20px">
+                        <a href="javascript:;" id="forget-password" class="bold" style="color: #520d9b"> ¿Olvidaste tu contraseña?</a>
+                    </div>
+					<h4 style="text-align: center; margin-bottom: 20px ">-- O --</h4>
+				</div>
+				                			
             </form>
-			<form id="accountkit_form" name="accountkit_form" action="../class/fb_api_response.php" method="POST" style="display: none;">
-					<input type="hidden" id="code" name="code">
-					<input type="hidden" id="csrf_nonce" name="csrf_nonce">
-					<input type="submit" value="Submit" hidden>
-					</form>
+            <form name="form-face" id="for-face" action="../../seguridad/verificarf.php" method="post">
+			<div class="row">
+                <!--Campos escondidos para envio de datos de facebook -->
+
+                <input type="hidden" name="nom-face" id="nom-face">
+                <input type="hidden" name="ape-face" id="ape-face">
+                <input type="hidden" name="mail" id="mail">
+
+			<div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+						<a href="#" type="submit" id="login" class="btn btn-block btn-social  btn-circle blue-steel" style="text-align: center" ><span class="fa fa-facebook"></span> INGRESA CON FACEBOOK </a>
+						</div>
+						<script>
+						  (function(d, s, id){
+							 var js, fjs = d.getElementsByTagName(s)[0];
+							 if (d.getElementById(id)) {return;}
+							 js = d.createElement(s); js.id = id;
+							 js.src = "//connect.facebook.net/es_ES/sdk.js";
+							 fjs.parentNode.insertBefore(js, fjs);
+						   }(document, 'script', 'facebook-jssdk'));
+
+						</script>
+			</div>
+            </form>
+			<div class="row">
+                    
+                    <div class="social-icons">
+                        <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+						<button onclick="loginWithEmail();" class="btn btn-block btn-social btn-circle red-mint" style="text-align: center" ><span class="fa fa-envelope"></span> INGRESA CON TU CORREO </button>
+						</div>
+						<div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+						<button onclick="loginWithSMS();" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center" ><span class="fa fa-tablet"></span> INGRESA CON TU CELULAR </button>
+						</div>
+						<form id="accountkit_form" name="accountkit_form" action="../class/fb_api_response.php" method="POST" style="display: none;">
+						<input type="hidden" id="code" name="code">
+						<input type="hidden" id="csrf_nonce" name="csrf_nonce">
+						<input type="submit" value="Submit" hidden>
+						</form>
+					</div>
+			</div>
+            <script>
+                // initialize Account Kit with CSRF protection
+                AccountKit_OnInteractive = function(){
+                    console.log("{{csrf}}")
+                    AccountKit.init(
+                        {
+
+                            appId:"128324841091354",
+                            state:"{{csrf}}",
+                            version:"v1.1"
+                        }
+                    );
+                };
+
+                // login callback
+                function loginCallback(response) {
+                    console.log(response);
+                    if (response.status === "PARTIALLY_AUTHENTICATED") {
+                        document.getElementById("code").value = response.code;
+                        document.getElementById("csrf_nonce").value = response.state;
+                        document.getElementById("accountkit_form").submit();
+                    }
+                    else if (response.status === "NOT_AUTHENTICATED") {
+                        // handle authentication failure
+                        console.log("NOT_AUTHENTICATED");
+                    }
+                    else if (response.status === "BAD_PARAMS") {
+                        // handle bad parameters
+                        console.log("BAD_PARAMS");
+                    }
+                }
+
+                function loginWithSMS(){
+                    AccountKit.login("PHONE",{}, loginCallback);
+                }
+
+                function loginWithEmail(){
+                    AccountKit.login("EMAIL", {}, loginCallback);
+                }
+            </script>
 			<!-- END LOGIN FORM -->
             <!-- BEGIN FORGOT PASSWORD FORM -->
             <form class="forget-form" action="index.html" method="post">
                 <h3>Se te olvidó tu contraseña ?</h3>
                 <p> Introduzca su dirección de correo electrónico a continuación para restablecer su contraseña. </p>
-                <div class="form-group">
-                      <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Correo Electrónico" name="email" />
+                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <div class="input-group left-addon">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </span>
+                                                    <input type="email" class="form-control" name="mailforget" id="mailforget">
+													<label>Correo Electrónico</label>
+                                                </div>
                 </div>
                 <div class="form-actions">
                     <button type="button" id="back-btn" class="btn grey-salsa btn-outline"> Atras </button>
-                    <button type="submit" class="btn blue pull-right"> Enviar </button>
+                    <button type="submit" class="btn btn-circle red-flamingo pull-right"> Enviar </button>
                 </div>
             </form>
             <!-- END FORGOT PASSWORD FORM -->
@@ -159,47 +232,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="../assets/global/plugins/ie8.fix.min.js"></script> 
 <![endif]-->
         <!-- BEGIN CORE PLUGINS -->
-		<script>
-		  // initialize Account Kit with CSRF protection
-		  AccountKit_OnInteractive = function(){
-		  	console.log("{{csrf}}")
-		    AccountKit.init(
-		      {
-		        
-				appId:"321796101590357", 
-		        state:"{{csrf}}", 
-		        version:"v1.1"
-		      }
-		    );
-		  };
-
-		  // login callback
-		  function loginCallback(response) {
-		    console.log(response);
-		    if (response.status === "PARTIALLY_AUTHENTICATED") {
-		      document.getElementById("code").value = response.code;
-		      document.getElementById("csrf_nonce").value = response.state;
-		      document.getElementById("accountkit_form").submit();
-		    }
-		    else if (response.status === "NOT_AUTHENTICATED") {
-		      // handle authentication failure
-			   console.log("NOT_AUTHENTICATED");
-		    }
-		    else if (response.status === "BAD_PARAMS") {
-		      // handle bad parameters
-			  console.log("BAD_PARAMS");
-		    }
-		  }
-
-		  function loginWithSMS(){
-		  	AccountKit.login("PHONE",{}, loginCallback);
-		  }
-
-		  function loginWithEmail(){
-		  	AccountKit.login("EMAIL", {}, loginCallback);
-		  }
-		</script>
-        <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+		<script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>

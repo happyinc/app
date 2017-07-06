@@ -52,24 +52,43 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="../../externo/img/favicon.ico" /> </head>
+        <link rel="shortcut icon" href="favicon.ico" /> </head>
     <!-- END HEAD -->
 	<?php 
-	   
+	$acep_terms = $_POST['acepta'];
+
 $objSe->init();
-if($kitse=isset($_SESSION['login_via']['status']))
-{
-	if($kitse=='Phone'){ 			
+        //variables recibidas para registro facebook
+            $user_face = isset($_SESSION['nom-face']) ? $_SESSION['nom-face'] : null ;
+            $ape_face = isset($_SESSION['ape-face']) ? $_SESSION['ape-face'] : null ;
+            $mail_face = isset($_SESSION['mail']) ? $_SESSION['mail'] : null ;
+
+        //variables de sesion para accounkit
+		$cell = $_SESSION['phone']['national_number'];	
 		
-		 $cell = $_SESSION['phone']['national_number'];	
-			
-	}
-	else if($kitse =='Email')
-	{
-		 $correo = $_SESSION['email']['address'];		
-		  
-	}
-}
+		$correo = $_SESSION['email']['address'];
+
+        $rol_emp = isset($_SESSION['emprende']) ? $_SESSION['emprende'] : null ;
+        $rol_cli = isset($_SESSION['cliente']) ? $_SESSION['cliente'] : null ;
+
+		//variables recibidas del rol escogido
+		if($rol_emp != ""){
+			$rol = $rol_emp;
+		}
+
+		if($rol_cli != ""){
+			$rol = $rol_cli;
+		}
+
+		//condicionales para unificar variables de correo
+		if($correo != ""){
+		    $mail = $correo;
+        }
+
+        if($mail_face != ""){
+		    $mail = $mail_face;
+        }
+
 
 ?>
     <body class=" login">
@@ -94,11 +113,15 @@ if($kitse=isset($_SESSION['login_via']['status']))
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Nombres</label>
-                    <input class="form-control placeholder-no-fix" type="text" placeholder="Nombres" name="fullname" />
+
+                    <!--Campos escondidos de rol y aceptacion de terminos-->
+					<input class="form-control placeholder-no-fix" type="hidden" name="roles" value="<?php echo $rol; ?>"/>
+                    <input class="form-control placeholder-no-fix" type="hidden" name="acep-terms" value="<?php echo $acep_terms; ?>"/>
+                    <input class="form-control placeholder-no-fix" type="text" placeholder="Nombres" name="fullname" value="<?php echo $user_face; ?>" />
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Apellidos</label>
-                    <input class="form-control placeholder-no-fix" type="text" placeholder="Apellidos" name="lastname" />
+                    <input class="form-control placeholder-no-fix" type="text" placeholder="Apellidos" name="lastname" value="<?php echo $ape_face; ?>" />
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Celular</label>
@@ -106,7 +129,7 @@ if($kitse=isset($_SESSION['login_via']['status']))
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Correo Electrónico</label>
-                    <input class="form-control placeholder-no-fix" type="email" autocomplete="off" placeholder="Correo Electrónico" name="username" value="<?php echo $correo; ?>" />
+                    <input class="form-control placeholder-no-fix" type="email" autocomplete="off" placeholder="Correo Electrónico" name="username" value="<?php echo $mail; ?>" />
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Contraseña</label>

@@ -29,7 +29,7 @@
 				$_SESSION['phone']['national_number'] = $user_info->phone->national_number;	
 				$_SESSION['login_via']['status'] = "Phone";	
 				
-				header("Location: ../src/registro_user.php");
+				header("Location: login_success.php");
 			    exit;
 								
 			
@@ -42,7 +42,7 @@
 				$_SESSION['email']['address'] = $user_info->email->address;
 				$_SESSION['login_via']['status'] = "Email";
 				
-				header("Location: ../src/registro_user.php");
+				header("Location: login_success.php");
 				exit();				
 				
 			}
