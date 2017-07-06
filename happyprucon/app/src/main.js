@@ -29,7 +29,7 @@ $(function() {
 
   	var statusChangeCallback = function(response, callback) {
   		console.log(response);
-   		
+
     	if (response.status === 'connected') {
       		getFacebookData();
     	} else {

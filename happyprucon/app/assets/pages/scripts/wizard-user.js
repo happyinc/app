@@ -13,17 +13,6 @@ var FormWizard = function () {
                 return "<img class='flag' src='../../assets/global/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
             }
 
-            $("#country_list").select2({
-                placeholder: "Select",
-                allowClear: true,
-                formatResult: format,
-                width: 'auto',
-                formatSelection: format,
-                escapeMarkup: function (m) {
-                    return m;
-                }
-            });
-
             var form = $('#submit_form');
             var error = $('.alert-danger', form);
             var success = $('.alert-success', form);
@@ -35,78 +24,48 @@ var FormWizard = function () {
                 focusInvalid: false, // do not focus the last invalid input
                 rules: {
                     //account
-                    username: {
-                        minlength: 5,
+                    tipodoc: {
                         required: true
+                    },
+                    cedula: {
+                        minlength: 8,
+                        required: true
+                    },
+                    fullname: {
+                        required: true
+                    },
+                    lastname: {
+                        required: true
+                    },
+                    cell: {
+                        minlength: 7,
+                        required: true
+                    },
+                    username: {
+                        required: true,
+                        email: true
                     },
                     password: {
                         minlength: 5,
                         required: true
                     },
-                    rpassword: {
-                        minlength: 5,
-                        required: true,
-                        equalTo: "#submit_form_password"
-                    },
-                    //profile
-                    fullname: {
-                        required: true
-                    },
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    phone: {
-                        required: true
-                    },
-                    gender: {
-                        required: true
-                    },
-                    address: {
-                        required: true
-                    },
-                    city: {
-                        required: true
-                    },
-                    country: {
-                        required: true
-                    },
-                    //payment
-                    card_name: {
-                        required: true
-                    },
-                    card_number: {
-                        minlength: 16,
-                        maxlength: 16,
-                        required: true
-                    },
-                    card_cvc: {
-                        digits: true,
-                        required: true,
-                        minlength: 3,
-                        maxlength: 4
-                    },
-                    card_expiry_date: {
-                        required: true
-                    },
-                    'payment[]': {
-                        required: true,
-                        minlength: 1
-                    }
-                },
 
-                messages: { // custom messages for radio buttons and checkboxes
-                    'payment[]': {
-                        required: "Please select at least one option",
-                        minlength: jQuery.validator.format("Please select at least one option")
+                    //profile
+                    ciudad: {
+                        required: true
+                    },
+                    tipodom: {
+                        required: true
+                    },
+                    direccion: {
+                        minlength: 15,
+                        required: true
                     }
                 },
 
                 errorPlacement: function (error, element) { // render error placement for each input type
-                    if (element.attr("name") == "gender") { // for uniform radio buttons, insert the after the given container
+                    if (element.attr("name") == "genero") { // for uniform radio buttons, insert the after the given container
                         error.insertAfter("#form_gender_error");
-                    } else if (element.attr("name") == "payment[]") { // for uniform checkboxes, insert the after the given container
-                        error.insertAfter("#form_payment_error");
                     } else {
                         error.insertAfter(element); // for other inputs, just perform default behavior
                     }
@@ -129,7 +88,7 @@ var FormWizard = function () {
                 },
 
                 success: function (label) {
-                    if (label.attr("for") == "gender" || label.attr("for") == "payment[]") { // for checkboxes and radio buttons, no need to show OK icon
+                    if (label.attr("for") === "genero") { // for checkboxes and radio buttons, no need to show OK icon
                         label
                             .closest('.form-group').removeClass('has-error').addClass('has-success');
                         label.remove(); // remove error label here
@@ -244,12 +203,9 @@ var FormWizard = function () {
             $('#form_wizard_1').find('.button-previous').hide();
             $('#form_wizard_1 .button-submit').click(function () {
                 alert('Finished! Hope you like it :)');
+                document.forms["submit_form"].submit();
             }).hide();
 
-            //apply validation on select2 dropdown value change, this only needed for chosen dropdown integration.
-            $('#country_list', form).change(function () {
-                form.validate().element($(this)); //revalidate the chosen dropdown value and show error or success message for the input
-            });
         }
 
     };

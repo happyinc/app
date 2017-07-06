@@ -97,42 +97,7 @@ if($mail_face != ""){
 ?>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
-<script>
-    //funcion que comprueba el tipo de archivo permitid a subir
-    function comprueba_extension(formulario, archivo) {
-        extensiones_permitidas = new Array(".png", ".jpg", ".jpeg", ".bmp");
-        mierror = "";
-        if (!archivo) {
-            //Si no tengo archivo, es que no se ha seleccionado un archivo en el formulario
-            mierror = "No has seleccionado ningún archivo";
-        }else{
-            //recupero la extensión de este nombre de archivo
-            extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase();
-            //alert (extension);
-            //compruebo si la extensión está entre las permitidas
-            permitida = false;
-            for (var i = 0; i < extensiones_permitidas.length; i++) {
-                if (extensiones_permitidas[i] == extension) {
-                    permitida = true;
-                    break;
-                }
-            }
-            if (!permitida) {
-                mierror = "Comprueba la extensión de los archivos a subir. \nSólo se pueden subir archivos con extensiones: " + extensiones_permitidas.join();
-            }else{
-                //submito!
-                //alert ("Todo correcto.");
-                formulario.submit();
-                return 1;
-            }
-        }
-        //si estoy aqui es que no se ha podido hace el submit
-        alert (mierror);
-        return 0;
-    }
 
-
-</script>
 
 <script type="text/javascript">//alert("el tamaño de la imagen es: <? echo $aa?> ")</script>
 <script type="text/javascript">//alert("el tamaño de la imagen es: <? echo $archivo_size?> ")</script>
@@ -224,10 +189,10 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
                                                 <div class="form-group form-md-line-input has-info form-md-floating-label">
                                                     <label class="control-label col-md-4 col-xs-2"></label>
                                                     <div class="input-group left-addon col-md-4 col-xs-2">
-                                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
-                                                                <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
-                                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
+                                                        <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
+                                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
+                                                                <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt="" class="img-circle" style="border-radius: 50%;"> </div>
+                                                            <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
                                                             <div>
 													<span class="btn default btn-file">
 														<span class="fileinput-new"> Select image </span>
@@ -240,32 +205,35 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <div class="form-group form-md-line-input has-info">
                                                     <label class="control-label col-md-3"></label>
                                                     <div class="input-group left-addon col-md-4">
-                                                        <span class="input-group-addon">
+                                                        <span class="required input-group-addon">
                                                         <i class="fa fa-newspaper-o"></i>
                                                         </span>
                                                         <select name="tipodoc" id="tipodoc" class="form-control">
-                                                            <option value=""></option>
-                                                            <option value="1">Cedula de ciudadania</option>
-                                                            <option value="2">Cedula de extranjeria</option>
-                                                            <option value="3">Pasaporte</option>
+                                                            <option></option >
+                                                            <?php
+                                                            $objDoc = new PDOModel();
+                                                            $objDoc->where("id_estado", 1);
+                                                            $objDoc->orderByCols = array("descripcion");
+                                                            $result =  $objDoc->select("tipos_doc");
+                                                            foreach($result as $item){
+                                                                ?><option value="<?php echo $item["id"]?>"><?php echo $item["descripcion"]?></option><?php
+                                                            }
+                                                            ?>
                                                         </select>
-                                                        <label>Tipo documento</label>
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
-                                                    <label class="control-label col-md-3">
-
-                                                    </label>
+                                                <div class="form-group form-md-line-input has-info">
+                                                    <label class="control-label col-md-3"></label>
                                                     <div class="input-group left-addon col-md-4">
-                                                        <span class="input-group-addon">
+                                                        <span class="required input-group-addon">
                                                         <i class="fa fa-cc"></i>
                                                         </span>
-                                                        <input type="number" class="form-control" name="cedula" id="cedula" />
-                                                        <label>Identificación</label>
+                                                        <input type="number" class="form-control" name="cedula" id="cedula" placeholder="Identificación" />
+                                                        <span class="help-block"></span>
                                                     </div>
                                                 </div>
 
@@ -273,57 +241,54 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
                                                 <input class="form-control placeholder-no-fix" type="hidden" name="roles" value="<?php echo $rol; ?>"/>
                                                 <input class="form-control placeholder-no-fix" type="hidden" name="acep-terms" value="<?php echo $acep_terms; ?>"/>
 
-                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <div class="form-group form-md-line-input has-info">
                                                     <label class="control-label col-md-3"></label>
                                                     <div class="input-group left-addon col-md-4">
-                                                        <span class="input-group-addon">
+                                                        <span class="required input-group-addon">
                                                         <i class="fa fa-user"></i>
                                                         </span>
-                                                        <input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $user_face; ?>" />
-                                                        <label>Nombres</label>
+                                                        <input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $user_face; ?>" placeholder="Nombres" />
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <div class="form-group form-md-line-input has-info">
                                                     <label class="control-label col-md-3"></label>
                                                     <div class="input-group left-addon col-md-4">
-                                                        <span class="input-group-addon">
+                                                        <span class="required input-group-addon">
                                                         <i class="fa fa-user"></i>
                                                         </span>
-                                                        <input type="text" class="form-control" name="lastname" id="lastname" value="<?php echo $ape_face; ?>" />
-                                                        <label>Apellidos</label>
+                                                        <input type="text" class="form-control" name="lastname" id="lastname" value="<?php echo $ape_face; ?>" placeholder="Apellidos"/>
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <div class="form-group form-md-line-input has-info">
                                                     <label class="control-label col-md-3"></label>
                                                     <div class="input-group left-addon col-md-4">
-                                                        <span class="input-group-addon">
+                                                        <span class="required input-group-addon">
                                                         <i class="fa fa-tablet"></i>
                                                         </span>
-                                                        <input type="number" class="form-control" name="cell" id="cell" value="<?php echo $cell; ?>" />
-                                                        <label>Celular</label>
+                                                        <input type="number" class="form-control" name="cell" id="cell" value="<?php echo $cell; ?>" placeholder="Celular"/>
+                                                        <span class="help-block"></span>
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <div class="form-group form-md-line-input has-info">
                                                     <label class="control-label col-md-3"></label>
                                                     <div class="input-group left-addon col-md-4">
-                                                        <span class="input-group-addon">
+                                                        <span class="required input-group-addon">
                                                         <i class="fa fa-envelope"></i>
                                                         </span>
-                                                        <input type="email" class="form-control" name="username" value="<?php echo $mail; ?>"  />
-                                                        <label>Correo electrónico</label>
+                                                        <input type="email" class="form-control" name="username" value="<?php echo $mail; ?>" placeholder="Correo electrónico" />
                                                     </div>
                                                 </div>
-                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <div class="form-group form-md-line-input has-info">
                                                     <label class="control-label col-md-3"></label>
                                                     <div class="input-group left-addon col-md-4">
-                                                        <span class="input-group-addon">
+                                                        <span class="required input-group-addon">
                                                         <i class="fa fa-unlock-alt"></i>
                                                         </span>
-                                                        <input type="password" class="form-control" id="password" name="password" />
-                                                        <label>Contraseña</label>
+                                                        <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" />
+                                                        <span class="help-block"></span>
                                                     </div>
                                                 </div>
 
@@ -344,8 +309,14 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
                                             </div>
                                             <div class="tab-pane" id="tab2">
                                                 <h3 class="block bold" style="color: #520d9b">TU ESPECIALIDAD</h3>
+                                                <div style="padding-bottom: 50px">
+                                                    <h4>
+                                                        <p class="font-grey-gallery bold">
+                                                            Lo que quieres con lo que tienes
+                                                        </p>
+                                                    </h4>
+                                                </div>
                                                 <!-- BEGIN ACCORDION PORTLET-->
-
                                                     <div class="portlet-body">
                                                         <div class="panel-group accordion" id="accordion1">
                                                             <div class="panel panel-default">
@@ -372,7 +343,7 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
                                                                         $objCat->orderByCols = array("descripcion");
                                                                         $result1 =  $objCat->select("categoria");
                                                                         foreach($result1 as $item1){
-                                                                            ?><button value="<?php echo $item1["id"]?>"><?php echo $item1["descripcion"]?></button><?php
+                                                                            ?><option value="<?php echo $item1["id"]?>"><?php echo $item1["descripcion"]?></option><?php
                                                                         }
                                                                         ?>
                                                                     </div>
@@ -456,42 +427,48 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
 
                                                 </script>
                                                 <h3 class="block bold" style="color: #520d9b">TU UBICACIÓN</h3>
-                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <div style="padding-bottom: 50px">
+                                                    <h4>
+                                                        <p class="font-grey-gallery bold">
+                                                            Lo que quieres con lo que tienes
+                                                        </p>
+                                                    </h4>
+                                                </div>
+                                                <div class="form-group form-md-line-input has-info">
                                                     <label class="control-label col-md-3"></label>
                                                     <div class="input-group left-addon col-md-4">
-                                                        <span class="input-group-addon">
+                                                        <span class="required input-group-addon">
                                                         <i class="fa fa-flag"></i>
                                                         </span>
-                                                        <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" />
+                                                        <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
                                                         <!-- Campo escondido que toma valor de ciudad -->
                                                         <input type="text" name="resciu" id="resciu" >
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <div class="form-group form-md-line-input has-info">
                                                     <label class="control-label col-md-3"></label>
                                                     <div class="input-group left-addon col-md-4">
-                                                        <span class="input-group-addon">
+                                                        <span class="required input-group-addon">
                                                         <i class="fa fa-home"></i>
                                                         </span>
-                                                        <select name="tipo-dom" id="tipo-dom" class="form-control">
-                                                            <option value=""></option>
+                                                        <select name="tipodom" id="tipodom" class="form-control">
+                                                            <option value="">Tipo vivienda</option>
                                                             <option value="1">Apartamento</option>
                                                             <option value="2">Casa</option>
                                                             <option value="3">Oficina</option>
                                                         </select>
-                                                        <label>Tipo de Domicilio</label>
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <div class="form-group form-md-line-input has-info">
                                                     <label class="control-label col-md-3"></label>
                                                     <div class="input-group left-addon col-md-4">
-                                                        <span class="input-group-addon">
+                                                        <span class="required input-group-addon">
                                                         <i class="fa fa-map-signs"></i>
                                                         </span>
-                                                        <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();"/>
-                                                        <label>Dirección</label>
+                                                        <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();" placeholder="Dirección"/>
+                                                        <span class="help-block"></span>
                                                         <!-- Campo escondido que toma valor de direccion -->
                                                         <input type="text" name="resdir" id="resdir">
                                                     </div>
@@ -503,6 +480,13 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
                                             </div>
                                             <div class="tab-pane" id="tab4">
                                                 <h3 class="block bold" style="color: #520d9b">FOTOS DEL SITIO</h3>
+                                                <div style="padding-bottom: 50px">
+                                                    <h4>
+                                                        <p class="font-grey-gallery bold">
+                                                            Lo que quieres con lo que tienes
+                                                        </p>
+                                                    </h4>
+                                                </div>
                                                 <div class="form-group form-md-line-input has-info form-md-floating-label">
                                                     <label class="control-label col-md-4 col-xs-4"></label>
                                                     <div class="input-group left-addon col-md-4 col-xs-4">
