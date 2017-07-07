@@ -40,6 +40,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		include "include_css.php";
 		require_once'../../externo/plugins/PDOModel.php';
 		?>
+		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script> 
 		<script type="text/javascript">
 			//funcion que oculta y muestra div eniendo en cuenta la opcion seleccionada por el usuario
@@ -94,7 +95,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				var maxField = 10; //Input fields increment limitation
 				var addButton = $('.add_button'); //Add button selector
 				var wrapper = $('.field_wrapper'); //Input field wrapper
-				var fieldHTML = '<form role="form" class="form-horizontal" name="lista_composicion"  id="lista_composicion" action="crear_producto.php" enctype="multipart/form-data" method="post"><div>'+
+				var fieldHTML = '<div>'+
 				'<select class="form-control" id="field_name[]" name="field_name[]">'+
 				'<option selected="selected" value=""></option>'+
 					<?
@@ -108,7 +109,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					}
 					?>
 				'</select>'+
-				'<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div></form>'; 
+				'<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div>'; 
 				var x = 1; //Initial field counter is 1
 				$(addButton).click(function(){ //Once add button is clicked
 					if(x < maxField){ //Check maximum number of input fields
@@ -125,11 +126,8 @@ License: You must have a valid license purchased only from themeforest(the above
 			</script>
 			
 	    <?
-		
-	 //$usuario=5;
-	
 		if(isset($_POST["formulario"]) && $_POST["formulario"] == "crear_producto" ){
-			
+		
 			?>
 			   <script type="text/javascript">//alert("foto: <? echo $_POST['foto']?> ")</script>
                <? 
@@ -145,37 +143,51 @@ License: You must have a valid license purchased only from themeforest(the above
 				//$aa=filesize($_POST['foto']);
 				//$archivo_size
 				$id_producto= $objConn->lastInsertId;
-													
-				
-				if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
-					$ruta_archivo_a_subir = $_FILES['foto']['tmp_name'];
+				if($id_producto!= ""){
+					if(isset($_POST['foto'])){
+						if( $_FILES['foto']['size'] > 300000){
+							$ruta_archivo_a_subir = $_FILES['foto']['tmp_name'];
 
-                    $directorio = "producto/".$usuario."/".$id_producto."";
-                    if(file_exists($directorio)) 
-                    {
-                                  
-                    } 
-                    else 
-                    {
-                        mkdir($directorio, 0777, true);
-                    }
-                        
-                    $ruta_destino = $directorio. '/' . $_FILES['foto']['name'];
-                    if( move_uploaded_file($ruta_archivo_a_subir, $ruta_destino))
-                    {
- 
-                    }
-				}
-				if($_POST["composicion"]=="si"){
-					
-					foreach($_POST['field_name'] as $clave => $valor)
-					{
-						$insertDataComp["id_composicion"] = $valor;
-						$insertDataComp["id_producto"] = $id_producto;
-						$objConn->insert('composicion_producto', $insertDataComp);
+							$directorio = "usuarios/".$usu_id."/bienes/".$id_producto."";
+							if(file_exists($directorio)) 
+							{
+										  
+							} 
+							else 
+							{
+								mkdir($directorio, 0777, true);
+							}
+								
+							$ruta_destino = $directorio. '/' . $_FILES['foto']['name'];
+							if( move_uploaded_file($ruta_archivo_a_subir, $ruta_destino))
+							{
+		 
+							}
+						}else {
+							echo "no se puede subir la imagen, se excede la tamaño permitido"; 
+						}
 					}
+					if($_POST["composicion"]=="si"){
+						
+						foreach($_POST['field_name'] as $clave => $valor)
+						{
+							$insertDataComp["id_composicion"] = $valor;
+							$insertDataComp["id_producto"] = $id_producto;
+							$objConn->insert('composicion_producto', $insertDataComp);
+						}
+					}
+					?>
+						<script type="text/javascript">alert("el producto se guardo de forma exitosa con el id: <? echo $id_producto?>, desea asignar la disponibilidad")</script>
+						
+						
+					<?	
 				}
-			
+				else{
+					?>
+						<script type="text/javascript">alert("No se pudo guardar el producto")</script>
+					<?
+				}
+				
 		}		
 		 
 		?>
@@ -419,16 +431,6 @@ License: You must have a valid license purchased only from themeforest(the above
 												</div>
 											</div>
 										</div>
-										
-										<div class="form-group form-md-line-input">
-											<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-												<div class="input-icon">
-													<textarea class="form-control" rows="3" id="lista" name="lista"><? echo "pp"?></textarea>
-														
-												</div>
-											</div>
-										</div>
-										
 									</div>
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
@@ -481,6 +483,8 @@ License: You must have a valid license purchased only from themeforest(the above
 			?> 
 			<script src="../assets/global/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js" type="text/javascript"></script>
 			<script src="../assets/pages/scripts/components-bootstrap-select-splitter.min.js" type="text/javascript"></script>
+			<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+			<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
 			<script>
 			// fucion que persnaliza el select dependiente de la categoria
 			var ComponentsBootstrapSelectSplitter = function() {
