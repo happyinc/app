@@ -59,14 +59,21 @@ License: You must have a valid license purchased only from themeforest(the above
     <body class=" login">
         <!-- BEGIN LOGIN -->
         <div class="content">
-			<div align="center"><a href="logueo.html">
+			<div align="center" style="padding-bottom: 10px"><a href="logueo.html">
                     <img src="../../externo/img/logo-default.png" width="230px" alt="" /> </a>
-                </div><br />
+                </div>
             <!-- BEGIN LOGIN FORM -->
             <form name="form-face" id="for-face" action="../../seguridad/verificarf.php" method="post">
+                <div style="padding-bottom: 50px">
+                    <h4>
+                        <p class="font-grey-gallery bold">
+                            Lo que quieres con lo que tienes
+                        </p>
+                    </h4>
+                </div>
                 <div class="row">
-                    <!--Campos escondidos para envio de datos de facebook -->
 
+                    <!--Campos escondidos para envio de datos de facebook -->
                     <input type="hidden" name="nom-face" id="nom-face">
                     <input type="hidden" name="ape-face" id="ape-face">
                     <input type="hidden" name="mail" id="mail">
