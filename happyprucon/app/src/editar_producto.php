@@ -1,4 +1,19 @@
+<?php
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+require'../class/sessions.php';
+$objSe = new Sessions();
+$objSe->init();
 
+$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
+
+
+if($rol!=2){
+    echo "<script> alert('Usuario no autorizado');
+					window.location.assign('logueo.html');</script>";
+}	
+ ?>
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
@@ -21,28 +36,21 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN HEAD -->
 
     <head>
-	<?php
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
-require'../class/sessions.php';
-$objSe = new Sessions();
-$objSe->init();
-
-$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
-$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
-$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
-
-
-if($rol!=2){
-    echo "<script> alert('Usuario no autorizado');
-					window.location.assign('logueo.html');</script>";
-}	
- ?>
         <?php
-		
 		include "include_css.php";
 		require_once'../../externo/plugins/PDOModel.php';
-		?>
 		
+		  $id = "";
+        if(isset($_POST["id"]) && $_POST["id"] != "")
+        {
+            $id = $_POST["id"];
+        }
+        elseif(isset($_GET["id"]) && $_GET["id"] != "")
+        {
+             $id = $_GET["id"];
+        }
+		?>
+		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script> 
 		<script type="text/javascript">
 			//funcion que oculta y muestra div eniendo en cuenta la opcion seleccionada por el usuario
@@ -125,34 +133,32 @@ if($rol!=2){
 				x--; //Decrement field counter
 				});
 			});
-			
-			//tooltip para el precio
-				$(document).ready(function(){
-					$('[data-toggle="tooltip"]').tooltip(); 
-				});
- 
-
 			</script>
 			
 	    <?
-		if(isset($_POST["formulario"]) && $_POST["formulario"] == "crear_producto" ){
+		$objProd = new PDOModel();
+		$objProd->where("id", $id);
+		$res =  $objProd->select("producto");
+		foreach($res as $producto){
+			
+		}
+		
+		if(isset($_POST["formulario"]) && $_POST["formulario"] == "editar_producto" ){
 		
 			?>
 			   <script type="text/javascript">//alert("foto: <? echo $_POST['foto']?> ")</script>
                <? 
 				$objConn = new PDOModel();
-				$insertData["id_categoria"] = $_POST["categoria"];
-				$insertData["id_estado"] = 1;
-				$insertData["nombre"] = $_POST["nombre"]; 
-				$insertData["descripcion"] = $_POST["descripcion"];
-				$insertData["precio"] = $_POST["precio"];
-				$insertData["fecha"] = date("Y-m-d H:i:s"); 
-				$insertData["id_usu_crea"] = $usu_id ;
-				$objConn->insert('producto', $insertData);
+				$updateData["id_categoria"] = $_POST["categoria"];
+				$updateData["nombre"] = $_POST["nombre"]; 
+				$updateData["descripcion"] = $_POST["descripcion"];
+				$updateData["precio"] = $_POST["precio"];
+				$objConn->where("id", 40);
+				$objConn->insert('producto', $updateData);
 				//$aa=filesize($_POST['foto']);
 				//$archivo_size
-				$id_producto= $objConn->lastInsertId;
-				if($id_producto!= ""){
+				$actu $objConn->rowsChanged;
+				if($actu!= ""){
 					if(isset($_POST['foto'])){
 						if( $_FILES['foto']['size'] > 300000){
 							$ruta_archivo_a_subir = $_FILES['foto']['tmp_name'];
@@ -187,18 +193,12 @@ if($rol!=2){
 					}
 					?>
 						
-						<script type="text/javascript">alert("el producto se guardo de forma exitosa con el id: <? echo $id_producto?>, desea asignar la disponibilidad")</script>
-						
-						<!--<button class="btn btn-default mt-sweetalert" data-title="El producto se creo de forma exitosa Con el id <? echo $id_producto?>" 
-						data-message="Desea asignarle la disponibilidad" data-type="info" data-show-confirm-button="true" data-confirm-button-class="btn-success" 
-						data-show-cancel-button="true" data-cancel-button-class="btn-default" data-close-on-confirm="false" data-close-on-cancel="false" 
-						data-confirm-button-text="Si" data-cancel-button-text="No, lo hare luego" data-popup-title-success="Gracias!" 
-						data-popup-message-success="Asignar dispnibilidad" data-popup-title-cancel="Cancelar" data-popup-message-cancel="">producto creado</button>-->
+						<script type="text/javascript">alert("el producto se actualizo de forma exitosa con el id: <? echo $id_producto?>, desea asignar la disponibilidad")</script>
 					<?	
 				}
 				else{
 					?>
-						<script type="text/javascript">alert("No se pudo guardar el producto")</script>
+						<script type="text/javascript">alert("No se pudo actualizar el producto")</script>
 					<?
 				}
 				
@@ -352,7 +352,7 @@ if($rol!=2){
 					</div>
 					<div class="portlet light">
 						<div class="portlet-body form">
-							<form role="form" class="form-horizontal" name="crear_producto"  id="crear_producto" action="crear_producto.php" enctype="multipart/form-data" method="post">
+							<form role="form" class="form-horizontal" name="editar_producto"  id="editar_producto" action="editar_producto.php" enctype="multipart/form-data" method="post">
 								<div class="form-body">
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
@@ -411,8 +411,7 @@ if($rol!=2){
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
-												<input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del producto"  data-tooltip aria-haspopup="true" title="De este valor digitado a happy le corresponde el 2%.">
-												<a href="#" data-toggle="tooltip" data-placement="top" title="De este valor digitado a happy le corresponde el 2% ">Advertencia:</a>
+												<input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del producto">
 													<div class="form-control-focus"> </div>
 													<span class="help-block required">Digite el valor del producto a crear *</span>
 													<i class="fa fa-money"></i>
@@ -467,8 +466,8 @@ if($rol!=2){
 									</div>
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<button type="submit" class="btn blue" name="guardar" id="guardar" value="guardar"> Crear producto </button>
-											<input type="hidden" id="formulario" name="formulario" value="crear_producto"/>
+											<button type="submit" class="btn blue" name="guardar" id="guardar" value="guardar"> editar producto </button>
+											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
 										</div>
 									</div>
 								</div>
@@ -498,7 +497,8 @@ if($rol!=2){
 			?> 
 			<script src="../assets/global/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js" type="text/javascript"></script>
 			<script src="../assets/pages/scripts/components-bootstrap-select-splitter.min.js" type="text/javascript"></script>
-			
+			<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+			<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
 			<script>
 			// fucion que persnaliza el select dependiente de la categoria
 			var ComponentsBootstrapSelectSplitter = function() {
