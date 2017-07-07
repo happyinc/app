@@ -87,9 +87,14 @@ date_default_timezone_set("America/Bogota");
 													
 													$objSe->init();
 													$objSe->set('id', $res_usu[0]['id']);
-													$objSe->set('correo', $res_usu[0]['correo']);
 													$objSe->set('id_roles', $res_usu[0]['id_roles']);
 													$objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
+                                                    $objSe->set('nombre', $res_usu[0]['nombre']);
+                                                    $objSe->set('apellido', $res_usu[0]['apellido']);
+                                                    $objSe->set('genero', $res_usu[0]['genero']);
+                                                    $objSe->set('telefono', $res_usu[0]['telefono']);
+                                                    $objSe->set('correo', $res_usu[0]['correo']);
+
 																									
 													echo "<script> window.location.assign('../app/src/index.php'); </script>";
 												}

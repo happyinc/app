@@ -326,8 +326,8 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
                                                                     $objCat->where("id", 1);
                                                                     $result =  $objCat->select("bienes");
                                                                     foreach($result as $item){
-                                                                        ?><h4 class="panel-title bold">
-                                                                        <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1" value="<?php echo $item["id"]?>"><?php echo $item["nombre"]?></a>
+                                                                        ?><h4  class="panel-title bold">
+                                                                        <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  alt="" /><?php echo $item["nombre"]?></a>
                                                                         </h4><?php
 
                                                                     }
@@ -335,7 +335,7 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
 
                                                                 </div>
                                                                 <div id="collapse_1" class="panel-collapse collapse">
-                                                                    <div class="panel-body">
+                                                                    <div class="icheck-inline panel-body">
                                                                         <?php
                                                                         $objCat->andOrOperator = "AND";
                                                                         $objCat->where("id_bienes", $item["id"]);
@@ -343,7 +343,9 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
                                                                         $objCat->orderByCols = array("descripcion");
                                                                         $result1 =  $objCat->select("categoria");
                                                                         foreach($result1 as $item1){
-                                                                            ?><option value="<?php echo $item1["id"]?>"><?php echo $item1["descripcion"]?></option><?php
+                                                                            ?>
+                                                                            <label>
+                                                                                <input type="checkbox" class="icheck" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
                                                                         }
                                                                         ?>
                                                                     </div>
@@ -373,7 +375,8 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
                                                                         $objCat->orderByCols = array("descripcion");
                                                                         $result1 =  $objCat->select("categoria");
                                                                         foreach($result1 as $item1){
-                                                                            ?><option value="<?php echo $item1["id"]?>"><?php echo $item1["descripcion"]?></option><?php
+                                                                            ?><label>
+                                                                                <input type="checkbox" class="icheck" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
                                                                         }
                                                                         ?>
                                                                     </div>
