@@ -20,7 +20,7 @@ class Users{
 		$this->dbTableName = 'usuarios';
 		
 	}
-	
+
 		
 		public function new_user(){
 
@@ -37,7 +37,6 @@ class Users{
 			$insertUserData["correo"] = $_POST['username'];
 			$insertUserData["password"] = md5($_POST['password']);
 			$insertUserData["numero_doc"] = $_POST['cedula'];
-            $insertUserData["foto_perfil"] = $_POST['foto_perfil'];
             $insertUserData["direccion"] = $_POST['direccion'];
             $insertUserData["latitud"] = $_POST['latitud'];
             $insertUserData["longitud"] = $_POST['longitu'];
@@ -58,28 +57,35 @@ class Users{
         public function update_user(){
 
             $objConn = new PDOModel();
-            $updateUserData["id_doc"] = $_POST['tipodoc'];
-            $updateUserData["id_termino"] = 1;
-            $updateUserData["id_estado"] = 1;
-            $updateUserData["id_roles"] = $_POST['roles'];
             $updateUserData["nombre_completo"] = $_POST['fullname']." ".$_POST['lastname'];
             $updateUserData["nombre"] = $_POST['fullname'];
             $updateUserData["apellido"] = $_POST['lastname'];
             $updateUserData["genero"] = $_POST['genero'];
             $updateUserData["telefono"] = $_POST['cell'];
             $updateUserData["correo"] = $_POST['username'];
-            $updateUserData["password"] = $_POST['password'];
-            $updateUserData["numero_doc"] = $_POST['cedula'];
-            $updateUserData["token"] = 'yositokuqita';
+            $updateUserData["password"] = md5($_POST['password']);
             $objConn->where("id", $_POST['iduser']);
             $objConn->update($this->dbTableName, $updateUserData);
 
             if($objConn != ""){
+                $objConn = new PDOModel();
+                $objConn->where("id",$_POST['iduser']);
+                $res_usu =  $objConn->select("usuarios");
+
+                $this->objSe->init();
+                $this->objSe->set('id', $res_usu[0]['id']);
+                $this->objSe->set('id_roles', $res_usu[0]['id_roles']);
+                $this->objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
+                $this->objSe->set('nombre', $res_usu[0]['nombre']);
+                $this->objSe->set('apellido', $res_usu[0]['apellido']);
+                $this->objSe->set('genero', $res_usu[0]['genero']);
+                $this->objSe->set('telefono', $res_usu[0]['telefono']);
+                $this->objSe->set('correo', $res_usu[0]['correo']);
+
                 echo "<script> alert('Usuario actualizado correctamente');
-                            window.location.assign('../../app/src/logueo.html');</script>";
+                        window.location.assign('../../app/src/perfil.php');</script>";
             }else{
-                echo "<script> alert('No se pudo actualizar');
-                            window.location.assign('../../app/src/logueo.html');</script>";
+                echo "<script> alert('No se pudo actualizar');</script>";
             }
 
         }
