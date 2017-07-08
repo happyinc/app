@@ -266,8 +266,8 @@ License: You must have a valid license purchased only from themeforest(the above
 						});
 			}
 		}
-		</script
-		</head>
+		</script>
+	</head>
     <!-- END HEAD -->
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProductoCreado()">
