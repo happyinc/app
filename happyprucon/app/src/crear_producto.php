@@ -22,28 +22,32 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <head>
 	<?php
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
-require'../class/sessions.php';
-$objSe = new Sessions();
-$objSe->init();
+	error_reporting(E_ERROR | E_WARNING | E_PARSE);
+	require'../class/sessions.php';
+	$objSe = new Sessions();
+	$objSe->init();
 
-$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
-$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
-$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
+	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
 
-if($rol!=2){
-    echo "<script> alert('Usuario no autorizado');
-					window.location.assign('logueo.html');</script>";
-}	
- ?>
+	if($rol!=2){
+		echo "<script> alert('Usuario no autorizado');
+						window.location.assign('logueo.html');</script>";
+	}	
+	
+	date_default_timezone_set("America/Bogota");
+	 ?>
         <?php
 		
 		include "include_css.php";
 		require_once'../../externo/plugins/PDOModel.php';
 		?>
-		
-		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script> 
+		<!--<link href="../../externo/plugins/dist/dropzone.css" type="text/css" rel="stylesheet" />-->
+		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+		<!--<script src="../../externo/plugins/dropzone.js"></script>-->
 		<script type="text/javascript">
 			//funcion que oculta y muestra div eniendo en cuenta la opcion seleccionada por el usuario
 			function mostrarReferencia(){
@@ -59,38 +63,6 @@ if($rol!=2){
 				}
 				
 			}
-			
-			//funcion que comprueba el tipo de archivo permitido a subir
-			function comprueba_extension(formulario, archivo) { 
-			   extensiones_permitidas = new Array(".png", ".jpg", ".jpeg", ".bmp"); 
-			   mierror = ""; 
-			   if (!archivo) { 
-				  //Si no tengo archivo, es que no se ha seleccionado un archivo en el formulario 
-					mierror = "No has seleccionado ningún archivo"; 
-			   }else{ 
-				  //recupero la extensión de este nombre de archivo 
-				  extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase(); 
-				  //alert (extension); 
-				  //compruebo si la extensión está entre las permitidas 
-				  permitida = false; 
-				  for (var i = 0; i < extensiones_permitidas.length; i++) { 
-					 if (extensiones_permitidas[i] == extension) { 
-					 permitida = true; 
-					 break; 
-					 } 
-				  } 
-				  if (!permitida) { 
-					 mierror = "Comprueba la extensión de los archivos a subir. \nSólo se pueden subir archivos con extensiones: " + extensiones_permitidas.join(); 
-					}else{
-					 //alert ("Todo correcto."); 
-					 formulario.submit(); 
-					 return 1; 
-					} 
-			   } 
-			   //si estoy aqui es que no se ha podido hace el submit
-			   alert (mierror); 
-			   return 0; 
-			} 
 			
 			// para buscar e insertar composiciones 
 			$(document).ready(function(){
@@ -126,20 +98,17 @@ if($rol!=2){
 				});
 			});
 			
-			//tooltip para el precio
+			//tooltip de nootificacion para el porcentaje correspondiente a happy
 				$(document).ready(function(){
 					$('[data-toggle="tooltip"]').tooltip(); 
 				});
- 
-
+	
+			
 			</script>
 			
 	    <?
 		if(isset($_POST["formulario"]) && $_POST["formulario"] == "crear_producto" ){
 		
-			?>
-			   <script type="text/javascript">//alert("foto: <? echo $_POST['foto']?> ")</script>
-               <? 
 				$objConn = new PDOModel();
 				$insertData["id_categoria"] = $_POST["categoria"];
 				$insertData["id_estado"] = 1;
@@ -149,33 +118,58 @@ if($rol!=2){
 				$insertData["fecha"] = date("Y-m-d H:i:s"); 
 				$insertData["id_usu_crea"] = $usu_id ;
 				$objConn->insert('producto', $insertData);
-				//$aa=filesize($_POST['foto']);
-				//$archivo_size
+
 				$id_producto= $objConn->lastInsertId;
 				if($id_producto!= ""){
-					if(isset($_POST['foto'])){
-						if( $_FILES['foto']['size'] > 300000){
-							$ruta_archivo_a_subir = $_FILES['foto']['tmp_name'];
-
-							$directorio = "usuarios/".$usu_id."/bienes/".$id_producto."";
+					
+					if($_FILES['foto']!=""){
+						 // Primero, hay que validar que se trata de un JPG/GIF/PNG
+						$allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
+						$extension = end(explode(".", $_FILES["foto"]["name"]));
+						if ((($_FILES["foto"]["type"] == "image/gif")
+								|| ($_FILES["foto"]["type"] == "image/jpeg")
+								|| ($_FILES["foto"]["type"] == "image/png")
+								|| ($_FILES["foto"]["type"] == "image/gif")
+								|| ($_FILES["foto"]["type"] == "image/bmp"))
+								&& in_array($extension, $allowedExts)) {
+							// el archivo es un JPG/GIF/PNG, entonces...
+							
+							$extension = end(explode('.', $_FILES['foto']['name']));
+							$foto = substr(md5(uniqid(rand())),0,10).".".$extension;
+							$directorio = "usuarios/".$usu_id."/bienes/".$id_producto.""; // directorio de tu elección
 							if(file_exists($directorio)) 
-							{
-										  
-							} 
-							else 
-							{
-								mkdir($directorio, 0777, true);
-							}
-								
-							$ruta_destino = $directorio. '/' . $_FILES['foto']['name'];
-							if( move_uploaded_file($ruta_archivo_a_subir, $ruta_destino))
-							{
-		 
-							}
-						}else {
-							echo "no se puede subir la imagen, se excede la tamaño permitido"; 
+											{
+												
+											} 
+											else 
+											{
+												mkdir($directorio, 0777, true);
+											}
+							
+							// almacenar imagen en el servidor
+							move_uploaded_file($_FILES['foto']['tmp_name'], $directorio.'/'.$foto);
+							$minFoto = 'min_'.$foto;
+							$resFoto = 'res_'.$foto;
+							resizeImagen($directorio.'/', $foto, 65, 65,$minFoto,$extension);
+							resizeImagen($directorio.'/', $foto, 500, 500,$resFoto,$extension);
+							unlink($directorio.'/'.$foto);
+							
+						} else { // El archivo no es JPG/GIF/PNG
+							$malformato = $_FILES["foto"]["type"];
+							?>
+							<script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
+							<?	
+							//header("Location: crear_producto.php?id=echo $usu_id");
+						  }
+						
+					} else { // El campo foto NO contiene una imagen
+							
+							?>
+							<script type="text/javascript">alert("No se ha seleccionado imagenes")</script>
+							<?	
+							//header("Location: crear_producto.php?id=echo $usu_id");
 						}
-					}
+					
 					if($_POST["composicion"]=="si"){
 						
 						foreach($_POST['field_name'] as $clave => $valor)
@@ -186,14 +180,29 @@ if($rol!=2){
 						}
 					}
 					?>
-						
-						<script type="text/javascript">alert("el producto se guardo de forma exitosa con el id: <? echo $id_producto?>, desea asignar la disponibilidad")</script>
-						
-						<!--<button class="btn btn-default mt-sweetalert" data-title="El producto se creo de forma exitosa Con el id <? echo $id_producto?>" 
-						data-message="Desea asignarle la disponibilidad" data-type="info" data-show-confirm-button="true" data-confirm-button-class="btn-success" 
-						data-show-cancel-button="true" data-cancel-button-class="btn-default" data-close-on-confirm="false" data-close-on-cancel="false" 
-						data-confirm-button-text="Si" data-cancel-button-text="No, lo hare luego" data-popup-title-success="Gracias!" 
-						data-popup-message-success="Asignar dispnibilidad" data-popup-title-cancel="Cancelar" data-popup-message-cancel="">producto creado</button>-->
+					<script type="text/javascript">//alert("el producto se guardo de forma exitosa con el id: <? echo $id_producto?>, desea asignar la disponibilidad")</script>
+					<script type="text/javascript">
+						swal({
+								title:"Producto registrado con el id:" + <? echo $id_producto?>,
+								text: "Desea asignar la disponibilidad al producto",
+								type: "success",
+								showCancelButton: true,
+								confirmButtonClass: "btn-danger",
+								confirmButtonText: "Si, deseo hacerlo!",
+								cancelButtonText: "No, lo hare mas tarde!",
+								closeOnConfirm: false,
+								closeOnCancel: false
+						},
+						function(isConfirm) {
+							if (isConfirm) {
+								swal("Ir", "En un momento sera dirigido a la pagina de asignacion de disponibilidades.", "success");
+								location.href="ver_disponibilidad.php?activar="+id+"";
+							} else {
+								swal("Cancelar","error");
+							}
+						});
+									
+					</script>
 					<?	
 				}
 				else{
@@ -201,9 +210,52 @@ if($rol!=2){
 						<script type="text/javascript">alert("No se pudo guardar el producto")</script>
 					<?
 				}
-				
 		}		
-		 
+		  
+		####
+		## Función para redimencionar las imágenes
+		## utilizando las librerías de GD de PHP
+		####
+
+		function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
+			$rutaImagenOriginal = $ruta.$nombre;
+			if($extension == 'GIF' || $extension == 'gif'){
+			$img_original = imagecreatefromgif($rutaImagenOriginal);
+			}
+			if($extension == 'jpg' || $extension == 'JPG'){
+			$img_original = imagecreatefromjpeg($rutaImagenOriginal);
+			}
+			if($extension == 'png' || $extension == 'PNG'){
+			$img_original = imagecreatefrompng($rutaImagenOriginal);
+			}
+			if($extension == 'bmp' || $extension == 'BMP'){
+			$img_original = imagecreatefrompng($rutaImagenOriginal);
+			}
+			if($extension == 'jpeg' || $extension == 'JPEG'){
+			$img_original = imagecreatefrompng($rutaImagenOriginal);
+			}
+			$max_ancho = $ancho;
+			$max_alto = $alto;
+			list($ancho,$alto)=getimagesize($rutaImagenOriginal);
+			$x_ratio = $max_ancho / $ancho;
+			$y_ratio = $max_alto / $alto;
+			if( ($ancho <= $max_ancho) && ($alto <= $max_alto) ){//Si ancho 
+			$ancho_final = $ancho;
+				$alto_final = $alto;
+			} elseif (($x_ratio * $alto) < $max_alto){
+				$alto_final = ceil($x_ratio * $alto);
+				$ancho_final = $max_ancho;
+			} else{
+				$ancho_final = ceil($y_ratio * $ancho);
+				$alto_final = $max_alto;
+			}
+			$tmp=imagecreatetruecolor($ancho_final,$alto_final);
+			imagecopyresampled($tmp,$img_original,0,0,0,0,$ancho_final, $alto_final,$ancho,$alto);
+			imagedestroy($img_original);
+			$calidad=70;
+			imagejpeg($tmp,$ruta.$nombreN,$calidad);
+			
+		}
 		?>
 		
 		</head>
@@ -411,8 +463,7 @@ if($rol!=2){
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
-												<input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del producto"  data-tooltip aria-haspopup="true" title="De este valor digitado a happy le corresponde el 2%.">
-												<a href="#" data-toggle="tooltip" data-placement="top" title="De este valor digitado a happy le corresponde el 2% ">Advertencia:</a>
+												<input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del producto" data-toggle="tooltip" data-placement="top" title="De este valor digitado a happy le corresponde el 2%.">
 													<div class="form-control-focus"> </div>
 													<span class="help-block required">Digite el valor del producto a crear *</span>
 													<i class="fa fa-money"></i>
@@ -447,7 +498,7 @@ if($rol!=2){
 											</div>
 										</div>
 									</div>
-									<div class="form-group form-md-line-input">
+									<div class="form-group form-md-line-input dropzone">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="fileinput fileinput-new" data-provides="fileinput">
 												<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
@@ -458,8 +509,10 @@ if($rol!=2){
 														<span class="fileinput-new"> Seleccione la imagen </span>
 														<span class="fileinput-exists"> Cambiar </span>
 														<input type="file" name="foto" id="foto"> 
+														
 													</span>
-														<input  class="btn blue" type=button name="Submit" value="Enviar" onclick="comprueba_extension(this.form, this.form.foto.value)"> 
+													<input  class="btn blue" type="submit"
+													name="submit" value="enviar" > <!--onclick="comprueba_extension(this.form, this.form.foto.value)"-->
 													<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
 												</div> 
 											</div>
@@ -498,7 +551,8 @@ if($rol!=2){
 			?> 
 			<script src="../assets/global/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js" type="text/javascript"></script>
 			<script src="../assets/pages/scripts/components-bootstrap-select-splitter.min.js" type="text/javascript"></script>
-			
+			<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+			<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
 			<script>
 			// fucion que persnaliza el select dependiente de la categoria
 			var ComponentsBootstrapSelectSplitter = function() {
