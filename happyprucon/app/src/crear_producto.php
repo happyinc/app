@@ -27,7 +27,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	$objSe = new Sessions();
 	$objSe->init();
 
-	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
@@ -107,6 +107,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			</script>
 			
 	    <?
+		$id_producto=0;
 		if(isset($_POST["formulario"]) && $_POST["formulario"] == "crear_producto" ){
 		
 				$objConn = new PDOModel();
@@ -122,7 +123,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				$id_producto= $objConn->lastInsertId;
 				if($id_producto!= ""){
 					
-					if($_FILES['foto']!=""){
+					if($_FILES['foto']["size"]>=1){
 						 // Primero, hay que validar que se trata de un JPG/GIF/PNG
 						$allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
 						$extension = end(explode(".", $_FILES["foto"]["name"]));
@@ -131,7 +132,8 @@ License: You must have a valid license purchased only from themeforest(the above
 								|| ($_FILES["foto"]["type"] == "image/png")
 								|| ($_FILES["foto"]["type"] == "image/gif")
 								|| ($_FILES["foto"]["type"] == "image/bmp"))
-								&& in_array($extension, $allowedExts)) {
+								&& in_array($extension, $allowedExts)) 
+						{
 							// el archivo es un JPG/GIF/PNG, entonces...
 							
 							$extension = end(explode('.', $_FILES['foto']['name']));
@@ -165,9 +167,11 @@ License: You must have a valid license purchased only from themeforest(the above
 					} else { // El campo foto NO contiene una imagen
 							
 							?>
-							<script type="text/javascript">alert("No se ha seleccionado imagenes")</script>
+							<script type="text/javascript">
+							alert("No se ha seleccionado imagenes");
+							window.history.back();
+							</script>
 							<?	
-							//header("Location: crear_producto.php?id=echo $usu_id");
 						}
 					
 					if($_POST["composicion"]=="si"){
@@ -179,31 +183,8 @@ License: You must have a valid license purchased only from themeforest(the above
 							$objConn->insert('composicion_producto', $insertDataComp);
 						}
 					}
-					?>
-					<script type="text/javascript">//alert("el producto se guardo de forma exitosa con el id: <? echo $id_producto?>, desea asignar la disponibilidad")</script>
-					<script type="text/javascript">
-						swal({
-								title:"Producto registrado con el id:" + <? echo $id_producto?>,
-								text: "Desea asignar la disponibilidad al producto",
-								type: "success",
-								showCancelButton: true,
-								confirmButtonClass: "btn-danger",
-								confirmButtonText: "Si, deseo hacerlo!",
-								cancelButtonText: "No, lo hare mas tarde!",
-								closeOnConfirm: false,
-								closeOnCancel: false
-						},
-						function(isConfirm) {
-							if (isConfirm) {
-								swal("Ir", "En un momento sera dirigido a la pagina de asignacion de disponibilidades.", "success");
-								location.href="ver_disponibilidad.php?activar="+id+"";
-							} else {
-								swal("Cancelar","error");
-							}
-						});
-									
-					</script>
-					<?	
+					
+						
 				}
 				else{
 					?>
@@ -257,11 +238,39 @@ License: You must have a valid license purchased only from themeforest(the above
 			
 		}
 		?>
-		
+		<script>
+		function alertaProductoCreado() 
+		{
+			var id_producto=<?echo $id_producto?>;
+			if(id_producto >=1)
+			{
+						swal({
+								title:"Producto registrado con el id:" + <? echo $id_producto?>,
+								text: "¿Desea asignar la disponibilidad al producto?",
+								type: "success",
+								showCancelButton: true,
+								confirmButtonClass: "btn-danger",
+								confirmButtonText: "Si, deseo hacerlo!",
+								cancelButtonText: "No",
+								closeOnConfirm: false,
+								closeOnCancel: false
+						},
+						function(isConfirm) {
+							if (isConfirm) {
+								swal("Ir", "En un momento sera dirigido a la pagina de asignacion de disponibilidades.", "success");
+								location.href="ver_disponibilidad.php?activar="+id_producto+"";
+							} else {
+								swal("Cancelar","error");
+								location.href="gestion_producto.php
+							}
+						});
+			}
+		}
+		</script
 		</head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProductoCreado()">
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
