@@ -229,10 +229,10 @@ License: You must have a valid license purchased only from themeforest(the above
 			$img_original = imagecreatefrompng($rutaImagenOriginal);
 			}
 			if($extension == 'bmp' || $extension == 'BMP'){
-			$img_original = imagecreatefrompng($rutaImagenOriginal);
+			$img_original = imagecreatefrombmp($rutaImagenOriginal);
 			}
 			if($extension == 'jpeg' || $extension == 'JPEG'){
-			$img_original = imagecreatefrompng($rutaImagenOriginal);
+			$img_original = imagecreatefromjpeg($rutaImagenOriginal);
 			}
 			$max_ancho = $ancho;
 			$max_alto = $alto;
