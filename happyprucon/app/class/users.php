@@ -63,7 +63,6 @@ class Users{
             $updateUserData["genero"] = $_POST['genero'];
             $updateUserData["telefono"] = $_POST['cell'];
             $updateUserData["correo"] = $_POST['username'];
-            $updateUserData["password"] = md5($_POST['password']);
             $objConn->where("id", $_POST['iduser']);
             $objConn->update($this->dbTableName, $updateUserData);
 

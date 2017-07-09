@@ -144,7 +144,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <div class="form-group">
                             <label class="control-label col-md-3">Nombres</label>
                            <div class="col-md-4">
-                               <input name="iduser" id="iduser" type="text" class="form-control" value="<?php echo $usu_id; ?>"/>
+                               <input name="iduser" id="iduser" type="hidden" class="form-control" value="<?php echo $usu_id; ?>"/>
                                 <input type="text" name="fullname" id="fullname" class="form-control" value="<?php echo $name; ?>" /> </div>
                         </div>
                         <div class="form-group">
@@ -161,11 +161,6 @@ License: You must have a valid license purchased only from themeforest(the above
                             <label class="control-label col-md-3">Correo electrónico</label>
                             <div class="col-md-4">
                                 <input name="username" id="username" type="email" class="form-control" value="<?php echo $correo; ?>"/> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Contraseña</label>
-                            <div class="col-md-4">
-                                <input name="password" id="password" type="password" class="form-control"/> </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Genero</label>
@@ -188,7 +183,65 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 </form>
                 <!-- END FORM-->
+                <!-- BEGIN FORM PASSWORD-->
+                <?php
+                if(isset($_POST["btn1"])) {
+                    $btn = $_POST["btn1"];
 
+                    if ($btn == "Cambiar") {
+                        $objConn = new PDOModel();
+                        $updateUserData["password"] = md5($_POST['password']);
+                        $objConn->where("id", $usu_id);
+                        $objConn->update("usuarios", $updateUserData);
+
+                        if ($objConn != "") {
+                            echo "<script> alert('Cambio exitoso');</script>";
+                        } else {
+                            echo "<script> alert('Error: La contraseña no se pudo actualizar');</script>";
+                        }
+                    }
+                }
+                ?>
+                <script language="JavaScript">
+                    function validar(f) {
+                        if(f.password.value != "" && (f.password.value == f.repassword.value)){
+                            return true;
+                        }
+                        else{
+                            alert("Las contraseñas no coinciden");
+                            return false;
+                        }
+
+                    }
+
+                </script>
+
+                <form onSubmit="return validar(this)" action="" class="form-horizontal" method="post"style="padding-top: 20px;">
+                    <div class="form-body">
+                        <div class="alert alert-danger display-hide">
+                            <button class="close" data-close="alert"></button> Contraseñas no coinciden </div>
+                        <div class="alert alert-success display-hide">
+                            <button class="close" data-close="alert"></button> Your form validation is successful! </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Contraseña</label>
+                            <div class="col-md-4">
+                                <input name="password" id="password" type="password" class="form-control"/> </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Repite contraseña</label>
+                            <div class="col-md-4">
+                                <input name="repassword" id="repassword" type="password" class="form-control"/> </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <input type="submit" id="register-submit-btn" class="btn blue" name="btn1" value="Cambiar"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- END FORM PASSWORD-->
             </div>
         </div>
         <!-- END CONTENT BODY -->

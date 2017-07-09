@@ -125,7 +125,26 @@ License: You must have a valid license purchased only from themeforest(the above
 				</div>
 				                			
             </form>
-            <form name="form-face" id="for-face" action="../../seguridad/verificarf.php" method="post">
+            <!-- BEGIN FORGOT PASSWORD FORM -->
+            <form class="forget-form" action="" method="post">
+                <h3>Se te olvidó tu contraseña ?</h3>
+                <p> Introduzca su dirección de correo electrónico a continuación para restablecer su contraseña. </p>
+                <div class="form-group form-md-line-input has-info form-md-floating-label">
+                    <div class="input-group left-addon">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </span>
+                        <input type="email" class="form-control" name="mailforget" id="mailforget">
+                        <label>Correo Electrónico</label>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="back-btn" class="btn grey-salsa btn-outline"> Atras </button>
+                    <button type="submit" class="btn btn-circle red-flamingo pull-right"> Enviar </button>
+                </div>
+            </form>
+            <!-- END FORGOT PASSWORD FORM -->
+            <form class="login-form" name="form-face" id="for-face" action="../../seguridad/verificarf.php" method="post">
 			<div class="row">
                 <!--Campos escondidos para envio de datos de facebook -->
 
@@ -205,25 +224,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 }
             </script>
 			<!-- END LOGIN FORM -->
-            <!-- BEGIN FORGOT PASSWORD FORM -->
-            <form class="forget-form" action="index.html" method="post">
-                <h3>Se te olvidó tu contraseña ?</h3>
-                <p> Introduzca su dirección de correo electrónico a continuación para restablecer su contraseña. </p>
-                <div class="form-group form-md-line-input has-info form-md-floating-label">
-                                                <div class="input-group left-addon">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-envelope"></i>
-                                                    </span>
-                                                    <input type="email" class="form-control" name="mailforget" id="mailforget">
-													<label>Correo Electrónico</label>
-                                                </div>
-                </div>
-                <div class="form-actions">
-                    <button type="button" id="back-btn" class="btn grey-salsa btn-outline"> Atras </button>
-                    <button type="submit" class="btn btn-circle red-flamingo pull-right"> Enviar </button>
-                </div>
-            </form>
-            <!-- END FORGOT PASSWORD FORM -->
+
         </div>
         <!-- END LOGIN -->
         <!--[if lt IE 9]>
