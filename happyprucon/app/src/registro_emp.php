@@ -93,36 +93,131 @@ if($mail_face != ""){
     $mail = $mail_face;
 }
 
+if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
+
+    $objConn = new PDOModel();
+    $insertUserData["id_doc"] = $_POST['tipodoc'];
+    $insertUserData["id_termino"] = $_POST['acep-terms'];
+    $insertUserData["id_estado"] = 1;
+    $insertUserData["id_roles"] = $_POST['roles'];
+    $insertUserData["nombre_completo"] = $_POST['fullname'] . " " . $_POST['lastname'];
+    $insertUserData["nombre"] = $_POST['fullname'];
+    $insertUserData["apellido"] = $_POST['lastname'];
+    $insertUserData["genero"] = $_POST['genero'];
+    $insertUserData["telefono"] = $_POST['cell'];
+    $insertUserData["correo"] = $_POST['username'];
+    $insertUserData["password"] = md5($_POST['password']);
+    $insertUserData["numero_doc"] = $_POST['cedula'];
+    $insertUserData["direccion"] = $_POST['direccion'];
+    $insertUserData["latitud"] = $_POST['latitud'];
+    $insertUserData["longitud"] = $_POST['longitu'];
+    $insertUserData["token"] = 'yositokuqita';
+
+    $objConn->insert("usuarios", $insertUserData);
+
+    $id_usuario = $objConn->lastInsertId;
+
+    if ($id_usuario != "") {
+
+        if ($_FILES['foto']["size"] >= 1) {
+            // Primero, hay que validar que se trata de un JPG/GIF/PNG
+            $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
+            $extension = end(explode(".", $_FILES["foto"]["name"]));
+        if ((($_FILES["foto"]["type"] == "image/gif")
+                || ($_FILES["foto"]["type"] == "image/jpeg")
+                || ($_FILES["foto"]["type"] == "image/png")
+                || ($_FILES["foto"]["type"] == "image/gif")
+                || ($_FILES["foto"]["type"] == "image/bmp"))
+            && in_array($extension, $allowedExts)) {
+            // el archivo es un JPG/GIF/PNG, entonces...
+
+            $extension = end(explode('.', $_FILES['foto']['name']));
+            $foto = substr(md5(uniqid(rand())), 0, 10) . "." . $extension;
+            $directorio = "usuarios/perfiles/" . $id_usuario . ""; // directorio de tu elección
+            if (file_exists($directorio)) {
+
+            } else {
+                mkdir($directorio, 0777, true);
+            }
+
+            // almacenar imagen en el servidor
+            move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
+            $minFoto = 'min_' . $foto;
+            $resFoto = 'res_' . $foto;
+            resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
+            resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
+            unlink($directorio . '/' . $foto);
+
+        } else { // El archivo no es JPG/GIF/PNG
+            $malformato = $_FILES["foto"]["type"];
+            ?>
+            <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
+        <?
+        //header("Location: crear_producto.php?id=echo $usu_id");
+        }
+
+        } else { // El campo foto NO contiene una imagen
+
+        ?>
+            <script type="text/javascript">
+                alert("No se ha seleccionado imagenes");
+                window.history.back();
+            </script>
+            <?
+        }
+
+        echo "<script> alert('Registrado correctamente');
+						window.location.assign('../../app/src/logueo.html');</script>";
+    } else {
+        echo "<script> alert('Usuario ya existe');
+						window.location.assign('../../app/src/logueo.html');</script>";
+    }
+}
+
+function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
+    $rutaImagenOriginal = $ruta.$nombre;
+    if($extension == 'GIF' || $extension == 'gif'){
+        $img_original = imagecreatefromgif($rutaImagenOriginal);
+    }
+    if($extension == 'jpg' || $extension == 'JPG'){
+        $img_original = imagecreatefromjpeg($rutaImagenOriginal);
+    }
+    if($extension == 'png' || $extension == 'PNG'){
+        $img_original = imagecreatefrompng($rutaImagenOriginal);
+    }
+    if($extension == 'bmp' || $extension == 'BMP'){
+        $img_original = imagecreatefrombmp($rutaImagenOriginal);
+    }
+    if($extension == 'jpeg' || $extension == 'JPEG'){
+        $img_original = imagecreatefromjpeg($rutaImagenOriginal);
+    }
+    $max_ancho = $ancho;
+    $max_alto = $alto;
+    list($ancho,$alto)=getimagesize($rutaImagenOriginal);
+    $x_ratio = $max_ancho / $ancho;
+    $y_ratio = $max_alto / $alto;
+    if( ($ancho <= $max_ancho) && ($alto <= $max_alto) ){//Si ancho
+        $ancho_final = $ancho;
+        $alto_final = $alto;
+    } elseif (($x_ratio * $alto) < $max_alto){
+        $alto_final = ceil($x_ratio * $alto);
+        $ancho_final = $max_ancho;
+    } else{
+        $ancho_final = ceil($y_ratio * $ancho);
+        $alto_final = $max_alto;
+    }
+    $tmp=imagecreatetruecolor($ancho_final,$alto_final);
+    imagecopyresampled($tmp,$img_original,0,0,0,0,$ancho_final, $alto_final,$ancho,$alto);
+    imagedestroy($img_original);
+    $calidad=70;
+    imagejpeg($tmp,$ruta.$nombreN,$calidad);
+
+}
+
 
 ?>
 
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
-
-
-<script type="text/javascript">//alert("el tamaño de la imagen es: <? echo $aa?> ")</script>
-<script type="text/javascript">//alert("el tamaño de la imagen es: <? echo $archivo_size?> ")</script>
-<?
-if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
-    $ruta_archivo_a_subir = $_FILES['foto']['tmp_name'];
-
-    $directorio = "usuario/".$usuario."/".$id_producto."";
-    if(file_exists($directorio))
-    {
-
-    }
-    else
-    {
-        mkdir($directorio, 0777, true);
-    }
-
-    $ruta_destino = $directorio. '/' . $_FILES['foto']['name'];
-    if( move_uploaded_file($ruta_archivo_a_subir, $ruta_destino))
-    {
-
-    }
-}
-
-?>
 <!-- BEGIN HEADER & CONTENT DIVIDER -->
 <div class="clearfix"> </div>
 <!-- END HEADER & CONTENT DIVIDER -->
@@ -130,457 +225,459 @@ if(isset($_POST['foto'])&& $_FILES['foto']['size'] > 0777){
 <div class="page-content">
     <!-- BEGIN CONTENT -->
 
-        <!-- BEGIN CONTENT BODY -->
-        <div class="page-content col-lg-12">
-            <!-- BEGIN PAGE HEADER-->
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content col-lg-12">
+        <!-- BEGIN PAGE HEADER-->
 
-            <!-- END PAGE HEADER-->
-            <div class="col-lg-12">
-                <div class="col-md-12">
-                    <div class="portlet light " id="form_wizard_1">
-                        <div class="portlet-title">
+        <!-- END PAGE HEADER-->
+        <div class="col-lg-12">
+            <div class="col-md-12">
+                <div class="portlet light " id="form_wizard_1">
+                    <div class="portlet-title">
 
 
-                        </div>
-                        <div class="portlet-body form">
-                            <form class="form-horizontal" action="../class/registrar.php" id="submit_form" method="POST">
-                                <div class="form-wizard">
-                                    <div class="form-body">
-                                        <ul class="nav nav-pills nav-justified steps">
-                                            <li>
-                                                <a href="#tab1" data-toggle="tab" class="step">
-                                                    <span class="number"> 1 </span>
-                                                    <span class="desc">
+                    </div>
+                    <div class="portlet-body form">
+                        <form role="form" class="form-horizontal" action="registro_emp.php" name="submit_form" id="submit_form" enctype="multipart/form-data" method="POST">
+                            <div class="form-wizard">
+                                <div class="form-body">
+                                    <ul class="nav nav-pills nav-justified steps">
+                                        <li>
+                                            <a href="#tab1" data-toggle="tab" class="step">
+                                                <span class="number"> 1 </span>
+                                                <span class="desc">
                                                                 <i class="fa fa-check"></i> Datos </span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#tab2" data-toggle="tab" class="step">
-                                                    <span class="number"> 2 </span>
-                                                    <span class="desc">
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab2" data-toggle="tab" class="step">
+                                                <span class="number"> 2 </span>
+                                                <span class="desc">
                                                                 <i class="fa fa-check"></i> Especialidad </span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#tab3" data-toggle="tab" class="step active">
-                                                    <span class="number"> 3 </span>
-                                                    <span class="desc">
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab3" data-toggle="tab" class="step active">
+                                                <span class="number"> 3 </span>
+                                                <span class="desc">
                                                                 <i class="fa fa-check"></i> Ubicación </span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#tab4" data-toggle="tab" class="step">
-                                                    <span class="number"> 4 </span>
-                                                    <span class="desc">
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab4" data-toggle="tab" class="step">
+                                                <span class="number"> 4 </span>
+                                                <span class="desc">
                                                                 <i class="fa fa-check"></i> Fotos </span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <div id="bar" class="progress progress-striped" role="progressbar">
-                                            <div class="progress-bar progress-bar-success"> </div>
-                                        </div>
-                                        <div class="tab-content">
-                                            <div class="alert alert-danger display-none">
-                                                <button class="close" data-dismiss="alert"></button> You have some form errors. Please check below. </div>
-                                            <div class="alert alert-success display-none">
-                                                <button class="close" data-dismiss="alert"></button> Your form validation is successful! </div>
-                                            <div class="tab-pane active" id="tab1">
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div id="bar" class="progress progress-striped" role="progressbar">
+                                        <div class="progress-bar progress-bar-success"> </div>
+                                    </div>
+                                    <div class="tab-content">
+                                        <div class="alert alert-danger display-none">
+                                            <button class="close" data-dismiss="alert"></button> You have some form errors. Please check below. </div>
+                                        <div class="alert alert-success display-none">
+                                            <button class="close" data-dismiss="alert"></button> Your form validation is successful! </div>
+                                        <div class="tab-pane active" id="tab1">
 
-                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
-                                                    <label class="control-label col-md-4 col-xs-2"></label>
-                                                    <div class="input-group left-addon col-md-4 col-xs-2">
-                                                        <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
-                                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
-                                                                <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt="" class="img-circle" style="border-radius: 50%;"> </div>
-                                                            <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
-                                                            <div>
+                                            <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <label class="control-label col-md-4 col-xs-2"></label>
+                                                <div class="input-group left-addon col-md-4 col-xs-2">
+                                                    <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
+                                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
+                                                            <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt="" class="img-circle" style="border-radius: 50%;"> </div>
+                                                        <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
+                                                        <div>
 													<span class="btn default btn-file">
 														<span class="fileinput-new"> Select image </span>
 														<span class="fileinput-exists"> Change </span>
 														<input type="file" name="foto" id="foto"> </span>
 
-                                                                <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
-                                                            </div>
+                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
 
-                                                <div class="form-group form-md-line-input has-info">
-                                                    <label class="control-label col-md-3"></label>
-                                                    <div class="input-group left-addon col-md-4">
+                                            <div class="form-group form-md-line-input has-info">
+                                                <label class="control-label col-md-3"></label>
+                                                <div class="input-group left-addon col-md-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-newspaper-o"></i>
                                                         </span>
-                                                        <select name="tipodoc" id="tipodoc" class="form-control">
-                                                            <option></option >
-                                                            <?php
-                                                            $objDoc = new PDOModel();
-                                                            $objDoc->where("id_estado", 1);
-                                                            $objDoc->orderByCols = array("descripcion");
-                                                            $result =  $objDoc->select("tipos_doc");
-                                                            foreach($result as $item){
-                                                                ?><option value="<?php echo $item["id"]?>"><?php echo $item["descripcion"]?></option><?php
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
+                                                    <select name="tipodoc" id="tipodoc" class="form-control">
+                                                        <option></option >
+                                                        <?php
+                                                        $objDoc = new PDOModel();
+                                                        $objDoc->where("id_estado", 1);
+                                                        $objDoc->orderByCols = array("descripcion");
+                                                        $result =  $objDoc->select("tipos_doc");
+                                                        foreach($result as $item){
+                                                            ?><option value="<?php echo $item["id"]?>"><?php echo $item["descripcion"]?></option><?php
+                                                        }
+                                                        ?>
+                                                    </select>
                                                 </div>
+                                            </div>
 
-                                                <div class="form-group form-md-line-input has-info">
-                                                    <label class="control-label col-md-3"></label>
-                                                    <div class="input-group left-addon col-md-4">
+                                            <div class="form-group form-md-line-input has-info">
+                                                <label class="control-label col-md-3"></label>
+                                                <div class="input-group left-addon col-md-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-cc"></i>
                                                         </span>
-                                                        <input type="number" class="form-control" name="cedula" id="cedula" placeholder="Identificación" />
-                                                        <span class="help-block"></span>
-                                                    </div>
+                                                    <input type="number" class="form-control" name="cedula" id="cedula" placeholder="Identificación" />
+                                                    <span class="help-block"></span>
                                                 </div>
+                                            </div>
 
-                                                <!--Campos escondidos de rol y aceptacion de terminos-->
-                                                <input class="form-control placeholder-no-fix" type="hidden" name="roles" value="<?php echo $rol; ?>"/>
-                                                <input class="form-control placeholder-no-fix" type="hidden" name="acep-terms" value="<?php echo $acep_terms; ?>"/>
+                                            <!--Campos escondidos de rol y aceptacion de terminos-->
+                                            <input class="form-control placeholder-no-fix" type="hidden" name="roles" value="<?php echo $rol; ?>"/>
+                                            <input class="form-control placeholder-no-fix" type="hidden" name="acep-terms" value="<?php echo $acep_terms; ?>"/>
 
-                                                <div class="form-group form-md-line-input has-info">
-                                                    <label class="control-label col-md-3"></label>
-                                                    <div class="input-group left-addon col-md-4">
+                                            <div class="form-group form-md-line-input has-info">
+                                                <label class="control-label col-md-3"></label>
+                                                <div class="input-group left-addon col-md-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-user"></i>
                                                         </span>
-                                                        <input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $user_face; ?>" placeholder="Nombres" />
-                                                    </div>
+                                                    <input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $user_face; ?>" placeholder="Nombres" />
                                                 </div>
+                                            </div>
 
-                                                <div class="form-group form-md-line-input has-info">
-                                                    <label class="control-label col-md-3"></label>
-                                                    <div class="input-group left-addon col-md-4">
+                                            <div class="form-group form-md-line-input has-info">
+                                                <label class="control-label col-md-3"></label>
+                                                <div class="input-group left-addon col-md-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-user"></i>
                                                         </span>
-                                                        <input type="text" class="form-control" name="lastname" id="lastname" value="<?php echo $ape_face; ?>" placeholder="Apellidos"/>
-                                                    </div>
+                                                    <input type="text" class="form-control" name="lastname" id="lastname" value="<?php echo $ape_face; ?>" placeholder="Apellidos"/>
                                                 </div>
+                                            </div>
 
-                                                <div class="form-group form-md-line-input has-info">
-                                                    <label class="control-label col-md-3"></label>
-                                                    <div class="input-group left-addon col-md-4">
+                                            <div class="form-group form-md-line-input has-info">
+                                                <label class="control-label col-md-3"></label>
+                                                <div class="input-group left-addon col-md-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-tablet"></i>
                                                         </span>
-                                                        <input type="number" class="form-control" name="cell" id="cell" value="<?php echo $cell; ?>" placeholder="Celular"/>
-                                                        <span class="help-block"></span>
-                                                    </div>
+                                                    <input type="number" class="form-control" name="cell" id="cell" value="<?php echo $cell; ?>" placeholder="Celular"/>
+                                                    <span class="help-block"></span>
                                                 </div>
+                                            </div>
 
-                                                <div class="form-group form-md-line-input has-info">
-                                                    <label class="control-label col-md-3"></label>
-                                                    <div class="input-group left-addon col-md-4">
+                                            <div class="form-group form-md-line-input has-info">
+                                                <label class="control-label col-md-3"></label>
+                                                <div class="input-group left-addon col-md-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-envelope"></i>
                                                         </span>
-                                                        <input type="email" class="form-control" name="username" value="<?php echo $mail; ?>" placeholder="Correo electrónico" />
-                                                    </div>
+                                                    <input type="email" class="form-control" name="username" value="<?php echo $mail; ?>" placeholder="Correo electrónico" />
                                                 </div>
-                                                <div class="form-group form-md-line-input has-info">
-                                                    <label class="control-label col-md-3"></label>
-                                                    <div class="input-group left-addon col-md-4">
+                                            </div>
+                                            <div class="form-group form-md-line-input has-info">
+                                                <label class="control-label col-md-3"></label>
+                                                <div class="input-group left-addon col-md-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-unlock-alt"></i>
                                                         </span>
-                                                        <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" />
-                                                        <span class="help-block"></span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3">
-
-                                                    </label>
-                                                    <div class="col-md-4">
-                                                        <div class="radio-list">
-                                                            <label>
-                                                                <input type="radio" name="genero" value="Masculino" class="icheck"> Masculino </label>
-                                                            <label>
-                                                                <input type="radio" name="genero" value="Femenino" checked class="icheck"> Femenino </label>
-                                                        </div>
-                                                        <div id="form_gender_error"> </div>
-                                                    </div>
+                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" />
+                                                    <span class="help-block"></span>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane" id="tab2">
-                                                <h3 class="block bold" style="color: #520d9b">TU ESPECIALIDAD</h3>
-                                                <div style="padding-bottom: 50px">
-                                                    <h4>
-                                                        <p class="font-grey-gallery bold">
-                                                            Lo que quieres con lo que tienes
-                                                        </p>
-                                                    </h4>
-                                                </div>
-                                                <!-- BEGIN ACCORDION PORTLET-->
-                                                    <div class="portlet-body">
-                                                        <div class="panel-group accordion" id="accordion1">
-                                                            <div class="panel panel-default">
-                                                                <div class="panel-heading">
-                                                                    <?php
-                                                                    $objCat = new PDOModel();
-                                                                    $objCat->where("id", 1);
-                                                                    $result =  $objCat->select("bienes");
-                                                                    foreach($result as $item){
-                                                                        ?><h4  class="panel-title bold">
-                                                                        <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  alt="" /><?php echo $item["nombre"]?></a>
-                                                                        </h4><?php
 
-                                                                    }
-                                                                    ?>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">
 
-                                                                </div>
-                                                                <div id="collapse_1" class="panel-collapse collapse">
-                                                                    <div class="icheck-inline panel-body">
-                                                                        <?php
-                                                                        $objCat->andOrOperator = "AND";
-                                                                        $objCat->where("id_bienes", $item["id"]);
-                                                                        $objCat->where("id_estado", 1);
-                                                                        $objCat->orderByCols = array("descripcion");
-                                                                        $result1 =  $objCat->select("categoria");
-                                                                        foreach($result1 as $item1){
-                                                                            ?>
-                                                                            <label>
-                                                                                <input type="checkbox" class="icheck" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
-                                                                        }
-                                                                        ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="panel panel-default">
-                                                                <div class="panel-heading">
-                                                                    <?php
-                                                                    $objCat = new PDOModel();
-                                                                    $objCat->where("id", 2);
-                                                                    $result =  $objCat->select("bienes");
-                                                                    foreach($result as $item){
-                                                                        ?><h4 class="panel-title bold">
-                                                                        <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_2" value="<?php echo $item["id"]?>"><?php echo $item["nombre"]?></a>
-                                                                        </h4><?php
-
-                                                                    }
-                                                                    ?>
-
-                                                                </div>
-                                                                <div id="collapse_2" class="panel-collapse collapse">
-                                                                    <div class="panel-body">
-                                                                        <?php
-                                                                        $objCat->andOrOperator = "AND";
-                                                                        $objCat->where("id_bienes", $item["id"]);
-                                                                        $objCat->where("id_estado", 1);
-                                                                        $objCat->orderByCols = array("descripcion");
-                                                                        $result1 =  $objCat->select("categoria");
-                                                                        foreach($result1 as $item1){
-                                                                            ?><label>
-                                                                                <input type="checkbox" class="icheck" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
-                                                                        }
-                                                                        ?>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-
-                                                        </div>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <div class="radio-list">
+                                                        <label>
+                                                            <input type="radio" name="genero" value="Masculino" class="icheck"> Masculino </label>
+                                                        <label>
+                                                            <input type="radio" name="genero" value="Femenino" checked class="icheck"> Femenino </label>
                                                     </div>
-
-                                                <!-- END ACCORDION PORTLET-->
-                                            </div>
-                                            <div class="tab-pane" id="tab3">
-                                                <script type="text/javascript">
-                                                    function initialize() {
-                                                        var options = {
-                                                            types: ['(regions)'],
-                                                            componentRestrictions: {country: "co"}
-                                                        };
-                                                        var input = document.getElementById('ciudad');
-                                                        var autocomplete = new google.maps.places.Autocomplete(input , options);
-                                                    }
-                                                    google.maps.event.addDomListener(window, 'load', initialize);
-
-
-                                                    var mostrarUbicacion = function() {
-                                                        var ciudade;
-                                                        ciudade = document.getElementById('resciu').value = document.getElementById('ciudad').value;
-                                                        var dir;
-                                                        dir = document.getElementById('resdir').value = document.getElementById('direccion').value;
-
-                                                        var ubica = ciudade+","+dir;
-                                                        // Creamos el objeto geodecoder
-                                                        var geocoder = new google.maps.Geocoder();
-
-                                                        address = document.getElementById('search').value=ubica;
-                                                        if (address != '') {
-                                                            // Llamamos a la función geodecode pasandole la dirección que hemos introducido en la caja de texto.
-                                                            geocoder.geocode({'address': address}, function (results, status) {
-                                                                if (status == 'OK') {
-                                                                    // Mostramos las coordenadas obtenidas en el p con id coordenadas
-                                                                    document.getElementById('latitud').value = results[0].geometry.location.lat();
-                                                                    document.getElementById('longitu').value = results[0].geometry.location.lng();
-
-                                                                }
-                                                            });
-                                                        }
-                                                    }
-
-
-                                                </script>
-                                                <h3 class="block bold" style="color: #520d9b">TU UBICACIÓN</h3>
-                                                <div style="padding-bottom: 50px">
-                                                    <h4>
-                                                        <p class="font-grey-gallery bold">
-                                                            Lo que quieres con lo que tienes
-                                                        </p>
-                                                    </h4>
-                                                </div>
-                                                <div class="form-group form-md-line-input has-info">
-                                                    <label class="control-label col-md-3"></label>
-                                                    <div class="input-group left-addon col-md-4">
-                                                        <span class="required input-group-addon">
-                                                        <i class="fa fa-flag"></i>
-                                                        </span>
-                                                        <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
-                                                        <!-- Campo escondido que toma valor de ciudad -->
-                                                        <input type="text" name="resciu" id="resciu" >
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group form-md-line-input has-info">
-                                                    <label class="control-label col-md-3"></label>
-                                                    <div class="input-group left-addon col-md-4">
-                                                        <span class="required input-group-addon">
-                                                        <i class="fa fa-home"></i>
-                                                        </span>
-                                                        <select name="tipodom" id="tipodom" class="form-control">
-                                                            <option value="">Tipo vivienda</option>
-                                                            <option value="1">Apartamento</option>
-                                                            <option value="2">Casa</option>
-                                                            <option value="3">Oficina</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group form-md-line-input has-info">
-                                                    <label class="control-label col-md-3"></label>
-                                                    <div class="input-group left-addon col-md-4">
-                                                        <span class="required input-group-addon">
-                                                        <i class="fa fa-map-signs"></i>
-                                                        </span>
-                                                        <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();" placeholder="Dirección"/>
-                                                        <span class="help-block"></span>
-                                                        <!-- Campo escondido que toma valor de direccion -->
-                                                        <input type="text" name="resdir" id="resdir">
-                                                    </div>
-                                                    <div><input type="text" id="search"/></div>
-                                                    <!-- Campos escondidos que toman valores de coordenadas -->
-                                                    <div><input type="text" id="latitud" name="latitud"/></div>
-                                                    <div><input type="text" id="longitu" name="longitu"/></div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane" id="tab4">
-                                                <h3 class="block bold" style="color: #520d9b">FOTOS DEL SITIO</h3>
-                                                <div style="padding-bottom: 50px">
-                                                    <h4>
-                                                        <p class="font-grey-gallery bold">
-                                                            Lo que quieres con lo que tienes
-                                                        </p>
-                                                    </h4>
-                                                </div>
-                                                <div class="form-group form-md-line-input has-info form-md-floating-label">
-                                                    <label class="control-label col-md-4 col-xs-4"></label>
-                                                    <div class="input-group left-addon col-md-4 col-xs-4">
-                                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
-                                                                <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
-                                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
-                                                            <div>
-													<span class="btn default btn-file">
-														<span class="fileinput-new"> Select image </span>
-														<span class="fileinput-exists"> Change </span>
-														<input type="file" name="foto" id="foto"> </span>
-
-                                                                <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <div id="form_gender_error"> </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-actions">
-                                        <div class="row">
-                                            <div class="col-md-offset-3 col-md-9">
-                                                <a href="javascript:;" class="btn default button-previous">
-                                                    <i class="fa fa-angle-left"></i> Atras </a>
-                                                <a href="javascript:;" class="btn btn-outline green button-next"> Siguiente
-                                                    <i class="fa fa-angle-right"></i>
-                                                </a>
-                                                <a href="javascript:;" class="btn green button-submit"> Submit
-                                                    <i class="fa fa-check"></i>
-                                                </a>
+                                        <div class="tab-pane" id="tab2">
+                                            <h3 class="block bold" style="color: #520d9b">TU ESPECIALIDAD</h3>
+                                            <div style="padding-bottom: 50px">
+                                                <h4>
+                                                    <p class="font-grey-gallery bold">
+                                                        Lo que quieres con lo que tienes
+                                                    </p>
+                                                </h4>
+                                            </div>
+                                            <!-- BEGIN ACCORDION PORTLET-->
+                                            <div class="portlet-body">
+                                                <div class="panel-group accordion" id="accordion1">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <?php
+                                                            $objCat = new PDOModel();
+                                                            $objCat->where("id", 1);
+                                                            $result =  $objCat->select("bienes");
+                                                            foreach($result as $item){
+                                                                ?><h4  class="panel-title bold">
+                                                                <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  alt="" /><?php echo $item["nombre"]?></a>
+                                                                </h4><?php
+
+                                                            }
+                                                            ?>
+
+                                                        </div>
+                                                        <div id="collapse_1" class="panel-collapse collapse">
+                                                            <div class="icheck-inline panel-body">
+                                                                <?php
+                                                                $objCat->andOrOperator = "AND";
+                                                                $objCat->where("id_bienes", $item["id"]);
+                                                                $objCat->where("id_estado", 1);
+                                                                $objCat->orderByCols = array("descripcion");
+                                                                $result1 =  $objCat->select("categoria");
+                                                                foreach($result1 as $item1){
+                                                                    ?>
+                                                                    <label>
+                                                                    <input type="checkbox" class="icheck" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
+                                                                }
+                                                                ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <?php
+                                                            $objCat = new PDOModel();
+                                                            $objCat->where("id", 2);
+                                                            $result =  $objCat->select("bienes");
+                                                            foreach($result as $item){
+                                                                ?><h4 class="panel-title bold">
+                                                                <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_2" value="<?php echo $item["id"]?>"><?php echo $item["nombre"]?></a>
+                                                                </h4><?php
+
+                                                            }
+                                                            ?>
+
+                                                        </div>
+                                                        <div id="collapse_2" class="panel-collapse collapse">
+                                                            <div class="panel-body">
+                                                                <?php
+                                                                $objCat->andOrOperator = "AND";
+                                                                $objCat->where("id_bienes", $item["id"]);
+                                                                $objCat->where("id_estado", 1);
+                                                                $objCat->orderByCols = array("descripcion");
+                                                                $result1 =  $objCat->select("categoria");
+                                                                foreach($result1 as $item1){
+                                                                    ?><label>
+                                                                    <input type="checkbox" class="icheck" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
+                                                                }
+                                                                ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </div>
+
+                                            <!-- END ACCORDION PORTLET-->
+                                        </div>
+                                        <div class="tab-pane" id="tab3">
+                                            <script type="text/javascript">
+                                                function initialize() {
+                                                    var options = {
+                                                        types: ['(regions)'],
+                                                        componentRestrictions: {country: "co"}
+                                                    };
+                                                    var input = document.getElementById('ciudad');
+                                                    var autocomplete = new google.maps.places.Autocomplete(input , options);
+                                                }
+                                                google.maps.event.addDomListener(window, 'load', initialize);
+
+
+                                                var mostrarUbicacion = function() {
+                                                    var ciudade;
+                                                    ciudade = document.getElementById('resciu').value = document.getElementById('ciudad').value;
+                                                    var dir;
+                                                    dir = document.getElementById('resdir').value = document.getElementById('direccion').value;
+
+                                                    var ubica = ciudade+","+dir;
+                                                    // Creamos el objeto geodecoder
+                                                    var geocoder = new google.maps.Geocoder();
+
+                                                    address = document.getElementById('search').value=ubica;
+                                                    if (address != '') {
+                                                        // Llamamos a la función geodecode pasandole la dirección que hemos introducido en la caja de texto.
+                                                        geocoder.geocode({'address': address}, function (results, status) {
+                                                            if (status == 'OK') {
+                                                                // Mostramos las coordenadas obtenidas en el p con id coordenadas
+                                                                document.getElementById('latitud').value = results[0].geometry.location.lat();
+                                                                document.getElementById('longitu').value = results[0].geometry.location.lng();
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+
+                                            </script>
+                                            <h3 class="block bold" style="color: #520d9b">TU UBICACIÓN</h3>
+                                            <div style="padding-bottom: 50px">
+                                                <h4>
+                                                    <p class="font-grey-gallery bold">
+                                                        Lo que quieres con lo que tienes
+                                                    </p>
+                                                </h4>
+                                            </div>
+                                            <div class="form-group form-md-line-input has-info">
+                                                <label class="control-label col-md-3"></label>
+                                                <div class="input-group left-addon col-md-4">
+                                                        <span class="required input-group-addon">
+                                                        <i class="fa fa-flag"></i>
+                                                        </span>
+                                                    <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
+                                                    <!-- Campo escondido que toma valor de ciudad -->
+                                                    <input type="text" name="resciu" id="resciu" >
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group form-md-line-input has-info">
+                                                <label class="control-label col-md-3"></label>
+                                                <div class="input-group left-addon col-md-4">
+                                                        <span class="required input-group-addon">
+                                                        <i class="fa fa-home"></i>
+                                                        </span>
+                                                    <select name="tipodom" id="tipodom" class="form-control">
+                                                        <option value="">Tipo vivienda</option>
+                                                        <option value="1">Apartamento</option>
+                                                        <option value="2">Casa</option>
+                                                        <option value="3">Oficina</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group form-md-line-input has-info">
+                                                <label class="control-label col-md-3"></label>
+                                                <div class="input-group left-addon col-md-4">
+                                                        <span class="required input-group-addon">
+                                                        <i class="fa fa-map-signs"></i>
+                                                        </span>
+                                                    <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();" placeholder="Dirección"/>
+                                                    <span class="help-block"></span>
+                                                    <!-- Campo escondido que toma valor de direccion -->
+                                                    <input type="text" name="resdir" id="resdir">
+                                                </div>
+                                                <div><input type="text" id="search"/></div>
+                                                <!-- Campos escondidos que toman valores de coordenadas -->
+                                                <div><input type="text" id="latitud" name="latitud"/></div>
+                                                <div><input type="text" id="longitu" name="longitu"/></div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab4">
+                                            <h3 class="block bold" style="color: #520d9b">FOTOS DEL SITIO</h3>
+                                            <div style="padding-bottom: 50px">
+                                                <h4>
+                                                    <p class="font-grey-gallery bold">
+                                                        Lo que quieres con lo que tienes
+                                                    </p>
+                                                </h4>
+                                            </div>
+                                            <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                <label class="control-label col-md-4 col-xs-4"></label>
+                                                <div class="input-group left-addon col-md-4 col-xs-4">
+                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
+                                                            <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
+                                                        <div>
+													<span class="btn default btn-file">
+														<span class="fileinput-new"> Select image </span>
+														<span class="fileinput-exists"> Change </span>
+														<input type="file" name="foto1" id="foto1"> </span>
+
+                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-offset-3 col-md-9">
+                                            <a href="javascript:;" class="btn default button-previous">
+                                                <i class="fa fa-angle-left"></i> Atras </a>
+                                            <a href="javascript:;" class="btn btn-outline green button-next"> Siguiente
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                            <button href="javascript:;" class="btn green button-submit" name="btn1" value="registrar"> Submit
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                            <input type="hidden" id="formulario" name="formulario" value="Registrar"/>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- END CONTENT BODY -->
+    </div>
+    <!-- END CONTENT BODY -->
 
     <!-- END CONTENT -->
 
 </div>
 <!-- END CONTAINER -->
-    <!--[if lt IE 9]>
-    <script src="../assets/global/plugins/respond.min.js"></script>
-    <script src="../assets/global/plugins/excanvas.min.js"></script>
-    <script src="../assets/global/plugins/ie8.fix.min.js"></script>
-    <![endif]-->
-    <!-- BEGIN CORE PLUGINS -->
-    <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <!-- END CORE PLUGINS -->
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
-    <!-- END PAGE LEVEL PLUGINS -->
-    <!-- BEGIN THEME GLOBAL SCRIPTS -->
-    <script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
-    <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
-    <!-- END THEME GLOBAL SCRIPTS -->
-    <!-- BEGIN PAGE LEVEL SCRIPTS -->
-    <script src="../assets/pages/scripts/wizard-user.js" type="text/javascript"></script>
-    <!-- END PAGE LEVEL SCRIPTS -->
-    <!-- BEGIN THEME LAYOUT SCRIPTS -->
-    <script src="../assets/layouts/layout2/scripts/layout.min.js" type="text/javascript"></script>
-    <script src="../assets/layouts/layout2/scripts/demo.min.js" type="text/javascript"></script>
-    <script src="../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
-    <script src="../assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
-    <!-- END THEME LAYOUT SCRIPTS -->
-    <script>
-        $(document).ready(function()
+<!--[if lt IE 9]>
+<script src="../assets/global/plugins/respond.min.js"></script>
+<script src="../assets/global/plugins/excanvas.min.js"></script>
+<script src="../assets/global/plugins/ie8.fix.min.js"></script>
+<![endif]-->
+<!-- BEGIN CORE PLUGINS -->
+<script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+<script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
+<script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<!-- END THEME GLOBAL SCRIPTS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="../assets/pages/scripts/wizard-user.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<!-- BEGIN THEME LAYOUT SCRIPTS -->
+<script src="../assets/layouts/layout2/scripts/layout.min.js" type="text/javascript"></script>
+<script src="../assets/layouts/layout2/scripts/demo.min.js" type="text/javascript"></script>
+<script src="../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+<script src="../assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
+<!-- END THEME LAYOUT SCRIPTS -->
+<script>
+    $(document).ready(function()
+    {
+        $('#clickmewow').click(function()
         {
-            $('#clickmewow').click(function()
-            {
-                $('#radio1003').attr('checked', 'checked');
-            });
-        })
-    </script>
+            $('#radio1003').attr('checked', 'checked');
+        });
+    })
+</script>
 
 </body>
 
