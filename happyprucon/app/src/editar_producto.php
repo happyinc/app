@@ -1,19 +1,4 @@
-<?php
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
-require'../class/sessions.php';
-$objSe = new Sessions();
-$objSe->init();
 
-$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
-$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
-$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
-
-
-if($rol!=2){
-    echo "<script> alert('Usuario no autorizado');
-					window.location.assign('logueo.html');</script>";
-}	
- ?>
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
@@ -36,29 +21,48 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN HEAD -->
 
     <head>
-        <?php
-		include "include_css.php";
-		require_once'../../externo/plugins/PDOModel.php';
-		
-		  $id = "";
+	<?php
+	error_reporting(E_ERROR | E_WARNING | E_PARSE);
+	require'../class/sessions.php';
+	$objSe = new Sessions();
+	$objSe->init();
+
+	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
+
+
+	if($rol!=2){
+		echo "<script> alert('Usuario no autorizado');
+						window.location.assign('logueo.html');</script>";
+	}	
+	
+	date_default_timezone_set("America/Bogota");
+	
+	include "include_css.php";
+	require_once'../../externo/plugins/PDOModel.php';
+	
+	/* $id_producto = "";
         if(isset($_POST["id"]) && $_POST["id"] != "")
         {
-            $id = $_POST["id"];
+            $id_producto = $_POST["id"];
         }
         elseif(isset($_GET["id"]) && $_GET["id"] != "")
         {
-             $id = $_GET["id"];
-        }
+             $id_producto = $_GET["id"];
+        }*/
 		?>
+		<!--<link href="../../externo/plugins/dist/dropzone.css" type="text/css" rel="stylesheet" />-->
 		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
-		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script> 
+		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+		<!--<script src="../../externo/plugins/dropzone.js"></script>-->
 		<script type="text/javascript">
 			//funcion que oculta y muestra div eniendo en cuenta la opcion seleccionada por el usuario
 			function mostrarReferencia(){
-				if (document.crear_producto.composicion[0].checked == true) {
+				if (document.editar_producto.composicion[0].checked == true) {
 					document.getElementById('dat_com').style.display='block';
 				} 
-				else if (document.crear_producto.composicion[0].checked == false || document.crear_producto.composicion[1].checked == true){
+				else if (document.editar_producto.composicion[0].checked == false || document.editar_producto.composicion[1].checked == true){
 					document.getElementById('dat_com').style.display='none';
 				}
 				
@@ -67,38 +71,6 @@ License: You must have a valid license purchased only from themeforest(the above
 				}
 				
 			}
-			
-			//funcion que comprueba el tipo de archivo permitido a subir
-			function comprueba_extension(formulario, archivo) { 
-			   extensiones_permitidas = new Array(".png", ".jpg", ".jpeg", ".bmp"); 
-			   mierror = ""; 
-			   if (!archivo) { 
-				  //Si no tengo archivo, es que no se ha seleccionado un archivo en el formulario 
-					mierror = "No has seleccionado ningún archivo"; 
-			   }else{ 
-				  //recupero la extensión de este nombre de archivo 
-				  extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase(); 
-				  //alert (extension); 
-				  //compruebo si la extensión está entre las permitidas 
-				  permitida = false; 
-				  for (var i = 0; i < extensiones_permitidas.length; i++) { 
-					 if (extensiones_permitidas[i] == extension) { 
-					 permitida = true; 
-					 break; 
-					 } 
-				  } 
-				  if (!permitida) { 
-					 mierror = "Comprueba la extensión de los archivos a subir. \nSólo se pueden subir archivos con extensiones: " + extensiones_permitidas.join(); 
-					}else{
-					 //alert ("Todo correcto."); 
-					 formulario.submit(); 
-					 return 1; 
-					} 
-			   } 
-			   //si estoy aqui es que no se ha podido hace el submit
-			   alert (mierror); 
-			   return 0; 
-			} 
 			
 			// para buscar e insertar composiciones 
 			$(document).ready(function(){
@@ -133,55 +105,93 @@ License: You must have a valid license purchased only from themeforest(the above
 				x--; //Decrement field counter
 				});
 			});
+			
+			//tooltip de nootificacion para el porcentaje correspondiente a happy
+				$(document).ready(function(){
+					$('[data-toggle="tooltip"]').tooltip(); 
+				});
+	
+			
 			</script>
 			
 	    <?
+		
+		$id_producto = 108;
 		$objProd = new PDOModel();
-		$objProd->where("id", $id);
-		$res =  $objProd->select("producto");
-		foreach($res as $producto){
-			
-		}
+		$objProd->where("id", $id_producto);
+		$producto =  $objProd->select("producto");
+		
 		
 		if(isset($_POST["formulario"]) && $_POST["formulario"] == "editar_producto" ){
 		
-			?>
-			   <script type="text/javascript">//alert("foto: <? echo $_POST['foto']?> ")</script>
-               <? 
 				$objConn = new PDOModel();
 				$updateData["id_categoria"] = $_POST["categoria"];
 				$updateData["nombre"] = $_POST["nombre"]; 
 				$updateData["descripcion"] = $_POST["descripcion"];
+				$updateData["especial"] = $_POST["especialidad"];
 				$updateData["precio"] = $_POST["precio"];
-				$objConn->where("id", 40);
-				$objConn->insert('producto', $updateData);
-				//$aa=filesize($_POST['foto']);
-				//$archivo_size
-				$actu $objConn->rowsChanged;
-				if($actu!= ""){
-					if(isset($_POST['foto'])){
-						if( $_FILES['foto']['size'] > 300000){
-							$ruta_archivo_a_subir = $_FILES['foto']['tmp_name'];
+				$updateData["fecha"] = date("Y-m-d H:i:s"); 
+				$objConn->where("id", $id_producto);
+				$objConn->update('producto', $updateData);
 
-							$directorio = "usuarios/".$usu_id."/bienes/".$id_producto."";
+				$product= $objConn->rowsChanged;
+				
+				if($product == 1){
+					
+					if($_FILES['foto']["size"]>=1){
+						 // Primero, hay que validar que se trata de un JPG/GIF/PNG
+						$allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
+						$extension = end(explode(".", $_FILES["foto"]["name"]));
+						if ((($_FILES["foto"]["type"] == "image/gif")
+								|| ($_FILES["foto"]["type"] == "image/jpeg")
+								|| ($_FILES["foto"]["type"] == "image/png")
+								|| ($_FILES["foto"]["type"] == "image/gif")
+								|| ($_FILES["foto"]["type"] == "image/bmp"))
+								&& in_array($extension, $allowedExts)) 
+						{
+							// el archivo es un JPG/GIF/PNG, entonces...
+							
+							$extension = end(explode('.', $_FILES['foto']['name']));
+							$foto = substr(md5(uniqid(rand())),0,10).".".$extension;
+							$directorio = "usuarios/".$usu_id."/bienes/".$id_producto.""; // directorio de tu elección
 							if(file_exists($directorio)) 
-							{
-										  
-							} 
-							else 
-							{
-								mkdir($directorio, 0777, true);
-							}
-								
-							$ruta_destino = $directorio. '/' . $_FILES['foto']['name'];
-							if( move_uploaded_file($ruta_archivo_a_subir, $ruta_destino))
-							{
-		 
-							}
-						}else {
-							echo "no se puede subir la imagen, se excede la tamaño permitido"; 
+											{
+												
+											} 
+											else 
+											{
+												mkdir($directorio, 0777, true);
+											}
+							
+							// almacenar imagen en el servidor
+							move_uploaded_file($_FILES['foto']['tmp_name'], $directorio.'/'.$foto);
+							$minFoto = 'min_'.$foto;
+							$resFoto = 'res_'.$foto;
+							resizeImagen($directorio.'/', $foto, 65, 65,$minFoto,$extension);
+							resizeImagen($directorio.'/', $foto, 500, 500,$resFoto,$extension);
+							unlink($directorio.'/'.$foto);
+							
+						} else { // El archivo no es JPG/GIF/PNG
+							$malformato = $_FILES["foto"]["type"];
+							?>
+							<script type="text/javascript">
+							alert("La imagen se encuentra con formato incorrecto")
+							window.history.back();
+							</script>
+							<?	
+							//header("Location: crear_producto.php?id=echo $usu_id");
+						  }
+						
+					} else { // El campo foto NO contiene una imagen
+							
+							?>
+							<script type="text/javascript">
+							alert("No se ha seleccionado imagenes");
+							window.history.back();
+							</script>
+							<?	
 						}
-					}
+					
 					if($_POST["composicion"]=="si"){
 						
 						foreach($_POST['field_name'] as $clave => $valor)
@@ -190,26 +200,94 @@ License: You must have a valid license purchased only from themeforest(the above
 							$insertDataComp["id_producto"] = $id_producto;
 							$objConn->insert('composicion_producto', $insertDataComp);
 						}
-					}
-					?>
-						
-						<script type="text/javascript">alert("el producto se actualizo de forma exitosa con el id: <? echo $id_producto?>, desea asignar la disponibilidad")</script>
-					<?	
+					}	
 				}
 				else{
 					?>
 						<script type="text/javascript">alert("No se pudo actualizar el producto")</script>
 					<?
+					
 				}
-				
 		}		
-		 
+		  
+		####
+		## Función para redimencionar las imágenes
+		## utilizando las librerías de GD de PHP
+		####
+
+		function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
+			$rutaImagenOriginal = $ruta.$nombre;
+			if($extension == 'GIF' || $extension == 'gif'){
+			$img_original = imagecreatefromgif($rutaImagenOriginal);
+			}
+			if($extension == 'jpg' || $extension == 'JPG'){
+			$img_original = imagecreatefromjpeg($rutaImagenOriginal);
+			}
+			if($extension == 'png' || $extension == 'PNG'){
+			$img_original = imagecreatefrompng($rutaImagenOriginal);
+			}
+			if($extension == 'bmp' || $extension == 'BMP'){
+			$img_original = imagecreatefrombmp($rutaImagenOriginal);
+			}
+			if($extension == 'jpeg' || $extension == 'JPEG'){
+			$img_original = imagecreatefromjpeg($rutaImagenOriginal);
+			}
+			$max_ancho = $ancho;
+			$max_alto = $alto;
+			list($ancho,$alto)=getimagesize($rutaImagenOriginal);
+			$x_ratio = $max_ancho / $ancho;
+			$y_ratio = $max_alto / $alto;
+			if( ($ancho <= $max_ancho) && ($alto <= $max_alto) ){//Si ancho 
+			$ancho_final = $ancho;
+				$alto_final = $alto;
+			} elseif (($x_ratio * $alto) < $max_alto){
+				$alto_final = ceil($x_ratio * $alto);
+				$ancho_final = $max_ancho;
+			} else{
+				$ancho_final = ceil($y_ratio * $ancho);
+				$alto_final = $max_alto;
+			}
+			$tmp=imagecreatetruecolor($ancho_final,$alto_final);
+			imagecopyresampled($tmp,$img_original,0,0,0,0,$ancho_final, $alto_final,$ancho,$alto);
+			imagedestroy($img_original);
+			$calidad=70;
+			imagejpeg($tmp,$ruta.$nombreN,$calidad);
+			
+		}
 		?>
-		
-		</head>
+		<script>
+		function alertaProductoActualizado() 
+		{
+			var id_producto=<?echo $id_producto?>;
+			if(id_producto >=1)
+			{
+						swal({
+								title:"Producto con el id:" + <? echo $id_producto?>+"ha sido actualizado",
+								text: "¿Desea asignar la disponibilidad al producto?",
+								type: "success",
+								showCancelButton: true,
+								confirmButtonClass: "btn-danger",
+								confirmButtonText: "Si, deseo hacerlo!",
+								cancelButtonText: "No",
+								closeOnConfirm: false,
+								closeOnCancel: false
+						},
+						function(isConfirm) {
+							if (isConfirm) {
+								swal("Ir", "En un momento sera dirigido a la pagina de asignacion de disponibilidades.", "success");
+								location.href="gestion_disponibilidad.php?id_prod="+id_producto+"";
+							} else {
+								swal("Cancelar","error");
+								//location.href="gestion_producto.php
+							}
+						});
+			}
+		}
+		</script>
+	</head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProductoActualizado()">
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -359,6 +437,12 @@ License: You must have a valid license purchased only from themeforest(the above
 											<div class="input-icon">
 												<select class="form-control" id="categoria" name="categoria">
 													<?php
+													/*if(isset($producto[0]['categoria']) && $producto[0]['categoria'] != "")
+                                                    {
+														//pendiente
+													}
+													else
+													{*/
 														$objCat = new PDOModel();
 														$objCat->where("id_estado", 1);
 														$objCat->orderByCols = array("nombre");
@@ -377,10 +461,11 @@ License: You must have a valid license purchased only from themeforest(the above
 																?>
 															</optgroup><?php
 														}
+													//}
 													?>
 												</select>
 												<div class="form-control-focus"> </div>
-												<span class="help-block">Seleccione la categoria del producto a crear</span>
+												<span class="help-block">Seleccione la categoria del producto</span>
 												<i class="fa fa-clone"></i>
 											</div>
 										</div>
@@ -389,9 +474,9 @@ License: You must have a valid license purchased only from themeforest(the above
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
-												<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto">
+												<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" value ="<? echo $producto[0]['nombre']; ?>">
 													<div class="form-control-focus"> </div>
-													<span class="help-block required">Digite el nombre del producto a crear *</span>
+													<span class="help-block required">Digite el nombre del producto *</span>
 													<i class="fa fa-tags"></i>
 											</div>
 										</div>
@@ -400,9 +485,9 @@ License: You must have a valid license purchased only from themeforest(the above
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
-												<textarea class="form-control" rows="3" id="descripcion" name="descripcion" placeholder="Descripcion del producto"></textarea>
+												<textarea class="form-control" rows="3" id="descripcion" name="descripcion" placeholder="Descripcion del producto"><? echo $producto[0]['descripcion']; ?></textarea>
 													<div class="form-control-focus"> </div>
-													<span class="help-block">Digite la descripcion del producto a crear</span>
+													<span class="help-block">Digite la descripcion del producto </span>
 													<i class="fa fa-file-text-o"></i>
 											</div>
 										</div>
@@ -411,9 +496,9 @@ License: You must have a valid license purchased only from themeforest(the above
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
-												<input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del producto">
+												<input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del producto" data-toggle="tooltip" data-placement="top" title="De este valor digitado a happy le corresponde el 2%." value ="<? echo $producto[0]['precio']; ?>">
 													<div class="form-control-focus"> </div>
-													<span class="help-block required">Digite el valor del producto a crear *</span>
+													<span class="help-block required">Digite el valor del producto *</span>
 													<i class="fa fa-money"></i>
 											</div>
 										</div>
@@ -428,8 +513,12 @@ License: You must have a valid license purchased only from themeforest(the above
 												</label>
 												</div>
 												<div class="radio-list">
+												<?/*if($_POST['composicion'] == "si") 
+												{?> 
+													// Realizas las acciones y asi sucesivamente con los demas 
+												<?}*/?>
 													<label> <input type="radio" id="composicion_0" name="composicion" value="si" data-title="si" onclick="mostrarReferencia();"/>Si</label>
-													<label> <input type="radio" id="composicion_1" name="composicion" value="no" data-title="no" checked onclick="mostrarReferencia();"/> No </label>
+													<label> <input type="radio" id="composicion_1" name="composicion" value="no" data-title="no" onclick="mostrarReferencia();"/> No </label>
 												</div>
 												<i class="fa fa-list-alt"></i>
 											</div>
@@ -448,6 +537,31 @@ License: You must have a valid license purchased only from themeforest(the above
 									</div>
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<div class="input-icon">
+												<div>
+												<label class="control-label col-md-3">¿El producto es su especialidad?
+													<span class="required"> * </span>
+												</label>
+												</div>
+												<div class="radio-list">
+													<?if($producto[0]['especial'] == "s") 
+													{?> 
+														<label> <input type="radio" id="especialidad_0" name="especialidad" value="s" data-title="si" checked />Si</label>
+														<label> <input type="radio" id="especialidad_1" name="especialidad" value="n" data-title="no"/> No</label>
+													<?}
+													else if ($producto[0]['especial'] == "n")
+													{?>
+														<label> <input type="radio" id="especialidad_0" name="especialidad" value="s" data-title="si"/>Si</label>
+														<label> <input type="radio" id="especialidad_1" name="especialidad" value="n" data-title="no" checked /> No</label>
+													<?}?>
+												
+												</div>
+												<i class="fa fa-list-alt"></i>
+											</div>
+										</div>
+									</div>
+									<div class="form-group form-md-line-input dropzone">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="fileinput fileinput-new" data-provides="fileinput">
 												<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
 													<img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
@@ -458,7 +572,6 @@ License: You must have a valid license purchased only from themeforest(the above
 														<span class="fileinput-exists"> Cambiar </span>
 														<input type="file" name="foto" id="foto"> 
 													</span>
-														<input  class="btn blue" type=button name="Submit" value="Enviar" onclick="comprueba_extension(this.form, this.form.foto.value)"> 
 													<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
 												</div> 
 											</div>
@@ -466,7 +579,7 @@ License: You must have a valid license purchased only from themeforest(the above
 									</div>
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<button type="submit" class="btn blue" name="guardar" id="guardar" value="guardar"> editar producto </button>
+											<button type="submit" class="btn blue" name="guardar" id="guardar" value="guardar"> Editar producto </button>
 											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
 										</div>
 									</div>
@@ -500,25 +613,23 @@ License: You must have a valid license purchased only from themeforest(the above
 			<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
 			<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
 			<script>
-			// fucion que persnaliza el select dependiente de la categoria
-			var ComponentsBootstrapSelectSplitter = function() {
-				var selectSplitter = function() {
-					$('#categoria').selectsplitter({
-						selectSize: 1
-					});
-				}
-
-				return {
-					//main function to initiate the module
-					init: function() {
-						selectSplitter();
+				// fucion que persnaliza el select dependiente de la categoria
+				var ComponentsBootstrapSelectSplitter = function() {
+					var selectSplitter = function() {
+						$('#categoria').selectsplitter({
+							selectSize: 1
+						});
 					}
-				};
 
-			}();
-		
-			
-	</script>
+					return {
+						//main function to initiate the module
+						init: function() {
+							selectSplitter();
+						}
+					};
+
+				}();
+			</script>
     </body>
 
 </html>

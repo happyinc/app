@@ -27,7 +27,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	$objSe = new Sessions();
 	$objSe->init();
 
-	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
+	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
 	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
@@ -115,12 +115,14 @@ License: You must have a valid license purchased only from themeforest(the above
 				$insertData["id_estado"] = 1;
 				$insertData["nombre"] = $_POST["nombre"]; 
 				$insertData["descripcion"] = $_POST["descripcion"];
+				$insertData["especial"] = $_POST["especialidad"];
 				$insertData["precio"] = $_POST["precio"];
 				$insertData["fecha"] = date("Y-m-d H:i:s"); 
 				$insertData["id_usu_crea"] = $usu_id ;
 				$objConn->insert('producto', $insertData);
 
 				$id_producto= $objConn->lastInsertId;
+				
 				if($id_producto!= ""){
 					
 					if($_FILES['foto']["size"]>=1){
@@ -134,7 +136,6 @@ License: You must have a valid license purchased only from themeforest(the above
 								|| ($_FILES["foto"]["type"] == "image/bmp"))
 								&& in_array($extension, $allowedExts)) 
 						{
-							// el archivo es un JPG/GIF/PNG, entonces...
 							
 							$extension = end(explode('.', $_FILES['foto']['name']));
 							$foto = substr(md5(uniqid(rand())),0,10).".".$extension;
@@ -159,9 +160,11 @@ License: You must have a valid license purchased only from themeforest(the above
 						} else { // El archivo no es JPG/GIF/PNG
 							$malformato = $_FILES["foto"]["type"];
 							?>
-							<script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
+							<script type="text/javascript">
+								alert("La imagen se encuentra con formato incorrecto")
+								window.history.back();
+							</script>
 							<?	
-							//header("Location: crear_producto.php?id=echo $usu_id");
 						  }
 						
 					} else { // El campo foto NO contiene una imagen
@@ -182,9 +185,7 @@ License: You must have a valid license purchased only from themeforest(the above
 							$insertDataComp["id_producto"] = $id_producto;
 							$objConn->insert('composicion_producto', $insertDataComp);
 						}
-					}
-					
-						
+					}	
 				}
 				else{
 					?>
@@ -258,7 +259,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						function(isConfirm) {
 							if (isConfirm) {
 								swal("Ir", "En un momento sera dirigido a la pagina de asignacion de disponibilidades.", "success");
-								location.href="ver_disponibilidad.php?activar="+id_producto+"";
+								location.href="gestion_disponibilidad.php?id_prod="+id_producto+"";
 							} else {
 								swal("Cancelar","error");
 								location.href="gestion_producto.php
@@ -490,7 +491,7 @@ License: You must have a valid license purchased only from themeforest(the above
 												</div>
 												<div class="radio-list">
 													<label> <input type="radio" id="composicion_0" name="composicion" value="si" data-title="si" onclick="mostrarReferencia();"/>Si</label>
-													<label> <input type="radio" id="composicion_1" name="composicion" value="no" data-title="no" checked onclick="mostrarReferencia();"/> No </label>
+													<label> <input type="radio" id="composicion_1" name="composicion" value="no" data-title="no" onclick="mostrarReferencia();"/> No </label>
 												</div>
 												<i class="fa fa-list-alt"></i>
 											</div>
@@ -507,6 +508,22 @@ License: You must have a valid license purchased only from themeforest(the above
 											</div>
 										</div>
 									</div>
+									<div class="form-group form-md-line-input">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<div class="input-icon">
+												<div>
+												<label class="control-label col-md-3">¿El producto es su especialidad?
+													<span class="required"> * </span>
+												</label>
+												</div>
+												<div class="radio-list">
+													<label> <input type="radio" id="especialidad_0" name="especialidad" value="s" data-title="si"/>Si</label>
+													<label> <input type="radio" id="especialidad_1" name="especialidad" value="n" data-title="no"/> No </label>
+												</div>
+												<i class="fa fa-star"></i>
+											</div>
+										</div>
+									</div>
 									<div class="form-group form-md-line-input dropzone">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="fileinput fileinput-new" data-provides="fileinput">
@@ -518,10 +535,8 @@ License: You must have a valid license purchased only from themeforest(the above
 														<span class="fileinput-new"> Seleccione la imagen </span>
 														<span class="fileinput-exists"> Cambiar </span>
 														<input type="file" name="foto" id="foto"> 
-														
 													</span>
-													<input  class="btn blue" type="submit"
-													name="submit" value="enviar" > <!--onclick="comprueba_extension(this.form, this.form.foto.value)"-->
+													
 													<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
 												</div> 
 											</div>
@@ -563,25 +578,23 @@ License: You must have a valid license purchased only from themeforest(the above
 			<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
 			<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
 			<script>
-			// fucion que persnaliza el select dependiente de la categoria
-			var ComponentsBootstrapSelectSplitter = function() {
-				var selectSplitter = function() {
-					$('#categoria').selectsplitter({
-						selectSize: 1
-					});
-				}
-
-				return {
-					//main function to initiate the module
-					init: function() {
-						selectSplitter();
+				// fucion que persnaliza el select dependiente de la categoria
+				var ComponentsBootstrapSelectSplitter = function() {
+					var selectSplitter = function() {
+						$('#categoria').selectsplitter({
+							selectSize: 1
+						});
 					}
-				};
 
-			}();
-		
-			
-	</script>
+					return {
+						//main function to initiate the module
+						init: function() {
+							selectSplitter();
+						}
+					};
+
+				}();
+			</script>
     </body>
 
 </html>
