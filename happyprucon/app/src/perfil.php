@@ -133,9 +133,64 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- END PAGE HEADER-->
             <!-- BEGIN BOX BODY     CONTENIDO AQUI !!!!!!!!!! -->
             <div class="portlet light">
+                <?php
+                if(isset($_POST["btn1"])) {
+                    $btn = $_POST["btn1"];
+
+                    if ($btn == "Cambiar") {
+                        $objConn = new PDOModel();
+                        $updateUserData["password"] = md5($_POST['password']);
+                        $objConn->where("id", $usu_id);
+                        $objConn->update("usuarios", $updateUserData);
+
+                        if ($objConn != "") {
+                            echo "<script> alert('Cambio exitoso');</script>";
+                        } else {
+                            echo "<script> alert('Error: La contraseña no se pudo actualizar');</script>";
+                        }
+                    }
+
+                    if ($btn == "Actualizar"){
+                        $objConn = new PDOModel();
+                        $updateUserData["nombre_completo"] = $_POST['fullname']." ".$_POST['lastname'];
+                        $updateUserData["nombre"] = $_POST['fullname'];
+                        $updateUserData["apellido"] = $_POST['lastname'];
+                        $updateUserData["genero"] = $_POST['genero'];
+                        $updateUserData["telefono"] = $_POST['cell'];
+                        $updateUserData["correo"] = $_POST['username'];
+                        $objConn->where("id", $_POST['iduser']);
+                        $objConn->update("usuarios", $updateUserData);
+
+                        if($objConn != ""){
+                            $objConn = new PDOModel();
+                            $objConn->where("id",$_POST['iduser']);
+                            $res_usu =  $objConn->select("usuarios");
+
+                            $objSe->init();
+                            $objSe->set('id', $res_usu[0]['id']);
+                            $objSe->set('id_roles', $res_usu[0]['id_roles']);
+                            $objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
+                            $objSe->set('nombre', $res_usu[0]['nombre']);
+                            $objSe->set('apellido', $res_usu[0]['apellido']);
+                            $objSe->set('genero', $res_usu[0]['genero']);
+                            $objSe->set('telefono', $res_usu[0]['telefono']);
+                            $objSe->set('correo', $res_usu[0]['correo']);
+
+                            echo "<script> alert('Usuario actualizado correctamente');
+                        window.location.assign('../../app/src/perfil.php');</script>";
+                        }else{
+                            echo "<script> alert('No se pudo actualizar');</script>";
+                        }
+                    }
+
+
+
+
+                }
+                ?>
 
                 <!-- BEGIN FORM-->
-                <form action="../class/actualiza_user.php" class="form-horizontal" method="post">
+                <form action="" class="form-horizontal" method="post">
                     <div class="form-body">
                         <div class="alert alert-danger display-hide">
                             <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
@@ -177,31 +232,13 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div class="form-actions">
                         <div class="row">
                             <div class="col-md-offset-3 col-md-9">
-                                <button type="submit" id="register-submit-btn" class="btn blue" name="actualizar" id="actualizar">Actualizar</button>
+                                <input type="submit" id="register-submit-btn" class="btn blue" name="btn1" value="Actualizar"/>
                             </div>
                         </div>
                     </div>
                 </form>
                 <!-- END FORM-->
                 <!-- BEGIN FORM PASSWORD-->
-                <?php
-                if(isset($_POST["btn1"])) {
-                    $btn = $_POST["btn1"];
-
-                    if ($btn == "Cambiar") {
-                        $objConn = new PDOModel();
-                        $updateUserData["password"] = md5($_POST['password']);
-                        $objConn->where("id", $usu_id);
-                        $objConn->update("usuarios", $updateUserData);
-
-                        if ($objConn != "") {
-                            echo "<script> alert('Cambio exitoso');</script>";
-                        } else {
-                            echo "<script> alert('Error: La contraseña no se pudo actualizar');</script>";
-                        }
-                    }
-                }
-                ?>
                 <script language="JavaScript">
                     function validar(f) {
                         if(f.password.value != "" && (f.password.value == f.repassword.value)){

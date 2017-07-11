@@ -41,6 +41,10 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- END GLOBAL MANDATORY STYLES -->
     <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
     <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -585,24 +589,43 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                     </p>
                                                 </h4>
                                             </div>
-                                            <div class="form-group form-md-line-input has-info form-md-floating-label">
-                                                <label class="control-label col-md-4 col-xs-4"></label>
-                                                <div class="input-group left-addon col-md-4 col-xs-4">
-                                                    <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
-                                                            <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
-                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
-                                                        <div>
-													<span class="btn default btn-file">
-														<span class="fileinput-new"> Select image </span>
-														<span class="fileinput-exists"> Change </span>
-														<input type="file" name="foto1" id="foto1"> </span>
-
-                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
-                                                        </div>
+                                            <div class="row fileupload-buttonbar">
+                                                <div class="col-lg-7">
+                                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                                    <span class="btn green fileinput-button">
+                                            <i class="fa fa-plus"></i>
+                                            <span> Add files... </span>
+                                            <input type="file" name="files[]" multiple=""> </span>
+                                                    <button type="submit" class="btn blue start">
+                                                        <i class="fa fa-upload"></i>
+                                                        <span> Start upload </span>
+                                                    </button>
+                                                    <button type="reset" class="btn warning cancel">
+                                                        <i class="fa fa-ban-circle"></i>
+                                                        <span> Cancel upload </span>
+                                                    </button>
+                                                    <button type="button" class="btn red delete">
+                                                        <i class="fa fa-trash"></i>
+                                                        <span> Delete </span>
+                                                    </button>
+                                                    <input type="checkbox" class="toggle">
+                                                    <!-- The global file processing state -->
+                                                    <span class="fileupload-process"> </span>
+                                                </div>
+                                                <!-- The global progress information -->
+                                                <div class="col-lg-5 fileupload-progress fade">
+                                                    <!-- The global progress bar -->
+                                                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                                        <div class="progress-bar progress-bar-success" style="width:0%;"> </div>
                                                     </div>
+                                                    <!-- The extended global progress information -->
+                                                    <div class="progress-extended"> &nbsp; </div>
                                                 </div>
                                             </div>
+                                            <!-- The table listing the files available for upload/download -->
+                                            <table role="presentation" class="table table-striped clearfix">
+                                                <tbody class="files"> </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -648,6 +671,21 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
 <script src="../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
+<!-- PLUGIN PARA FILE UPLOAD -->
+<script src="../assets/global/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/js/vendor/tmpl.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/js/vendor/load-image.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/js/vendor/canvas-to-blob.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/js/jquery.iframe-transport.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/js/jquery.fileupload.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/js/jquery.fileupload-process.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/js/jquery.fileupload-image.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/js/jquery.fileupload-audio.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/js/jquery.fileupload-video.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/js/jquery.fileupload-validate.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-file-upload/js/jquery.fileupload-ui.js" type="text/javascript"></script>
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
@@ -659,6 +697,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
 <script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
 <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/form-fileupload.min.js" type="text/javascript"></script>
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="../assets/pages/scripts/wizard-user.js" type="text/javascript"></script>
