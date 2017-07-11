@@ -51,6 +51,7 @@ License: You must have a valid license purchased only from themeforest(the above
         {
              $id_producto = $_GET["id"];
         }*/
+	$id_producto = 115;
 		?>
 		<!--<link href="../../externo/plugins/dist/dropzone.css" type="text/css" rel="stylesheet" />-->
 		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
@@ -74,20 +75,42 @@ License: You must have a valid license purchased only from themeforest(the above
 			
 			// para buscar e insertar composiciones 
 			$(document).ready(function(){
-				var maxField = 10; //Input fields increment limitation
+				var maxField = 11; //Input fields increment limitation
 				var addButton = $('.add_button'); //Add button selector
 				var wrapper = $('.field_wrapper'); //Input field wrapper
 				var fieldHTML = '<div>'+
 				'<select class="form-control" id="field_name[]" name="field_name[]">'+
-				'<option selected="selected" value=""></option>'+
+				//'<option selected="selected" value=""></option>'+
 					<?
 					$objConn1 = new PDOModel();
-					$objConn1->where("id_estado", 1);
-					$objConn1->orderByCols = array("nombre");
-					$result2 =  $objConn1->select("composicion");
-					foreach($result2 as $item2)
-					{
-						?>'<option value="<?php echo $item2["id"]?>"><?php echo $item2["nombre"]?></option>'+<?php
+					$objConn1->where("id_producto", $id_producto);
+					$result2 =  $objConn1->select("composicion_producto");
+					
+					$totfilas=$objConn1->totalRows;
+					if($totfilas >=1){
+						foreach($result2 as $item2)
+						{
+							
+							$objConn1->where("id", $item2["id_composicion"]);
+							$objConn1->orderByCols = array("nombre");
+							$result3 =  $objConn1->select("composicion");
+							foreach($result3 as $item3)
+							{
+								?>'<option selected="selected" value="<?php echo $item3["id"]?>"><?php echo $item3["nombre"]?></option>'+<?php
+							}
+						}
+					}
+					else {
+						?>'<option selected="selected" value=""></option>'+
+						<?
+						$objConn1->where("id_estado", 1);
+						$objConn1->orderByCols = array("nombre");
+						$result2 =  $objConn1->select("composicion");
+						foreach($result2 as $item2)
+						{
+							?>'<option value="<?php echo $item2["id"]?>"><?php echo $item2["nombre"]?></option>'+<?php
+						}
+						
 					}
 					?>
 				'</select>'+
@@ -102,6 +125,18 @@ License: You must have a valid license purchased only from themeforest(the above
 				$(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
 				e.preventDefault();
 				$(this).parent('div').remove(); //Remove field html
+					var parametros = <?echo $id_producto?>;
+					$.ajax({
+							data:  parametros, //datos que se envian a traves de ajax
+							url:   '../ajax/eliminar_comp.php', //archivo que recibe la peticion
+							type:  'post', //método de envio
+							beforeSend: function () {
+									$("#resultado").html("Procesando, espere por favor...");
+							},
+							success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
+									$("#resultado").html(response);
+							}
+					});
 				x--; //Decrement field counter
 				});
 			});
@@ -116,16 +151,18 @@ License: You must have a valid license purchased only from themeforest(the above
 			
 	    <?
 		
-		$id_producto = 108;
+		
 		$objProd = new PDOModel();
 		$objProd->where("id", $id_producto);
 		$producto =  $objProd->select("producto");
 		
 		
-		if(isset($_POST["formulario"]) && $_POST["formulario"] == "editar_producto" ){
-		
+		if(isset($_POST["formulario"]) && $_POST["formulario"] == "editar_producto" )
+		{
+			
+			if(isset($_POST["accion"]) && $_POST["accion"]=="Editar")
+			{
 				$objConn = new PDOModel();
-				$updateData["id_categoria"] = $_POST["categoria"];
 				$updateData["nombre"] = $_POST["nombre"]; 
 				$updateData["descripcion"] = $_POST["descripcion"];
 				$updateData["especial"] = $_POST["especialidad"];
@@ -136,7 +173,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 				$product= $objConn->rowsChanged;
 				
-				if($product == 1){
+				
 					
 					if($_FILES['foto']["size"]>=1){
 						 // Primero, hay que validar que se trata de un JPG/GIF/PNG
@@ -152,7 +189,7 @@ License: You must have a valid license purchased only from themeforest(the above
 							// el archivo es un JPG/GIF/PNG, entonces...
 							
 							$extension = end(explode('.', $_FILES['foto']['name']));
-							$foto = substr(md5(uniqid(rand())),0,10).".".$extension;
+							$foto = "producto".".".$extension;
 							$directorio = "usuarios/".$usu_id."/bienes/".$id_producto.""; // directorio de tu elección
 							if(file_exists($directorio)) 
 											{
@@ -179,7 +216,6 @@ License: You must have a valid license purchased only from themeforest(the above
 							window.history.back();
 							</script>
 							<?	
-							//header("Location: crear_producto.php?id=echo $usu_id");
 						  }
 						
 					} else { // El campo foto NO contiene una imagen
@@ -191,7 +227,7 @@ License: You must have a valid license purchased only from themeforest(the above
 							</script>
 							<?	
 						}
-					
+				if($product == 1){
 					if($_POST["composicion"]=="si"){
 						
 						foreach($_POST['field_name'] as $clave => $valor)
@@ -208,6 +244,26 @@ License: You must have a valid license purchased only from themeforest(the above
 					<?
 					
 				}
+			}
+			
+			else if(isset($_POST["accion"]) && $_POST["accion"]=="Eliminar"){
+				$objConn = new PDOModel();
+				$updateData["id_estado"] = 2;
+				$objConn->where("id", $id_producto);
+				$objConn->update('producto', $updateData);
+
+				$product= $objConn->rowsChanged;
+				if($product == 1){
+					?>
+						<script type="text/javascript">alert("Se elimino el producto")</script>
+					<?
+				}
+				else{
+					?>
+						<script type="text/javascript">alert("No se pudo eliminar el producto")</script>
+					<?
+				}
+			}
 		}		
 		  
 		####
@@ -256,7 +312,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		}
 		?>
 		<script>
-		function alertaProductoActualizado() 
+		/*function alertaProductoActualizado() 
 		{
 			var id_producto=<?echo $id_producto?>;
 			if(id_producto >=1)
@@ -283,11 +339,39 @@ License: You must have a valid license purchased only from themeforest(the above
 						});
 			}
 		}
+		
+		function alertaProductoEliminado() 
+		{
+			var id_producto=<?echo $id_producto?>;
+			if(id_producto >=1)
+			{
+						swal({
+								title:"¿Desea eliminar el producto:" + <? echo $id_producto?>+"?",
+								text: "Si elimina el producto no se podra recuperar",
+								type: "success",
+								showCancelButton: true,
+								confirmButtonClass: "btn-danger",
+								confirmButtonText: "Si, deseo hacerlo!",
+								cancelButtonText: "No",
+								closeOnConfirm: false,
+								closeOnCancel: false
+						},
+						function(isConfirm) {
+							if (isConfirm) {
+								swal("Ir", "El producto ha sido eliminado", "success");
+								//location.href="gestion_disponibilidad.php?id_prod="+id_producto+"";
+							} else {
+								swal("Cancelar","error");
+								location.href="editar_producto.php
+							}
+						});
+			}
+		}*/
 		</script>
 	</head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProductoActualizado()">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" <!--onload="alertaProductoActualizado()"-->>
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -435,45 +519,6 @@ License: You must have a valid license purchased only from themeforest(the above
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
-												<select class="form-control" id="categoria" name="categoria">
-													<?php
-													/*if(isset($producto[0]['categoria']) && $producto[0]['categoria'] != "")
-                                                    {
-														//pendiente
-													}
-													else
-													{*/
-														$objCat = new PDOModel();
-														$objCat->where("id_estado", 1);
-														$objCat->orderByCols = array("nombre");
-														$result =  $objCat->select("bienes");
-														foreach($result as $item){
-															?><optgroup label="<?php echo $item["nombre"]?>"> <?php
-																$objCat->andOrOperator = "AND";
-																$objCat->where("id_bienes", $item["id"]);
-																$objCat->where("id_estado", 1);
-																$objCat->orderByCols = array("descripcion");
-																$result1 =  $objCat->select("categoria");
-																
-																foreach($result1 as $item1){
-																	?><option value="<?php echo $item1["id"]?>"><?php echo $item1["descripcion"]?></option><?php
-																}
-																?>
-															</optgroup><?php
-														}
-													//}
-													?>
-												</select>
-												<div class="form-control-focus"> </div>
-												<span class="help-block">Seleccione la categoria del producto</span>
-												<i class="fa fa-clone"></i>
-											</div>
-										</div>
-									</div>
-								
-									<div class="form-group form-md-line-input">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="input-icon">
 												<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" value ="<? echo $producto[0]['nombre']; ?>">
 													<div class="form-control-focus"> </div>
 													<span class="help-block required">Digite el nombre del producto *</span>
@@ -504,7 +549,7 @@ License: You must have a valid license purchased only from themeforest(the above
 										</div>
 									</div>
 
-									<div class="form-group form-md-line-input">
+									<!--<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
 												<div>
@@ -523,18 +568,18 @@ License: You must have a valid license purchased only from themeforest(the above
 												<i class="fa fa-list-alt"></i>
 											</div>
 										</div>
-									</div>
-									<div id="dat_com" style="display:none;" >
+									</div>-->
+									<!--<div id="dat_com" style="display:none;" >-->
 										<div class="form-group form-md-line-input">
 											<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 												<div class="field_wrapper">
-													Seleccione la composicion del producto
+													Actualice la composicion del producto
 													<span class="required"> * </span>
 													<a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus-circle fa-2"></i></a>
 												</div>
 											</div>
 										</div>
-									</div>
+									<!--</div>-->
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
@@ -556,7 +601,7 @@ License: You must have a valid license purchased only from themeforest(the above
 													<?}?>
 												
 												</div>
-												<i class="fa fa-list-alt"></i>
+												<i class="fa fa-star"></i>
 											</div>
 										</div>
 									</div>
@@ -564,13 +609,13 @@ License: You must have a valid license purchased only from themeforest(the above
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="fileinput fileinput-new" data-provides="fileinput">
 												<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
-													<img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
+													<img src="<? echo "usuarios/".$usu_id."/bienes/".$id_producto."/res_producto.jpg"?>" alt=""> </div>
 												<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
 												<div>
 													<span class="btn default btn-file">
 														<span class="fileinput-new"> Seleccione la imagen </span>
 														<span class="fileinput-exists"> Cambiar </span>
-														<input type="file" name="foto" id="foto"> 
+														<input type="file" name="foto" id="foto" value="<?echo "usuarios/".$usu_id."/bienes/".$id_producto."/".$resFoto?>"> 
 													</span>
 													<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
 												</div> 
@@ -579,7 +624,11 @@ License: You must have a valid license purchased only from themeforest(the above
 									</div>
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<button type="submit" class="btn blue" name="guardar" id="guardar" value="guardar"> Editar producto </button>
+											<!--<button type="submit" class="btn blue" name="guardar" id="guardar" value="guardar"> Editar producto </button>-->
+											
+											<input class="btn blue" name="accion" type="submit" id="accion" value="Editar">
+											<input class="btn red" name="accion" type="submit" id="accion" value="Eliminar">
+											<!--<button type="submit" class="btn red" name="eliminar" id="eliminar" value="eliminar"> Eliminar producto </button>-->
 											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
 										</div>
 									</div>

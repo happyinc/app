@@ -138,7 +138,8 @@ License: You must have a valid license purchased only from themeforest(the above
 						{
 							
 							$extension = end(explode('.', $_FILES['foto']['name']));
-							$foto = substr(md5(uniqid(rand())),0,10).".".$extension;
+							//$foto = substr(md5(uniqid(rand())),0,10).".".$extension;
+							$foto = "producto.jpg";
 							$directorio = "usuarios/".$usu_id."/bienes/".$id_producto.""; // directorio de tu elección
 							if(file_exists($directorio)) 
 											{
