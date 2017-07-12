@@ -60,8 +60,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				
 				else {
 					document.getElementById('dat_com').style.display='none';
-				}
-				
+				}	
 			}
 			
 			// para buscar e insertar composiciones 
@@ -74,7 +73,9 @@ License: You must have a valid license purchased only from themeforest(the above
 				'<option selected="selected" value=""></option>'+
 					<?
 					$objConn1 = new PDOModel();
+					//$objConn1->andOrOperator = "AND";
 					$objConn1->where("id_estado", 1);
+					//$objConn1->where("id_bienes", $item["id"]);
 					$objConn1->orderByCols = array("nombre");
 					$result2 =  $objConn1->select("composicion");
 					foreach($result2 as $item2)
@@ -84,7 +85,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					?>
 				'</select>'+
 				'<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div>'; 
-				var x = 1; //Initial field counter is 1
+				var x = 0; //Initial field counter is 1
 				$(addButton).click(function(){ //Once add button is clicked
 					if(x < maxField){ //Check maximum number of input fields
 						x++; //Increment field counter
@@ -136,9 +137,7 @@ License: You must have a valid license purchased only from themeforest(the above
 								|| ($_FILES["foto"]["type"] == "image/bmp"))
 								&& in_array($extension, $allowedExts)) 
 						{
-							
 							$extension = end(explode('.', $_FILES['foto']['name']));
-							//$foto = substr(md5(uniqid(rand())),0,10).".".$extension;
 							$foto = "producto.jpg";
 							$directorio = "usuarios/".$usu_id."/bienes/".$id_producto.""; // directorio de tu elección
 							if(file_exists($directorio)) 
@@ -260,10 +259,10 @@ License: You must have a valid license purchased only from themeforest(the above
 						function(isConfirm) {
 							if (isConfirm) {
 								swal("Ir", "En un momento sera dirigido a la pagina de asignacion de disponibilidades.", "success");
-								location.href="gestion_disponibilidad.php?id_prod="+id_producto+"";
+								//location.href="gestion_disponibilidad.php?id_prod="+id_producto+"";
 							} else {
 								swal("Cancelar","error");
-								location.href="gestion_producto.php
+								//location.href="gestion_producto.php
 							}
 						});
 			}
@@ -437,8 +436,7 @@ License: You must have a valid license purchased only from themeforest(the above
 																foreach($result1 as $item1){
 																	?><option value="<?php echo $item1["id"]?>"><?php echo $item1["descripcion"]?></option><?php
 																}
-																?>
-															</optgroup><?php
+															?></optgroup><?php
 														}
 													?>
 												</select>
