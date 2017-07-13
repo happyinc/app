@@ -1,4 +1,19 @@
+<?php
+	error_reporting(E_ERROR | E_WARNING | E_PARSE);
+	require'../class/sessions.php';
+	$objSe = new Sessions();
+	$objSe->init();
 
+	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
+
+
+	if($rol!=2){
+		echo "<script> alert('Usuario no autorizado');
+						window.location.assign('logueo.html');</script>";
+	}	
+?>	
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
@@ -22,23 +37,6 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <head>
 	<?php
-	error_reporting(E_ERROR | E_WARNING | E_PARSE);
-	require'../class/sessions.php';
-	$objSe = new Sessions();
-	$objSe->init();
-
-	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
-	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
-	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
-
-
-	if($rol!=2){
-		echo "<script> alert('Usuario no autorizado');
-						window.location.assign('logueo.html');</script>";
-	}	
-	
-	date_default_timezone_set("America/Bogota");
-	
 	include "include_css.php";
 	require_once'../../externo/plugins/PDOModel.php';
 
@@ -46,105 +44,11 @@ License: You must have a valid license purchased only from themeforest(the above
 		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>	
 		<?
 		$objProd = new PDOModel();
+		$objProd->andOrOperator = "AND";
+		$objProd->where("id_estado", 1);
 		$objProd->where("id_usu_crea", $usu_id);
 		$producto =  $objProd->select("producto");
 
-        $accion=$_POST["accion"];
-		if(isset($_POST["formulario"]) && $_POST["formulario"] == "editar_producto" )
-		{
-
-			if(isset($accion) && $accion== "Editar")
-			{
-					if($_FILES['foto']["size"]>=1)
-					{
-						 // Primero, hay que validar que se trata de un JPG/GIF/PNG
-						$allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
-						$extension = end(explode(".", $_FILES["foto"]["name"]));
-						if ((($_FILES["foto"]["type"] == "image/gif")
-								|| ($_FILES["foto"]["type"] == "image/jpeg")
-								|| ($_FILES["foto"]["type"] == "image/png")
-								|| ($_FILES["foto"]["type"] == "image/gif")
-								|| ($_FILES["foto"]["type"] == "image/bmp"))
-								&& in_array($extension, $allowedExts)) 
-						{
-							// el archivo es un JPG/GIF/PNG, entonces...
-							$extension = end(explode('.', $_FILES['foto']['name']));
-							$foto = "producto".".".$extension;
-							$directorio = "usuarios/".$usu_id."/bienes/".$id_producto.""; // directorio de tu elección
-							if(file_exists($directorio)) 
-							{
-												
-							} 
-							else 
-							{
-								mkdir($directorio, 0777, true);
-							}
-							// almacenar imagen en el servidor
-							move_uploaded_file($_FILES['foto']['tmp_name'], $directorio.'/'.$foto);
-							$minFoto = 'min_'.$foto;
-							$resFoto = 'res_'.$foto;
-							resizeImagen($directorio.'/', $foto, 65, 65,$minFoto,$extension);
-							resizeImagen($directorio.'/', $foto, 500, 500,$resFoto,$extension);
-							unlink($directorio.'/'.$foto);
-						} else 
-						{ // El archivo no es JPG/GIF/PNG
-							$malformato = $_FILES["foto"]["type"];
-							?>
-							<script type="text/javascript">
-							alert("La imagen se encuentra con formato incorrecto")
-							window.history.back();
-							</script>
-							<?	
-						}
-					} 
-			}
-			
-		}		
-		  
-		####
-		## Función para redimencionar las imágenes
-		## utilizando las librerías de GD de PHP
-		####
-
-		function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
-			$rutaImagenOriginal = $ruta.$nombre;
-			if($extension == 'GIF' || $extension == 'gif'){
-			$img_original = imagecreatefromgif($rutaImagenOriginal);
-			}
-			if($extension == 'jpg' || $extension == 'JPG'){
-			$img_original = imagecreatefromjpeg($rutaImagenOriginal);
-			}
-			if($extension == 'png' || $extension == 'PNG'){
-			$img_original = imagecreatefrompng($rutaImagenOriginal);
-			}
-			if($extension == 'bmp' || $extension == 'BMP'){
-			$img_original = imagecreatefrombmp($rutaImagenOriginal);
-			}
-			if($extension == 'jpeg' || $extension == 'JPEG'){
-			$img_original = imagecreatefromjpeg($rutaImagenOriginal);
-			}
-			$max_ancho = $ancho;
-			$max_alto = $alto;
-			list($ancho,$alto)=getimagesize($rutaImagenOriginal);
-			$x_ratio = $max_ancho / $ancho;
-			$y_ratio = $max_alto / $alto;
-			if( ($ancho <= $max_ancho) && ($alto <= $max_alto) ){//Si ancho 
-			$ancho_final = $ancho;
-				$alto_final = $alto;
-			} elseif (($x_ratio * $alto) < $max_alto){
-				$alto_final = ceil($x_ratio * $alto);
-				$ancho_final = $max_ancho;
-			} else{
-				$ancho_final = ceil($y_ratio * $ancho);
-				$alto_final = $max_alto;
-			}
-			$tmp=imagecreatetruecolor($ancho_final,$alto_final);
-			imagecopyresampled($tmp,$img_original,0,0,0,0,$ancho_final, $alto_final,$ancho,$alto);
-			imagedestroy($img_original);
-			$calidad=70;
-			imagejpeg($tmp,$ruta.$nombreN,$calidad);
-			
-		}
 		?>
 	</head>
     <!-- END HEAD -->
@@ -296,27 +200,49 @@ License: You must have a valid license purchased only from themeforest(the above
 								<div class="form-body">
 									<div class="form-group form-md-line-input">
 										<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-											<i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i>
+											<a href="../src/crear_producto.php"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i></a>
 										</div>
 										<div class="col-md-9 col-lg-9 col-xs-8 col-sm-8">
-											<a href="../src/crear_producto.php"  >Crear Bien o Servicio</a>
+											Crear Bien o Servicio
 										</div>
 									</div>
+									<?php
+									foreach($producto as $item)
+										{
+											?>
+											<div class="form-group form-md-line-input">
+												<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
+													<div class="fileinput-new thumbnail img-circle" style="width: 150px; height: 150px;">
+														<a href="../src/editar_producto.php?id_producto=<? echo $item["id"]?>"><img src="<? echo "usuarios/".$usu_id."/bienes/".$item["id"]."/res_producto.jpg"?>" alt=""> </a>
+													</div>
+												</div>
+												<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+													<?php echo $item["nombre"]?><br>
+													<?php echo $item["descripcion"]?><br>
+													<?php echo "$ ".$item["precio"]?>
+												</div>
+												<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
+													<?php
+													
+													$objProd->where("id_producto", $item["id"]);
+													$relacion =  $objProd->select("producto_disponibilidad");
+													$result=$objProd->totalRows;
+													if($result> 0 || $result[0]["id_estado"]==1)
+													{
+														?><a class="btn btn-success" href="../src/gestion_disponibilidad.php?id_producto=<? echo $item["id"]?>">
+															<i class="fa fa-toggle-on fa-4x" aria-hidden="true"></i></a><?php
+													}
+													else if($result <= 0 || $result[0]["id_estado"]==2)
+													{
+														?><a class="btn btn-danger" href="../src/gestion_disponibilidad.php?id_producto=<? echo $item["id"]?>">
+															<i class="fa fa-toggle-off fa-4x" aria-hidden="true"></i></a><?php
+													}
+													?>
+												</div>
+											</div><?php
+										}
+										?>
 									
-									<div class="form-group form-md-line-input">
-										<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-											
-										</div>
-										<div class="col-md-9 col-lg-9 col-xs-8 col-sm-8">
-											
-										</div>
-									</div>
-
-									<div class="form-group form-md-line-input">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<input type="hidden" id="formulario" name="formulario" value="gestion_producto"/>
-										</div>
-									</div>
 								</div>
 							</form>
 						</div>
@@ -342,6 +268,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <?php
             include "include_js.php";
 			?> 
+			<script src="../assets/pages/scripts/components-bootstrap-switch.min.js" type="text/javascript"></script>
     </body>
 
 </html>
