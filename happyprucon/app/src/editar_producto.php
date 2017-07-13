@@ -435,8 +435,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
                     <!-- END THEME PANEL -->
-                    <h1 class="page-title"> Crear producto
-                        <small>creacion de producto</small>
+                    <h1 class="page-title"> Editar producto
+                        <small>Edicion de producto</small>
                     </h1>
                     <div class="page-bar">
                         <ul class="page-breadcrumb">
@@ -446,11 +446,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <a href="#">Crear producto</a>
+                                <a href="#">Editar producto</a>
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <span>Creacion de productos</span>
+                                <span>Edicion del producto</span>
                             </li>
                         </ul>
                         
