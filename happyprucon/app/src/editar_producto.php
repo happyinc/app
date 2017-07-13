@@ -274,7 +274,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						function(isConfirm) {
 							if (isConfirm) {
 								swal("", "", "success");
-								//location.href="gestion_disponibilidad.php?id_producto="+<? echo $id_producto?>;
+								location.href="editar_producto.php?id_producto="+<? echo $id_producto?>;
 							} else {
 								swal("Cancelar","");
 								location.href="gestion_producto.php"
