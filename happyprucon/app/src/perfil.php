@@ -60,6 +60,7 @@ License: You must have a valid license purchased only from themeforest(the above
     include "include_css.php";
     include("../../../externo/plugins/PDOModel.php");
     ?>
+    <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
 </head>
 <!-- END HEAD -->
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
@@ -176,27 +177,91 @@ License: You must have a valid license purchased only from themeforest(the above
                             $objSe->set('telefono', $res_usu[0]['telefono']);
                             $objSe->set('correo', $res_usu[0]['correo']);
 
-                            echo "<script> alert('Usuario actualizado correctamente');
-                        window.location.assign('../../app/src/perfil.php');</script>";
-                        }else{
-                            echo "<script> alert('No se pudo actualizar');</script>";
+
+                    if ($_FILES['foto']["size"] >= 1) {
+                        // Primero, hay que validar que se trata de un JPG/GIF/PNG
+                        $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
+                        $extension = end(explode(".", $_FILES["foto"]["name"]));
+                    if ((($_FILES["foto"]["type"] == "image/gif")
+                            || ($_FILES["foto"]["type"] == "image/jpeg")
+                            || ($_FILES["foto"]["type"] == "image/png")
+                            || ($_FILES["foto"]["type"] == "image/gif")
+                            || ($_FILES["foto"]["type"] == "image/bmp"))
+                        && in_array($extension, $allowedExts)) {
+                        // el archivo es un JPG/GIF/PNG, entonces...
+
+                        $extension = end(explode('.', $_FILES['foto']['name']));
+                        $foto = "perfil". "." . $extension;
+                        $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
+                        if (file_exists($directorio)) {
+
+                        } else {
+                            mkdir($directorio, 0777, true);
                         }
+
+                        // almacenar imagen en el servidor
+                        move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
+                        $minFoto = 'min_' . $foto;
+                        $resFoto = 'res_' . $foto;
+                        resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
+                        resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
+                        unlink($directorio . '/' . $foto);
+
+                    } else { // El archivo no es JPG/GIF/PNG
+                        $malformato = $_FILES["foto"]["type"];
+                        ?>
+                        <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
+                    <?
+                    //header("Location: crear_producto.php?id=echo $usu_id");
                     }
 
+                    } else { // El campo foto NO contiene una imagen
 
+                    ?>
+                        <script type="text/javascript">
+                            alert("No se ha seleccionado imagenes");
+                            window.history.back();
+                        </script>
+                        <?
+                    }
+
+                    echo "<script> alert('Usuario actualizado correctamente');
+                        window.location.assign('../../app/src/perfil.php');</script>";
+                } else {
+                    echo "<script> alert('No se pudo actualizar');</script>";
+                }
+                }
 
 
                 }
                 ?>
 
                 <!-- BEGIN FORM-->
-                <form action="" class="form-horizontal" method="post">
+                <form role="form" action="perfil.php" class="form-horizontal" name="upd_datos" id="upd_datos" enctype="multipart/form-data" method="post">
                     <div class="form-body">
                         <div class="alert alert-danger display-hide">
                             <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
                         <div class="alert alert-success display-hide">
                             <button class="close" data-close="alert"></button> Your form validation is successful! </div>
                         <h3 class="block bold" style="color: #520d9b">DATOS PERSONALES</h3>
+                        <div class="form-group form-md-line-input has-info form-md-floating-label">
+                            <label class="control-label col-md-4 col-xs-2"></label>
+                            <div class="input-group left-addon col-md-4 col-xs-2">
+                                <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
+                                    <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
+                                        <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt="" class="img-circle" style="border-radius: 50%;"> </div>
+                                    <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
+                                    <div>
+													<span class="btn default btn-file">
+														<span class="fileinput-new"> Seleccionar </span>
+														<span class="fileinput-exists"> Cambiar </span>
+														<input type="file" name="foto" id="foto"> </span>
+
+                                        <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Nombres</label>
                            <div class="col-md-4">
@@ -281,6 +346,122 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 </form>
                 <!-- END FORM PASSWORD-->
+                <!-- BEGIN FORM FOTOS SITIO -->
+                <form role="form" action="" class="form-horizontal" name="fotos_sitio" id="fotos_sitio" enctype="multipart/form-data" method="post"style="padding-top: 20px;">
+                    <div class="form-body">
+                        <h3 class="block bold" style="color: #520d9b">ACTUALIZAR FOTOS DEL SITIO</h3>
+                        <script type="text/javascript">
+                            // para buscar e insertar composiciones
+                            $(document).ready(function(){
+                                var maxField = 7; //Input fields increment limitation
+                                var addButton = $('.add_button'); //Add button selector
+                                var wrapper = $('.field_wrapper'); //Input field wrapper
+                                var fieldHTML = '<div>'+
+                                    '<div class="fileinput fileinput-new" data-provides="fileinput">'+
+                                    '<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">'+
+                                    '<img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>'+
+                                    '<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>'+
+                                    '<div>'+
+                                    '<span class="btn default btn-file">'+
+                                    '<span class="fileinput-new"> Seleccionar </span>'+
+                                    '<span class="fileinput-exists"> Cambiar </span>'+
+                                    '<input type="file" name="fotos[]" id="fotos[]"/> </span>'+
+
+                                    '<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>'+
+                                    '</div>'+
+                                    '</div>'+
+                                    <?
+                                    if(isset($_POST["btn2"])) {
+                                        $btn = $_POST["btn2"];
+
+                                        if ($btn == "Cambiar") {
+
+                                            if ($_FILES['fotos']["size"] >= 1) {
+                                                // Primero, hay que validar que se trata de un JPG/GIF/PNG
+                                                $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
+                                                $extension = end(explode(".", $_FILES["fotos"]["name"]));
+                                                if ((($_FILES["fotos"]["type"] == "image/gif")
+                                                        || ($_FILES["fotos"]["type"] == "image/jpeg")
+                                                        || ($_FILES["fotos"]["type"] == "image/png")
+                                                        || ($_FILES["fotos"]["type"] == "image/gif")
+                                                        || ($_FILES["fotos"]["type"] == "image/bmp"))
+                                                    && in_array($extension, $allowedExts)
+                                                ) {
+                                                    // el archivo es un JPG/GIF/PNG, entonces...
+
+                                                    $extension = end(explode('.', $_FILES['fotos']['name']));
+                                                    $foto = substr(md5(uniqid(rand())), 0, 10) . "." . $extension;
+                                                    $directorio = "usuarios/" . $id_usuario . "/sitio/"; // directorio de tu elección
+                                                    if (file_exists($directorio)) {
+
+                                                    } else {
+                                                        mkdir($directorio, 0777, true);
+                                                    }
+
+                                                    // almacenar imagen en el servidor
+                                                    move_uploaded_file($_FILES['fotos']['tmp_name'], $directorio . '/' . $foto);
+                                                    $minFoto = 'min_' . $foto;
+                                                    $resFoto = 'res_' . $foto;
+                                                    resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
+                                                    resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
+                                                    unlink($directorio . '/' . $foto);
+
+                                                } else { // El archivo no es JPG/GIF/PNG
+                                                    $malformato = $_FILES["fotos"]["type"];
+
+                                                    echo "<script type='text/javascript'>alert('La imagen se encuentra con formato incorrecto')</script>";
+
+                                                    //header("Location: crear_producto.php?id=echo $usu_id");
+                                                }
+
+                                            } else { // El campo foto NO contiene una imagen
+
+
+                                                echo "<script type='text/javascript'>
+                                                                alert('No se ha seleccionado imagenes');
+                                                            </script>";
+
+                                            }
+                                        }
+                                    }
+                                    ?>
+                                    '<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div>';
+                                var x = 1; //Initial field counter is 1
+                                $(addButton).click(function(){ //Once add button is clicked
+                                    if(x < maxField){ //Check maximum number of input fields
+                                        x++; //Increment field counter
+                                        $(wrapper).append(fieldHTML); // Add field html
+                                    }
+                                });
+                                $(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
+                                    e.preventDefault();
+                                    $(this).parent('div').remove(); //Remove field html
+                                    x--; //Decrement field counter
+                                });
+                            });
+                        </script>
+
+
+
+                        <div class="form-group form-md-line-input has-info form-md-floating-label">
+                            <label class="control-label col-md-4 col-xs-4"></label>
+                            <div class="input-group left-addon col-md-4 col-xs-4">
+                                <div class="field_wrapper">
+                                    Seleccione las fotos del sitio
+                                    <a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus-circle fa-2"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <input type="submit" id="register-submit-btn" class="btn blue" name="btn2" value="Cambiar"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- END FORM FOTOS SITIO -->
             </div>
         </div>
         <!-- END CONTENT BODY -->

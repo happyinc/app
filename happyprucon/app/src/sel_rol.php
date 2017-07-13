@@ -74,27 +74,27 @@ License: You must have a valid license purchased only from themeforest(the above
     <body class=" login">
         <!-- BEGIN LOGIN -->
         <div class="content">
-			<div align="center"><a href="logueo.html">
+			<div align="center" style="padding-bottom: 50px;"><a href="logueo.html">
                     <img src="../../externo/img/logo-default.png" width="230px" alt="" /> </a>
-                </div><br />
+                </div>
             <!-- BEGIN LOGIN FORM -->
-            <form class="login-form" action="terms_cond.php" method="post"><br />
-               <div class="row">
+            <form class="login-form" action="terms_cond.php" method="post">
+               <div class="row" style="padding-bottom: 10px;">
                         
                         <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
 						<input type="hidden" name="cliente" id="cliente" value="3"/>
-						<button type="submit"  class="btn btn-circle red-flamingo btn-block bold" > CLIENTE </button>
+						<button type="submit"  class="btn btn-circle red-flamingo btn-block bold" style="padding:40px;"> CLIENTE </button>
 						</div>
 					
 				</div>
 			</form>
 			
-			<form name="empre" action="terms_cond.php" method="post"><br />
+			<form name="empre" action="terms_cond.php" method="post">
                <div class="row">
                         
 						<div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
 						<input type="hidden" name="emprende" id="emprende" value="2" />
-						<button type="submit"  class="btn btn-circle purple-studio btn-block bold" > EMPRENDEDOR </button>
+						<button type="submit"  class="btn btn-circle purple-studio btn-block bold" style="padding:40px;"> EMPRENDEDOR </button>
 						</div>
 					
 					

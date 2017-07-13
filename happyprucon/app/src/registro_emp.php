@@ -291,11 +291,11 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                         <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
                                                         <div>
 													<span class="btn default btn-file">
-														<span class="fileinput-new"> Select image </span>
-														<span class="fileinput-exists"> Change </span>
+														<span class="fileinput-new"> Seleccionar </span>
+														<span class="fileinput-exists"> Cambiar </span>
 														<input type="file" name="foto" id="foto"> </span>
 
-                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -415,56 +415,21 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             <!-- BEGIN ACCORDION PORTLET-->
                                             <div class="portlet-body">
                                                 <div class="panel-group accordion" id="accordion1">
-                                                    <div class="panel panel-default">
-                                                        <div class="panel-heading">
                                                             <?php
                                                             $objCat = new PDOModel();
-                                                            $objCat->where("id", 1);
+                                                            $objCat->where("id_estado", 1);
                                                             $result =  $objCat->select("bienes");
                                                             foreach($result as $item){
-                                                                ?><h4  class="panel-title bold">
-                                                                <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  alt="" /><?php echo $item["nombre"]?></a>
-                                                                </h4><?php
-
-                                                            }
-                                                            ?>
-
-                                                        </div>
-                                                        <div id="collapse_1" class="panel-collapse collapse">
-                                                            <div class="icheck-inline panel-body">
-                                                                <?php
-                                                                $objCat->andOrOperator = "AND";
-                                                                $objCat->where("id_bienes", $item["id"]);
-                                                                $objCat->where("id_estado", 1);
-                                                                $objCat->orderByCols = array("descripcion");
-                                                                $result1 =  $objCat->select("categoria");
-                                                                foreach($result1 as $item1){
-                                                                    ?>
-                                                                    <label>
-                                                                    <input type="checkbox" class="icheck" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
-                                                                }
                                                                 ?>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     <div class="panel panel-default">
                                                         <div class="panel-heading">
-                                                            <?php
-                                                            $objCat = new PDOModel();
-                                                            $objCat->where("id", 2);
-                                                            $result =  $objCat->select("bienes");
-                                                            foreach($result as $item){
-                                                                ?><h4 class="panel-title bold">
-                                                                <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_2" value="<?php echo $item["id"]?>"><?php echo $item["nombre"]?></a>
-                                                                </h4><?php
+                                                            <h4 class="panel-title bold">
+                                                                 <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_<?php echo $item["id"]?>" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  alt="" /><?php echo $item["nombre"]?></a>
+                                                            </h4>
+                                                            </div>
+                                                        <div id="collapse_<?php echo $item["id"]?>" class="panel-collapse collapse">
+                                                            <div class="panel-body"><?php
 
-                                                            }
-                                                            ?>
-
-                                                        </div>
-                                                        <div id="collapse_2" class="panel-collapse collapse">
-                                                            <div class="panel-body">
-                                                                <?php
                                                                 $objCat->andOrOperator = "AND";
                                                                 $objCat->where("id_bienes", $item["id"]);
                                                                 $objCat->where("id_estado", 1);
@@ -477,13 +442,11 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                                 ?>
                                                             </div>
                                                         </div>
-                                                    </div>
-
-
-
+                                                    </div>  <?
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
-
                                             <!-- END ACCORDION PORTLET-->
                                         </div>
                                         <div class="tab-pane" id="tab3">
@@ -599,11 +562,11 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                     '<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>'+
                                                     '<div>'+
                                                     '<span class="btn default btn-file">'+
-                                                    '<span class="fileinput-new"> Select image </span>'+
-                                                '<span class="fileinput-exists"> Change </span>'+
+                                                    '<span class="fileinput-new"> Seleccionar </span>'+
+                                                '<span class="fileinput-exists"> Cambiar </span>'+
                                                     '<input type="file" name="fotos[]" id="fotos[]"/> </span>'+
 
-                                                    '<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>'+
+                                                    '<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>'+
                                                     '</div>'+
                                                     '</div>'+
                                                     <?
@@ -699,7 +662,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             <a href="javascript:;" class="btn btn-outline green button-next"> Siguiente
                                                 <i class="fa fa-angle-right"></i>
                                             </a>
-                                            <button href="javascript:;" class="btn green button-submit" name="btn1" value="registrar"> Submit
+                                            <button href="javascript:;" class="btn green button-submit" name="btn1" value="registrar"> Registrar
                                                 <i class="fa fa-check"></i>
                                             </button>
                                             <input type="hidden" id="formulario" name="formulario" value="Registrar"/>

@@ -446,7 +446,7 @@ License: You must have a valid license purchased only from themeforest(the above
 											</div>
 										</div>
 									</div>
-								
+
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
