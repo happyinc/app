@@ -196,6 +196,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
                         <div class="alert alert-success display-hide">
                             <button class="close" data-close="alert"></button> Your form validation is successful! </div>
+                        <h3 class="block bold" style="color: #520d9b">DATOS PERSONALES</h3>
                         <div class="form-group">
                             <label class="control-label col-md-3">Nombres</label>
                            <div class="col-md-4">
@@ -259,6 +260,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             <button class="close" data-close="alert"></button> Contraseñas no coinciden </div>
                         <div class="alert alert-success display-hide">
                             <button class="close" data-close="alert"></button> Your form validation is successful! </div>
+                        <h3 class="block bold" style="color: #520d9b">CAMBIO DE CONTRASEÑA</h3>
                         <div class="form-group">
                             <label class="control-label col-md-3">Contraseña</label>
                             <div class="col-md-4">

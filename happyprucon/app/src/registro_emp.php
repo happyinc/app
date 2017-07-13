@@ -541,7 +541,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                         </span>
                                                     <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
                                                     <!-- Campo escondido que toma valor de ciudad -->
-                                                    <input type="text" name="resciu" id="resciu" >
+                                                    <input type="hidden" name="resciu" id="resciu" >
                                                 </div>
                                             </div>
 
@@ -569,12 +569,12 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                     <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();" placeholder="Dirección"/>
                                                     <span class="help-block"></span>
                                                     <!-- Campo escondido que toma valor de direccion -->
-                                                    <input type="text" name="resdir" id="resdir">
+                                                    <input type="hidden" name="resdir" id="resdir">
                                                 </div>
-                                                <div><input type="text" id="search"/></div>
                                                 <!-- Campos escondidos que toman valores de coordenadas -->
-                                                <div><input type="text" id="latitud" name="latitud"/></div>
-                                                <div><input type="text" id="longitu" name="longitu"/></div>
+                                                <div><input type="hidden" id="search"/></div>
+                                                <div><input type="hidden" id="latitud" name="latitud"/></div>
+                                                <div><input type="hidden" id="longitu" name="longitu"/></div>
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="tab4">
