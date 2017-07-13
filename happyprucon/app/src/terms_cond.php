@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
+require_once'../../externo/plugins/PDOModel.php';
 include '../class/sessions.php';
 $objSe = new Sessions();
 ?>
@@ -77,15 +78,42 @@ $objSe->set('emprende',$rol_emp);
 $rol_cli = $_POST['cliente'];
 $objSe->set('cliente',$rol_cli);
 
+if($rol_emp == 2){
+
+    $objConn = new PDOModel();
+    $objConn->where("id",1);
+    $res_usu =  $objConn->select("terminos_condiciones");
+
+    $terminos = $res_usu[0]['descripcion'];
+}else if($rol_cli == 3){
+
+    $objConn = new PDOModel();
+    $objConn->where("id",2);
+    $res_usu =  $objConn->select("terminos_condiciones");
+
+    $terminos = $res_usu[0]['descripcion'];
+
+}
+
+
+
+
+
 ?>
 <body class=" login">
 <!-- BEGIN LOGIN -->
 <div class="content">
-    <div align="center"><a href="logueo.html">
+    <div align="center" style="padding-bottom: 40px;"><a href="logueo.html">
             <img src="../../externo/img/logo-default.png" width="230px" alt="" /> </a>
-    </div><br />
+    </div>
+    <form class="login-form" action="terms_cond.php" method="post">
+        <div class="form-body" style="padding-bottom: 20px;">
+            <div class="form-group">
+                <textarea name="terminos" id="terminos" class="form-control" rows="10" readonly><?php echo $terminos; ?> </textarea></div>
+        </div>
+    </form>
     <!-- BEGIN LOGIN FORM -->
-    <form class="login-form" action="registro_emp.php" method="post"><br />
+    <form class="login-form" action="registro_emp.php" method="post">
         <div class="row">
             <div class="col-lg-3 col-md-3 col-xs-3" style="margin-bottom: 10px"></div>
             <div class="col-lg-6 col-md-6 col-xs-6" style="margin-bottom: 10px">
