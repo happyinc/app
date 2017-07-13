@@ -53,10 +53,8 @@ License: You must have a valid license purchased only from themeforest(the above
         }*/
 	$id_producto = 117;//115
 		?>
-		<!--<link href="../../externo/plugins/dist/dropzone.css" type="text/css" rel="stylesheet" />-->
 		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
-		<!--<script src="../../externo/plugins/dropzone.js"></script>-->
 		<script type="text/javascript">
 			// para buscar e insertar composiciones 
 			$(document).ready(function(){
@@ -315,7 +313,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	</head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProducto()" ><!--onload="alertaProducto()"-->
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProducto()" >
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -613,28 +611,9 @@ License: You must have a valid license purchased only from themeforest(the above
             <?php
             include "include_js.php";
 			?> 
-			<script src="../assets/global/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js" type="text/javascript"></script>
-			<script src="../assets/pages/scripts/components-bootstrap-select-splitter.min.js" type="text/javascript"></script>
 			<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
 			<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
-			<script>
-				// fucion que persnaliza el select dependiente de la categoria
-				var ComponentsBootstrapSelectSplitter = function() {
-					var selectSplitter = function() {
-						$('#categoria').selectsplitter({
-							selectSize: 1
-						});
-					}
 
-					return {
-						//main function to initiate the module
-						init: function() {
-							selectSplitter();
-						}
-					};
-
-				}();
-			</script>
     </body>
 
 </html>
