@@ -13,7 +13,7 @@
 		echo "<script> alert('Usuario no autorizado');
 						window.location.assign('logueo.html');</script>";
 	}	
-?>	
+?>
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
@@ -38,23 +38,24 @@ License: You must have a valid license purchased only from themeforest(the above
     <head>
 	<?php
 	include "include_css.php";
-	
 	require_once'../../externo/plugins/PDOModel.php';
-
+	$id_producto = "";
+	
+        if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
+        {
+            $id_producto = $_POST["id_producto"];
+        }
+        elseif(isset($_GET["id_producto"]) && $_GET["id_producto"] != "")
+        {
+             $id_producto = $_GET["id_producto"];
+        }
 		?>
 		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>	
-		<?
-		$objProd = new PDOModel();
-		$objProd->andOrOperator = "AND";
-		$objProd->where("id_estado", 1);
-		$objProd->where("id_usu_crea", $usu_id);
-		$producto =  $objProd->select("producto");
-
-		?>
+		
 	</head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProducto()" >
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" >
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -201,49 +202,13 @@ License: You must have a valid license purchased only from themeforest(the above
 								<div class="form-body">
 									<div class="form-group form-md-line-input">
 										<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-											<a href="../src/crear_producto.php"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i></a>
+											
 										</div>
 										<div class="col-md-9 col-lg-9 col-xs-8 col-sm-8">
-											Crear Bien o Servicio
+											
 										</div>
 									</div>
-									<?php
-									foreach($producto as $item)
-										{
-											?>
-											<div class="form-group form-md-line-input">
-												<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-													<div class="fileinput-new thumbnail img-circle" style="width: 150px; height: 150px;">
-														<a href="../src/editar_producto.php?id_producto=<? echo $item["id"]?>"><img src="<? echo "usuarios/".$usu_id."/bienes/".$item["id"]."/res_producto.jpg"?>" alt=""> </a>
-													</div>
-												</div>
-												<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
-													<?php echo $item["nombre"]?><br>
-													<?php echo $item["descripcion"]?><br>
-													<?php echo "$ ".$item["precio"]?>
-												</div>
-												<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-													<?php
-													
-													$objProd->where("id_producto", $item["id"]);
-													$relacion =  $objProd->select("producto_disponibilidad");
-													$result=$objProd->totalRows;
-													if($result> 0 || $result[0]["id_estado"]==1)
-													{
-														?><a href="../src/gestion_disponibilidad.php?id_producto=<? echo $item["id"]?>">
-															<i class="fa fa-toggle-on fa-4x" aria-hidden="true"></i></a><?php
-													}
-													else if($result <= 0 || $result[0]["id_estado"]==2)
-													{
-														?><a href="../src/gestion_disponibilidad.php?id_producto=<? echo $item["id"]?>">
-															<i class="fa fa-toggle-off fa-4x" aria-hidden="true"></i></a><?php
-													}
-													?>
-												</div>
-											</div><?php
-										}
-										?>
-									
+								
 								</div>
 							</form>
 						</div>
@@ -269,7 +234,6 @@ License: You must have a valid license purchased only from themeforest(the above
             <?php
             include "include_js.php";
 			?> 
-			<script src="../assets/pages/scripts/components-bootstrap-switch.min.js" type="text/javascript"></script>
     </body>
 
 </html>

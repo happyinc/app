@@ -1,4 +1,19 @@
+<?php
+	//error_reporting(E_ERROR | E_WARNING | E_PARSE);
+	require'../class/sessions.php';
+	$objSe = new Sessions();
+	$objSe->init();
 
+	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
+
+
+	if($rol!=2){
+		echo "<script> alert('Usuario no autorizado');
+						window.location.assign('logueo.html');</script>";
+	}	
+?>
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
@@ -21,24 +36,6 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN HEAD -->
 
     <head>
-	<?php
-	error_reporting(E_ERROR | E_WARNING | E_PARSE);
-	require'../class/sessions.php';
-	$objSe = new Sessions();
-	$objSe->init();
-
-	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
-	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
-	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
-
-
-	if($rol!=2){
-		echo "<script> alert('Usuario no autorizado');
-						window.location.assign('logueo.html');</script>";
-	}	
-	
-	date_default_timezone_set("America/Bogota");
-	 ?>
         <?php
 		
 		include "include_css.php";
@@ -84,7 +81,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					}
 					?>
 				'</select>'+
-				'<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div>'; 
+				'<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-1x"></i></a></div>'; 
 				var x = 0; //Initial field counter is 1
 				$(addButton).click(function(){ //Once add button is clicked
 					if(x < maxField){ //Check maximum number of input fields
@@ -247,7 +244,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			{
 						swal({
 								title:"Producto registrado con el id:" + <? echo $id_producto?>,
-								text: "¿Desea asignar la disponibilidad al producto?",
+								text: "¿Desea crear la disponibilidad al producto?",
 								type: "success",
 								showCancelButton: true,
 								confirmButtonClass: "btn-danger",
@@ -258,11 +255,11 @@ License: You must have a valid license purchased only from themeforest(the above
 						},
 						function(isConfirm) {
 							if (isConfirm) {
-								swal("Ir", "En un momento sera dirigido a la pagina de asignacion de disponibilidades.", "success");
-								//location.href="gestion_disponibilidad.php?id_prod="+id_producto+"";
+								swal("Ir", "En un momento sera dirigido a la pagina para crear disponibilidades.", "success");
+								//location.href="gestion_disponibilidad.php?id_producto="+<? echo $id_producto?>;
 							} else {
-								swal("Cancelar","error");
-								//location.href="gestion_producto.php
+								swal("Cancelar","se cancelo la creacion de la dispoibilidad del producto");
+								location.href="gestion_producto.php"
 							}
 						});
 			}
@@ -439,6 +436,7 @@ License: You must have a valid license purchased only from themeforest(the above
 															?></optgroup><?php
 														}
 													?>
+													<!--hacer input hidden-->
 												</select>
 												<div class="form-control-focus"> </div>
 												<span class="help-block">Seleccione la categoria del producto a crear</span>
@@ -502,7 +500,7 @@ License: You must have a valid license purchased only from themeforest(the above
 												<div class="field_wrapper">
 													Seleccione la composicion del producto
 													<span class="required"> * </span>
-													<a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus-circle fa-2"></i></a>
+													<a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus-circle fa-1x"></i></a>
 												</div>
 											</div>
 										</div>

@@ -1,4 +1,19 @@
+<?php
+	error_reporting(E_ERROR | E_WARNING | E_PARSE);
+	require'../class/sessions.php';
+	$objSe = new Sessions();
+	$objSe->init();
 
+	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
+
+
+	if($rol!=2){
+		echo "<script> alert('Usuario no autorizado');
+						window.location.assign('logueo.html');</script>";
+	}	
+?>
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
@@ -22,36 +37,21 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <head>
 	<?php
-	error_reporting(E_ERROR | E_WARNING | E_PARSE);
-	require'../class/sessions.php';
-	$objSe = new Sessions();
-	$objSe->init();
 
-	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
-	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
-	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
-
-
-	if($rol!=2){
-		echo "<script> alert('Usuario no autorizado');
-						window.location.assign('logueo.html');</script>";
-	}	
-	
-	date_default_timezone_set("America/Bogota");
-	
 	include "include_css.php";
+	include "funciones.php";
 	require_once'../../externo/plugins/PDOModel.php';
 	
-	/* $id_producto = "";
-        if(isset($_POST["id"]) && $_POST["id"] != "")
+	$id_producto = "";
+	
+        if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
         {
-            $id_producto = $_POST["id"];
+            $id_producto = $_POST["id_producto"];
         }
-        elseif(isset($_GET["id"]) && $_GET["id"] != "")
+        elseif(isset($_GET["id_producto"]) && $_GET["id_producto"] != "")
         {
-             $id_producto = $_GET["id"];
-        }*/
-	$id_producto = 117;//115
+             $id_producto = $_GET["id_producto"];
+        }
 		?>
 		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
@@ -75,7 +75,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					}
 					?>
 				'</select>'+
-				'<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div>'; 
+				'<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-1x"></i></a></div>'; 
 				var x = 1; //Initial field counter is 1
 				$(addButton).click(function(){ //Once add button is clicked
 					if(x < maxField){ //Check maximum number of input fields
@@ -96,15 +96,17 @@ License: You must have a valid license purchased only from themeforest(the above
 		</script>
 			
 	    <?
+		$product=0;
+		//$accion="";
 		$objProd = new PDOModel();
 		$objProd->where("id", $id_producto);
 		$producto =  $objProd->select("producto");
 
-        $accion=$_POST["accion"];
+        //$accion=$_POST["accion"];
 		if(isset($_POST["formulario"]) && $_POST["formulario"] == "editar_producto" )
 		{
-
-			if(isset($accion) && $accion== "Editar")
+			
+			if(isset($_POST["editar"]) && $_POST["editar"]== "Editar")
 			{
 				$objConn = new PDOModel();
 				$updateData["nombre"] = $_POST["nombre"]; 
@@ -183,12 +185,15 @@ License: You must have a valid license purchased only from themeforest(the above
 				else
 				{
 					?>
-						<script type="text/javascript">alert("No se pudo actualizar el producto")</script>
+						<script type="text/javascript">alert("No se pudo actualizar el producto")
+						window.history.back();
+						</script>
 					<?
 				}
 			}
 			
-			else if(isset($accion) && $accion== "Eliminar"){
+			else if(isset($_POST["eliminar"]) && $_POST["eliminar"]== "Eliminar")
+			{
 				$objConn = new PDOModel();
 				$updateData["id_estado"] = 2;
 				$objConn->where("id", $id_producto);
@@ -249,39 +254,49 @@ License: You must have a valid license purchased only from themeforest(the above
 		}
 		?>
 		<script>
-		function alertaProducto() 
-		{
-			var accion=<?echo $accion?>;
-			var producto=<?echo $product?>;
-			if (accion == "Editar")
+		//alert("<?echo $accion?>");
+			//alert("<?echo $product?>");
+			function(){
+				var accion1= document.getElementbyId("editar");//<?echo $accion?>;
+				accion1.addEventListener("input",alertaProducto,true);
+				var accion2= document.getElementbyId("eliminar");
+				accion2.addEventListener("input",alertaProducto,true);
+				alertaProducto();
+			}
+			
+			function alertaProducto() 
 			{
-				if(producto == 1)
+				
+				//var producto=<?echo $product?>;
+				if (accion1.value=="Editar")
+				{
+					if(producto >= 1)
 					{
 						swal({
 							title:"Producto con el id:" + <? echo $id_producto?>+"ha sido actualizado",
-							text: "¿Desea asignar la disponibilidad al producto?",
+							text: "",
 							type: "success",
-							showCancelButton: true,
-							confirmButtonClass: "btn-danger",
-							confirmButtonText: "Si, deseo hacerlo!",
+							showCancelButton: false,
+							confirmButtonClass: "btn-success",
+							confirmButtonText: "Producto actualizado!",
 							cancelButtonText: "No",
-							closeOnConfirm: false,
+							closeOnConfirm: true,
 							closeOnCancel: false
 						},
 						function(isConfirm) {
 							if (isConfirm) {
-								swal("Ir", "En un momento sera dirigido a la pagina de asignacion de disponibilidades.", "success");
-								//location.href="gestion_disponibilidad.php?id_prod="+id_producto+"";
+								swal("", "", "success");
+								location.href="editar_producto.php?id_producto="+<? echo $id_producto?>;
 							} else {
-								swal("Cancelar","error");
-								//location.href="gestion_producto.php
+								swal("Cancelar","");
+								location.href="gestion_producto.php"
 							}
 						});
 					}
-			}
-			else if (accion == "Eliminar")
-			{
-					if(producto == 1)
+				}
+				else if (accion2.value=="Eliminar")
+				{
+					if(producto >= 1)
 					{
 						swal({
 							title:"¿Desea eliminar el producto:" + <? echo $id_producto?>+"?",
@@ -298,17 +313,15 @@ License: You must have a valid license purchased only from themeforest(the above
 						{
 							if (isConfirm) {
 								swal("Ir", "El producto ha sido eliminado", "success");
-								//location.href="gestion_producto.php
+								location.href="gestion_producto.php"
 							} else {
-								swal("Cancelar","error");
-								//location.href="editar_producto.php?id_prod="+id_producto+"";
+								swal("Cancelar","el producto fue eliminado");
+								location.href="editar_producto.php?id_producto="+<? echo $id_producto?>;
 							}
 						});
 					}
+				}
 			}
-		}
-		
-		
 		</script>
 	</head>
     <!-- END HEAD -->
@@ -433,8 +446,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
                     <!-- END THEME PANEL -->
-                    <h1 class="page-title"> Crear producto
-                        <small>creacion de producto</small>
+                    <h1 class="page-title"> Editar producto
+                        <small>Edicion de producto</small>
                     </h1>
                     <div class="page-bar">
                         <ul class="page-breadcrumb">
@@ -444,11 +457,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <a href="#">Crear producto</a>
+                                <a href="#">Editar producto</a>
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <span>Creacion de productos</span>
+                                <span>Edicion del producto</span>
                             </li>
                         </ul>
                         
@@ -458,17 +471,53 @@ License: You must have a valid license purchased only from themeforest(the above
 						<div class="portlet-body form">
 							<form role="form" class="form-horizontal" name="editar_producto"  id="editar_producto" action="editar_producto.php" enctype="multipart/form-data" method="post">
 								<div class="form-body">
-									<div class="form-group form-md-line-input">
+									<div class="form-group form-md-line-input dropzone">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="input-icon">
-												<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" value ="<? echo $producto[0]['nombre']; ?>">
-													<div class="form-control-focus"> </div>
-													<span class="help-block required">Digite el nombre del producto *</span>
-													<i class="fa fa-tags"></i>
+											<div class="fileinput fileinput-new" data-provides="fileinput">
+												<div class="fileinput-new thumbnail img-circle" style="width: 200px; height: 200px;">
+													<img src="<? echo "usuarios/".$usu_id."/bienes/".$id_producto."/res_producto.jpg"?>" alt=""> </div>
+												<div class="fileinput-preview fileinput-exists thumbnail img-circle" style="max-width: 200px; max-height: 200px;"> </div>
+												<div>
+													<span class="btn default btn-file">
+														<span class="fileinput-new"> Seleccione la imagen </span>
+														<span class="fileinput-exists"> Cambiar </span>
+														<input type="file" name="foto" id="foto" value="<?echo "usuarios/".$usu_id."/bienes/".$id_producto."/".$resFoto?>"> 
+													</span>
+													<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+												</div> 
 											</div>
 										</div>
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<?
+											$objCal = new PDOModel();
+											//consulta para extraer la suma de las filas
+											$objCal->where("id_producto", $id_producto);
+											$objCal->columns = array("sum(calificacion)");
+											$sumaCalificaciones =  $objCal->select("calificacion_producto");
+											foreach ($sumaCalificaciones as $sumaCal){
+												foreach ($sumaCal as $sumCal){
+													$suma= $sumCal;
+												}
+											}
+                                          
+											//cosulta para contar el total de filas
+											$objCal->where("id_producto", $id_producto);
+                                            $objCal->columns = array("count(*) calificacion");
+                                            $cuentaTotal =  $objCal->select("calificacion_producto");
+											foreach ($cuentaTotal as $cuentaTot){
+												foreach ($cuentaTot as $cuentaTo){
+													$cuenta= $cuentaTo;
+												}
+											}
+											
+											//funcion para calcular el promedio
+											$prom= $sumCal/$cuenta;
+											$promedio=number_format($prom,1);
+										    echo print_calificacion($promedio);
+											
+											?>
+										</div>
 									</div>
-
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
@@ -479,7 +528,18 @@ License: You must have a valid license purchased only from themeforest(the above
 											</div>
 										</div>
 									</div>
-
+									
+									<div class="form-group form-md-line-input">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<div class="input-icon">
+												<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" value ="<? echo $producto[0]['nombre']; ?>">
+													<div class="form-control-focus"> </div>
+													<span class="help-block required">Digite el nombre del producto *</span>
+													<i class="fa fa-tags"></i>
+											</div>
+										</div>
+									</div>
+									
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
@@ -495,7 +555,7 @@ License: You must have a valid license purchased only from themeforest(the above
 												<div class="field_wrapper">
 													Actualice la composicion del producto
 													<span class="required"> * </span>
-													<a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus-circle fa-2"></i></a>
+													<a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus-circle fa-1x"></i></a>
 													<option selected="selected" value=""></option>
 														<?
 														$objConn1 = new PDOModel();
@@ -562,28 +622,19 @@ License: You must have a valid license purchased only from themeforest(the above
 											</div>
 										</div>
 									</div>
-									<div class="form-group form-md-line-input dropzone">
+									
+									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="fileinput fileinput-new" data-provides="fileinput">
-												<div class="fileinput-new thumbnail img-circle" style="width: 200px; height: 200px;">
-													<img src="<? echo "usuarios/".$usu_id."/bienes/".$id_producto."/res_producto.jpg"?>" alt=""> </div>
-												<div class="fileinput-preview fileinput-exists thumbnail img-circle" style="max-width: 200px; max-height: 200px;"> </div>
-												<div>
-													<span class="btn default btn-file">
-														<span class="fileinput-new"> Seleccione la imagen </span>
-														<span class="fileinput-exists"> Cambiar </span>
-														<input type="file" name="foto" id="foto" value="<?echo "usuarios/".$usu_id."/bienes/".$id_producto."/".$resFoto?>"> 
-													</span>
-													<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
-												</div> 
-											</div>
+										
+											<input class="btn blue" name="editar" type="submit" id="editar" value="Editar">
+											<input class="btn red" name="eliminar" type="submit" id="eliminar" value="Eliminar">
+											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
+											<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
 										</div>
 									</div>
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<input class="btn blue" name="accion" type="submit" id="accion" value="Editar">
-											<input class="btn red" name="accion" type="submit" id="accion" value="Eliminar">
-											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
+										
 										</div>
 									</div>
 								</div>
