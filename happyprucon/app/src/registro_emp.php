@@ -1,7 +1,8 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-include '../class/sessions.php';
 require_once'../../externo/plugins/PDOModel.php';
+include '../class/sessions.php';
+
 $objSe = new Sessions();
 ?>
 <!DOCTYPE html>
@@ -239,7 +240,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
 
                     </div>
                     <div class="portlet-body form">
-                        <form role="form" class="form-horizontal" action="registro_emp.php" name="submit_form" id="submit_form" enctype="multipart/form-data" method="POST">
+                        <form role="form" class="form-horizontal" action="registro_emp.php" name="registro_emp" id="registro_emp" enctype="multipart/form-data" method="POST">
                             <div class="form-wizard">
                                 <div class="form-body">
                                     <ul class="nav nav-pills nav-justified steps">
@@ -415,34 +416,34 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             <!-- BEGIN ACCORDION PORTLET-->
                                             <div class="portlet-body">
                                                 <div class="panel-group accordion" id="accordion1">
-                                                            <?php
-                                                            $objCat = new PDOModel();
-                                                            $objCat->where("id_estado", 1);
-                                                            $result =  $objCat->select("bienes");
-                                                            foreach($result as $item){
-                                                                ?>
-                                                    <div class="panel panel-default">
-                                                        <div class="panel-heading">
-                                                            <h4 class="panel-title bold">
-                                                                 <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_<?php echo $item["id"]?>" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  alt="" /><?php echo $item["nombre"]?></a>
-                                                            </h4>
+                                                    <?php
+                                                    $objCat = new PDOModel();
+                                                    $objCat->where("id_estado", 1);
+                                                    $result =  $objCat->select("bienes");
+                                                    foreach($result as $item){
+                                                        ?>
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <h4 class="panel-title bold">
+                                                                    <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_<?php echo $item["id"]?>" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  alt="" /><?php echo $item["nombre"]?></a>
+                                                                </h4>
                                                             </div>
-                                                        <div id="collapse_<?php echo $item["id"]?>" class="panel-collapse collapse">
-                                                            <div class="panel-body"><?php
+                                                            <div id="collapse_<?php echo $item["id"]?>" class="panel-collapse collapse">
+                                                                <div class="panel-body"><?php
 
-                                                                $objCat->andOrOperator = "AND";
-                                                                $objCat->where("id_bienes", $item["id"]);
-                                                                $objCat->where("id_estado", 1);
-                                                                $objCat->orderByCols = array("descripcion");
-                                                                $result1 =  $objCat->select("categoria");
-                                                                foreach($result1 as $item1){
-                                                                    ?><label>
-                                                                    <input type="checkbox" class="icheck" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
-                                                                }
-                                                                ?>
+                                                                    $objCat->andOrOperator = "AND";
+                                                                    $objCat->where("id_bienes", $item["id"]);
+                                                                    $objCat->where("id_estado", 1);
+                                                                    $objCat->orderByCols = array("descripcion");
+                                                                    $result1 =  $objCat->select("categoria");
+                                                                    foreach($result1 as $item1){
+                                                                        ?><label>
+                                                                        <input type="checkbox" class="icheck" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
+                                                                    }
+                                                                    ?>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>  <?
+                                                        </div>  <?
                                                     }
                                                     ?>
                                                 </div>
@@ -550,94 +551,94 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                 </h4>
                                             </div>
                                             <script type="text/javascript">
-                                            // para buscar e insertar composiciones
-                                            $(document).ready(function(){
-                                            var maxField = 7; //Input fields increment limitation
-                                            var addButton = $('.add_button'); //Add button selector
-                                            var wrapper = $('.field_wrapper'); //Input field wrapper
-                                            var fieldHTML = '<div>'+
-                                                '<div class="fileinput fileinput-new" data-provides="fileinput">'+
-                                                    '<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">'+
+                                                // para buscar e insertar composiciones
+                                                $(document).ready(function(){
+                                                    var maxField = 7; //Input fields increment limitation
+                                                    var addButton = $('.add_button'); //Add button selector
+                                                    var wrapper = $('.field_wrapper'); //Input field wrapper
+                                                    var fieldHTML = '<div>'+
+                                                        '<div class="fileinput fileinput-new" data-provides="fileinput">'+
+                                                        '<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">'+
                                                         '<img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>'+
-                                                    '<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>'+
-                                                    '<div>'+
-                                                    '<span class="btn default btn-file">'+
-                                                    '<span class="fileinput-new"> Seleccionar </span>'+
-                                                '<span class="fileinput-exists"> Cambiar </span>'+
-                                                    '<input type="file" name="fotos[]" id="fotos[]"/> </span>'+
+                                                        '<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>'+
+                                                        '<div>'+
+                                                        '<span class="btn default btn-file">'+
+                                                        '<span class="fileinput-new"> Seleccionar </span>'+
+                                                        '<span class="fileinput-exists"> Cambiar </span>'+
+                                                        '<input type="file" name="fotos[]" id="fotos[]"/> </span>'+
 
-                                                    '<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>'+
-                                                    '</div>'+
-                                                    '</div>'+
-                                                    <?
-                                                    if(isset($_POST["formulario"])) {
-                                                        $btn = $_POST["formulario"];
+                                                        '<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>'+
+                                                        '</div>'+
+                                                        '</div>'+
+                                                        <?
+                                                        if(isset($_POST["formulario"])) {
+                                                            $btn = $_POST["formulario"];
 
-                                                        if ($btn == "Registrar") {
+                                                            if ($btn == "Registrar") {
 
-                                                            if ($_FILES['fotos']["size"] >= 1) {
-                                                                // Primero, hay que validar que se trata de un JPG/GIF/PNG
-                                                                $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
-                                                                $extension = end(explode(".", $_FILES["fotos"]["name"]));
-                                                                if ((($_FILES["fotos"]["type"] == "image/gif")
-                                                                        || ($_FILES["fotos"]["type"] == "image/jpeg")
-                                                                        || ($_FILES["fotos"]["type"] == "image/png")
-                                                                        || ($_FILES["fotos"]["type"] == "image/gif")
-                                                                        || ($_FILES["fotos"]["type"] == "image/bmp"))
-                                                                    && in_array($extension, $allowedExts)
-                                                                ) {
-                                                                    // el archivo es un JPG/GIF/PNG, entonces...
+                                                                if ($_FILES['fotos']["size"] >= 1) {
+                                                                    // Primero, hay que validar que se trata de un JPG/GIF/PNG
+                                                                    $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
+                                                                    $extension = end(explode(".", $_FILES["fotos"]["name"]));
+                                                                    if ((($_FILES["fotos"]["type"] == "image/gif")
+                                                                            || ($_FILES["fotos"]["type"] == "image/jpeg")
+                                                                            || ($_FILES["fotos"]["type"] == "image/png")
+                                                                            || ($_FILES["fotos"]["type"] == "image/gif")
+                                                                            || ($_FILES["fotos"]["type"] == "image/bmp"))
+                                                                        && in_array($extension, $allowedExts)
+                                                                    ) {
+                                                                        // el archivo es un JPG/GIF/PNG, entonces...
 
-                                                                    $extension = end(explode('.', $_FILES['fotos']['name']));
-                                                                    $foto = substr(md5(uniqid(rand())), 0, 10) . "." . $extension;
-                                                                    $directorio = "usuarios/" . $id_usuario . "/sitio/"; // directorio de tu elección
-                                                                    if (file_exists($directorio)) {
+                                                                        $extension = end(explode('.', $_FILES['fotos']['name']));
+                                                                        $foto = substr(md5(uniqid(rand())), 0, 10) . "." . $extension;
+                                                                        $directorio = "usuarios/" . $id_usuario . "/sitio/"; // directorio de tu elección
+                                                                        if (file_exists($directorio)) {
 
-                                                                    } else {
-                                                                        mkdir($directorio, 0777, true);
+                                                                        } else {
+                                                                            mkdir($directorio, 0777, true);
+                                                                        }
+
+                                                                        // almacenar imagen en el servidor
+                                                                        move_uploaded_file($_FILES['fotos']['tmp_name'], $directorio . '/' . $foto);
+                                                                        $minFoto = 'min_' . $foto;
+                                                                        $resFoto = 'res_' . $foto;
+                                                                        resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
+                                                                        resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
+                                                                        unlink($directorio . '/' . $foto);
+
+                                                                    } else { // El archivo no es JPG/GIF/PNG
+                                                                        $malformato = $_FILES["fotos"]["type"];
+
+                                                                        echo "<script type='text/javascript'>alert('La imagen se encuentra con formato incorrecto')</script>";
+
+                                                                        //header("Location: crear_producto.php?id=echo $usu_id");
                                                                     }
 
-                                                                    // almacenar imagen en el servidor
-                                                                    move_uploaded_file($_FILES['fotos']['tmp_name'], $directorio . '/' . $foto);
-                                                                    $minFoto = 'min_' . $foto;
-                                                                    $resFoto = 'res_' . $foto;
-                                                                    resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
-                                                                    resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
-                                                                    unlink($directorio . '/' . $foto);
-
-                                                                } else { // El archivo no es JPG/GIF/PNG
-                                                                    $malformato = $_FILES["fotos"]["type"];
-
-                                                                    echo "<script type='text/javascript'>alert('La imagen se encuentra con formato incorrecto')</script>";
-
-                                                                    //header("Location: crear_producto.php?id=echo $usu_id");
-                                                                }
-
-                                                            } else { // El campo foto NO contiene una imagen
+                                                                } else { // El campo foto NO contiene una imagen
 
 
-                                                                echo "<script type='text/javascript'>
+                                                                    echo "<script type='text/javascript'>
                                                                 alert('No se ha seleccionado imagenes');
                                                             </script>";
 
+                                                                }
                                                             }
                                                         }
-                                                    }
-                                                    ?>
-                                                '<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div>';
-                                            var x = 1; //Initial field counter is 1
-                                            $(addButton).click(function(){ //Once add button is clicked
-                                            if(x < maxField){ //Check maximum number of input fields
-                                            x++; //Increment field counter
-                                            $(wrapper).append(fieldHTML); // Add field html
-                                            }
-                                            });
-                                            $(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
-                                            e.preventDefault();
-                                            $(this).parent('div').remove(); //Remove field html
-                                            x--; //Decrement field counter
-                                            });
-                                            });
+                                                        ?>
+                                                        '<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div>';
+                                                    var x = 1; //Initial field counter is 1
+                                                    $(addButton).click(function(){ //Once add button is clicked
+                                                        if(x < maxField){ //Check maximum number of input fields
+                                                            x++; //Increment field counter
+                                                            $(wrapper).append(fieldHTML); // Add field html
+                                                        }
+                                                    });
+                                                    $(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
+                                                        e.preventDefault();
+                                                        $(this).parent('div').remove(); //Remove field html
+                                                        x--; //Decrement field counter
+                                                    });
+                                                });
                                             </script>
 
 

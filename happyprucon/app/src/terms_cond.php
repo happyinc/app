@@ -106,12 +106,12 @@ if($rol_emp == 2){
     <div align="center" style="padding-bottom: 40px;"><a href="logueo.html">
             <img src="../../externo/img/logo-default.png" width="230px" alt="" /> </a>
     </div>
-    <form class="login-form" action="terms_cond.php" method="post">
-        <div class="form-body" style="padding-bottom: 20px;">
+    <div class="login-form" method="post">
+        <div class="row" style="padding-bottom: 20px;">
             <div class="form-group">
                 <textarea name="terminos" id="terminos" class="form-control" rows="10" readonly><?php echo $terminos; ?> </textarea></div>
         </div>
-    </form>
+    </div>
     <!-- BEGIN LOGIN FORM -->
     <form class="login-form" action="registro_emp.php" method="post">
         <div class="row">
