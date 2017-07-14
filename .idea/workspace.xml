@@ -24,12 +24,11 @@
       <file leaf-file-name="crear_producto.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/happyprucon/app/src/crear_producto.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-34">
-              <caret line="76" column="53" lean-forward="false" selection-start-line="76" selection-start-column="53" selection-end-line="76" selection-end-column="53" />
+            <state relative-caret-position="2193">
+              <caret line="150" column="52" lean-forward="true" selection-start-line="150" selection-start-column="52" selection-end-line="150" selection-end-column="52" />
               <folding>
-                <marker date="1499875913845" expanded="true" signature="25622:25631" ph="..." />
-                <marker date="1499875913845" expanded="true" signature="25622:25643" ph="..." />
-                <marker date="1499875913845" expanded="true" signature="25622:25652" ph="..." />
+                <marker date="1500036087149" expanded="true" signature="382:468" ph="..." />
+                <marker date="1500036087149" expanded="true" signature="25662:25671" ph="..." />
               </folding>
             </state>
           </provider>
@@ -38,12 +37,12 @@
       <file leaf-file-name="editar_producto.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/happyprucon/app/src/editar_producto.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="193" column="28" lean-forward="true" selection-start-line="193" selection-start-column="28" selection-end-line="193" selection-end-column="28" />
+            <state relative-caret-position="683">
+              <caret line="512" column="50" lean-forward="false" selection-start-line="512" selection-start-column="50" selection-end-line="512" selection-end-column="50" />
               <folding>
-                <marker date="1499888437707" expanded="true" signature="1289:1375" ph="..." />
-                <marker date="1499888437707" expanded="false" signature="25883:25911" ph="..." />
-                <marker date="1499888437707" expanded="false" signature="26115:26151" ph="..." />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <marker date="1500068307760" expanded="true" signature="380:466" ph="..." />
               </folding>
             </state>
           </provider>
@@ -72,7 +71,8 @@
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
-    <option name="width" value="1452" />
+    <option name="y" value="-8" />
+    <option name="width" value="1456" />
     <option name="height" value="876" />
   </component>
   <component name="ProjectView">
@@ -90,7 +90,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -160,6 +159,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -194,6 +194,7 @@
       <workItem from="1498831093637" duration="20000" />
       <workItem from="1499264557263" duration="1510000" />
       <workItem from="1499878324836" duration="2277000" />
+      <workItem from="1500057614154" duration="2540000" />
     </task>
     <task id="LOCAL-00001" summary="prueba">
       <created>1498315746556</created>
@@ -213,12 +214,12 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4199000" />
+    <option name="totallyTimeSpent" value="6739000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="0" width="1452" height="876" extended-state="1" />
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14902507" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14861111" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13577023" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -263,12 +264,34 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/happyprucon/app/src/crear_producto.php">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1292">
+          <caret line="76" column="53" lean-forward="false" selection-start-line="76" selection-start-column="53" selection-end-line="76" selection-end-column="53" />
+          <folding>
+            <marker date="1500036087149" expanded="true" signature="382:468" ph="..." />
+            <marker date="1500036087149" expanded="true" signature="25662:25671" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/editar_producto.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3281">
+          <caret line="193" column="28" lean-forward="true" selection-start-line="193" selection-start-column="28" selection-end-line="193" selection-end-column="28" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1500068307760" expanded="true" signature="380:466" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/crear_producto.php">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1499875913845" expanded="true" signature="25622:25631" ph="..." />
-            <marker date="1499875913845" expanded="true" signature="25622:25643" ph="..." />
-            <marker date="1499875913845" expanded="true" signature="25622:25652" ph="..." />
+            <marker date="1500036087149" expanded="true" signature="382:468" ph="..." />
+            <marker date="1500036087149" expanded="true" signature="25662:25671" ph="..." />
           </folding>
         </state>
       </provider>
@@ -314,24 +337,23 @@
     <entry file="file://$PROJECT_DIR$/happyprucon/app/class/producto.php" />
     <entry file="file://$PROJECT_DIR$/happyprucon/app/src/crear_producto.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-34">
-          <caret line="76" column="53" lean-forward="false" selection-start-line="76" selection-start-column="53" selection-end-line="76" selection-end-column="53" />
+        <state relative-caret-position="2193">
+          <caret line="150" column="52" lean-forward="true" selection-start-line="150" selection-start-column="52" selection-end-line="150" selection-end-column="52" />
           <folding>
-            <marker date="1499875913845" expanded="true" signature="25622:25631" ph="..." />
-            <marker date="1499875913845" expanded="true" signature="25622:25643" ph="..." />
-            <marker date="1499875913845" expanded="true" signature="25622:25652" ph="..." />
+            <marker date="1500036087149" expanded="true" signature="382:468" ph="..." />
+            <marker date="1500036087149" expanded="true" signature="25662:25671" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/happyprucon/app/src/editar_producto.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="193" column="28" lean-forward="true" selection-start-line="193" selection-start-column="28" selection-end-line="193" selection-end-column="28" />
+        <state relative-caret-position="683">
+          <caret line="512" column="50" lean-forward="false" selection-start-line="512" selection-start-column="50" selection-end-line="512" selection-end-column="50" />
           <folding>
-            <marker date="1499888437707" expanded="true" signature="1289:1375" ph="..." />
-            <marker date="1499888437707" expanded="false" signature="25883:25911" ph="..." />
-            <marker date="1499888437707" expanded="false" signature="26115:26151" ph="..." />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1500068307760" expanded="true" signature="380:466" ph="..." />
           </folding>
         </state>
       </provider>

@@ -39,9 +39,11 @@ License: You must have a valid license purchased only from themeforest(the above
 	<?php
 
 	include "include_css.php";
+	include "funciones.php";
 	require_once'../../externo/plugins/PDOModel.php';
 	
 	$id_producto = "";
+	
         if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
         {
             $id_producto = $_POST["id_producto"];
@@ -94,16 +96,17 @@ License: You must have a valid license purchased only from themeforest(the above
 		</script>
 			
 	    <?
-
+		$product=0;
+		//$accion="";
 		$objProd = new PDOModel();
 		$objProd->where("id", $id_producto);
 		$producto =  $objProd->select("producto");
 
-        $accion=$_POST["accion"];
+        //$accion=$_POST["accion"];
 		if(isset($_POST["formulario"]) && $_POST["formulario"] == "editar_producto" )
 		{
 			
-			if(isset($accion) && $accion== "Editar")
+			if(isset($_POST["editar"]) && $_POST["editar"]== "Editar")
 			{
 				$objConn = new PDOModel();
 				$updateData["nombre"] = $_POST["nombre"]; 
@@ -189,7 +192,8 @@ License: You must have a valid license purchased only from themeforest(the above
 				}
 			}
 			
-			else if(isset($accion) && $accion== "Eliminar"){
+			else if(isset($_POST["eliminar"]) && $_POST["eliminar"]== "Eliminar")
+			{
 				$objConn = new PDOModel();
 				$updateData["id_estado"] = 2;
 				$objConn->where("id", $id_producto);
@@ -250,15 +254,23 @@ License: You must have a valid license purchased only from themeforest(the above
 		}
 		?>
 		<script>
-		alert("<?echo $accion?>");
-			alert("<?echo $product?>");
-		function alertaProducto() 
-		{
-			var accion=<?echo $accion?>;
-			var producto=<?echo $product?>;
-			if (accion == 'Editar')
+		//alert("<?echo $accion?>");
+			//alert("<?echo $product?>");
+			function(){
+				var accion1= document.getElementbyId("editar");//<?echo $accion?>;
+				accion1.addEventListener("input",alertaProducto,true);
+				var accion2= document.getElementbyId("eliminar");
+				accion2.addEventListener("input",alertaProducto,true);
+				alertaProducto();
+			}
+			
+			function alertaProducto() 
 			{
-				if(producto >= 1)
+				
+				//var producto=<?echo $product?>;
+				if (accion1.value=="Editar")
+				{
+					if(producto >= 1)
 					{
 						swal({
 							title:"Producto con el id:" + <? echo $id_producto?>+"ha sido actualizado",
@@ -281,9 +293,9 @@ License: You must have a valid license purchased only from themeforest(the above
 							}
 						});
 					}
-			}
-			else if (accion == 'Eliminar')
-			{
+				}
+				else if (accion2.value=="Eliminar")
+				{
 					if(producto >= 1)
 					{
 						swal({
@@ -308,9 +320,8 @@ License: You must have a valid license purchased only from themeforest(the above
 							}
 						});
 					}
+				}
 			}
-		}
-		
 		</script>
 	</head>
     <!-- END HEAD -->
@@ -460,17 +471,53 @@ License: You must have a valid license purchased only from themeforest(the above
 						<div class="portlet-body form">
 							<form role="form" class="form-horizontal" name="editar_producto"  id="editar_producto" action="editar_producto.php" enctype="multipart/form-data" method="post">
 								<div class="form-body">
-									<div class="form-group form-md-line-input">
+									<div class="form-group form-md-line-input dropzone">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="input-icon">
-												<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" value ="<? echo $producto[0]['nombre']; ?>">
-													<div class="form-control-focus"> </div>
-													<span class="help-block required">Digite el nombre del producto *</span>
-													<i class="fa fa-tags"></i>
+											<div class="fileinput fileinput-new" data-provides="fileinput">
+												<div class="fileinput-new thumbnail img-circle" style="width: 200px; height: 200px;">
+													<img src="<? echo "usuarios/".$usu_id."/bienes/".$id_producto."/res_producto.jpg"?>" alt=""> </div>
+												<div class="fileinput-preview fileinput-exists thumbnail img-circle" style="max-width: 200px; max-height: 200px;"> </div>
+												<div>
+													<span class="btn default btn-file">
+														<span class="fileinput-new"> Seleccione la imagen </span>
+														<span class="fileinput-exists"> Cambiar </span>
+														<input type="file" name="foto" id="foto" value="<?echo "usuarios/".$usu_id."/bienes/".$id_producto."/".$resFoto?>"> 
+													</span>
+													<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+												</div> 
 											</div>
 										</div>
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<?
+											$objCal = new PDOModel();
+											//consulta para extraer la suma de las filas
+											$objCal->where("id_producto", $id_producto);
+											$objCal->columns = array("sum(calificacion)");
+											$sumaCalificaciones =  $objCal->select("calificacion_producto");
+											foreach ($sumaCalificaciones as $sumaCal){
+												foreach ($sumaCal as $sumCal){
+													$suma= $sumCal;
+												}
+											}
+                                          
+											//cosulta para contar el total de filas
+											$objCal->where("id_producto", $id_producto);
+                                            $objCal->columns = array("count(*) calificacion");
+                                            $cuentaTotal =  $objCal->select("calificacion_producto");
+											foreach ($cuentaTotal as $cuentaTot){
+												foreach ($cuentaTot as $cuentaTo){
+													$cuenta= $cuentaTo;
+												}
+											}
+											
+											//funcion para calcular el promedio
+											$prom= $sumCal/$cuenta;
+											$promedio=number_format($prom,1);
+										    echo print_calificacion($promedio);
+											
+											?>
+										</div>
 									</div>
-
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
@@ -481,7 +528,18 @@ License: You must have a valid license purchased only from themeforest(the above
 											</div>
 										</div>
 									</div>
-
+									
+									<div class="form-group form-md-line-input">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<div class="input-icon">
+												<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" value ="<? echo $producto[0]['nombre']; ?>">
+													<div class="form-control-focus"> </div>
+													<span class="help-block required">Digite el nombre del producto *</span>
+													<i class="fa fa-tags"></i>
+											</div>
+										</div>
+									</div>
+									
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="input-icon">
@@ -564,30 +622,19 @@ License: You must have a valid license purchased only from themeforest(the above
 											</div>
 										</div>
 									</div>
-									<div class="form-group form-md-line-input dropzone">
+									
+									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="fileinput fileinput-new" data-provides="fileinput">
-												<div class="fileinput-new thumbnail img-circle" style="width: 200px; height: 200px;">
-													<img src="<? echo "usuarios/".$usu_id."/bienes/".$id_producto."/res_producto.jpg"?>" alt=""> </div>
-												<div class="fileinput-preview fileinput-exists thumbnail img-circle" style="max-width: 200px; max-height: 200px;"> </div>
-												<div>
-													<span class="btn default btn-file">
-														<span class="fileinput-new"> Seleccione la imagen </span>
-														<span class="fileinput-exists"> Cambiar </span>
-														<input type="file" name="foto" id="foto" value="<?echo "usuarios/".$usu_id."/bienes/".$id_producto."/".$resFoto?>"> 
-													</span>
-													<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
-												</div> 
-											</div>
+										
+											<input class="btn blue" name="editar" type="submit" id="editar" value="Editar">
+											<input class="btn red" name="eliminar" type="submit" id="eliminar" value="Eliminar">
+											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
+											<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
 										</div>
 									</div>
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 										
-											<input class="btn blue" name="accion" type="submit" id="accion" value="Editar">
-											<input class="btn red" name="accion" type="submit" id="accion" value="Eliminar">
-											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
-											<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
 										</div>
 									</div>
 								</div>

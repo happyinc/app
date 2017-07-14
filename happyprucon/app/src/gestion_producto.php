@@ -38,6 +38,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <head>
 	<?php
 	include "include_css.php";
+	
 	require_once'../../externo/plugins/PDOModel.php';
 
 		?>
@@ -229,12 +230,12 @@ License: You must have a valid license purchased only from themeforest(the above
 													$result=$objProd->totalRows;
 													if($result> 0 || $result[0]["id_estado"]==1)
 													{
-														?><a class="btn btn-success" href="../src/gestion_disponibilidad.php?id_producto=<? echo $item["id"]?>">
+														?><a href="../src/gestion_disponibilidad.php?id_producto=<? echo $item["id"]?>">
 															<i class="fa fa-toggle-on fa-4x" aria-hidden="true"></i></a><?php
 													}
 													else if($result <= 0 || $result[0]["id_estado"]==2)
 													{
-														?><a class="btn btn-danger" href="../src/gestion_disponibilidad.php?id_producto=<? echo $item["id"]?>">
+														?><a href="../src/gestion_disponibilidad.php?id_producto=<? echo $item["id"]?>">
 															<i class="fa fa-toggle-off fa-4x" aria-hidden="true"></i></a><?php
 													}
 													?>
