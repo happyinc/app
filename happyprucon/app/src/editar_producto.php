@@ -42,7 +42,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	include "funciones.php";
 	require_once'../../externo/plugins/PDOModel.php';
 	
-	$id_producto = "";
+		$id_producto = "";
 	
         if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
         {
@@ -102,7 +102,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		$objProd->where("id", $id_producto);
 		$producto =  $objProd->select("producto");
 
-        //$accion=$_POST["accion"];
+        
 		if(isset($_POST["formulario"]) && $_POST["formulario"] == "editar_producto" )
 		{
 			
@@ -118,8 +118,10 @@ License: You must have a valid license purchased only from themeforest(the above
 				$objConn->update('producto', $updateData);
 
 				
-				$producto_actualizado = $objConn->rowsChanged;
+				$producto_actualizado= $objConn->rowsChanged;
 
+				if($producto_actualizado == 1)
+				{
 				
 					if($_FILES['foto']["size"]>=1)
 					{
@@ -162,27 +164,29 @@ License: You must have a valid license purchased only from themeforest(the above
 							</script>
 							<?	
 						}
-					} else 
-						{ // El campo foto NO contiene una imagen
+					} 
+					else 
+					{ // El campo foto NO contiene una imagen
 							?>
 							<script type="text/javascript">
 							alert("No se ha seleccionado imagenes");
-							window.history.back();
 							</script>
 							<?	
-						}
-				if($producto_actualizado == 1)
-				{
+					}
+						
 						$objConn = new PDOModel();
 						$objConn->where("id_producto", $id_producto);//setting where condition
 						$objConn->delete("composicion_producto");
 						$act=$objConn->rowsChanged;
+
 							foreach($_POST['field_name'] as $clave => $valor)
 							{
 								$insertDataComp["id_composicion"] = $valor;
 								$insertDataComp["id_producto"] = $id_producto;
 								$objConn->insert('composicion_producto', $insertDataComp);
 							}
+
+
 				}
 				else
 				{
@@ -193,23 +197,23 @@ License: You must have a valid license purchased only from themeforest(the above
 					<?
 				}
 			}
-			
-			else if(isset($_POST["eliminar"]) && $_POST["eliminar"]== "Eliminar")
+		}		
+		
+
+		if(isset($_GET["eliminar"]) && $_GET["eliminar"] == 1)
 			{
 				$objConn = new PDOModel();
 				$updateData["id_estado"] = 2;
 				$objConn->where("id", $id_producto);
 				$objConn->update('producto', $updateData);
 
-				$product= $objConn->rowsChanged;
-				if($product < 1){
+				$producto_eliminado= $objConn->rowsChanged;
+				if($producto_eliminado < 1){
 					?>
-						<script type="text/javascript">alert("No se pudo eliminar el producto")</script>
+						<script type="text/javascript">location.href="gestion_producto.php";</script>
 					<?
 				}
-			}
-		}		
-		  
+			}  
 		####
 		## Función para redimencionar las imágenes
 		## utilizando las librerías de GD de PHP
@@ -255,18 +259,14 @@ License: You must have a valid license purchased only from themeforest(the above
 			
 		}
 		?>
-		<script>
-		alert(" recibo la <? echo $producto_actualizado?>");
+		<script type="text/javascript">
+		
 			function alertaProducto(producto_actualizado) 
 			{
-				accion1 = "Editar";
-				accion2 = "";
-				alert("llego la variable"+producto_actualizado);
+				
 				var producto = producto_actualizado;
-
-				alert("cambio la va"+producto);
-				if (accion1 =="Editar")
-				{
+				
+				
 					if(producto >= 1)
 					{
 						swal({
@@ -277,25 +277,23 @@ License: You must have a valid license purchased only from themeforest(the above
 							confirmButtonClass: "btn-success",
 							confirmButtonText: "Producto actualizado!",
 							cancelButtonText: "No",
-							closeOnConfirm: true,
+							closeOnConfirm: false,
 							closeOnCancel: false
 						},
 						function(isConfirm) {
 							if (isConfirm) {
 								swal("", "", "success");
-								location.href="editar_producto.php?id_producto="+<? echo $id_producto?>;
-							} else {
-								swal("Cancelar","");
-								location.href="gestion_producto.php"
-							}
+								location.href="gestion_producto.php";
+								//location.href="editar_producto.php?id_producto="+<? echo $id_producto?>;
+							} 
 						});
 					}
-				}
-				else if (accion2 =="Eliminar")
-				{
-					if(producto >= 1)
-					{
-						swal({
+				
+			}
+		  	
+		  	function eliminarProducto()
+		  	{
+		  				swal({
 							title:"¿Desea eliminar el producto:" + <? echo $id_producto?>+"?",
 							text: "Si elimina el producto no se podra recuperar",
 							type: "warning",
@@ -310,20 +308,21 @@ License: You must have a valid license purchased only from themeforest(the above
 						{
 							if (isConfirm) {
 								swal("Ir", "El producto ha sido eliminado", "success");
-								location.href="gestion_producto.php"
+								location.href="editar_producto.php?id_producto="+<? echo $id_producto?>+"&eliminar=1";
+							
 							} else {
-								swal("Cancelar","el producto fue eliminado");
-								location.href="editar_producto.php?id_producto="+<? echo $id_producto?>;
+								swal("Cancelar","se cancelo la eliminacion del producto");
+								location.href="gestion_producto.php"
 							}
 						});
-					}
-				}
-			}
+		  	}	
 		</script>
+
+
 	</head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProducto(<? echo $producto_actualizado?>)" >
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProducto(<? echo $producto_actualizado?>)">
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -509,9 +508,17 @@ License: You must have a valid license purchased only from themeforest(the above
 											}
 											
 											//funcion para calcular el promedio
-											$prom= $sumCal/$cuenta;
-											$promedio=number_format($prom,1);
-										    echo print_calificacion($promedio);
+											if ($sumCal==0 ||$cuenta==0) 
+											{
+												$prom=0;
+											}
+											
+											else
+											{
+												$prom= $sumCal/$cuenta;
+												$promedio=number_format($prom,1);
+										       echo print_calificacion($promedio);
+											}
 											
 											?>
 										</div>
@@ -521,7 +528,7 @@ License: You must have a valid license purchased only from themeforest(the above
 											<div class="input-icon">
 												<textarea class="form-control" rows="3" id="descripcion" name="descripcion" placeholder="Descripcion del producto"><? echo $producto[0]['descripcion']; ?></textarea>
 													<div class="form-control-focus"> </div>
-													<span class="help-block">Digite la descripcion del producto </span>
+													<span class="help-block">Digite la descripcion del producto</span>
 													<i class="fa fa-file-text-o"></i>
 											</div>
 										</div>
@@ -543,7 +550,7 @@ License: You must have a valid license purchased only from themeforest(the above
 											<div class="input-icon">
 												<input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del producto" data-toggle="tooltip" data-placement="top" title="De este valor digitado a happy le corresponde el 2%." value ="<? echo $producto[0]['precio']; ?>">
 													<div class="form-control-focus"> </div>
-													<span class="help-block required">Digite el valor del producto * <? print_r($product)?></span>
+													<span class="help-block required">Digite el valor del producto * </span>
 													<i class="fa fa-money"></i>
 											</div>
 										</div>
@@ -620,12 +627,11 @@ License: You must have a valid license purchased only from themeforest(the above
 											</div>
 										</div>
 									</div>
-									
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 										
 											<input class="btn blue" name="editar" type="submit" id="editar" value="Editar">
-											<input class="btn red" name="eliminar" type="submit" id="eliminar" value="Eliminar">
+											<input class="btn red" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick=" eliminarProducto();">
 											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
 											<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
 										</div>

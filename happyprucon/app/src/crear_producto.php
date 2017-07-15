@@ -114,7 +114,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				$insertData["especial"] = $_POST["especialidad"];
 				$insertData["precio"] = $_POST["precio"];
 				$insertData["fecha"] = date("Y-m-d H:i:s"); 
-				$insertData["id_usu_crea"] = $usu_id ;
+				$insertData["id_usuario"] = $usu_id ;
 				$objConn->insert('producto', $insertData);
 
 				$id_producto= $objConn->lastInsertId;

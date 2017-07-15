@@ -47,14 +47,56 @@ License: You must have a valid license purchased only from themeforest(the above
 		$objProd = new PDOModel();
 		$objProd->andOrOperator = "AND";
 		$objProd->where("id_estado", 1);
-		$objProd->where("id_usu_crea", $usu_id);
+		$objProd->where("id_usuario", $usu_id);
 		$producto =  $objProd->select("producto");
 
+		
+		//eliminar disponibilidad
+		if(isset($_GET["eliminar"]) && $_GET["eliminar"] == 1)
+			{
+				$objProd = new PDOModel();
+				$updateData["id_estado"] = 2; 
+				$objProd->where("id", $id_producto);
+				$objProd->update('producto_disponibilidad', $updateData);
+				$disponibilidad_eliminado= $objConn->rowsChanged;
+						if($disponibilidad_eliminado < 1){
+							?>
+								<script type="text/javascript">location.href="gestion_producto.php";</script>
+							<?
+						}
+			}
 		?>
+		<script>
+		function eliminarDisponibilidad()
+		  	{
+		  				swal({
+							title:"¿Desea eliminar la disponibilidad del producto:" + <? echo $id_producto?>+"?",
+							text: "",
+							type: "warning",
+							showCancelButton: true,
+							confirmButtonClass: "btn-danger",
+							confirmButtonText: "Si, deseo hacerlo!",
+							cancelButtonText: "No",
+							closeOnConfirm: false,
+							closeOnCancel: false
+						},
+						function(isConfirm) 
+						{
+							if (isConfirm) {
+								swal("Ir", "La disponibilidad ha sido eliminada del producto", "success");
+								location.href="gestion_producto.php?eliminar=1";
+							}
+							else {
+								swal("Cancelar","se cancelo la eliminacion del producto");
+								location.href="gestion_producto.php"
+							}
+						});
+		  	}	
+		</script>
 	</head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProducto()" >
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" >
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -230,8 +272,9 @@ License: You must have a valid license purchased only from themeforest(the above
 													$result=$objProd->totalRows;
 													if($result> 0 || $result[0]["id_estado"]==1)
 													{
-														?><a href="../src/gestion_disponibilidad.php?id_producto=<? echo $item["id"]?>">
-															<i class="fa fa-toggle-on fa-4x" aria-hidden="true"></i></a><?php
+														?><i class="fa fa-toggle-on fa-4x" aria-hidden="true"></i>
+														<input class="fa fa-toggle-on fa-4x" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick="eliminarDisponibilidad();"><?php
+															//eliminarDisponibilidad()
 													}
 													else if($result <= 0 || $result[0]["id_estado"]==2)
 													{
