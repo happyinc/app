@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
+include("../../externo/plugins/PDOModel.php");
 require'../class/sessions.php';
 $objSe = new Sessions();
 $objSe->init();
@@ -13,15 +14,12 @@ if($rol==2){
 }else{
 	echo "<script> alert('Usuario no autorizado');
 					window.location.assign('logueo.html');</script>";
-	
+
 }
 
 ?>
-<?php
-include("../../externo/plugins/PDOModel.php");
-?>
 <!DOCTYPE html>
-<!-- 
+<!--
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
 Version: 4.7.5
 Author: KeenThemes
@@ -41,30 +39,9 @@ License: You must have a valid license purchased only from themeforest(the above
     <!--<![endif]-->
     <!-- BEGIN HEAD -->
 
-    <head>
-        <meta charset="utf-8" />
-        <title>Metronic Admin Theme #2 | Blank Page Layout</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <meta content="Preview page of Metronic Admin Theme #2 for blank page layout" name="description" />
-        <meta content="" name="author" />
-        <!-- BEGIN GLOBAL MANDATORY STYLES -->
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-        <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
-        <!-- END GLOBAL MANDATORY STYLES -->
-        <!-- BEGIN THEME GLOBAL STYLES -->
-        <link href="../assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
-        <link href="../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
-        <!-- END THEME GLOBAL STYLES -->
-        <!-- BEGIN THEME LAYOUT STYLES -->
-        <link href="../assets/layouts/layout2/css/layout.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/layouts/layout2/css/themes/blue.min.css" rel="stylesheet" type="text/css" id="style_color" />
-        <link href="../assets/layouts/layout2/css/custom.min.css" rel="stylesheet" type="text/css" />
-        <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.ico" /> </head>
+    <head><?php
+        include "include_css.php";
+        ?> </head>
     <!-- END HEAD -->
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
@@ -272,13 +249,73 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                     <!-- END PAGE HEADER-->
                     <div class="note note-info">
-                        <p> A black page template with a minimal dependency assets to use as a base for any custom page you create </p>
+                        <div class="portlet-body">
+                            <div class="tabbable tabbable-tabdrop">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href="#tab1" data-toggle="tab">Section 1</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab2" data-toggle="tab">Section 2</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab3" data-toggle="tab">Section 3</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab4" data-toggle="tab">Section 4</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab5" data-toggle="tab">Section 5</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab6" data-toggle="tab">Section 6</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab7" data-toggle="tab">Section 7</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab8" data-toggle="tab">Section 8</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab1">
+                                        <p> I'm in Section 1. </p>
+                                    </div>
+                                    <div class="tab-pane" id="tab2">
+                                        <p> Howdy, I'm in Section 2. </p>
+                                    </div>
+                                    <div class="tab-pane" id="tab3">
+                                        <p> Howdy, I'm in Section 3. </p>
+                                    </div>
+                                    <div class="tab-pane" id="tab4">
+                                        <p> Howdy, I'm in Section 4. </p>
+                                    </div>
+                                    <div class="tab-pane" id="tab5">
+                                        <p> Howdy, I'm in Section 5. </p>
+                                    </div>
+                                    <div class="tab-pane" id="tab6">
+                                        <p> Howdy, I'm in Section 6. </p>
+                                    </div>
+                                    <div class="tab-pane" id="tab7">
+                                        <p> Howdy, I'm in Section 7. </p>
+                                    </div>
+                                    <div class="tab-pane" id="tab8">
+                                        <p> Howdy, I'm in Section 8. </p>
+                                    </div>
+                                    <div class="tab-pane" id="tab9">
+                                        <p> Howdy, I'm in Section 9. </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <p> &nbsp; </p>
+                            <p> &nbsp; </p>
+                        </div>
                     </div>
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
             <!-- END CONTENT -->
-            
+
         </div>
         <!-- END CONTAINER -->
 		 <!-- BEGIN FOOTER -->
@@ -288,8 +325,8 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- END FOOTER -->
             <!--[if lt IE 9]>
 <script src="../assets/global/plugins/respond.min.js"></script>
-<script src="../assets/global/plugins/excanvas.min.js"></script> 
-<script src="../assets/global/plugins/ie8.fix.min.js"></script> 
+<script src="../assets/global/plugins/excanvas.min.js"></script>
+<script src="../assets/global/plugins/ie8.fix.min.js"></script>
 <![endif]-->
             <!-- BEGIN CORE PLUGINS -->
             <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
@@ -298,6 +335,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <script src="../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
             <script src="../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
             <script src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js" type="text/javascript"></script>
             <!-- END CORE PLUGINS -->
             <!-- BEGIN THEME GLOBAL SCRIPTS -->
             <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
