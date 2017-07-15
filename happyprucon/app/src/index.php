@@ -5,7 +5,7 @@ require'../class/sessions.php';
 $objSe = new Sessions();
 $objSe->init();
 
-$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
@@ -250,6 +250,22 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!-- END PAGE HEADER-->
                     <div class="note note-info">
                         <div class="portlet-body">
+                            <?
+                            $categoria="";
+                            $objCon=new PDOModel();
+                            $records = $objCon->executeQuery("select A.* , B.* from producto A , pedido B where A.id = B.id_producto AND B.id_estado = 7 AND A.id_usuario = '".$usu_id."' orderby A.id");
+                            foreach ($records as $pedidos){
+                                    $categoria["".$pedidos["id_categoria"].""]=$categoria["".$pedidos["id_categoria"].""]+1;
+                            }
+                            $bien="";
+                            foreach ($categoria as $valor => $item){
+
+                                $objCon->where("id", $valor);
+                                $result1 =  $objCon->select("categoria");
+
+                                $bien["".$result1[0]["id_bienes"].""]=$bien["".$result1[0]["id_bienes"].""]+1;
+                            }
+                            ?>
                             <div class="tabbable tabbable-tabdrop">
                                 <ul class="nav nav-tabs">
                                     <li class="active">
