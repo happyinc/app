@@ -1,7 +1,8 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-include '../class/sessions.php';
 require_once'../../externo/plugins/PDOModel.php';
+include '../class/sessions.php';
+
 $objSe = new Sessions();
 $objSe->init();
 
@@ -178,59 +179,59 @@ License: You must have a valid license purchased only from themeforest(the above
                             $objSe->set('correo', $res_usu[0]['correo']);
 
 
-                    if ($_FILES['foto']["size"] >= 1) {
-                        // Primero, hay que validar que se trata de un JPG/GIF/PNG
-                        $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
-                        $extension = end(explode(".", $_FILES["foto"]["name"]));
-                    if ((($_FILES["foto"]["type"] == "image/gif")
-                            || ($_FILES["foto"]["type"] == "image/jpeg")
-                            || ($_FILES["foto"]["type"] == "image/png")
-                            || ($_FILES["foto"]["type"] == "image/gif")
-                            || ($_FILES["foto"]["type"] == "image/bmp"))
-                        && in_array($extension, $allowedExts)) {
-                        // el archivo es un JPG/GIF/PNG, entonces...
+                            if ($_FILES['foto']["size"] >= 1) {
+                                // Primero, hay que validar que se trata de un JPG/GIF/PNG
+                                $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
+                                $extension = end(explode(".", $_FILES["foto"]["name"]));
+                            if ((($_FILES["foto"]["type"] == "image/gif")
+                                    || ($_FILES["foto"]["type"] == "image/jpeg")
+                                    || ($_FILES["foto"]["type"] == "image/png")
+                                    || ($_FILES["foto"]["type"] == "image/gif")
+                                    || ($_FILES["foto"]["type"] == "image/bmp"))
+                                && in_array($extension, $allowedExts)) {
+                                // el archivo es un JPG/GIF/PNG, entonces...
 
-                        $extension = end(explode('.', $_FILES['foto']['name']));
-                        $foto = "perfil". "." . $extension;
-                        $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
-                        if (file_exists($directorio)) {
+                                $extension = end(explode('.', $_FILES['foto']['name']));
+                                $foto = "perfil". "." . $extension;
+                                $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
+                                if (file_exists($directorio)) {
 
-                        } else {
-                            mkdir($directorio, 0777, true);
-                        }
+                                } else {
+                                    mkdir($directorio, 0777, true);
+                                }
 
-                        // almacenar imagen en el servidor
-                        move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
-                        $minFoto = 'min_' . $foto;
-                        $resFoto = 'res_' . $foto;
-                        resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
-                        resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
-                        unlink($directorio . '/' . $foto);
+                                // almacenar imagen en el servidor
+                                move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
+                                $minFoto = 'min_' . $foto;
+                                $resFoto = 'res_' . $foto;
+                                resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
+                                resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
+                                unlink($directorio . '/' . $foto);
 
-                    } else { // El archivo no es JPG/GIF/PNG
-                        $malformato = $_FILES["foto"]["type"];
-                        ?>
-                        <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
-                    <?
-                    //header("Location: crear_producto.php?id=echo $usu_id");
-                    }
+                            } else { // El archivo no es JPG/GIF/PNG
+                                $malformato = $_FILES["foto"]["type"];
+                                ?>
+                                <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
+                            <?
+                            //header("Location: crear_producto.php?id=echo $usu_id");
+                            }
 
-                    } else { // El campo foto NO contiene una imagen
+                            } else { // El campo foto NO contiene una imagen
 
-                    ?>
-                        <script type="text/javascript">
-                            alert("No se ha seleccionado imagenes");
-                            window.history.back();
-                        </script>
-                        <?
-                    }
+                            ?>
+                                <script type="text/javascript">
+                                    alert("No se ha seleccionado imagenes");
+                                    window.history.back();
+                                </script>
+                                <?
+                            }
 
-                    echo "<script> alert('Usuario actualizado correctamente');
+                            echo "<script> alert('Usuario actualizado correctamente');
                         window.location.assign('../../app/src/perfil.php');</script>";
-                } else {
-                    echo "<script> alert('No se pudo actualizar');</script>";
-                }
-                }
+                        } else {
+                            echo "<script> alert('No se pudo actualizar');</script>";
+                        }
+                    }
 
 
                 }
@@ -249,13 +250,13 @@ License: You must have a valid license purchased only from themeforest(the above
                             <div class="input-group left-addon col-md-4 col-xs-2">
                                 <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
                                     <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
-                                        <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt="" class="img-circle" style="border-radius: 50%;"> </div>
+                                        <img src="<? echo "usuarios/".$usu_id."/perfil/res_perfil.jpg"?>" alt="" class="img-circle" style="border-radius: 50%;"> </div>
                                     <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
                                     <div>
 													<span class="btn default btn-file">
 														<span class="fileinput-new"> Seleccionar </span>
 														<span class="fileinput-exists"> Cambiar </span>
-														<input type="file" name="foto" id="foto"> </span>
+														<input type="file" name="foto" id="foto" value="<? echo "usuarios/".$usu_id."/".$resFoto?>"> </span>
 
                                         <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>
                                     </div>
@@ -264,8 +265,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Nombres</label>
-                           <div class="col-md-4">
-                               <input name="iduser" id="iduser" type="hidden" class="form-control" value="<?php echo $usu_id; ?>"/>
+                            <div class="col-md-4">
+                                <input name="iduser" id="iduser" type="hidden" class="form-control" value="<?php echo $usu_id; ?>"/>
                                 <input type="text" name="fullname" id="fullname" class="form-control" value="<?php echo $name; ?>" /> </div>
                         </div>
                         <div class="form-group">

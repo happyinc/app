@@ -13,7 +13,7 @@ var FormWizard = function () {
                 return "<img class='flag' src='../../assets/global/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
             }
 
-            var form = $('#submit_form');
+            var form = $('#registro_emp');
             var error = $('.alert-danger', form);
             var success = $('.alert-success', form);
 
