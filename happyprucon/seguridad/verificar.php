@@ -2,11 +2,6 @@
 require_once'../externo/plugins/PDOModel.php';
 require'../app/class/sessions.php';
 $objSe = new Sessions();
-
-date_default_timezone_set("America/Bogota");
-//date_default_timezone_get();
-
-
 		
 				$app = $_POST['txtkey'];
 				$apk = md5($app);
@@ -86,7 +81,7 @@ date_default_timezone_set("America/Bogota");
 													$ultima_sesion = $objConn->lastInsertId;
 													
 													$objSe->init();
-													$objSe->set('id', $res_usu[0]['id']);
+													$objSe->set('id_usuario', $res_usu[0]['id']);
 													$objSe->set('id_roles', $res_usu[0]['id_roles']);
 													$objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
                                                     $objSe->set('nombre', $res_usu[0]['nombre']);

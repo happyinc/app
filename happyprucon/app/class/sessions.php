@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set("America/Bogota");
 class Sessions{
 	
 	public function __construct(){ }
@@ -18,24 +18,27 @@ class Sessions{
         $this->set("url",$url);
         $this->set("aplicacion",$aplicacion);
 
-        /*$objConn = new PDOModel();
-        $objConn->where("id", $_SESSION['usu_id']);
-        $objConn->delete("ultima_sesion");
 
 
-        $insertUserData["fecha"] = date("Y-m-d HH:MM:SS");
-        $insertUserData["aplicacion"] = $_SESSION['aplicacion'];
-        $insertUserData["url"] = $_SESSION['url'];
-        $insertUserData["usu_id"] = $_SESSION['usu_id'];
-        $insertUserData["rol"] = $_SESSION['id_roles'];
-        $insertUserData["fullname"] = $_SESSION['nombre_completo'];
-        $insertUserData["name"] = $_SESSION['nombre'];
-        $insertUserData["lastname"] = $_SESSION['apellido'];
-        $insertUserData["genero"] = $_SESSION['genero'];
-        $insertUserData["tel"] = $_SESSION['telefono'];
-        $insertUserData["correo"] = $_SESSION['correo'];
+        if(isset($_SESSION['id_usuario']) && $_SESSION['id_usuario'] != "")
+        {
+            $objConn = new PDOModel();
+            $objConn->where("id_usuario", $_SESSION['id_usuario']);
+            $objConn->delete("ultima_sesion");
 
-        $objConn->insert("ultima_sesion", $insertUserData);*/
+
+            $insertUserData["fecha"] = date("Y-m-d H:i:s");
+            $insertUserData["aplicacion"] = $_SESSION['aplicacion'];
+            $insertUserData["url"] = $_SESSION['url'];
+            $insertUserData["id_usuario"] = $_SESSION['id_usuario'];
+            $insertUserData["rol"] = $_SESSION['id_roles'];
+            $insertUserData["fullname"] = $_SESSION['nombre_completo'];
+            $insertUserData["name"] = $_SESSION['nombre'];
+            $insertUserData["lastname"] = $_SESSION['apellido'];
+            $insertUserData["genero"] = $_SESSION['genero'];
+            $insertUserData["correo"] = $_SESSION['correo'];
+            $objConn->insert("ultima_sesion", $insertUserData);
+        }
 
     }
 

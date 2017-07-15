@@ -6,7 +6,7 @@ include '../class/sessions.php';
 $objSe = new Sessions();
 $objSe->init();
 
-$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 $name = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : null ;
@@ -169,7 +169,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             $res_usu =  $objConn->select("usuarios");
 
                             $objSe->init();
-                            $objSe->set('id', $res_usu[0]['id']);
+                            $objSe->set('id_usuario', $res_usu[0]['id']);
                             $objSe->set('id_roles', $res_usu[0]['id_roles']);
                             $objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
                             $objSe->set('nombre', $res_usu[0]['nombre']);
