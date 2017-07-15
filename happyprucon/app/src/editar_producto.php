@@ -96,7 +96,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		</script>
 			
 	    <?
-		$product=0;
+		//$product=0;
 		//$accion="";
 		$objProd = new PDOModel();
 		$objProd->where("id", $id_producto);
@@ -117,7 +117,9 @@ License: You must have a valid license purchased only from themeforest(the above
 				$objConn->where("id", $id_producto);
 				$objConn->update('producto', $updateData);
 
-				$product= $objConn->rowsChanged;
+				
+				$producto_actualizado = $objConn->rowsChanged;
+
 				
 					if($_FILES['foto']["size"]>=1)
 					{
@@ -169,7 +171,7 @@ License: You must have a valid license purchased only from themeforest(the above
 							</script>
 							<?	
 						}
-				if($product == 1)
+				if($producto_actualizado == 1)
 				{
 						$objConn = new PDOModel();
 						$objConn->where("id_producto", $id_producto);//setting where condition
@@ -254,26 +256,21 @@ License: You must have a valid license purchased only from themeforest(the above
 		}
 		?>
 		<script>
-		//alert("<?echo $accion?>");
-			//alert("<?echo $product?>");
-			function(){
-				var accion1= document.getElementbyId("editar");//<?echo $accion?>;
-				accion1.addEventListener("input",alertaProducto,true);
-				var accion2= document.getElementbyId("eliminar");
-				accion2.addEventListener("input",alertaProducto,true);
-				alertaProducto();
-			}
-			
-			function alertaProducto() 
+		alert(" recibo la <? echo $producto_actualizado?>");
+			function alertaProducto(producto_actualizado) 
 			{
-				
-				//var producto=<?echo $product?>;
-				if (accion1.value=="Editar")
+				accion1 = "Editar";
+				accion2 = "";
+				alert("llego la variable"+producto_actualizado);
+				var producto = producto_actualizado;
+
+				alert("cambio la va"+producto);
+				if (accion1 =="Editar")
 				{
 					if(producto >= 1)
 					{
 						swal({
-							title:"Producto con el id:" + <? echo $id_producto?>+"ha sido actualizado",
+							title:"Producto con el id:" + <? echo $id_producto ?>+"ha sido actualizado",
 							text: "",
 							type: "success",
 							showCancelButton: false,
@@ -294,7 +291,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						});
 					}
 				}
-				else if (accion2.value=="Eliminar")
+				else if (accion2 =="Eliminar")
 				{
 					if(producto >= 1)
 					{
@@ -326,7 +323,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	</head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProducto()" >
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProducto(<? echo $producto_actualizado?>)" >
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -487,6 +484,7 @@ License: You must have a valid license purchased only from themeforest(the above
 												</div> 
 											</div>
 										</div>
+										<br>
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<?
 											$objCal = new PDOModel();
@@ -545,7 +543,7 @@ License: You must have a valid license purchased only from themeforest(the above
 											<div class="input-icon">
 												<input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del producto" data-toggle="tooltip" data-placement="top" title="De este valor digitado a happy le corresponde el 2%." value ="<? echo $producto[0]['precio']; ?>">
 													<div class="form-control-focus"> </div>
-													<span class="help-block required">Digite el valor del producto *</span>
+													<span class="help-block required">Digite el valor del producto * <? print_r($product)?></span>
 													<i class="fa fa-money"></i>
 											</div>
 										</div>
