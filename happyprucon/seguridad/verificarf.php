@@ -41,6 +41,7 @@ if($result[0]['count(*)'] == 1){
         $ultima_sesion = $objConn->lastInsertId;
 
         $objSe->init();
+        $objSe->set('sesion_activa',$ultima_sesion);
         $objSe->set('id_usuario', $res_usu[0]['id']);
         $objSe->set('id_roles', $res_usu[0]['id_roles']);
         $objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);

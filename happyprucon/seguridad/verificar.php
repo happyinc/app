@@ -38,18 +38,12 @@ $objSe = new Sessions();
 							
 							if($result[0]['count(*)'] == 1){
 								
-								$objConn = new PDOModel(); 
 								$objConn->where("correo",$username);
 								$res_usu =  $objConn->select("usuarios");
-								$objSe->init();
-												$objSe->set('id', $res_usu[0]['id']);
-												$objSe->set('correo', $res_usu[0]['correo']);
-												$objSe->set('id_roles', $res_usu[0]['id_roles']);
-												$objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
-												
-												$fullname = $res_usu[0]['nombre_completo'];
-												$rol = $res_usu[0]['id_roles'];
-												$usu_id = $res_usu[0]['id'];
+
+									$fullname = $res_usu[0]['nombre_completo'];
+									$rol = $res_usu[0]['id_roles'];
+									$usu_id = $res_usu[0]['id'];
 								if($res_usu[0]["acceso_fallido"] <= 3){	
 									
 									//verificación de estado de usuario
@@ -59,8 +53,7 @@ $objSe = new Sessions();
 										$id_usu = $res_usu[0]['id'];
 										//comparación de contraseñas
 										if($contra == $res_usu[0]['password']){
-											
-											$objConn = new PDOModel(); 
+
 											$updateUser["ultimo_acceso"] = date("Y-m-d H:i:s");
 											$objConn->where("id", $res_usu[0]['id']);
 											$objConn->update("usuarios", $updateUser);		
@@ -81,6 +74,7 @@ $objSe = new Sessions();
 													$ultima_sesion = $objConn->lastInsertId;
 													
 													$objSe->init();
+													$objSe->set('sesion_activa',$ultima_sesion);
 													$objSe->set('id_usuario', $res_usu[0]['id']);
 													$objSe->set('id_roles', $res_usu[0]['id_roles']);
 													$objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
@@ -99,7 +93,7 @@ $objSe = new Sessions();
 												}
 										}else{
 											$fallo = $res_usu[0]["acceso_fallido"]+1;
-											$objConn = new PDOModel(); 
+
 											$updateUser["acceso_fallido"] = $fallo;
 											$objConn->where("id", $res_usu[0]['id']);
 											$objConn->update("usuarios", $updateUser);

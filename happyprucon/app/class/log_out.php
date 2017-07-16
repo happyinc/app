@@ -1,12 +1,11 @@
 <?php
 require_once'../../externo/plugins/PDOModel.php';
 require'sessions.php';
-date_default_timezone_set("America/Bogota");
 
 $objSe = new Sessions();
 $objSe->init();
 
-$ultima_sesion = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+$ultima_sesion = isset($_SESSION['sesion_activa']) ? $_SESSION['sesion_activa'] : null ;
 
 $objConn = new PDOModel();
 $updateSe["f_logout"] = date("Y-m-d H:i:s");

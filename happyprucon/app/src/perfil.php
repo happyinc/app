@@ -59,7 +59,6 @@ License: You must have a valid license purchased only from themeforest(the above
 <head>
     <?php
     include "include_css.php";
-    include("../../../externo/plugins/PDOModel.php");
     ?>
     <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
 </head>
@@ -208,13 +207,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                 resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
                                 unlink($directorio . '/' . $foto);
 
-                            } else { // El archivo no es JPG/GIF/PNG
-                                $malformato = $_FILES["foto"]["type"];
-                                ?>
-                                <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
-                            <?
-                            //header("Location: crear_producto.php?id=echo $usu_id");
-                            }
+                                } else { // El archivo no es JPG/GIF/PNG
+                                    $malformato = $_FILES["foto"]["type"];
+                                    ?>
+                                    <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
+                                <?
+                                //header("Location: crear_producto.php?id=echo $usu_id");
+                                }
 
                             } else { // El campo foto NO contiene una imagen
 
@@ -386,8 +385,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         || ($_FILES["fotos"]["type"] == "image/png")
                                                         || ($_FILES["fotos"]["type"] == "image/gif")
                                                         || ($_FILES["fotos"]["type"] == "image/bmp"))
-                                                    && in_array($extension, $allowedExts)
-                                                ) {
+                                                    && in_array($extension, $allowedExts)) {
                                                     // el archivo es un JPG/GIF/PNG, entonces...
 
                                                     $extension = end(explode('.', $_FILES['fotos']['name']));
@@ -441,7 +439,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                 });
                             });
                         </script>
-
 
 
                         <div class="form-group form-md-line-input has-info form-md-floating-label">

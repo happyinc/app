@@ -240,7 +240,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </li>
                                     <li class="divider"> </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="../class/log_out.php">
                                             <i class="icon-bag"></i> Separated link</a>
                                     </li>
                                 </ul>
@@ -250,7 +250,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!-- END PAGE HEADER-->
                     <div class="note note-info">
                         <div class="portlet-body">
-                            <?
+                            <?php
                             $categoria="";
                             $objCon=new PDOModel();
                             $records = $objCon->executeQuery("select A.* , B.* from producto A , pedido B where A.id = B.id_producto AND B.id_estado = 7 AND A.id_usuario = '".$usu_id."' orderby A.id");
