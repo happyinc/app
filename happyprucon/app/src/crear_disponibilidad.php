@@ -1,6 +1,6 @@
 <?php
-	error_reporting(E_ERROR | E_WARNING | E_PARSE);
-    require_once'../../externo/plugins/PDOModel.php';
+	//error_reporting(E_ERROR | E_WARNING | E_PARSE);
+	require_once'../../externo/plugins/PDOModel.php';
 	require'../class/sessions.php';
 	$objSe = new Sessions();
 	$objSe->init();
@@ -37,26 +37,46 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN HEAD -->
 
     <head>
-	<?php
-	include "include_css.php";
-
-	$id_producto = "";
-	
-        if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
+        <?php
+		
+		include "include_css.php";
+		
+		?>
+		<link href="../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+        <script>
+        function alertadisponibilidadCreada() 
         {
-            $id_producto = $_POST["id_producto"];
+            var id_producto=<?echo $id_producto?>;
+            if(id_producto >=1)
+            {
+                        swal({
+                                title:"Producto registrado con el id:" + <? echo $id_producto?>,
+                                text: "¿Desea crear la disponibilidad al producto?",
+                                type: "success",
+                                showCancelButton: true,
+                                confirmButtonClass: "btn-danger",
+                                confirmButtonText: "Si, deseo hacerlo!",
+                                cancelButtonText: "No",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                        },
+                        function(isConfirm) {
+                            if (isConfirm) {
+                                swal("Ir", "En un momento sera dirigido a la pagina para crear disponibilidades.", "success");
+                                //location.href="gestion_disponibilidad.php?id_producto="+<? echo $id_producto?>;
+                            } else {
+                                swal("Cancelar","se cancelo la creacion de la disponibilidad del producto");
+                                location.href="gestion_producto.php"
+                            }
+                        });
+            }
         }
-        elseif(isset($_GET["id_producto"]) && $_GET["id_producto"] != "")
-        {
-             $id_producto = $_GET["id_producto"];
-        }
-	?>
-	<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>	
+        </script>
 		
 	</head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" >
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaDisponibilidadCreada()">
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -176,8 +196,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
                     <!-- END THEME PANEL -->
-                    <h1 class="page-title"> Gestion de disponibilidades
-                        <small>Gestion de los productos</small>
+                    <h1 class="page-title"> Crear disponibilidad
+                        <small>creacion de disponibilidades</small>
                     </h1>
                     <div class="page-bar">
                         <ul class="page-breadcrumb">
@@ -187,11 +207,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <a href="#">Gestion de disponibilidades</a>
+                                <a href="#">Crear disponibilidad</a>
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <span>Gestion de las disponibilidades</span>
+                                <span>Creacion de disponibilidades</span>
                             </li>
                         </ul>
                         
@@ -199,19 +219,44 @@ License: You must have a valid license purchased only from themeforest(the above
 					</div>
 					<div class="portlet light">
 						<div class="portlet-body form">
-							<form role="form" class="form-horizontal" name="gestion_producto"  id="gestion_producto" action="gestion_producto.php" enctype="multipart/form-data" method="post">
+							<form role="form" class="form-horizontal" name="crear_disponibilidad"  id="crear_disponibilidad" action="crear_disponibilidad.php" enctype="multipart/form-data" method="post">
 								<div class="form-body">
-									<div class="form-group form-md-line-input">
-                                        <div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-                                            <a href="../src/crear_disponibilidad.php"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i></a> 
-                                        </div>
-                                    
-                                        <div class="col-md-9 col-lg-9 col-xs-8 col-sm-8">
-                                            Crear Disponibilidad
-                                        </div>
-                                    </div>
-                                </div>
-								</form>
+									<div class="form-group">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                        <label class="control-label col-md-4">Seleccione la vigencia de la disponibilidad</label>
+											<div class="col-md-4">
+                                                    <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
+                                                        <input type="text" class="form-control" readonly="" name="datepicker" aria-required="true" aria-invalid="false" aria-describedby="datepicker-error">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" type="button">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div><span id="datepicker-error" class="help-block help-block-error"></span>
+                                                    <!-- /input-group -->
+                                                    <span class="help-block"> seleccione la fecha de inicio</span>
+                                            </div>
+											
+											<div class="col-md-4">
+                                                    <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
+                                                        <input type="text" class="form-control" readonly="" name="datepicker" aria-required="true" aria-invalid="false" aria-describedby="datepicker-error">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" type="button">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div><span id="datepicker-error" class="help-block help-block-error"></span>
+                                                    <!-- /input-group -->
+                                                    <span class="help-block"> seleccione la fecha de fin </span>
+                                            </div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+										</div>
+									</div>
+										
+							</form>
 						</div>
                     </div>
                 </div>
@@ -234,6 +279,10 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- BEGIN CORE PLUGINS -->
             <?php
             include "include_js.php";
-			?>
+			?> 
+			<script src="../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+			
+			
+    </body>
 
 </html>
