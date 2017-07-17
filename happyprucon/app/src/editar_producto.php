@@ -1,5 +1,6 @@
 <?php
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
+	require_once'../../externo/plugins/PDOModel.php';
 	require'../class/sessions.php';
 	$objSe = new Sessions();
 	$objSe->init();
@@ -40,7 +41,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 	include "include_css.php";
 	include "funciones.php";
-	require_once'../../externo/plugins/PDOModel.php';
+	
 	
 		$id_producto = "";
 	
@@ -638,6 +639,24 @@ License: You must have a valid license purchased only from themeforest(the above
 									</div>
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<h2>COMENTARIOS</h2>
+											<?
+											//consulta para extraer la suma de las filas
+											$objCal->where("id_producto", $id_producto);
+											$objCal->columns = array("comentario");
+											$coment =  $objCal->select("calificacion_producto");
+											foreach ($coment as $comenta){
+												foreach ($comenta as $comentario){
+													?><div class="well"><?
+													echo $comentario;
+													echo "<br>";
+													echo "</div>";
+												}
+												
+											}
+											
+											?>
+
 										
 										</div>
 									</div>

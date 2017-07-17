@@ -1,5 +1,6 @@
 <?php
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
+    require_once'../../externo/plugins/PDOModel.php';
 	require'../class/sessions.php';
 	$objSe = new Sessions();
 	$objSe->init();
@@ -38,7 +39,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <head>
 	<?php
 	include "include_css.php";
-	require_once'../../externo/plugins/PDOModel.php';
+
 	$id_producto = "";
 	
         if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
@@ -49,8 +50,8 @@ License: You must have a valid license purchased only from themeforest(the above
         {
              $id_producto = $_GET["id_producto"];
         }
-		?>
-		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>	
+	?>
+	<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>	
 		
 	</head>
     <!-- END HEAD -->
@@ -175,7 +176,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
                     <!-- END THEME PANEL -->
-                    <h1 class="page-title"> Gestion del producto
+                    <h1 class="page-title"> Gestion de disponibilidades
                         <small>Gestion de los productos</small>
                     </h1>
                     <div class="page-bar">
@@ -186,11 +187,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <a href="#">Gestion del producto</a>
+                                <a href="#">Gestion de disponibilidades</a>
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <span>Gestion de los productos</span>
+                                <span>Gestion de las disponibilidades</span>
                             </li>
                         </ul>
                         
@@ -201,13 +202,13 @@ License: You must have a valid license purchased only from themeforest(the above
 							<form role="form" class="form-horizontal" name="gestion_producto"  id="gestion_producto" action="gestion_producto.php" enctype="multipart/form-data" method="post">
 								<div class="form-body">
 									<div class="form-group form-md-line-input">
-										<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-											
-										</div>
-										<div class="col-md-9 col-lg-9 col-xs-8 col-sm-8">
-											
-										</div>
-									</div>
+                                        <div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
+                                            <a href="../src/crear_disponibilidad.php"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="col-md-9 col-lg-9 col-xs-8 col-sm-8">
+                                            Crear Disponibilidad
+                                        </div>
+                                    </div>
 								
 								</div>
 							</form>

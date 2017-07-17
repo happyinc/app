@@ -1,5 +1,6 @@
 <?php
 	//error_reporting(E_ERROR | E_WARNING | E_PARSE);
+	require_once'../../externo/plugins/PDOModel.php';
 	require'../class/sessions.php';
 	$objSe = new Sessions();
 	$objSe->init();
@@ -39,7 +40,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <?php
 		
 		include "include_css.php";
-		require_once'../../externo/plugins/PDOModel.php';
+		
 		?>
 		<!--<link href="../../externo/plugins/dist/dropzone.css" type="text/css" rel="stylesheet" />-->
 		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
