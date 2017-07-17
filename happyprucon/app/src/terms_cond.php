@@ -85,6 +85,8 @@ if($rol_emp == 2){
     $res_usu =  $objConn->select("terminos_condiciones");
 
     $terminos = $res_usu[0]['descripcion'];
+    $id_termino = $res_usu[0]['id'];
+
 }else if($rol_cli == 3){
 
     $objConn = new PDOModel();
@@ -92,6 +94,7 @@ if($rol_emp == 2){
     $res_usu =  $objConn->select("terminos_condiciones");
 
     $terminos = $res_usu[0]['descripcion'];
+    $id_termino = $res_usu[0]['id'];
 
 }
 
@@ -117,7 +120,7 @@ if($rol_emp == 2){
         <div class="row">
             <div class="col-lg-3 col-md-3 col-xs-3" style="margin-bottom: 10px"></div>
             <div class="col-lg-6 col-md-6 col-xs-6" style="margin-bottom: 10px">
-                <input type="hidden" name="acepta" id="acepta" value="1"/>
+                <input type="hidden" name="acepta" id="acepta" value="<?php echo $id_termino; ?>"/>
                 <button type="submit"  class="btn btn-circle red-flamingo btn-block bold" > Aceptar </button>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-3" style="margin-bottom: 10px"></div>

@@ -24,7 +24,7 @@ $objSe = new Sessions();
 
 				if($apk == $api_key){
 				
-					if(isset($_POST['formulario']) && $_POST['formulario'] == "w")
+					if(isset($_POST['form_login']) && $_POST['form_login'] == "W")
 					{
 
 						//verificación de campos vacios	
@@ -83,6 +83,7 @@ $objSe = new Sessions();
                                                     $objSe->set('genero', $res_usu[0]['genero']);
                                                     $objSe->set('telefono', $res_usu[0]['telefono']);
                                                     $objSe->set('correo', $res_usu[0]['correo']);
+                                                    $objSe->set('origen',$_POST['form_login']);
 
 																									
 													echo "<script> window.location.assign('../app/src/index.php'); </script>";
@@ -106,7 +107,7 @@ $objSe = new Sessions();
 											$insertSe["ip"] = $_SERVER['REMOTE_ADDR'];
 											$objConn->insert("sesion", $insertSe);	
 											echo "<script> alert('La contraseña no es valida, intentos fallidos # $fallo');
-										window.location.assign('../app/src/logueo.html');</script>";
+											window.location.assign('../app/src/logueo.html');</script>";
 											}
 									}else{
 										echo "<script> alert('Usuario inactivo');

@@ -23,17 +23,6 @@ if($rol==2){
 
 }
 
-
-if($genero=="Masculino")
-{
-    $chequeado="checked";
-}
-
-
-if($genero=="Femenino"){
-    $chequeada="checked";
-}
-
 ?>
 <!DOCTYPE html>
 <!-- 
@@ -138,19 +127,6 @@ License: You must have a valid license purchased only from themeforest(the above
                 if(isset($_POST["btn1"])) {
                     $btn = $_POST["btn1"];
 
-                    if ($btn == "Cambiar") {
-                        $objConn = new PDOModel();
-                        $updateUserData["password"] = md5($_POST['password']);
-                        $objConn->where("id", $usu_id);
-                        $objConn->update("usuarios", $updateUserData);
-
-                        if ($objConn != "") {
-                            echo "<script> alert('Cambio exitoso');</script>";
-                        } else {
-                            echo "<script> alert('Error: La contraseña no se pudo actualizar');</script>";
-                        }
-                    }
-
                     if ($btn == "Actualizar"){
                         $objConn = new PDOModel();
                         $updateUserData["nombre_completo"] = $_POST['fullname']." ".$_POST['lastname'];
@@ -252,214 +228,58 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <img src="<? echo "usuarios/".$usu_id."/perfil/res_perfil.jpg"?>" alt="" class="img-circle" style="border-radius: 50%;"> </div>
                                     <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
                                     <div>
-													<span class="btn default btn-file">
-														<span class="fileinput-new"> Seleccionar </span>
-														<span class="fileinput-exists"> Cambiar </span>
+													<span class="btn default btn-file" style="visibility: hidden;" >
 														<input type="file" name="foto" id="foto" value="<? echo "usuarios/".$usu_id."/".$resFoto?>"> </span>
-
-                                        <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="control-label col-md-3">Nombres</label>
                             <div class="col-md-4">
-                                <input name="iduser" id="iduser" type="hidden" class="form-control" value="<?php echo $usu_id; ?>"/>
-                                <input type="text" name="fullname" id="fullname" class="form-control" value="<?php echo $name; ?>" /> </div>
+                                <label name="fullname" id="fullname" class="form-control"><?php echo $name; ?></label></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Apellidos</label>
                             <div class="col-md-4">
-                                <input type="text" name="lastname" id="lastname" class="form-control" value="<?php echo $lastname; ?>" /> </div>
+                                <label name="lastname" id="lastname" class="form-control"><?php echo $lastname; ?></label></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Celular</label>
                             <div class="col-md-4">
-                                <input name="cell" id="cell" type="text" class="form-control" value="<?php echo $tel; ?>"/> </div>
+                                <label name="cell" id="cell" class="form-control"><?php echo $tel; ?></label></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Correo electrónico</label>
                             <div class="col-md-4">
-                                <input name="username" id="username" type="email" class="form-control" value="<?php echo $correo; ?>"/> </div>
+                                <label name="username" id="username" class="form-control" ><?php echo $correo; ?> </label></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Genero</label>
                             <div class="col-md-4">
-                                <div class="radio-list">
-                                    <label>
-                                        <input type="radio" name="genero" value="Masculino" <?php echo $chequeado;?> class="icheck" > Masculino </label>
-                                    <label>
-                                        <input type="radio" name="genero" value="Femenino" <?php echo $chequeada;?> class="icheck" > Femenino </label>
+                                <label name="genero" id="genero" class="form-control" ><?php echo $genero; ?> </label></div>
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a href="editar_perfil.php" class="btn blue button-previous">
+                                        <i class="fa fa-list-ul"></i> Editar perfil </a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-actions">
-                        <div class="row">
-                            <div class="col-md-offset-3 col-md-9">
-                                <input type="submit" id="register-submit-btn" class="btn blue" name="btn1" value="Actualizar"/>
+                        <h3 class="block bold" style="color: #520d9b">COMENTARIOS</h3>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a href="editar_perfil.php" class="btn blue button-previous">
+                                        <i class="fa fa-list-ul"></i> Editar perfil </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </form>
                 <!-- END FORM-->
-                <!-- BEGIN FORM PASSWORD-->
-                <script language="JavaScript">
-                    function validar(f) {
-                        if(f.password.value != "" && (f.password.value == f.repassword.value)){
-                            return true;
-                        }
-                        else{
-                            alert("Las contraseñas no coinciden");
-                            return false;
-                        }
-
-                    }
-
-                </script>
-
-                <form onSubmit="return validar(this)" action="" class="form-horizontal" method="post"style="padding-top: 20px;">
-                    <div class="form-body">
-                        <div class="alert alert-danger display-hide">
-                            <button class="close" data-close="alert"></button> Contraseñas no coinciden </div>
-                        <div class="alert alert-success display-hide">
-                            <button class="close" data-close="alert"></button> Your form validation is successful! </div>
-                        <h3 class="block bold" style="color: #520d9b">CAMBIO DE CONTRASEÑA</h3>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Contraseña</label>
-                            <div class="col-md-4">
-                                <input name="password" id="password" type="password" class="form-control"/> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Repite contraseña</label>
-                            <div class="col-md-4">
-                                <input name="repassword" id="repassword" type="password" class="form-control"/> </div>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <div class="row">
-                            <div class="col-md-offset-3 col-md-9">
-                                <input type="submit" id="register-submit-btn" class="btn blue" name="btn1" value="Cambiar"/>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <!-- END FORM PASSWORD-->
-                <!-- BEGIN FORM FOTOS SITIO -->
-                <form role="form" action="" class="form-horizontal" name="fotos_sitio" id="fotos_sitio" enctype="multipart/form-data" method="post"style="padding-top: 20px;">
-                    <div class="form-body">
-                        <h3 class="block bold" style="color: #520d9b">ACTUALIZAR FOTOS DEL SITIO</h3>
-                        <script type="text/javascript">
-                            // para buscar e insertar composiciones
-                            $(document).ready(function(){
-                                var maxField = 7; //Input fields increment limitation
-                                var addButton = $('.add_button'); //Add button selector
-                                var wrapper = $('.field_wrapper'); //Input field wrapper
-                                var fieldHTML = '<div>'+
-                                    '<div class="fileinput fileinput-new" data-provides="fileinput">'+
-                                    '<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">'+
-                                    '<img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>'+
-                                    '<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>'+
-                                    '<div>'+
-                                    '<span class="btn default btn-file">'+
-                                    '<span class="fileinput-new"> Seleccionar </span>'+
-                                    '<span class="fileinput-exists"> Cambiar </span>'+
-                                    '<input type="file" name="fotos[]" id="fotos[]"/> </span>'+
-
-                                    '<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>'+
-                                    '</div>'+
-                                    '</div>'+
-                                    <?
-                                    if(isset($_POST["btn2"])) {
-                                        $btn = $_POST["btn2"];
-
-                                        if ($btn == "Cambiar") {
-
-                                            if ($_FILES['fotos']["size"] >= 1) {
-                                                // Primero, hay que validar que se trata de un JPG/GIF/PNG
-                                                $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
-                                                $extension = end(explode(".", $_FILES["fotos"]["name"]));
-                                                if ((($_FILES["fotos"]["type"] == "image/gif")
-                                                        || ($_FILES["fotos"]["type"] == "image/jpeg")
-                                                        || ($_FILES["fotos"]["type"] == "image/png")
-                                                        || ($_FILES["fotos"]["type"] == "image/gif")
-                                                        || ($_FILES["fotos"]["type"] == "image/bmp"))
-                                                    && in_array($extension, $allowedExts)) {
-                                                    // el archivo es un JPG/GIF/PNG, entonces...
-
-                                                    $extension = end(explode('.', $_FILES['fotos']['name']));
-                                                    $foto = substr(md5(uniqid(rand())), 0, 10) . "." . $extension;
-                                                    $directorio = "usuarios/" . $id_usuario . "/sitio/"; // directorio de tu elección
-                                                    if (file_exists($directorio)) {
-
-                                                    } else {
-                                                        mkdir($directorio, 0777, true);
-                                                    }
-
-                                                    // almacenar imagen en el servidor
-                                                    move_uploaded_file($_FILES['fotos']['tmp_name'], $directorio . '/' . $foto);
-                                                    $minFoto = 'min_' . $foto;
-                                                    $resFoto = 'res_' . $foto;
-                                                    resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
-                                                    resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
-                                                    unlink($directorio . '/' . $foto);
-
-                                                } else { // El archivo no es JPG/GIF/PNG
-                                                    $malformato = $_FILES["fotos"]["type"];
-
-                                                    echo "<script type='text/javascript'>alert('La imagen se encuentra con formato incorrecto')</script>";
-
-                                                    //header("Location: crear_producto.php?id=echo $usu_id");
-                                                }
-
-                                            } else { // El campo foto NO contiene una imagen
-
-
-                                                echo "<script type='text/javascript'>
-                                                                alert('No se ha seleccionado imagenes');
-                                                            </script>";
-
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                    '<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div>';
-                                var x = 1; //Initial field counter is 1
-                                $(addButton).click(function(){ //Once add button is clicked
-                                    if(x < maxField){ //Check maximum number of input fields
-                                        x++; //Increment field counter
-                                        $(wrapper).append(fieldHTML); // Add field html
-                                    }
-                                });
-                                $(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
-                                    e.preventDefault();
-                                    $(this).parent('div').remove(); //Remove field html
-                                    x--; //Decrement field counter
-                                });
-                            });
-                        </script>
-
-
-                        <div class="form-group form-md-line-input has-info form-md-floating-label">
-                            <label class="control-label col-md-4 col-xs-4"></label>
-                            <div class="input-group left-addon col-md-4 col-xs-4">
-                                <div class="field_wrapper">
-                                    Seleccione las fotos del sitio
-                                    <a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus-circle fa-2"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <div class="row">
-                            <div class="col-md-offset-3 col-md-9">
-                                <input type="submit" id="register-submit-btn" class="btn blue" name="btn2" value="Cambiar"/>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <!-- END FORM FOTOS SITIO -->
             </div>
         </div>
         <!-- END CONTENT BODY -->

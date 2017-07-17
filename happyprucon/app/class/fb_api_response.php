@@ -2,6 +2,7 @@
    include 'sessions.php';
 	$objSe = new Sessions();
 	$objSe->init();
+    $objSe->set('origen',$_POST['form_login_kit']);
     //error_reporting(E_ALL);	
 	
 	if(isset($_POST['code']))

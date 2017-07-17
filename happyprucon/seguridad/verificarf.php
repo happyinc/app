@@ -50,6 +50,7 @@ if($result[0]['count(*)'] == 1){
         $objSe->set('genero', $res_usu[0]['genero']);
         $objSe->set('telefono', $res_usu[0]['telefono']);
         $objSe->set('correo', $res_usu[0]['correo']);
+        $objSe->set('origen',$_POST['form_login_face']);
 
         echo "<script> window.location.assign('../app/src/index.php'); </script>";
     }
