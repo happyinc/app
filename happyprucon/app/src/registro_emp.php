@@ -97,6 +97,7 @@ if($mail_face != ""){
 
 if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
 
+
     $objConn = new PDOModel();
     $insertUserData["id_doc"] = $_POST['tipodoc'];
     $insertUserData["id_termino"] = $_POST['acep-terms'];
@@ -114,12 +115,36 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
     $insertUserData["latitud"] = $_POST['latitud'];
     $insertUserData["longitud"] = $_POST['longitu'];
     $insertUserData["token"] = 'yositokuqita';
-
     $objConn->insert("usuarios", $insertUserData);
 
     $id_usuario = $objConn->lastInsertId;
 
     if ($id_usuario != "") {
+
+        //Recorre el array para insertar los datos en la tabla de gustos 
+        $bienes = $_POST["tipo_bienes"];
+        $bien= explode('-',$bienes);
+
+        foreach ($bien as $item2){
+            $nombre_bien = $item2;
+            foreach ($_POST["".$nombre_bien.""] as $clave => $valor) {
+                if($valor != "")
+                {
+                    $id_catagoria = $valor;
+                    $objConn = new PDOModel();
+                    $insertUserGusto["id_usuario"] = $id_usuario;
+                    $insertUserGusto["id_categoria"] = $id_catagoria;
+                    $insertUserGusto["id_estado"] = 1;
+                    $objConn->insert("gustos", $insertUserGusto);
+                }
+            }
+        }
+
+        $objConn = new PDOModel();
+        $insertVigenciAcepta["id_usuario"] = $id_usuario;
+        $insertVigenciAcepta["termino_condicion_id"] = $_POST['acep-terms'];
+        $insertVigenciAcepta["rol_id"] = $_POST['roles'];
+        $objConn->insert("vigencias_aceptadas", $insertVigenciAcepta);
 
         if ($_FILES['foto']["size"] >= 1) {
             // Primero, hay que validar que se trata de un JPG/GIF/PNG
@@ -163,7 +188,6 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
         ?>
             <script type="text/javascript">
                 alert("No se ha seleccionado imagenes");
-                window.history.back();
             </script>
             <?
         }
@@ -420,7 +444,10 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                     $objCat = new PDOModel();
                                                     $objCat->where("id_estado", 1);
                                                     $result =  $objCat->select("bienes");
+                                                    $tipo_bienes = "";
                                                     foreach($result as $item){
+                                                        $tipo_bienes .= $item["nombre"]."-";
+                                                        $temporal = $item["nombre"];
                                                         ?>
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
@@ -438,14 +465,18 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                                     $result1 =  $objCat->select("categoria");
                                                                     foreach($result1 as $item1){
                                                                         ?><label>
-                                                                        <input type="checkbox" class="icheck" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
+                                                                        <input type="checkbox" class="icheck" name="<? echo $temporal ?>[]" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
                                                                     }
                                                                     ?>
                                                                 </div>
                                                             </div>
                                                         </div>  <?
                                                     }
+
+                                                    $tipo_bienes = trim($tipo_bienes, "-");
+
                                                     ?>
+                                                    <input type="hidden" name="tipo_bienes" value="<?php $tipo_bienes; ?>"/>
                                                 </div>
                                             </div>
                                             <!-- END ACCORDION PORTLET-->

@@ -101,7 +101,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 </div>
 											<!-- Campo escondido de la key  -->
 											<input type="hidden" class="form-control" name="txtkey" id="txtkey" value="" >
-											<input type="hidden" id="formulario" name="formulario" value="w">
+											<input type="hidden" id="form_login" name="form_login" value="W">
 
 				<div class="form-group form-md-line-input has-info form-md-floating-label">
                                                 <div class="input-group left-addon">
@@ -144,10 +144,10 @@ License: You must have a valid license purchased only from themeforest(the above
                 </div>
             </form>
             <!-- END FORGOT PASSWORD FORM -->
-            <form class="login-form" name="form-face" id="for-face" action="../../seguridad/verificarf.php" method="post">
+            <form class="login-form" name="form-face" id="form-face" action="../../seguridad/verificarf.php" method="post">
 			<div class="row">
                 <!--Campos escondidos para envio de datos de facebook -->
-
+                <input type="hidden" id="form_login_face" name="form_login_face" value="W">
                 <input type="hidden" name="nom-face" id="nom-face">
                 <input type="hidden" name="ape-face" id="ape-face">
                 <input type="hidden" name="mail" id="mail">
@@ -177,7 +177,8 @@ License: You must have a valid license purchased only from themeforest(the above
 						<button onclick="loginWithSMS();" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center" ><span class="fa fa-tablet"></span> INGRESA CON TU CELULAR </button>
 						</div>
 						<form id="accountkit_form" name="accountkit_form" action="../class/fb_api_response.php" method="POST" style="display: none;">
-						<input type="hidden" id="code" name="code">
+                        <input type="hidden" id="form_login_kit" name="form_login_kit" value="W">
+                        <input type="hidden" id="code" name="code">
 						<input type="hidden" id="csrf_nonce" name="csrf_nonce">
 						<input type="submit" value="Submit" hidden>
 						</form>
