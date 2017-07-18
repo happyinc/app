@@ -54,8 +54,29 @@ if($result[0]['count(*)'] == 1){
 
         echo "<script> window.location.assign('../app/src/index.php'); </script>";
     }
-    else
+    else if($rol == 3)
     {
+        $objConn = new PDOModel();
+        $insertSe["id_usuario"] = $id_usu;
+        $insertSe["origen"] = "W";
+        $insertSe["f_login"] = date("Y-m-d H:i:s");
+        $insertSe["estado"] = "A";
+        $insertSe["ip"] = $_SERVER['REMOTE_ADDR'];
+        $objConn->insert("sesion", $insertSe);
+        $ultima_sesion = $objConn->lastInsertId;
+
+        $objSe->init();
+        $objSe->set('sesion_activa',$ultima_sesion);
+        $objSe->set('id_usuario', $res_usu[0]['id']);
+        $objSe->set('id_roles', $res_usu[0]['id_roles']);
+        $objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
+        $objSe->set('nombre', $res_usu[0]['nombre']);
+        $objSe->set('apellido', $res_usu[0]['apellido']);
+        $objSe->set('genero', $res_usu[0]['genero']);
+        $objSe->set('telefono', $res_usu[0]['telefono']);
+        $objSe->set('correo', $res_usu[0]['correo']);
+        $objSe->set('origen',$_POST['form_login']);
+
         echo "<script> window.location.assign('../app/src/index.php'); </script>";
     }
 
