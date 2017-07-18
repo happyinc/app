@@ -38,7 +38,7 @@ var ComponentsIonSliders = function() {
             grid: true,
             from: 1,
             to: 5,
-            values: [0, 10, 100, 1000, 10000, 100000, 1000000]
+            values: [10, 100, 1000, 10000, 100000]
         });
 
         // demo 6
@@ -90,6 +90,7 @@ var ComponentsIonSliders = function() {
             postfix: " million pounds",
             values_separator: " → "
         });
+
     }
 
     var handleAdvancedDemo = function() {
