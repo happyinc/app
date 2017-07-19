@@ -60,6 +60,11 @@ License: You must have a valid license purchased only from themeforest(the above
     <?php
     include "include_css.php";
     ?>
+    <!--Inicio Archivos para bootstrap file input -->
+    <link href="../../externo/plugins/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="../../externo/plugins/fileinput/js/fileinput.min.js" type="text/javascript"></script>
+    <!--FIN Archivos para bootstrap file input -->
     <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
 </head>
 <!-- END HEAD -->
@@ -347,109 +352,45 @@ License: You must have a valid license purchased only from themeforest(the above
                 </form>
                 <!-- END FORM PASSWORD-->
                 <!-- BEGIN FORM FOTOS SITIO -->
+                <?php
+
+                $carpetaAdjunta="usuarios/".$usu_id."/sitio/";
+                if (file_exists($carpetaAdjunta)) {
+
+                } else {
+                    mkdir($carpetaAdjunta, 0777, true);
+                }
+
+                $Imagenes = count($_FILES['fotos']['name']);
+
+                for($i = 0; $i < $Imagenes; $i++ ){
+
+                    $nombreArchivo=$_FILES['fotos']['name'][$i];
+                    $nombreTemporal=$_FILES['fotos']['tmp_name'][$i];
+
+                    $rutaArchivo=$carpetaAdjunta.$nombreArchivo;
+
+                    move_uploaded_file($nombreTemporal,$rutaArchivo);
+
+                    $infoImagenesSubidas[$i]=array("caption"=>"$nombreArchivo","height"=>"120px","url"=>"borrar.php","key"=>$nombreArchivo);
+                    $imagenesSubidas[$i]="<img height='120px' src='$rutaArchivo' class='file-preview-image'>";
+                }
+
+                $arr = array("file_id"=>0, "overwriteInitial"=>true,"initialPreviewConfig"=>$infoImagenesSubidas,
+                    "initialPreview"=>$imagenesSubidas);
+
+                echo json_encode($arr);
+
+                ?>
                 <form role="form" action="" class="form-horizontal" name="fotos_sitio" id="fotos_sitio" enctype="multipart/form-data" method="post"style="padding-top: 20px;">
                     <div class="form-body">
                         <h3 class="block bold" style="color: #520d9b">ACTUALIZAR FOTOS DEL SITIO</h3>
-                        <script type="text/javascript">
-                            // para buscar e insertar composiciones
-                            $(document).ready(function(){
-                                var maxField = 7; //Input fields increment limitation
-                                var addButton = $('.add_button'); //Add button selector
-                                var wrapper = $('.field_wrapper'); //Input field wrapper
-                                var fieldHTML = '<div>'+
-                                    '<div class="fileinput fileinput-new" data-provides="fileinput">'+
-                                    '<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">'+
-                                    '<img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>'+
-                                    '<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>'+
-                                    '<div>'+
-                                    '<span class="btn default btn-file">'+
-                                    '<span class="fileinput-new"> Seleccionar </span>'+
-                                    '<span class="fileinput-exists"> Cambiar </span>'+
-                                    '<input type="file" name="fotos[]" id="fotos[]"/> </span>'+
 
-                                    '<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>'+
-                                    '</div>'+
-                                    '</div>'+
-                                    <?
-                                    if(isset($_POST["btn2"])) {
-                                        $btn = $_POST["btn2"];
-
-                                        if ($btn == "Cambiar") {
-
-                                            if ($_FILES['fotos']["size"] >= 1) {
-                                                // Primero, hay que validar que se trata de un JPG/GIF/PNG
-                                                $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
-                                                $extension = end(explode(".", $_FILES["fotos"]["name"]));
-                                                if ((($_FILES["fotos"]["type"] == "image/gif")
-                                                        || ($_FILES["fotos"]["type"] == "image/jpeg")
-                                                        || ($_FILES["fotos"]["type"] == "image/png")
-                                                        || ($_FILES["fotos"]["type"] == "image/gif")
-                                                        || ($_FILES["fotos"]["type"] == "image/bmp"))
-                                                    && in_array($extension, $allowedExts)) {
-                                                    // el archivo es un JPG/GIF/PNG, entonces...
-
-                                                    $extension = end(explode('.', $_FILES['fotos']['name']));
-                                                    $foto = substr(md5(uniqid(rand())), 0, 10) . "." . $extension;
-                                                    $directorio = "usuarios/" . $id_usuario . "/sitio/"; // directorio de tu elección
-                                                    if (file_exists($directorio)) {
-
-                                                    } else {
-                                                        mkdir($directorio, 0777, true);
-                                                    }
-
-                                                    // almacenar imagen en el servidor
-                                                    move_uploaded_file($_FILES['fotos']['tmp_name'], $directorio . '/' . $foto);
-                                                    $minFoto = 'min_' . $foto;
-                                                    $resFoto = 'res_' . $foto;
-                                                    resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
-                                                    resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
-                                                    unlink($directorio . '/' . $foto);
-
-                                                } else { // El archivo no es JPG/GIF/PNG
-                                                    $malformato = $_FILES["fotos"]["type"];
-
-                                                    echo "<script type='text/javascript'>alert('La imagen se encuentra con formato incorrecto')</script>";
-
-                                                    //header("Location: crear_producto.php?id=echo $usu_id");
-                                                }
-
-                                            } else { // El campo foto NO contiene una imagen
-
-
-                                                echo "<script type='text/javascript'>
-                                                                alert('No se ha seleccionado imagenes');
-                                                            </script>";
-
-                                            }
-                                        }
-                                    }
-                                    ?>
-                                    '<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-2"></i></a></div>';
-                                var x = 1; //Initial field counter is 1
-                                $(addButton).click(function(){ //Once add button is clicked
-                                    if(x < maxField){ //Check maximum number of input fields
-                                        x++; //Increment field counter
-                                        $(wrapper).append(fieldHTML); // Add field html
-                                    }
-                                });
-                                $(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
-                                    e.preventDefault();
-                                    $(this).parent('div').remove(); //Remove field html
-                                    x--; //Decrement field counter
-                                });
-                            });
-                        </script>
-
-
-                        <div class="form-group form-md-line-input has-info form-md-floating-label">
-                            <label class="control-label col-md-4 col-xs-4"></label>
-                            <div class="input-group left-addon col-md-4 col-xs-4">
-                                <div class="field_wrapper">
-                                    Seleccione las fotos del sitio
-                                    <a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus-circle fa-2"></i></a>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <input id="fotos" name="fotos[]" type="file" class="file" multiple=true class="file-loading" data-preview-file-type="any">
                         </div>
+                        <div id = "errorBlock" class = "help-block" > </div>
+
                     </div>
                     <div class="form-actions">
                         <div class="row">
@@ -482,5 +423,32 @@ include "footer.php";
 include "include_js.php";
 ?>
 </body>
+<?php
+
+
+$images = glob($carpetaAdjunta ."*.*");
+
+?>
+<script>
+    $("#fotos").fileinput({
+        showCaption: false,
+        browseClass: "btn btn-primary btn-lg",
+        fileType: "any",
+        uploadUrl: "upload.php",
+        uploadAsync: false,
+        minFileCount: 1,
+        maxFileCount: 6,
+        allowedFileExtensions : [ "jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP" ],
+        maxFilePreviewSize : 2048,
+        showUpload: true,
+        showRemove: false,
+        initialPreview: [<?php foreach ($images as $image) {?>
+            "<img src='<?php echo $image; ?>' height='120px' class='file-preview-image'> ",
+            <?php } ?>],
+        initialPreviewConfig: [<?php foreach ($images as $image) { $infoImagenes=explode("/",$image);?>
+            {caption: "<?php echo $infoImagenes[1];?>", height:"120px", url:"borrar.php", key:"<?php echo $infoImagenes[1];?>"},
+            <?php } ?>]
+    });
+</script>
 
 </html>
