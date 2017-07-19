@@ -5,7 +5,7 @@
 	$objSe = new Sessions();
 	$objSe->init();
 
-	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
@@ -631,7 +631,7 @@ License: You must have a valid license purchased only from themeforest(the above
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 										
-											<input class="btn blue" name="editar" type="submit" id="editar" value="Editar">
+											<input class="btn purple" name="editar" type="submit" id="editar" value="Editar">
 											<input class="btn red" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick=" eliminarProducto();">
 											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
 											<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />

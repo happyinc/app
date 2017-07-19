@@ -5,7 +5,7 @@
 	$objSe = new Sessions();
 	$objSe->init();
 
-	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
@@ -51,7 +51,6 @@ License: You must have a valid license purchased only from themeforest(the above
 		$objProd->where("id_usuario", $usu_id);
 		$producto =  $objProd->select("producto");
 
-		
 		//eliminar disponibilidad
 		if(isset($_GET["eliminar"]) && $_GET["eliminar"] == 1)
 			{

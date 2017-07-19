@@ -5,7 +5,7 @@
 	$objSe = new Sessions();
 	$objSe->init();
 
-	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
@@ -255,9 +255,9 @@ License: You must have a valid license purchased only from themeforest(the above
 						function(isConfirm) {
 							if (isConfirm) {
 								swal("Ir", "En un momento sera dirigido a la pagina para crear disponibilidades.", "success");
-								//location.href="gestion_disponibilidad.php?id_producto="+<? echo $id_producto?>;
+								location.href="gestion_disponibilidad.php?id_producto="+<? echo $id_producto?>;
 							} else {
-								swal("Cancelar","se cancelo la creacion de la dispoibilidad del producto");
+								swal("Cancelar","se cancelo la creacion de la disponibilidad del producto");
 								location.href="gestion_producto.php"
 							}
 						});
@@ -540,7 +540,7 @@ License: You must have a valid license purchased only from themeforest(the above
 									</div>
 									<div class="form-group form-md-line-input">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<button type="submit" class="btn blue" name="guardar" id="guardar" value="guardar"> Crear producto </button>
+											<button type="submit" class="btn purple" name="guardar" id="guardar" value="guardar"> Crear producto </button>
 											<input type="hidden" id="formulario" name="formulario" value="crear_producto"/>
 										</div>
 									</div>

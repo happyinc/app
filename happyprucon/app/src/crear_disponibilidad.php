@@ -5,7 +5,7 @@
 	$objSe = new Sessions();
 	$objSe->init();
 
-	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
@@ -38,20 +38,88 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <head>
         <?php
-		
+		$id_producto = "";
+    
+        if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
+        {
+            $id_producto = $_POST["id_producto"];
+        }
+        elseif(isset($_GET["id_producto"]) && $_GET["id_producto"] != "")
+        {
+             $id_producto = $_GET["id_producto"];
+        }
+        
 		include "include_css.php";
 		
 		?>
-		<link href="../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+		<link href="../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/clockface/css/clockface.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/ion.rangeslider/css/ion.rangeSlider.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/ion.rangeslider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/bootstrap-summernote/summernote.css" rel="stylesheet" type="text/css" />
+
+        <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
+
+        <?php
+        $id_disponibilidad=0;
+        if(isset($_POST["formulario"]) && $_POST["formulario"] == "crear_disponibilidad")
+        {
+            //insert a la tabla disponibilidad
+            $objConn = new PDOModel();
+                $insertData["id_tipo_disponibilidad"] = $_POST["categoria"];//pdt cambiar
+                $insertData["id_estado"] = 1;
+                $insertData["fecha_inicio"] = $_POST["nombre"]; //pdt cambiar
+                $insertData["fecha_fin"] = $_POST["descripcion"];//pdt cambiar
+                $insertData["fecha"] = date("Y-m-d H:i:s"); 
+                $insertData["id_usuario"] = $usu_id ;
+                $objConn->insert('disponibilidad', $insertData);
+
+                $id_disponibilidad= $objConn->lastInsertId;
+
+                if($id_producto!= "")
+                {
+                    //insert a la tabla producto_disponibilidad
+                    $insertPd["id_producto"] = $id_producto;
+                    $insertPd["id_disponibilidad"] = $id_disponibilidad; 
+                    $insertPd["cantidad_disponible"] = $_POST["cantidad"];//pdt cambiar
+                    $insertPd["id_estado"] = 1;
+                    $insertPd["fecha"] = date("Y-m-d H:i:s"); 
+                    $objConn->insert('producto_disponibilidad', $insertPd);
+
+                     //insert a la tabla disponibilidad_forma_adquisicion
+                    foreach($_POST['forma_adquisicion'] as $clave => $valor)
+                        {
+                            $insertDf["id_forma_adquisicion"] = $valor;
+                            $insertDf["id_disponibilidad"] = $id_disponibilidad;
+                            $objConn->insert('disponibilidad_forma_adquisicion', $insertDf);
+                        }
+
+                }
+                else
+                {
+                    ?>
+                        <script type="text/javascript">alert("No se pudo generar la disponibilidad")</script>
+                    <?
+                }
+
+        }
+        ?>
+
+
+
         <script>
         function alertadisponibilidadCreada() 
         {
-            var id_producto=<?echo $id_producto?>;
-            if(id_producto >=1)
+            var id_disponibilidad=<?echo $id_disponibilidad?>;
+            if(id_disponibilidad >=1)
             {
                         swal({
-                                title:"Producto registrado con el id:" + <? echo $id_producto?>,
-                                text: "¿Desea crear la disponibilidad al producto?",
+                                title:"Se registro la disponibilidad:" + <? echo $id_disponibilidad?>,
+                                text: "para el producto:"+<? echo $id_producto?>,
                                 type: "success",
                                 showCancelButton: true,
                                 confirmButtonClass: "btn-danger",
@@ -62,11 +130,11 @@ License: You must have a valid license purchased only from themeforest(the above
                         },
                         function(isConfirm) {
                             if (isConfirm) {
-                                swal("Ir", "En un momento sera dirigido a la pagina para crear disponibilidades.", "success");
-                                //location.href="gestion_disponibilidad.php?id_producto="+<? echo $id_producto?>;
+                                swal("", "Disponibilidad creada y asignada al producto"+<? echo $id_producto?>, "success");
+                                location.href="gestion_disponibilidad.php?id_producto="+<? echo $id_producto?>;
                             } else {
-                                swal("Cancelar","se cancelo la creacion de la disponibilidad del producto");
-                                location.href="gestion_producto.php"
+                                swal("Cancelar","se cancelo la creacion y asignacion de la disponibilidad para el producto");
+                                location.href="gestion_disponibilidad.php?id_producto="+<? echo $id_producto?>;
                             }
                         });
             }
@@ -223,39 +291,87 @@ License: You must have a valid license purchased only from themeforest(the above
 								<div class="form-body">
 									<div class="form-group">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                        <label class="control-label col-md-4">Seleccione la vigencia de la disponibilidad</label>
-											<div class="col-md-4">
-                                                    <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
-                                                        <input type="text" class="form-control" readonly="" name="datepicker" aria-required="true" aria-invalid="false" aria-describedby="datepicker-error">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn default" type="button">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </button>
-                                                        </span>
-                                                    </div><span id="datepicker-error" class="help-block help-block-error"></span>
-                                                    <!-- /input-group -->
-                                                    <span class="help-block"> seleccione la fecha de inicio</span>
+                                            <label class="control-label col-md-4">Seleccione la vigencia de la disponibilidad</label>
+											<div class="col-md-3">
+                                                <!--<div class="input-group  input-medium date form_datetime bs-datetime" data-date-format="yyyy-mm-dd">
+                                                    <input type="text" size="16" class="form-control">
+                                                    <span class="input-group-addon">
+                                                        <button class="btn default date-set" type="button">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>-->
+                                                <div class='input-group date' id='datetimepicker6'>
+                                                    <input type='text' class="form-control" />
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div> 
+                                             
+                                            <div class="col-md-3">
+                                                <!--<div class="input-group  input-medium date form_datetime bs-datetime" data-date-format="yyyy-mm-dd" data-date-start-date="+0d">
+                                                    <input type="text" size="16" class="form-control">
+                                                    <span class="input-group-addon">
+                                                        <button class="btn default date-set" type="button">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>-->
+                                                <div class='input-group date' id='datetimepicker7'>
+                                                    <input type='text' class="form-control" />
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+
                                             </div>
-											
-											<div class="col-md-4">
-                                                    <div class="input-group date date-picker" data-date-format="yyyy-mm-dd">
-                                                        <input type="text" class="form-control" readonly="" name="datepicker" aria-required="true" aria-invalid="false" aria-describedby="datepicker-error">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn default" type="button">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </button>
-                                                        </span>
-                                                    </div><span id="datepicker-error" class="help-block help-block-error"></span>
-                                                    <!-- /input-group -->
-                                                    <span class="help-block"> seleccione la fecha de fin </span>
-                                            </div>
-										</div>
+
+                                        </div>
 									</div>
-									<div class="form-group">
+									
+                                    <div class="form-group">
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <label class="col-md-4 control-label">Seleccione la cantidad disponible</label>
+                                                <div class="col-md-8">
+                                                    <input id="cantidad" name=cantidad" type="text" value="" />
+                                                    <span class="help-block"> Establezca la cantidad disponible</span>
+                                                </div>
 										</div>
 									</div>
-										
+
+                                    <div class="form-group">
+                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <label class="col-md-4 control-label">Seleccione la forma de adquisicion</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group">
+                                                        <div class="icheck-list">
+                                                           <?php
+                                                                $objFor = new PDOModel();
+                                                                $objFor->where("id_estado", 1);
+                                                                $objFor->orderByCols = array("descripcion");
+                                                                $result1 =  $objFor->select("forma_adquisicion");
+                                                                foreach($result1 as $item1){
+                                                                    ?>
+                                                                    <label>
+                                                                        <input type="checkbox" class="icheck" name=" forma_adquisicion[]" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" />
+                                                                    </label>
+                                                                    <?php
+                                                                }
+                                                            ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-md-line-input">
+                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <button type="submit" class="btn purple" name="guardar" id="guardar" value="guardar"> Crear disponibilidad </button>
+                                            <input type="hidden" id="formulario" name="formulario" value="crear_disponibilidad"/>
+                                        </div>
+                                    </div>
+
+							    </div>		
 							</form>
 						</div>
                     </div>
@@ -280,8 +396,45 @@ License: You must have a valid license purchased only from themeforest(the above
             <?php
             include "include_js.php";
 			?> 
-			<script src="../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-			
+            <!--fechas-->
+			<script src="../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
+            <script src="../assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
+             <!--rango-->
+            <script src="../assets/global/plugins/ion.rangeslider/js/ion.rangeSlider.min.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/bootstrap-markdown/lib/markdown.js" type="text/javascript"></script>
+            <script src="./../assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/bootstrap-summernote/summernote.min.js" type="text/javascript"></script>
+            <script src="../assets/pages/scripts/components-ion-sliders.js" type="text/javascript"></script>
+             <!--checkbox-->
+            <script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
+            <script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
+            <script type="text/javascript">
+			  // demo 5
+                $("#cantidad").ionRangeSlider({
+                    grid: true,
+                    from: 1,
+                    to: 5,
+                    values: [1, 2, 3, 4, 5]
+                });
+
+
+                 $(function () {
+                    $('#datetimepicker6').datetimepicker();
+                    $('#datetimepicker7').datetimepicker({
+                        useCurrent: false //Important! See issue #1075
+                    });
+                    $("#datetimepicker6").on("dp.change", function (e) {
+                        $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+                    });
+                    $("#datetimepicker7").on("dp.change", function (e) {
+                        $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+                    });
+                });
+            </script>
 			
     </body>
 

@@ -5,7 +5,7 @@
 	$objSe = new Sessions();
 	$objSe->init();
 
-	$usu_id = isset($_SESSION['id']) ? $_SESSION['id'] : null ;
+	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
@@ -203,7 +203,8 @@ License: You must have a valid license purchased only from themeforest(the above
 								<div class="form-body">
 									<div class="form-group form-md-line-input">
                                         <div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-                                            <a href="../src/crear_disponibilidad.php"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i></a> 
+                                            <a href="../src/crear_disponibilidad.php?id_producto=<? echo $id_producto?>"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i></a> 
+                                           
                                         </div>
                                     
                                         <div class="col-md-9 col-lg-9 col-xs-8 col-sm-8">
