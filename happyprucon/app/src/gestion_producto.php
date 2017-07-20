@@ -40,10 +40,9 @@ License: You must have a valid license purchased only from themeforest(the above
 	<?php
 	include "include_css.php";
 	
-	
-
-		?>
-		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>	
+	?>
+	<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+    <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />	
 		<?
 		$objProd = new PDOModel();
 		$objProd->andOrOperator = "AND";
@@ -52,11 +51,11 @@ License: You must have a valid license purchased only from themeforest(the above
 		$producto =  $objProd->select("producto");
 
 		//eliminar disponibilidad
-		if(isset($_GET["eliminar"]) && $_GET["eliminar"] == 1)
+		if(isset($_GET["eliminar"]) && $_GET["eliminar"] == 1 && isset($_GET["id_producto"]) && $_GET["id_producto"] != "" )
 			{
 				$objProd = new PDOModel();
 				$updateData["id_estado"] = 2; 
-				$objProd->where("id", $id_producto);
+				$objProd->where("id", $_GET["id_producto"]);
 				$objProd->update('producto_disponibilidad', $updateData);
 				$disponibilidad_eliminado= $objConn->rowsChanged;
 						if($disponibilidad_eliminado < 1){
@@ -67,30 +66,31 @@ License: You must have a valid license purchased only from themeforest(the above
 			}
 		?>
 		<script>
-		function eliminarDisponibilidad()
+		function eliminarDisponibilidad(id)
 		  	{
-		  				swal({
-							title:"¿Desea eliminar la disponibilidad del producto:" + <? echo $id_producto?>+"?",
-							text: "",
-							type: "warning",
-							showCancelButton: true,
-							confirmButtonClass: "btn-danger",
-							confirmButtonText: "Si, deseo hacerlo!",
-							cancelButtonText: "No",
-							closeOnConfirm: false,
-							closeOnCancel: false
-						},
-						function(isConfirm) 
-						{
-							if (isConfirm) {
-								swal("Ir", "La disponibilidad ha sido eliminada del producto", "success");
-								location.href="gestion_producto.php?eliminar=1";
-							}
-							else {
-								swal("Cancelar","se cancelo la eliminacion del producto");
-								location.href="gestion_producto.php"
-							}
-						});
+		  		swal({
+						title:"¿Desea eliminar la disponibilidad del producto:"+id+"?",
+						text: "",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonClass: "btn-danger",
+						confirmButtonText: "Si, deseo hacerlo!",
+						cancelButtonText: "No",
+						closeOnConfirm: false,
+						closeOnCancel: false
+				},
+				function(isConfirm) 
+				{
+					if (isConfirm) {
+						swal("Ir", "La disponibilidad ha sido eliminada del producto", "success");
+						location.href="gestion_producto.php";
+					}
+					else 
+                    {
+						swal("Cancelar","se cancelo la eliminacion del producto");
+						location.href="gestion_producto.php";
+					}
+				});
 		  	}	
 		</script>
 	</head>
@@ -272,21 +272,24 @@ License: You must have a valid license purchased only from themeforest(the above
 													$result=$objProd->totalRows;
 													if($result> 0 || $result[0]["id_estado"]==1)
 													{
-														?><i class="fa fa-toggle-on fa-4x" aria-hidden="true"></i>
-														<input class="fa fa-toggle-on fa-4x" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick="eliminarDisponibilidad();"><?php
-															//eliminarDisponibilidad()
+														?>
+                                                        
+                                                        <a  href="javascript:void(0);" onclick="eliminarDisponibilidad(<? $item["id"] ?>);">
+                                                            <i class="fa fa-toggle-on fa-4x" aria-hidden="true"></i></a>
+														 <?php
 													}
 													else if($result <= 0 || $result[0]["id_estado"]==2)
 													{
-														?><a href="../src/gestion_disponibilidad.php?id_producto=<? echo $item["id"]?>">
-															<i class="fa fa-toggle-off fa-4x" aria-hidden="true"></i></a><?php
+														?><a  href="../src/crear_disponibilidad.php?id_producto=<? echo $item["id"]?>">
+															<i class="fa fa-toggle-off fa-4x" aria-hidden="true"></i></a>
+                                                    <?php
 													}
 													?>
 												</div>
 											</div><?php
 										}
 										?>
-									
+									<input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id"] ?>" />
 								</div>
 							</form>
 						</div>
@@ -313,6 +316,8 @@ License: You must have a valid license purchased only from themeforest(the above
             include "include_js.php";
 			?> 
 			<script src="../assets/pages/scripts/components-bootstrap-switch.min.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+            <script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
     </body>
 
 </html>

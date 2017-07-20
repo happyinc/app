@@ -255,7 +255,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						function(isConfirm) {
 							if (isConfirm) {
 								swal("Ir", "En un momento sera dirigido a la pagina para crear disponibilidades.", "success");
-								location.href="gestion_disponibilidad.php?id_producto="+<? echo $id_producto?>;
+								location.href="crear_disponibilidad.php?id_producto="+<? echo $id_producto?>;
 							} else {
 								swal("Cancelar","se cancelo la creacion de la disponibilidad del producto");
 								location.href="gestion_producto.php"
