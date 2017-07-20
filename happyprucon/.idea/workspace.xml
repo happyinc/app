@@ -39,6 +39,8 @@
       <find>$temporal</find>
       <find>$nombre_bien</find>
       <find>fileinput.min.js</find>
+      <find>$images</find>
+      <find>actualizar foto</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -70,11 +72,12 @@
         <option value="$PROJECT_DIR$/seguridad/verificar.php" />
         <option value="$PROJECT_DIR$/seguridad/verificarf.php" />
         <option value="$PROJECT_DIR$/app/assets/pages/scripts/wizard-user.js" />
-        <option value="$PROJECT_DIR$/app/src/borrar.php" />
         <option value="$PROJECT_DIR$/app/src/registro_user.php" />
         <option value="$PROJECT_DIR$/app/src/index.php" />
-        <option value="$PROJECT_DIR$/app/src/registro_emp.php" />
+        <option value="$PROJECT_DIR$/app/src/pruebafotos.php" />
+        <option value="$PROJECT_DIR$/app/src/borrar.php" />
         <option value="$PROJECT_DIR$/app/src/upload.php" />
+        <option value="$PROJECT_DIR$/app/src/registro_emp.php" />
         <option value="$PROJECT_DIR$/app/src/editar_perfil.php" />
       </list>
     </option>
@@ -115,6 +118,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -124,60 +128,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="happyprucon" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="happyprucon" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="happyprucon" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="externo" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="plugins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="happyprucon" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="happyprucon" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="externo" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="plugins" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fileinput" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="happyprucon" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="happyprucon" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="externo" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -215,7 +165,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -348,11 +297,12 @@
       <workItem from="1500332660923" duration="18000" />
       <workItem from="1500337642951" duration="1919000" />
       <workItem from="1500379848275" duration="44778000" />
+      <workItem from="1500466476808" duration="41550000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="343659000" />
+    <option name="totallyTimeSpent" value="385209000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
@@ -390,13 +340,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3876">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/logueo.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1956">
@@ -451,8 +394,8 @@
         <state relative-caret-position="1819">
           <caret line="228" column="170" lean-forward="false" selection-start-line="228" selection-start-column="170" selection-end-line="228" selection-end-column="170" />
           <folding>
-            <marker date="1500427906860" expanded="true" signature="10111:10214" ph="..." />
-            <marker date="1500427906860" expanded="true" signature="10252:10348" ph="..." />
+            <marker date="1500515134953" expanded="true" signature="10450:10553" ph="..." />
+            <marker date="1500515134953" expanded="true" signature="10591:10687" ph="..." />
           </folding>
         </state>
       </provider>
@@ -580,14 +523,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="51" lean-forward="true" selection-start-line="4" selection-start-column="51" selection-end-line="4" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/editar_producto.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="491" column="86" lean-forward="false" selection-start-line="491" selection-start-column="74" selection-end-line="491" selection-end-column="86" />
         </state>
       </provider>
     </entry>
@@ -618,7 +553,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1596">
           <caret line="76" column="53" lean-forward="true" selection-start-line="76" selection-start-column="53" selection-end-line="76" selection-end-column="53" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -626,7 +560,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="63">
           <caret line="90" column="66" lean-forward="true" selection-start-line="90" selection-start-column="66" selection-end-line="90" selection-end-column="66" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -634,7 +567,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3570">
           <caret line="170" column="5" lean-forward="false" selection-start-line="170" selection-start-column="5" selection-end-line="170" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -650,7 +582,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="763">
           <caret line="184" column="23" lean-forward="false" selection-start-line="184" selection-start-column="23" selection-end-line="184" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -659,16 +590,6 @@
         <state relative-caret-position="391">
           <caret line="29" column="39" lean-forward="true" selection-start-line="29" selection-start-column="39" selection-end-line="29" selection-end-column="58" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/crear_producto.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3009">
-          <caret line="177" column="50" lean-forward="true" selection-start-line="177" selection-start-column="40" selection-end-line="177" selection-end-column="50" />
-          <folding>
-            <marker date="1500304162262" expanded="true" signature="433:519" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -705,40 +626,68 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/crear_producto.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1053">
+          <caret line="177" column="50" lean-forward="false" selection-start-line="177" selection-start-column="50" selection-end-line="177" selection-end-column="50" />
+          <folding>
+            <marker date="1500428785092" expanded="true" signature="449:535" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/borrar.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="30" lean-forward="false" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
+        <state relative-caret-position="153">
+          <caret line="9" column="38" lean-forward="false" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/upload.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="29" column="2" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="29" selection-end-column="2" />
+        <state relative-caret-position="289">
+          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/pruebafotos.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-189">
+          <caret line="151" column="23" lean-forward="false" selection-start-line="151" selection-start-column="23" selection-end-line="151" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/editar_producto.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="101">
+          <caret line="303" column="51" lean-forward="true" selection-start-line="303" selection-start-column="51" selection-end-line="303" selection-end-column="51" />
+          <folding>
+            <marker date="1500428785097" expanded="true" signature="447:533" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/registro_emp.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="630" column="31" lean-forward="false" selection-start-line="630" selection-start-column="31" selection-end-line="630" selection-end-column="31" />
+        <state relative-caret-position="678">
+          <caret line="627" column="52" lean-forward="false" selection-start-line="627" selection-start-column="52" selection-end-line="627" selection-end-column="52" />
           <folding>
-            <marker date="1500427906860" expanded="true" signature="10111:10214" ph="..." />
-            <marker date="1500427906860" expanded="true" signature="10252:10348" ph="..." />
+            <marker date="1500515134953" expanded="true" signature="10450:10553" ph="..." />
+            <marker date="1500515134953" expanded="true" signature="10591:10687" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/editar_perfil.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="364" column="0" lean-forward="true" selection-start-line="364" selection-start-column="0" selection-end-line="364" selection-end-column="0" />
+        <state relative-caret-position="323">
+          <caret line="70" column="99" lean-forward="false" selection-start-line="70" selection-start-column="99" selection-end-line="70" selection-end-column="99" />
           <folding>
-            <marker date="1500428656063" expanded="true" signature="781:866" ph="..." />
-            <marker date="1500428656063" expanded="true" signature="10308:10437" ph="..." />
+            <marker date="1500514608925" expanded="true" signature="781:866" ph="..." />
+            <marker date="1500514608925" expanded="true" signature="10585:10714" ph="..." />
           </folding>
         </state>
       </provider>

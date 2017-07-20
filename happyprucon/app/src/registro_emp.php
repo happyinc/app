@@ -59,9 +59,12 @@ License: You must have a valid license purchased only from themeforest(the above
     <link rel="shortcut icon" href="favicon.ico" />
 
     <!--Inicio Archivos para bootstrap file input -->
-    <link href="../../externo/plugins/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <link href="../../externo/plugins/fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="../../externo/plugins/fileinput/themes/explorer/theme.css" media="all" rel="stylesheet" type="text/css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="../../externo/plugins/fileinput/js/fileinput.min.js" type="text/javascript"></script>
+    <script src="../../externo/plugins/fileinput/js/plugins/sortable.js" type="text/javascript"></script>
+    <script src="../../externo/plugins/fileinput/themes/explorer/theme.js" type="text/javascript"></script>
     <!--FIN Archivos para bootstrap file input -->
     <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAOTpZg3Uhl0AItmrXORFIsGfJQNJiLHGg" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
@@ -616,27 +619,19 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                 </h4>
                                             </div>
                                             <div class="form-group">
-                                                <input id="fotos" name="fotos[]" type="file" class="file" multiple=true class="file-loading">
+                                                <input id="fotos" name="fotos[]" type="file" class="file" multiple class="file-loading">
                                             </div>
                                             <div id = "errorBlock" class = "help-block" > </div>
                                             <script>
                                                 $("#fotos").fileinput({
-                                                    showCaption: false,
-                                                    browseClass: "btn btn-primary btn-lg",
-                                                    fileType: "any",
+                                                    'uploadUrl': '#',
+                                                    'showPreview': false,
                                                     uploadAsync: false,
                                                     minFileCount: 1,
                                                     maxFileCount: 6,
                                                     allowedFileExtensions : [ "jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP" ],
-                                                    maxFilePreviewSize : 2048,
-                                                    showUpload: true,
-                                                    showRemove: false,
-                                                    initialPreview: [<?php foreach ($images as $image) {?>
-                                                        "<img src='<?php echo $image; ?>' height='120px' class='file-preview-image'> ",
-                                                        <?php } ?>],
-                                                    initialPreviewConfig: [<?php foreach ($images as $image) { $infoImagenes=explode("/",$image);?>
-                                                        {caption: "<?php echo $infoImagenes[1];?>", height:"120px", url:"borrar.php", key:"<?php echo $infoImagenes[1];?>"},
-                                                        <?php } ?>]
+                                                    overwriteInitial: false,
+
                                                 });
                                             </script>
                                         </div>

@@ -62,10 +62,16 @@ License: You must have a valid license purchased only from themeforest(the above
     ?>
     <!--Inicio Archivos para bootstrap file input -->
     <link href="../../externo/plugins/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="../../externo/plugins/fileinput/js/fileinput.min.js" type="text/javascript"></script>
+    <link href="../../externo/plugins/fileinput/themes/explorer/theme.css" media="all" rel="stylesheet" type="text/css"/>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="../../externo/plugins/fileinput/js/fileinput.js" type="text/javascript"></script>
+    <script src="../../externo/plugins/fileinput/js/plugins/sortable.js" type="text/javascript"></script>
+    <script src="../../externo/plugins/fileinput/themes/explorer/theme.js" type="text/javascript"></script>
+    <script src="../../externo/plugins/fileinput/js/locales/es.js" type="text/javascript"></script>
     <!--FIN Archivos para bootstrap file input -->
-    <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+
+
 </head>
 <!-- END HEAD -->
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
@@ -352,42 +358,62 @@ License: You must have a valid license purchased only from themeforest(the above
                 </form>
                 <!-- END FORM PASSWORD-->
                 <!-- BEGIN FORM FOTOS SITIO -->
-                <?php
 
-                $carpetaAdjunta="usuarios/".$usu_id."/sitio/";
-                if (file_exists($carpetaAdjunta)) {
-
-                } else {
-                    mkdir($carpetaAdjunta, 0777, true);
-                }
-
-                $Imagenes = count($_FILES['fotos']['name']);
-
-                for($i = 0; $i < $Imagenes; $i++ ){
-
-                    $nombreArchivo=$_FILES['fotos']['name'][$i];
-                    $nombreTemporal=$_FILES['fotos']['tmp_name'][$i];
-
-                    $rutaArchivo=$carpetaAdjunta.$nombreArchivo;
-
-                    move_uploaded_file($nombreTemporal,$rutaArchivo);
-
-                    $infoImagenesSubidas[$i]=array("caption"=>"$nombreArchivo","height"=>"120px","url"=>"borrar.php","key"=>$nombreArchivo);
-                    $imagenesSubidas[$i]="<img height='120px' src='$rutaArchivo' class='file-preview-image'>";
-                }
-
-                $arr = array("file_id"=>0, "overwriteInitial"=>true,"initialPreviewConfig"=>$infoImagenesSubidas,
-                    "initialPreview"=>$imagenesSubidas);
-
-                echo json_encode($arr);
-
-                ?>
                 <form role="form" action="" class="form-horizontal" name="fotos_sitio" id="fotos_sitio" enctype="multipart/form-data" method="post"style="padding-top: 20px;">
                     <div class="form-body">
-                        <h3 class="block bold" style="color: #520d9b">ACTUALIZAR FOTOS DEL SITIO</h3>
+                        <h3 class="block bold" style="color: #520d9b">ACTUALIZAR FOTOS DEL SITIO  <a href="#" onClick="MyWindow=window.open('../../externo/plugins/fileinput/examples/prueba.php','FOTOS',width=400,height=400); return false;">CARGAR FOTO FINAL</a></h3>
+
 
                         <div class="form-group">
-                            <input id="fotos" name="fotos[]" type="file" class="file" multiple=true class="file-loading" data-preview-file-type="any">
+                            <div>
+                            </div>
+                            <?
+                            $archivos = "";
+                            $directorio = "usuarios/$usu_id/sitio";
+                            if (file_exists($directorio))
+                            {
+                                $direct=opendir($directorio);
+                                while ($archivo = readdir($direct))
+                                {
+                                    if($archivo=='.' or $archivo=='..')
+                                    {
+                                    }
+                                    else
+                                    {
+                                        $rut = $directorio."/".$archivo;
+                                        $archivos .= "'".$rut."',";
+                                    }
+                                }
+                                closedir($directorio);
+                            }
+
+                            echo $archivos;
+                            ?>
+
+                            <input id="kv-explorer" name="fotos[]" type="file" class="file" multiple=true data-min-file-count="1">
+
+                            <script>
+
+                                $(document).ready(function () {
+                                    $("#test-upload").fileinput({
+                                        'showPreview': false,
+                                        'allowedFileExtensions': ['jpg', 'png', 'gif'],
+                                        'elErrorContainer': '#errorBlock'
+                                    });
+                                    $("#kv-explorer").fileinput({
+                                        'theme': 'explorer',
+                                        'uploadUrl': '#',
+                                        overwriteInitial: false,
+                                        initialPreviewAsData: true,
+                                        initialPreview: [
+                                            'usuarios/130/sitio/digital_marketing.jpg',
+                                            'usuarios/130/sitio/thumb-1920-404688.jpg',
+                                        ],
+                                    });
+
+                                });
+                            </script>
+
                         </div>
                         <div id = "errorBlock" class = "help-block" > </div>
 
@@ -423,32 +449,6 @@ include "footer.php";
 include "include_js.php";
 ?>
 </body>
-<?php
 
-
-$images = glob($carpetaAdjunta ."*.*");
-
-?>
-<script>
-    $("#fotos").fileinput({
-        showCaption: false,
-        browseClass: "btn btn-primary btn-lg",
-        fileType: "any",
-        uploadUrl: "upload.php",
-        uploadAsync: false,
-        minFileCount: 1,
-        maxFileCount: 6,
-        allowedFileExtensions : [ "jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP" ],
-        maxFilePreviewSize : 2048,
-        showUpload: true,
-        showRemove: false,
-        initialPreview: [<?php foreach ($images as $image) {?>
-            "<img src='<?php echo $image; ?>' height='120px' class='file-preview-image'> ",
-            <?php } ?>],
-        initialPreviewConfig: [<?php foreach ($images as $image) { $infoImagenes=explode("/",$image);?>
-            {caption: "<?php echo $infoImagenes[1];?>", height:"120px", url:"borrar.php", key:"<?php echo $infoImagenes[1];?>"},
-            <?php } ?>]
-    });
-</script>
-
+<?echo"<pre>";print_r($GLOBALS);echo"</pre>";?>
 </html>
