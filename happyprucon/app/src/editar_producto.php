@@ -285,7 +285,6 @@ License: You must have a valid license purchased only from themeforest(the above
 							if (isConfirm) {
 								swal("", "", "success");
 								location.href="gestion_producto.php";
-								//location.href="editar_producto.php?id_producto="+<? echo $id_producto?>;
 							} 
 						});
 					}
@@ -637,29 +636,7 @@ License: You must have a valid license purchased only from themeforest(the above
 											<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
 										</div>
 									</div>
-									<div class="form-group form-md-line-input">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<h2>COMENTARIOS</h2>
-											<?
-											//consulta para extraer la suma de las filas
-											$objCal->where("id_producto", $id_producto);
-											$objCal->columns = array("comentario");
-											$coment =  $objCal->select("calificacion_producto");
-											foreach ($coment as $comenta){
-												foreach ($comenta as $comentario){
-													?><div class="well"><?
-													echo $comentario;
-													echo "<br>";
-													echo "</div>";
-												}
-												
-											}
-											
-											?>
-
-										
-										</div>
-									</div>
+									
 								</div>
 							</form>
 						</div>
