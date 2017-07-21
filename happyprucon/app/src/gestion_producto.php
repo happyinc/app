@@ -50,26 +50,6 @@ License: You must have a valid license purchased only from themeforest(the above
 		$objProd->where("id_usuario", $usu_id);
 		$producto =  $objProd->select("producto");
 
-		
-            
-            /*if(isset($_GET["eliminar"]) && $_GET["eliminar"]== "eliminar")
-			{
-                ?><script type="text/javascript">
-                        alert("entro al eliminar");</script>
-                            <?
-				
-				$updateData["id_estado"] = 2; 
-				$objProd->where("id_producto", $_POST["id_producto"]);
-				$objProd->update('producto_disponibilidad', $updateData);
-				$disponibilidad_eliminado= $objProd->rowsChanged;
-						if($disponibilidad_eliminado != 1)
-                        {
-							?><script type="text/javascript">
-                                alert("No se elimino la disponibilidad del producto");
-								location.href="gestion_producto.php";</script>
-							<?
-						}
-			}*/
        
 		?>
 		<script>
