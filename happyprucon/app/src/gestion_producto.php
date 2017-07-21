@@ -50,24 +50,32 @@ License: You must have a valid license purchased only from themeforest(the above
 		$objProd->where("id_usuario", $usu_id);
 		$producto =  $objProd->select("producto");
 
-		//eliminar disponibilidad
-		if(isset($_GET["eliminar"]) && $_GET["eliminar"] == 1 && isset($_GET["id_producto"]) && $_GET["id_producto"] != "" )
+		
+            
+            /*if(isset($_GET["eliminar"]) && $_GET["eliminar"]== "eliminar")
 			{
-				$objProd = new PDOModel();
+                ?><script type="text/javascript">
+                        alert("entro al eliminar");</script>
+                            <?
+				
 				$updateData["id_estado"] = 2; 
-				$objProd->where("id", $_GET["id_producto"]);
+				$objProd->where("id_producto", $_POST["id_producto"]);
 				$objProd->update('producto_disponibilidad', $updateData);
-				$disponibilidad_eliminado= $objConn->rowsChanged;
-						if($disponibilidad_eliminado < 1){
-							?>
-								<script type="text/javascript">location.href="gestion_producto.php";</script>
+				$disponibilidad_eliminado= $objProd->rowsChanged;
+						if($disponibilidad_eliminado != 1)
+                        {
+							?><script type="text/javascript">
+                                alert("No se elimino la disponibilidad del producto");
+								location.href="gestion_producto.php";</script>
 							<?
 						}
-			}
+			}*/
+       
 		?>
 		<script>
 		function eliminarDisponibilidad(id)
 		  	{
+                 var id = id
 		  		swal({
 						title:"¿Desea eliminar la disponibilidad del producto:"+id+"?",
 						text: "",
@@ -270,26 +278,43 @@ License: You must have a valid license purchased only from themeforest(the above
 													$objProd->where("id_producto", $item["id"]);
 													$relacion =  $objProd->select("producto_disponibilidad");
 													$result=$objProd->totalRows;
-													if($result> 0 || $result[0]["id_estado"]==1)
+													if($relacion[0]["id_estado"]==1)
 													{
 														?>
                                                         
-                                                        <a  href="javascript:void(0);" onclick="eliminarDisponibilidad(<? $item["id"] ?>);">
-                                                            <i class="fa fa-toggle-on fa-4x" aria-hidden="true"></i></a>
-														 <?php
+                                                        <a  href="javascript:void(0);" onclick="eliminarDisponibilidad(<? echo $item["id"] ?>);">
+                                                            <i class="fa fa-toggle-on fa-4x" style="color:green" aria-hidden="true"></i></a>
+                                                          <?php
+
+                                                          if($item["id"]!="")
+                                                            {
+                                                                
+                                                                $updateData["id_estado"] = 2; 
+                                                                $objProd->where("id_producto", $item["id"] );
+                                                                $objProd->update('producto_disponibilidad', $updateData);
+                                                                $disponibilidad_eliminado= $objProd->rowsChanged;
+                                                                        if($disponibilidad_eliminado != 1)
+                                                                        {
+                                                                            ?><script type="text/javascript">
+                                                                                alert("No se elimino la disponibilidad del producto");</script>
+                                                                            <?
+                                                                        }
+                                                            }
 													}
-													else if($result <= 0 || $result[0]["id_estado"]==2)
+													else if($result <= 0 || $relacion[0]["id_estado"]==2)
 													{
 														?><a  href="../src/crear_disponibilidad.php?id_producto=<? echo $item["id"]?>">
-															<i class="fa fa-toggle-off fa-4x" aria-hidden="true"></i></a>
+															<i class="fa fa-toggle-off fa-4x" style="color:red" aria-hidden="true"></i></a>
                                                     <?php
 													}
 													?>
 												</div>
+                                                <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id"] ?>" />
 											</div><?php
 										}
 										?>
-									<input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id"] ?>" />
+									<input type="hidden" id="formulario" name="formulario" value="gestion_producto"/>
+                                   <? //echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
 								</div>
 							</form>
 						</div>
