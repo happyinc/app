@@ -7,7 +7,7 @@ $objSe->init();
 
 $usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 
-$carpetaAdjunta = "usuarios/".$usu_id."/sitio/";
+$carpetaAdjunta = "usuarios/$usu_id/sitio/";
 
 if($_SERVER['REQUEST_METHOD']=="DELETE"){
 

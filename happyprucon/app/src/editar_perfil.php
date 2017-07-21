@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(0);
 require_once'../../externo/plugins/PDOModel.php';
 include '../class/sessions.php';
 
@@ -63,8 +63,12 @@ License: You must have a valid license purchased only from themeforest(the above
     <!--Inicio Archivos para bootstrap file input -->
     <link href="../../externo/plugins/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
     <link href="../../externo/plugins/fileinput/themes/explorer/theme.css" media="all" rel="stylesheet" type="text/css"/>
-
+    <?
+    include "include_js.php";
+    ?>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="../../externo/plugins/fileinput/js/plugins/purify.min.js"></script>
+    <script src="../../externo/plugins/fileinput/js/plugins/piexif.js"></script>
     <script src="../../externo/plugins/fileinput/js/fileinput.js" type="text/javascript"></script>
     <script src="../../externo/plugins/fileinput/js/plugins/sortable.js" type="text/javascript"></script>
     <script src="../../externo/plugins/fileinput/themes/explorer/theme.js" type="text/javascript"></script>
@@ -203,7 +207,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                 $extension = end(explode('.', $_FILES['foto']['name']));
                                 $foto = "perfil". "." . $extension;
-                                $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
+                                $directorio = "usuarios/" . $usu_id. "/perfil/"; // directorio de tu elección
                                 if (file_exists($directorio)) {
 
                                 } else {
@@ -214,7 +218,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
                                 $minFoto = 'min_' . $foto;
                                 $resFoto = 'res_' . $foto;
-                                resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
+                                resizeImagen($directorio . '/', $foto, 200, 200, $minFoto, $extension);
                                 resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
                                 unlink($directorio . '/' . $foto);
 
@@ -237,7 +241,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             }
 
                             echo "<script> alert('Usuario actualizado correctamente');
-                        window.location.assign('../../app/src/perfil.php');</script>";
+                        window.location.assign('../../app/src/editar_perfil.php');</script>";
                         } else {
                             echo "<script> alert('No se pudo actualizar');</script>";
                         }
@@ -245,10 +249,50 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
                 }
+
+                function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
+                    $rutaImagenOriginal = $ruta.$nombre;
+                    if($extension == 'GIF' || $extension == 'gif'){
+                        $img_original = imagecreatefromgif($rutaImagenOriginal);
+                    }
+                    if($extension == 'jpg' || $extension == 'JPG'){
+                        $img_original = imagecreatefromjpeg($rutaImagenOriginal);
+                    }
+                    if($extension == 'png' || $extension == 'PNG'){
+                        $img_original = imagecreatefrompng($rutaImagenOriginal);
+                    }
+                    if($extension == 'bmp' || $extension == 'BMP'){
+                        $img_original = imagecreatefrombmp($rutaImagenOriginal);
+                    }
+                    if($extension == 'jpeg' || $extension == 'JPEG'){
+                        $img_original = imagecreatefromjpeg($rutaImagenOriginal);
+                    }
+                    $max_ancho = $ancho;
+                    $max_alto = $alto;
+                    list($ancho,$alto)=getimagesize($rutaImagenOriginal);
+                    $x_ratio = $max_ancho / $ancho;
+                    $y_ratio = $max_alto / $alto;
+                    if( ($ancho <= $max_ancho) && ($alto <= $max_alto) ){//Si ancho
+                        $ancho_final = $ancho;
+                        $alto_final = $alto;
+                    } elseif (($x_ratio * $alto) < $max_alto){
+                        $alto_final = ceil($x_ratio * $alto);
+                        $ancho_final = $max_ancho;
+                    } else{
+                        $ancho_final = ceil($y_ratio * $ancho);
+                        $alto_final = $max_alto;
+                    }
+                    $tmp=imagecreatetruecolor($ancho_final,$alto_final);
+                    imagecopyresampled($tmp,$img_original,0,0,0,0,$ancho_final, $alto_final,$ancho,$alto);
+                    imagedestroy($img_original);
+                    $calidad=70;
+                    imagejpeg($tmp,$ruta.$nombreN,$calidad);
+
+                }
                 ?>
 
                 <!-- BEGIN FORM-->
-                <form role="form" action="perfil.php" class="form-horizontal" name="upd_datos" id="upd_datos" enctype="multipart/form-data" method="post">
+                <form role="form" action="editar_perfil.php" class="form-horizontal" name="upd_datos" id="upd_datos" enctype="multipart/form-data" method="post">
                     <div class="form-body">
                         <div class="alert alert-danger display-hide">
                             <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
@@ -260,13 +304,13 @@ License: You must have a valid license purchased only from themeforest(the above
                             <div class="input-group left-addon col-md-4 col-xs-2">
                                 <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
                                     <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
-                                        <img src="<? echo "usuarios/".$usu_id."/perfil/res_perfil.jpg"?>" alt="" class="img-circle" style="border-radius: 50%;"> </div>
+                                        <img src="<? echo "usuarios/".$usu_id."/perfil/min_perfil.jpg"?>" alt="" class="img-circle" style="border-radius: 50%;"> </div>
                                     <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
                                     <div>
 													<span class="btn default btn-file">
 														<span class="fileinput-new"> Seleccionar </span>
 														<span class="fileinput-exists"> Cambiar </span>
-														<input type="file" name="foto" id="foto" value="<? echo "usuarios/".$usu_id."/".$resFoto?>"> </span>
+														<input type="file" name="foto" id="foto" value="<? echo "usuarios/".$usu_id."/".$minFoto?>"> </span>
 
                                         <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>
                                     </div>
@@ -358,74 +402,73 @@ License: You must have a valid license purchased only from themeforest(the above
                 </form>
                 <!-- END FORM PASSWORD-->
                 <!-- BEGIN FORM FOTOS SITIO -->
+                <?
+                $archivos = "";
+                $directorio = "usuarios/$usu_id/sitio";
+                if (file_exists($directorio))
+                {
+                    $direct=opendir($directorio);
+                    while ($archivo = readdir($direct))
+                    {
+                        if($archivo=='.' or $archivo=='..')
+                        {
 
-                <form role="form" action="" class="form-horizontal" name="fotos_sitio" id="fotos_sitio" enctype="multipart/form-data" method="post"style="padding-top: 20px;">
-                    <div class="form-body">
-                        <h3 class="block bold" style="color: #520d9b">ACTUALIZAR FOTOS DEL SITIO  <a href="#" onClick="MyWindow=window.open('../../externo/plugins/fileinput/examples/prueba.php','FOTOS',width=400,height=400); return false;">CARGAR FOTO FINAL</a></h3>
+                        }
+                        else
+                        {
+                            $rut = $directorio."/".$archivo;
+                            $archivos .= "'".$rut."',";
+                        }
+                    }
+                    closedir($directorio);
+                }
 
-
-                        <div class="form-group">
-                            <div>
-                            </div>
-                            <?
-                            $archivos = "";
-                            $directorio = "usuarios/$usu_id/sitio";
-                            if (file_exists($directorio))
-                            {
-                                $direct=opendir($directorio);
-                                while ($archivo = readdir($direct))
-                                {
-                                    if($archivo=='.' or $archivo=='..')
-                                    {
-                                    }
-                                    else
-                                    {
-                                        $rut = $directorio."/".$archivo;
-                                        $archivos .= "'".$rut."',";
-                                    }
-                                }
-                                closedir($directorio);
-                            }
-
-                            echo $archivos;
-                            ?>
-
-                            <input id="kv-explorer" name="fotos[]" type="file" class="file" multiple=true data-min-file-count="1">
-
-                            <script>
-
-                                $(document).ready(function () {
-                                    $("#test-upload").fileinput({
-                                        'showPreview': false,
-                                        'allowedFileExtensions': ['jpg', 'png', 'gif'],
-                                        'elErrorContainer': '#errorBlock'
-                                    });
-                                    $("#kv-explorer").fileinput({
-                                        'theme': 'explorer',
-                                        'uploadUrl': '#',
-                                        overwriteInitial: false,
-                                        initialPreviewAsData: true,
-                                        initialPreview: [
-                                            'usuarios/130/sitio/digital_marketing.jpg',
-                                            'usuarios/130/sitio/thumb-1920-404688.jpg',
-                                        ],
-                                    });
-
-                                });
-                            </script>
-
-                        </div>
-                        <div id = "errorBlock" class = "help-block" > </div>
-
+                ?>
+                <form role="form" enctype="multipart/form-data" class="form-horizontal col-lg-12">
+                <div class="form-body">
+                    <div class="page-header">
+                        <h3 class="block bold" style="color: #520d9b">CAMBIAR FOTOS DEL SITIO</h3>
                     </div>
-                    <div class="form-actions">
-                        <div class="row">
-                            <div class="col-md-offset-3 col-md-9">
-                                <input type="submit" id="register-submit-btn" class="btn blue" name="btn2" value="Cambiar"/>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <input id="fotos" name="fotos[]" type="file" accept="image/*" multiple>
                     </div>
+
+                </div>
                 </form>
+                <script>
+                    $(document).ready(function () {
+                        $("#test-upload").fileinput({
+                            'showPreview': false,
+                            'allowedFileExtensions': ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'JPG', 'JPEG', 'GIF', 'PNG', 'BMP'],
+                            'elErrorContainer': '#errorBlock'
+                        });
+                        $("#fotos").fileinput({
+                            language: 'es',
+                            'theme': 'explorer',
+                            'uploadUrl': 'upload.php',
+                            uploadAsync: false,
+                            minFileCount: 1,
+                            maxFileCount: 6,
+                            showUpload: true,
+                            showRemove: false,
+                            maxImageWidth: 500,
+                            resizeImage: true,
+                            overwriteInitial: false,
+                            initialPreviewAsData: true,
+                            browseOnZoneClick: true,
+                            initialPreview: [
+                                <? echo $archivos ?>
+                            ],
+                            initialPreviewConfig: [<?php foreach ($archivos as $image) { $infoImagenes=explode("/",$image);?>
+                                {caption: "<?php echo $infoImagenes[1];?>", height:"120px", url:"borrar.php", key:"<?php echo $infoImagenes[1];?>"},
+                                <?php } ?>],
+                            purifyHtml: true,
+                        });
+                    });
+                </script>
+
+                <div class="row">
+                </div>
                 <!-- END FORM FOTOS SITIO -->
             </div>
         </div>
@@ -445,10 +488,6 @@ include "footer.php";
 <script src="../assets/global/plugins/excanvas.min.js"></script>
 <script src="../assets/global/plugins/ie8.fix.min.js"></script>
 <![endif]-->
-<?
-include "include_js.php";
-?>
-</body>
 
-<?echo"<pre>";print_r($GLOBALS);echo"</pre>";?>
+</body>
 </html>

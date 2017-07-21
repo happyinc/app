@@ -62,6 +62,8 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../../externo/plugins/fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
     <link href="../../externo/plugins/fileinput/themes/explorer/theme.css" media="all" rel="stylesheet" type="text/css"/>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="../../externo/plugins/fileinput/js/plugins/purify.min.js"></script>
+    <script src="../../externo/plugins/fileinput/js/plugins/piexif.js"></script>
     <script src="../../externo/plugins/fileinput/js/fileinput.min.js" type="text/javascript"></script>
     <script src="../../externo/plugins/fileinput/js/plugins/sortable.js" type="text/javascript"></script>
     <script src="../../externo/plugins/fileinput/themes/explorer/theme.js" type="text/javascript"></script>
@@ -623,16 +625,35 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             </div>
                                             <div id = "errorBlock" class = "help-block" > </div>
                                             <script>
+                                            $(document).ready(function () {
+                                                $("#test-upload").fileinput({
+                                                   'showPreview': false,
+                                                   'allowedFileExtensions': ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'JPG', 'JPEG', 'GIF', 'PNG', 'BMP'],
+                                                   'elErrorContainer': '#errorBlock'
+                                            });
                                                 $("#fotos").fileinput({
-                                                    'uploadUrl': '#',
-                                                    'showPreview': false,
+                                                    language: 'es',
+                                                    'theme': 'explorer',
+                                                    'uploadUrl': 'upload.php',
                                                     uploadAsync: false,
                                                     minFileCount: 1,
                                                     maxFileCount: 6,
-                                                    allowedFileExtensions : [ "jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP" ],
+                                                    showUpload: true,
+                                                    showRemove: false,
+                                                    maxImageWidth: 500,
+                                                    resizeImage: true,
                                                     overwriteInitial: false,
+                                                    initialPreviewAsData: true,
+                                                    browseOnZoneClick: true,
+                                                    initialPreview: [<?php foreach ($images as $image) {?>
+                                                        "<img src='<?php echo $image; ?>' height='120px' class='file-preview-image'> ",
+                                                        <?php } ?>],
+                                                    initialPreviewConfig: [<?php foreach ($images as $image) { $infoImagenes=explode("/",$image);?>
+                                                        {caption: "<?php echo $infoImagenes[1];?>", height:"120px", url:"borrar.php", key:"<?php echo $infoImagenes[1];?>"},
+                                                        <?php } ?>]
 
                                                 });
+                                            });
                                             </script>
                                         </div>
                                     </div>
