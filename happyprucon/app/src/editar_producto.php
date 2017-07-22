@@ -486,40 +486,7 @@ License: You must have a valid license purchased only from themeforest(the above
 										<br>
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<?
-											$objCal = new PDOModel();
-											//consulta para extraer la suma de las filas
-											$objCal->where("id_producto", $id_producto);
-											$objCal->columns = array("sum(calificacion)");
-											$sumaCalificaciones =  $objCal->select("calificacion_producto");
-											foreach ($sumaCalificaciones as $sumaCal){
-												foreach ($sumaCal as $sumCal){
-													$suma= $sumCal;
-												}
-											}
-                                          
-											//cosulta para contar el total de filas
-											$objCal->where("id_producto", $id_producto);
-                                            $objCal->columns = array("count(*) calificacion");
-                                            $cuentaTotal =  $objCal->select("calificacion_producto");
-											foreach ($cuentaTotal as $cuentaTot){
-												foreach ($cuentaTot as $cuentaTo){
-													$cuenta= $cuentaTo;
-												}
-											}
-											
-											//funcion para calcular el promedio
-											if ($sumCal==0 ||$cuenta==0) 
-											{
-												$prom=0;
-											}
-											
-											else
-											{
-												$prom= $sumCal/$cuenta;
-												$promedio=number_format($prom,1);
-										       echo print_calificacion($promedio);
-											}
-											
+											echo calificacion_producto($id_producto);
 											?>
 										</div>
 									</div>
