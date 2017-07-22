@@ -66,6 +66,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <?
     include "include_js.php";
     ?>
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="../../externo/plugins/fileinput/js/plugins/purify.min.js"></script>
     <script src="../../externo/plugins/fileinput/js/plugins/piexif.js"></script>
@@ -73,6 +74,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="../../externo/plugins/fileinput/js/plugins/sortable.js" type="text/javascript"></script>
     <script src="../../externo/plugins/fileinput/themes/explorer/theme.js" type="text/javascript"></script>
     <script src="../../externo/plugins/fileinput/js/locales/es.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
     <!--FIN Archivos para bootstrap file input -->
 
 
@@ -405,6 +407,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <?
                 $archivos = "";
                 $directorio = "usuarios/$usu_id/sitio";
+                $recorrido_archivos = "";
                 if (file_exists($directorio))
                 {
                     $direct=opendir($directorio);
@@ -418,6 +421,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         {
                             $rut = $directorio."/".$archivo;
                             $archivos .= "'".$rut."',";
+                            $recorrido_archivos[] = $archivo;
                         }
                     }
                     closedir($directorio);
@@ -459,9 +463,15 @@ License: You must have a valid license purchased only from themeforest(the above
                             initialPreview: [
                                 <? echo $archivos ?>
                             ],
-                            initialPreviewConfig: [<?php foreach ($archivos as $image) { $infoImagenes=explode("/",$image);?>
-                                {caption: "<?php echo $infoImagenes[1];?>", height:"120px", url:"borrar.php", key:"<?php echo $infoImagenes[1];?>"},
-                                <?php } ?>],
+                            initialPreviewConfig: [
+                                <?
+                                foreach ($recorrido_archivos as $clave => $valor) {
+                                    ?>
+                                        {caption: "<? echo $valor ?>", width: "120px", url: "borrar.php?d=<? echo $valor ?>", key: "<? echo $valor ?>"},
+                                    <?
+                                }
+                                ?>
+                            ],
                             purifyHtml: true,
                         });
                     });
