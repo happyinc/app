@@ -214,14 +214,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                      {
                                         ?>  
                                             <div class="col-md-6">
-                                                <div class="mt-widget-2" > 
-                                                    <div class="mt-head" style="background-image: url(../assets/pages/img/background/32.jpg);" >
+                                                <div class="mt-widget-2" >
+                                                    <div class="mt-head" style="background-image: url(<? echo 'usuarios/'.$item['id_usuario'].'/bienes/'.$item['id_producto'].'/res_producto.jpg'?>);" >
                                                         <div class="mt-head-label">
                                                             <button type="button" class="btn btn-success"><?echo $item["precio"]?></button>
                                                         </div>
                                                         <div class="mt-head-user" >
                                                             <div class="mt-head-user-img">
-                                                                <img src="../assets/pages/img/avatars/team7.jpg"> </div>
+                                                                <img src="<? echo 'usuarios/'.$item['id_usuario'].'/perfil/'.'/res_perfil.jpg'?>"> </div>
                                                             <div class="mt-head-user-info" >
                                                                 <span class="mt-user-name"><?echo  nombre_usuario($item["id_usuario"])?></span>
                                                                 <span class="mt-user-time">
@@ -242,18 +242,17 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </ul>
                                                         <div class="mt-body-actions">
                                                             <div class="btn-group btn-group btn-group-justified">
-                                                                <a href="javascript:;" class="btn">Hacer pedido </a>
+                                                                <a href="../src/crear_pedido.php?id_producto=<? echo $item["id_producto"]?>" class="btn">Hacer pedido </a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id_producto"] ?>" />
                                         <?     
                                     }?>
-                                        
-									   </div>
-								    <? //echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
-								</div>
+                                    </div>
+								 </div>
                                 <input type="hidden" id="formulario" name="formulario" value="disponibilidad_emprendedor"/>
 							</form>
 						</div>

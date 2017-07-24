@@ -1,20 +1,20 @@
 <?php
-	//error_reporting(E_ERROR | E_WARNING | E_PARSE);
-	require_once'../../externo/plugins/PDOModel.php';
-	require'../class/sessions.php';
-	$objSe = new Sessions();
-	$objSe->init();
+    error_reporting(E_ERROR | E_WARNING | E_PARSE);
+    require_once'../../externo/plugins/PDOModel.php';
+    require'../class/sessions.php';
+    $objSe = new Sessions();
+    $objSe->init();
 
-	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
-	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
-	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
+    $usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
+    $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+    $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
 
-	if($rol!=2){
-		echo "<script> alert('Usuario no autorizado');
-						window.location.assign('logueo.html');</script>";
-	}	
-?>
+    /*if($rol!=3){
+        echo "<script> alert('Usuario no autorizado');
+                        window.location.assign('logueo.html');</script>";
+    }   */
+?>  
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
@@ -37,124 +37,33 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN HEAD -->
 
     <head>
-        <?php
-		$id_producto = "";
+    <?php
+    include "include_css.php";
+    include "funciones.php";
+    
+        $id_producto = "";
     
         if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
         {
-            $id_producto = $_POST["id_producto"];
+            $id_emprendedor = $_POST["id_producto"];
         }
         elseif(isset($_GET["id_producto"]) && $_GET["id_producto"] != "")
         {
-             $id_producto = $_GET["id_producto"];
+             $id_emprendedor = $_GET["id_producto"];
         }
-        
-		include "include_css.php";
-		
-		?>
-        <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
-		
-             
-        <?php
-        $id_disponibilidad=0;
-        if(isset($_POST["formulario"]) && $_POST["formulario"] == "crear_disponibilidad")
-        {
-            // conversion de las fechas para realizar el insert en la tabla
-            $varini = explode("-",$_POST["fecha_inicio"]);
-            $horaini =$varini[1];
-            $fechaini=$varini[0];
-            $testini = new DateTime($fechaini);
-            $fecini=date_format($testini, 'Y-m-d');
-            $fec_inicio= $fecini."". $horaini;
 
-            $varfin = explode("-",$_POST["fecha_fin"]);
-            $horafin =$varfin[1];
-            $fechafin=$varfin[0];
-            $testfin = new DateTime($fechafin);
-            $fecfin=date_format($testfin, 'Y-m-d');
-            $fec_fin= $fecfin."". $horafin;
-
-            //insert a la tabla disponibilidad
-            $objConn = new PDOModel();
-                //$insertData["id_tipo_disponibilidad"] = $_POST["categoria"];//pdt cambiar
-                $insertData["id_estado"] = 1;
-                $insertData["fecha_inicio"] = $fec_inicio;
-                $insertData["fecha_fin"] = $fec_fin;
-                $insertData["fecha"] = date("Y-m-d H:i:s"); 
-                $insertData["id_usuario"] = $usu_id ;
-                $objConn->insert('disponibilidad', $insertData);
-
-                $id_disponibilidad= $objConn->lastInsertId;
-                //print_r($objConn->error);
-
-                if($id_disponibilidad!= "")
-                {
-                    //insert a la tabla producto_disponibilidad
-                    $insertPd["id_producto"] = $id_producto;
-                    $insertPd["id_disponibilidad"] = $id_disponibilidad; 
-                    $insertPd["cantidad_disponible"] = $_POST["cantidad_disponible"];
-                    $insertPd["id_estado"] = 1;
-                    $insertPd["fecha"] = date("Y-m-d H:i:s"); 
-                    $objConn->insert('producto_disponibilidad', $insertPd);
-
-                    $id_prod_dis= $objConn->lastInsertId;
-                     //insert a la tabla disponibilidad_forma_adquisicion
-                    foreach($_POST['forma_adquisicion'] as $clave => $valor)
-                        {
-                            $insertDf["id_forma_adquisicion"] = $valor;
-                            $insertDf["id_disponibilidad"] = $id_disponibilidad;
-                            $objConn->insert('disponibilidad_forma_adquisicion', $insertDf);
-
-                             $id_dis_forma= $objConn->lastInsertId;
-                        }
-                    if($id_prod_dis== "")
-                    {
-                       ?>
-                        <script type="text/javascript">alert("No se pudo asignar la disponibilidad al producto <?echo $id_producto?>")</script>
-                        <? 
-                    }
-                }
-                else
-                {
-                    ?>
-                        <script type="text/javascript">alert("No se pudo crear la disponibilidad")</script>
-                    <?
-                }
-
-        }
+        //informacion de todos los productos del emprendedor
+        $objProd = new PDOModel();
+        $objProd->where("id", $id_producto);
+        $producto =  $objProd->select("producto");
         ?>
-
         <script>
-        function alertaDisponibilidadCreada() 
-        {
-            var id_disponibilidad=<?echo $id_disponibilidad?>;
-            if(id_disponibilidad >=1)
-            {
-                        swal({
-                                title:"Se registro la disponibilidad:" + <? echo $id_disponibilidad?>,
-                                text: "para el producto:"+<? echo $id_producto?>,
-                                type: "success",
-                                showCancelButton: false,
-                                confirmButtonClass: "btn-success",
-                                confirmButtonText: "Aceptar",
-                                cancelButtonText: "No",
-                                closeOnConfirm: false,
-                                closeOnCancel: false
-                        },
-                        function(isConfirm) {
-                            if (isConfirm) {
-                                swal("", "Disponibilidad creada y asignada al producto"+<? echo $id_producto?>, "success");
-                                location.href="gestion_producto.php";
-                            }
-                        });
-            }
-        }
+            
         </script>
-		
-	</head>
+    </head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaDisponibilidadCreada()">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" >
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -175,12 +84,12 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- DOC: Remove "hide" class to enable the page header actions -->
                
                 <!-- END PAGE ACTIONS -->
-				<!-- BEGIN HEADER -->
-					<?php
-						include "cabecera.php";
-					?>
-				<!-- END HEADER -->
-			</div>
+                <!-- BEGIN HEADER -->
+                    <?php
+                        include "cabecera.php";
+                    ?>
+                <!-- END HEADER -->
+            </div>
             <!-- END HEADER INNER -->
         </div>
         <!-- END HEADER -->
@@ -189,11 +98,11 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- END HEADER & CONTENT DIVIDER -->
         <!-- BEGIN CONTAINER -->
         <div class="page-container">
-			<!-- BEGIN SIDEBAR -->
-			<?php
-					include "menu.php";
-			?>
-			<!-- END SIDEBAR -->
+            <!-- BEGIN SIDEBAR -->
+            <?php
+                    include "menu.php";
+            ?>
+            <!-- END SIDEBAR -->
             <!-- BEGIN CONTENT -->
             <div class="page-content-wrapper">
                 <!-- BEGIN CONTENT BODY -->
@@ -201,7 +110,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!-- BEGIN PAGE HEADER-->
                     <!-- BEGIN THEME PANEL -->
                     <div class="theme-panel">
-						<div class="toggler-close">
+                        <div class="toggler-close">
                             <i class="icon-close"></i>
                         </div>
                         <div class="theme-options">
@@ -274,8 +183,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
                     <!-- END THEME PANEL -->
-                    <h1 class="page-title"> Crear disponibilidad
-                        <small>creacion de disponibilidades</small>
+                    <h1 class="page-title"> Productos disponibles
+                        <small>Productos disponibles</small>
                     </h1>
                     <div class="page-bar">
                         <ul class="page-breadcrumb">
@@ -285,48 +194,33 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <a href="#">Crear disponibilidad</a>
+                                <a href="#">Productos disponibles</a>
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <span>Creacion de disponibilidades</span>
+                                <span>Productos disponibles</span>
                             </li>
                         </ul>
                         
                     <!-- END PAGE HEADER-->
-					</div>
-					<div class="portlet light">
-						<div class="portlet-body form">
-							<form role="form" class="form-horizontal" name="crear_pedido"  id="crear_pedido" action="crear_pedido.php" enctype="multipart/form-data" method="post">
-								<div class="form-body">
-									<div class="form-group">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-
-                                          </div>
-									</div>
-									
-                                    <div class="form-group">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            
-										</div>
-									</div>
-
-                                    <div class="form-group">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            
-                                        </div>
-                                    </div>
+                    </div>
+                    <div class="portlet light">
+                        <div class="portlet-body form">
+                            <form role="form" class="form-horizontal" name="crear_pedido"  id="crear_pedido" action="crear_pedido.php" enctype="multipart/form-data" method="post">
+                                <div class="form-body">
                                     <div class="form-group form-md-line-input">
                                         <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <button type="submit" class="btn purple" name="guardar" id="guardar" value="guardar"> Realizar pedido </button>
-                                            <input type="hidden" id="formulario" name="formulario" value="crear_disponibilidad"/>
-                                            <input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
-                                        </div>
+                                             dfhdfhhfgh<? echo $producto[0]['nombre'] ?>
+                                         </div>
+                                                
+                                                <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id_producto"] ?>" />
+                                                 
                                     </div>
-
-							    </div>		
-							</form>
-						</div>
+                                    <? echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
+                                </div>
+                                <input type="hidden" id="formulario" name="formulario" value="crear_pedido"/>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <!-- END CONTENT BODY -->
@@ -335,7 +229,7 @@ License: You must have a valid license purchased only from themeforest(the above
             
         </div>
         <!-- END CONTAINER -->
-		 <!-- BEGIN FOOTER -->
+         <!-- BEGIN FOOTER -->
         <?php
             include "footer.php";
         ?>
@@ -348,12 +242,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- BEGIN CORE PLUGINS -->
             <?php
             include "include_js.php";
-			?> 
-            <!--alertas-->
-            <script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
-            <script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
-            
-	
+            ?> 
     </body>
 
 </html>
