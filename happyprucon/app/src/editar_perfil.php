@@ -59,6 +59,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <head>
     <?php
     include "include_css.php";
+    include "funciones.php";
     ?>
     <!--Inicio Archivos para bootstrap file input -->
     <link href="../../externo/plugins/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
@@ -314,7 +315,7 @@ License: You must have a valid license purchased only from themeforest(the above
 														<span class="fileinput-exists"> Cambiar </span>
 														<input type="file" name="foto" id="foto" value="<? echo "usuarios/".$usu_id."/".$minFoto?>"> </span>
 
-                                        <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>
+                                        <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a><? echo calificacion_usuario($usu_id); ?>
                                     </div>
                                 </div>
                             </div>
@@ -361,12 +362,12 @@ License: You must have a valid license purchased only from themeforest(the above
                             <div class="col-sm-4 col-xs-1"></div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-lg-3 col-md-3 col-sm-3 col-xs-1"></label>
-                            <div>
+                            <label class="control-label col-md-3"></label>
+                            <div class="col-md-4">
                                 <div class="radio-list">
-                                    <label class="col-lg-2 col-md-2">
+                                    <label>
                                         <input type="radio" name="genero" value="Masculino" <?php echo $chequeado;?> class="icheck" > Masculino </label>
-                                    <label class="col-lg-2 col-md-4">
+                                    <label>
                                         <input type="radio" name="genero" value="Femenino" <?php echo $chequeada;?> class="icheck" > Femenino </label>
                                 </div>
                             </div>
@@ -403,15 +404,26 @@ License: You must have a valid license purchased only from themeforest(the above
                         <div class="alert alert-success display-hide">
                             <button class="close" data-close="alert"></button> Your form validation is successful! </div>
                         <h3 class="block bold" style="color: #520d9b">CAMBIO DE CONTRASEÑA</h3>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Contraseña</label>
-                            <div class="col-md-4">
-                                <input name="password" id="password" type="password" class="form-control"/> </div>
+
+                        <div class="form-group form-md-line-input has-info form-md-floating-label">
+                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
+                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-user"></i>
+                                                    </span>
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña nueva">
+                            </div>
+                            <div class="col-sm-4 col-xs-1"></div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Repite contraseña</label>
-                            <div class="col-md-4">
-                                <input name="repassword" id="repassword" type="password" class="form-control"/> </div>
+                        <div class="form-group form-md-line-input has-info form-md-floating-label">
+                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
+                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-user"></i>
+                                                    </span>
+                                <input type="password" class="form-control" name="repassword" id="repassword" placeholder="Repite contraseña">
+                            </div>
+                            <div class="col-sm-4 col-xs-1"></div>
                         </div>
                     </div>
                     <div class="form-actions">
