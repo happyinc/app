@@ -9,7 +9,7 @@ $usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
-if($rol==2){
+if($rol==2 ||  $rol==3){
     echo "<script> alert('Bienvenido!!  $fullname');</script>";
 }else{
 	echo "<script> alert('Usuario no autorizado');

@@ -10,10 +10,10 @@
 	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
 
-	if($rol!=3){
+	/*if($rol!=3){
 		echo "<script> alert('Usuario no autorizado');
 						window.location.assign('logueo.html');</script>";
-	}	
+	}	*/
 ?>	
 <!DOCTYPE html>
 <!-- 
@@ -54,13 +54,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
         //informacion de todos los productos del emprendedor
 		$objProd = new PDOModel();
-		$objProd->andOrOperator = "AND";
-		$objProd->where("id_estado", 1);
-		$objProd->where("id_usuario", $id_emprendedor);
-		$producto =  $objProd->select("producto");
-
-        
-
+        $result =  $objProd->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE A.id_usuario =  '".$id_emprendedor."' AND B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1;");
 
 		?>
 		<script>
@@ -216,16 +210,9 @@ License: You must have a valid license purchased only from themeforest(the above
 								<div class="form-body">
                                     <div class="form-group form-md-line-input">
                                     <?
-                                     foreach ($producto as $item ) 
+                                     foreach ($result as $item ) 
                                      {
-                                        $objProd->andOrOperator = "AND";
-                                        $objProd->where("id_estado", 1);
-                                        $objProd->where("id_producto", $item["id"]);
-                                        $relacion =  $objProd->select("producto_disponibilidad");
-
-                                         foreach ($relacion as $item1 ) 
-                                         {
-                                          ?>  
+                                        ?>  
                                             <div class="col-md-6">
                                                 <div class="mt-widget-2" > 
                                                     <div class="mt-head" style="background-image: url(../assets/pages/img/background/32.jpg);" >
@@ -236,9 +223,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <div class="mt-head-user-img">
                                                                 <img src="../assets/pages/img/avatars/team7.jpg"> </div>
                                                             <div class="mt-head-user-info" >
-                                                                <span class="mt-user-name">Chris Jagers</span>
+                                                                <span class="mt-user-name"><?echo  nombre_usuario($item["id_usuario"])?></span>
                                                                 <span class="mt-user-time">
-                                                                    <i class="icon-emoticon-smile"></i> 3 mins ago </span>
+                                                                    <i class="fa fa-star"></i><?echo  calificacion_usu($item["id_usuario"])?>  </span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -246,12 +233,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <h3 class="mt-body-title" > <?echo $item["nombre"]?> </h3>
                                                         <p class="mt-body-description"> <?echo $item["descripcion"]?> </p>
                                                         <ul class="mt-body-stats">
-                                                            <li class="font-green">
-                                                                <i class="icon-emoticon-smile"></i> <?echo  calificacion_producto($item["id"])?></li>
                                                             <li class="font-yellow">
-                                                                <i class=" icon-social-twitter"></i> 3,7k</li>
+                                                                <i class="fa fa-star"></i> <?echo  calificacion_prod($item["id_producto"])?></li>
+                                                            <li class="font-green">
+                                                                <i class=" icon-social-twitter"></i> <?echo $item["cantidad_despachada"]?></li>
                                                             <li class="font-red">
-                                                                <i class="  icon-bubbles"></i> 3,7k</li>
+                                                                <i class="  icon-bubbles"></i> <?echo  cantidad_coment_prod($item["id_producto"])?></li>
                                                         </ul>
                                                         <div class="mt-body-actions">
                                                             <div class="btn-group btn-group btn-group-justified">
@@ -261,13 +248,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </div>
                                                 </div>
                                             </div>
-                                        <?
-
-                                         }
+                                        <?     
                                     }?>
                                         
 									   </div>
-								    <?// echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
+								    <? //echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
 								</div>
                                 <input type="hidden" id="formulario" name="formulario" value="disponibilidad_emprendedor"/>
 							</form>
