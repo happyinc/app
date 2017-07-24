@@ -231,7 +231,7 @@ License: You must have a valid license purchased only from themeforest(the above
 								<div class="form-body">
 									<div class="form-group form-md-line-input">
 										<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-											<a href="../src/crear_producto.php"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i></a>
+											<a href="../src/crear_producto.php"><i class="fa fa-plus-circle fa-5x" style="color:gray" aria-hidden="true"></i></a>
 										</div>
 										<div class="col-md-9 col-lg-9 col-xs-8 col-sm-8">
 											Crear Bien o Servicio
@@ -243,7 +243,7 @@ License: You must have a valid license purchased only from themeforest(the above
 											?>
 											<div class="form-group form-md-line-input">
 												<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-													<div class="fileinput-new thumbnail img-circle" style="width: 150px; height: 150px;">
+													<div class="fileinput-new thumbnail " style="width: 150px; height: 150px;">
 														<a href="../src/editar_producto.php?id_producto=<? echo $item["id"]?>"><img src="<? echo "usuarios/".$usu_id."/bienes/".$item["id"]."/res_producto.jpg"?>" alt=""> </a>
 													</div>
 												</div>

@@ -472,7 +472,7 @@ License: You must have a valid license purchased only from themeforest(the above
 											<div class="fileinput fileinput-new" data-provides="fileinput">
 												<div class="fileinput-new thumbnail img-circle" style="width: 200px; height: 200px;">
 													<img src="<? echo "usuarios/".$usu_id."/bienes/".$id_producto."/res_producto.jpg"?>" alt=""> </div>
-												<div class="fileinput-preview fileinput-exists thumbnail img-circle" style="max-width: 200px; max-height: 200px;"> </div>
+												<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
 												<div>
 													<span class="btn default btn-file">
 														<span class="fileinput-new"> Seleccione la imagen </span>
