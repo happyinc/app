@@ -222,30 +222,31 @@ License: You must have a valid license purchased only from themeforest(the above
                             <button class="close" data-close="alert"></button> Your form validation is successful! </div>
                         <h3 class="block bold" style="color: #520d9b">DATOS PERSONALES</h3>
                         <div class="form-group form-md-line-input has-info form-md-floating-label">
-                            <label class="control-label col-md-4 col-xs-2"></label>
-                            <div class="input-group left-addon col-md-4 col-xs-2">
+                            <label class="control-label col-lg-3 col-md-3 col-xs-2"></label>
+                            <div class="input-group left-addon col-lg-3 col-md-3 col-xs-2">
                                 <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
                                     <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
                                         <img src="<? echo "usuarios/".$usu_id."/perfil/res_perfil.jpg"?>" alt="" class="img-circle" style="border-radius: 50%;"> </div>
-                                    <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
+                                    <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"></div>
                                     <div>
 													<span class="btn default btn-file" style="visibility: hidden;" >
 														<input type="file" name="foto" id="foto" value="<? echo "usuarios/".$usu_id."/".$resFoto?>"> </span>
+                                        <? echo calificacion_usuario($usu_id); ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group form-md-line-input has-info form-md-floating-label">
+                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
+                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-user"></i>
+                                                    </span>
+                                <input type="text" class="form-control" name="usern" id="usern" value="<?php echo $fullname; ?>" readonly>
+                            </div>
+                            <div class="col-sm-4 col-xs-1"></div>
+                        </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Nombres</label>
-                            <div class="col-md-4">
-                                <label name="fullname" id="fullname" class="form-control"><?php echo $name; ?></label></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Apellidos</label>
-                            <div class="col-md-4">
-                                <label name="lastname" id="lastname" class="form-control"><?php echo $lastname; ?></label></div>
-                        </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Celular</label>
                             <div class="col-md-4">

@@ -302,8 +302,8 @@ License: You must have a valid license purchased only from themeforest(the above
                             <button class="close" data-close="alert"></button> Your form validation is successful! </div>
                         <h3 class="block bold" style="color: #520d9b">DATOS PERSONALES</h3>
                         <div class="form-group form-md-line-input has-info form-md-floating-label">
-                            <label class="control-label col-md-4 col-xs-2"></label>
-                            <div class="input-group left-addon col-md-4 col-xs-2">
+                            <label class="control-label col-lg-4 col-md-4 col-xs-2"></label>
+                            <div class="input-group left-addon col-lg-4 col-md-4 col-xs-2">
                                 <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
                                     <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
                                         <img src="<? echo "usuarios/".$usu_id."/perfil/min_perfil.jpg"?>" alt="" class="img-circle" style="border-radius: 50%;"> </div>
@@ -319,34 +319,54 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Nombres</label>
-                            <div class="col-md-4">
+                        <div class="form-group form-md-line-input has-info form-md-floating-label">
+                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
+                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-user"></i>
+                                                    </span>
                                 <input name="iduser" id="iduser" type="hidden" class="form-control" value="<?php echo $usu_id; ?>"/>
-                                <input type="text" name="fullname" id="fullname" class="form-control" value="<?php echo $name; ?>" /> </div>
+                                <input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $name; ?>" placeholder="Nombres">
+                            </div>
+                            <div class="col-sm-4 col-xs-1"></div>
+                        </div>
+                        <div class="form-group form-md-line-input has-info form-md-floating-label">
+                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
+                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-user"></i>
+                                                    </span>
+                                <input type="text" class="form-control" name="lastname" id="lastname" value="<?php echo $lastname; ?>" placeholder="Apellidos">
+                            </div>
+                            <div class="col-sm-4 col-xs-1"></div>
+                        </div>
+                        <div class="form-group form-md-line-input has-info form-md-floating-label">
+                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
+                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-tablet"></i>
+                                                    </span>
+                                <input type="number" class="form-control" name="cell" id="cell" value="<?php echo $tel; ?>" placeholder="Celular">
+                            </div>
+                            <div class="col-sm-4 col-xs-1"></div>
+                        </div>
+                        <div class="form-group form-md-line-input has-info form-md-floating-label">
+                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
+                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </span>
+                                <input type="email" class="form-control" name="username" id="username" value="<?php echo $correo; ?>" placeholder="Correo electrónico">
+                            </div>
+                            <div class="col-sm-4 col-xs-1"></div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Apellidos</label>
-                            <div class="col-md-4">
-                                <input type="text" name="lastname" id="lastname" class="form-control" value="<?php echo $lastname; ?>" /> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Celular</label>
-                            <div class="col-md-4">
-                                <input name="cell" id="cell" type="text" class="form-control" value="<?php echo $tel; ?>"/> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Correo electrónico</label>
-                            <div class="col-md-4">
-                                <input name="username" id="username" type="email" class="form-control" value="<?php echo $correo; ?>"/> </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Genero</label>
-                            <div class="col-md-4">
+                            <label class="control-label col-lg-3 col-md-3 col-sm-3 col-xs-1"></label>
+                            <div>
                                 <div class="radio-list">
-                                    <label>
+                                    <label class="col-lg-2 col-md-2">
                                         <input type="radio" name="genero" value="Masculino" <?php echo $chequeado;?> class="icheck" > Masculino </label>
-                                    <label>
+                                    <label class="col-lg-2 col-md-4">
                                         <input type="radio" name="genero" value="Femenino" <?php echo $chequeada;?> class="icheck" > Femenino </label>
                                 </div>
                             </div>
