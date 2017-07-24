@@ -38,7 +38,7 @@
 	{
 		$objCal = new PDOModel();
 		//consulta para extraer la suma de las filas
-		$objCal->where("id_producto", $id_producto);
+		$objCal->where("id_usuario", $id_usuario);
 		$objCal->columns = array("sum(calificacion)");
 		$sumaCalificaciones =  $objCal->select("calificacion_usuario");
 		foreach ($sumaCalificaciones as $sumaCal){
