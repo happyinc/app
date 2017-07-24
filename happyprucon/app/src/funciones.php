@@ -11,7 +11,7 @@
 		$result = "";
 		$promedio=number_format($valor,1);
 		$result = "<span class='label badge-warning badge'>";
-		for ($i = 1; $i <= 5; $i++) 
+		for ($i = 0; $i < 5; $i++)
 		{
 			if($i < $promedio)
 			{

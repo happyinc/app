@@ -603,7 +603,65 @@ License: You must have a valid license purchased only from themeforest(the above
 											<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
 										</div>
 									</div>
-									
+
+
+                                        <div class="portlet light ">
+                                            <div class="portlet-title tabbable-line">
+                                                <div class="caption">
+                                                    <i class="icon-bubbles font-dark hide"></i>
+                                                    <span class="caption-subject"><h3 class="block bold" style="color: #520d9b">COMENTARIOS</h3></span>
+                                                </div>
+
+                                            </div>
+                                            <div class="portlet-body">
+                                                <div class="tab-content">
+                                                    <div class="scroller" style="height: 338px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
+                                                        <div class="tab-pane active" id="portlet_comments_1">
+                                                            <!-- BEGIN: Comments -->
+                                                            <?
+                                                            $objCon=new PDOModel();
+                                                            $res_califica = $objCon->executeQuery("select A.* , B.* from producto A , calificacion_producto B where A.id = B.id_producto AND  A.id= '".$id_producto."' ");
+
+                                                            foreach ($res_califica as $valor){
+                                                                ?>
+                                                                <div class="mt-comments">
+                                                                <div class="mt-comment">
+                                                                    <div class="mt-comment-img">
+                                                                        <img src="<? echo 'usuarios/'.$valor['id_usuario_califica'].'/perfil/min_perfil.jpg' ?>" /> </div>
+                                                                    <div class="mt-comment-body">
+                                                                        <div class="mt-comment-info">
+                                                                            <span class="mt-comment-author"><? echo $valor['nombre_completo'] ;?></span>
+                                                                            <span class="mt-comment-date"><? echo $valor['fecha'];?></span>
+                                                                        </div>
+                                                                        <div class="mt-comment-text"><? echo $valor['comentario'] ;?></div>
+                                                                        <div class="mt-comment-details">
+                                                                            <span class="mt-comment-status mt-comment-status-pending"><? echo print_calificacion($valor['calificacion']); ?></span>
+                                                                            <!--<ul class="mt-comment-actions">
+                                                                                <li>
+                                                                                    <a href="#">Quick Edit</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">View</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="#">Delete</a>
+                                                                                </li>
+                                                                            </ul>-->
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                </div><?
+                                                            }
+                                                            ?>
+
+                                                            <!-- END: Comments -->
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
 								</div>
 							</form>
 						</div>

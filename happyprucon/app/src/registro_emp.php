@@ -209,8 +209,10 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
             // almacenar imagen en el servidor
             move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
             $minFoto = 'min_' . $foto;
+            $midFoto = 'mid_' . $foto;
             $resFoto = 'res_' . $foto;
-            resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
+            resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
+            resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
             resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
             unlink($directorio . '/' . $foto);
 
