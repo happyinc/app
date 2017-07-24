@@ -41,20 +41,20 @@ License: You must have a valid license purchased only from themeforest(the above
 	include "include_css.php";
     include "funciones.php";
 	
-        $id_emprendedor = 5;
+        $id_usuario = 5;
     
-       /* if(isset($_POST["id_emprendedor"]) && $_POST["id_emprendedor"] != "")
+       /* if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
         {
-            $id_emprendedor = $_POST["id_emprendedor"];
+            $id_usuario = $_POST["id_usuario"];
         }
-        elseif(isset($_GET["id_emprendedor"]) && $_GET["id_emprendedor"] != "")
+        elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
         {
-             $id_emprendedor = $_GET["id_emprendedor"];
+             $id_usuario = $_GET["id_usuario"];
         }*/
 
         //informacion de todos los productos del emprendedor
 		$objProd = new PDOModel();
-        $result =  $objProd->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE A.id_usuario =  '".$id_emprendedor."' AND B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1;");
+        $result =  $objProd->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE A.id_usuario =  '".$id_usuario."' AND B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1;");
 
 		?>
 		<script>

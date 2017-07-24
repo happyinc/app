@@ -10,23 +10,23 @@
 	{
 		$result = "";
 		$promedio=number_format($valor,1);
-		$result = "<span class='label badge-warning badge'>";
+		$result = "<span  class='label label-warning'>";
 		for ($i = 0; $i < 5; $i++)
 		{
 			if($i < $promedio)
 			{
-				$result .= "<i class='fa fa-star fa-2x'></i>";
+				$result .= "<i class='fa fa-star'></i>";
 			}
 			else
 			{
 				$temp = $i - $promedio;
 				if($temp < 1 && $temp > 0)
 				{
-					$result .= "<i class='fa fa-star-half-o fa-2x'></i>";
+					$result .= "<i class='fa fa-star-half-o'></i>";
 				}
 				else
 				{
-					$result .= "<i class='fa fa-star-o fa-2x'></i>";
+					$result .= "<i class='fa fa-star-o'></i>";
 				}
 			}
 		}
@@ -38,7 +38,7 @@
 	{
 		$objCal = new PDOModel();
 		//consulta para extraer la suma de las filas
-		$objCal->where("id_producto", $id_producto);
+		$objCal->where("id_usuario", $id_usuario);
 		$objCal->columns = array("sum(calificacion)");
 		$sumaCalificaciones =  $objCal->select("calificacion_usuario");
 		foreach ($sumaCalificaciones as $sumaCal){
