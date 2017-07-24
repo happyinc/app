@@ -430,13 +430,12 @@ License: You must have a valid license purchased only from themeforest(the above
                 ?>
                 <form role="form" enctype="multipart/form-data" class="form-horizontal col-lg-12">
                 <div class="form-body">
-                    <div class="page-header">
-                        <h3 class="block bold" style="color: #520d9b">CAMBIAR FOTOS DEL SITIO</h3>
-                    </div>
-                    <div class="form-group">
+                       <h3 class="block bold" style="color: #520d9b">CAMBIAR FOTOS DEL SITIO</h3>
+                    <div class="col-lg-3"></div>
+                    <div class="form-group col-lg-6">
                         <input id="fotos" name="fotos[]" type="file" accept="image/*" multiple>
                     </div>
-
+                    <div class="col-lg-3"></div>
                 </div>
                 </form>
                 <script>
@@ -455,7 +454,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             maxFileCount: 6,
                             showUpload: true,
                             showRemove: false,
-                            maxImageWidth: 500,
+                            maxImageWidth: 600,
                             resizeImage: true,
                             overwriteInitial: false,
                             initialPreviewAsData: true,

@@ -90,6 +90,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN SIDEBAR -->
     <?
     include "menu.php";
+    include "funciones.php";
     ?>
     <!-- END SIDEBAR -->
     <!-- BEGIN CONTENT -->
@@ -283,19 +284,25 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="scroller" style="height: 338px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
                                             <div class="tab-pane active" id="portlet_comments_1">
                                                 <!-- BEGIN: Comments -->
-                                                <div class="mt-comments">
+                                                <?
+                                                $objCon=new PDOModel();
+                                                $res_califica = $objCon->executeQuery("select A.* , B.* from usuarios A , calificacion_usuario B where A.id = B.id_usuario AND  A.id= '".$usu_id."' ");
+
+                                                foreach ($res_califica as $valor){
+                                                    ?>
+                                                    <div class="mt-comments">
                                                     <div class="mt-comment">
                                                         <div class="mt-comment-img">
-                                                            <img src="../assets/pages/media/users/avatar1.jpg" /> </div>
+                                                            <img src="<? echo 'usuarios/'.$valor['id_usuario_califica'].'/perfil/min_perfil.jpg' ?>" /> </div>
                                                         <div class="mt-comment-body">
                                                             <div class="mt-comment-info">
-                                                                <span class="mt-comment-author">Michael Baker</span>
-                                                                <span class="mt-comment-date">26 Feb, 10:30AM</span>
+                                                                <span class="mt-comment-author"><? echo $valor['nombre_completo'] ;?></span>
+                                                                <span class="mt-comment-date"><? echo $valor['fecha'];?></span>
                                                             </div>
-                                                            <div class="mt-comment-text"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
+                                                            <div class="mt-comment-text"><? echo $valor['comentario'] ;?></div>
                                                             <div class="mt-comment-details">
-                                                                <span class="mt-comment-status mt-comment-status-pending">Pending</span>
-                                                                <ul class="mt-comment-actions">
+                                                                <span class="mt-comment-status mt-comment-status-pending"><? echo print_calificacion($valor['calificacion']); ?></span>
+                                                                <!--<ul class="mt-comment-actions">
                                                                     <li>
                                                                         <a href="#">Quick Edit</a>
                                                                     </li>
@@ -305,86 +312,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     <li>
                                                                         <a href="#">Delete</a>
                                                                     </li>
-                                                                </ul>
+                                                                </ul>-->
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="mt-comment">
-                                                        <div class="mt-comment-img">
-                                                            <img src="../assets/pages/media/users/avatar6.jpg" /> </div>
-                                                        <div class="mt-comment-body">
-                                                            <div class="mt-comment-info">
-                                                                <span class="mt-comment-author">Larisa Maskalyova</span>
-                                                                <span class="mt-comment-date">12 Feb, 08:30AM</span>
-                                                            </div>
-                                                            <div class="mt-comment-text"> It is a long established fact that a reader will be distracted. </div>
-                                                            <div class="mt-comment-details">
-                                                                <span class="mt-comment-status mt-comment-status-rejected">Rejected</span>
-                                                                <ul class="mt-comment-actions">
-                                                                    <li>
-                                                                        <a href="#">Quick Edit</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="#">View</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="#">Delete</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="mt-comment">
-                                                        <div class="mt-comment-img">
-                                                            <img src="../assets/pages/media/users/avatar8.jpg" /> </div>
-                                                        <div class="mt-comment-body">
-                                                            <div class="mt-comment-info">
-                                                                <span class="mt-comment-author">Natasha Kim</span>
-                                                                <span class="mt-comment-date">19 Dec,09:50 AM</span>
-                                                            </div>
-                                                            <div class="mt-comment-text"> The generated Lorem or non-characteristic Ipsum is therefore or non-characteristic. </div>
-                                                            <div class="mt-comment-details">
-                                                                <span class="mt-comment-status mt-comment-status-pending">Pending</span>
-                                                                <ul class="mt-comment-actions">
-                                                                    <li>
-                                                                        <a href="#">Quick Edit</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="#">View</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="#">Delete</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="mt-comment">
-                                                        <div class="mt-comment-img">
-                                                            <img src="../assets/pages/media/users/avatar4.jpg" /> </div>
-                                                        <div class="mt-comment-body">
-                                                            <div class="mt-comment-info">
-                                                                <span class="mt-comment-author">Sebastian Davidson</span>
-                                                                <span class="mt-comment-date">10 Dec, 09:20 AM</span>
-                                                            </div>
-                                                            <div class="mt-comment-text"> The standard chunk of Lorem or non-characteristic Ipsum used since the 1500s or non-characteristic. </div>
-                                                            <div class="mt-comment-details">
-                                                                <span class="mt-comment-status mt-comment-status-rejected">Rejected</span>
-                                                                <ul class="mt-comment-actions">
-                                                                    <li>
-                                                                        <a href="#">Quick Edit</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="#">View</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="#">Delete</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                </div><?
+                                                }
+                                                ?>
+
                                                 <!-- END: Comments -->
                                             </div>
                                         </div>
