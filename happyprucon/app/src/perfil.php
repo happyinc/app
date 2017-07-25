@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(0);
 require_once'../../externo/plugins/PDOModel.php';
 include '../class/sessions.php';
 
@@ -74,7 +74,7 @@ License: You must have a valid license purchased only from themeforest(the above
             function ScaleSlider() {
                 var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
                 if (refSize) {
-                    refSize = Math.min(refSize, 980);
+                    refSize = Math.min(refSize, 780);
                     jssor_1_slider.$ScaleWidth(refSize);
                 }
                 else {
@@ -288,67 +288,45 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- BEGIN FORM-->
                 <form role="form" action="perfil.php" class="form-horizontal" name="upd_datos" id="upd_datos" enctype="multipart/form-data" method="post">
                     <div class="form-body">
-                        <div class="alert alert-danger display-hide">
-                            <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
-                        <div class="alert alert-success display-hide">
-                            <button class="close" data-close="alert"></button> Your form validation is successful! </div>
-                        <h3 class="block bold" style="color: #520d9b">DATOS PERSONALES</h3>
-                        <div class="form-group form-md-line-input has-info form-md-floating-label">
-                            <label class="control-label col-lg-3 col-md-3 col-xs-2"></label>
-                            <div class="input-group left-addon col-lg-3 col-md-3 col-xs-2">
-                                <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
-                                    <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
-                                        <img src="<? echo "usuarios/".$usu_id."/perfil/res_perfil.jpg"?>" alt="" class="img-circle" style="border-radius: 50%;"> </div>
-                                    <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"></div>
-                                    <div>
-													<span class="btn default btn-file" style="visibility: hidden;" >
-														<input type="file" name="foto" id="foto" value="<? echo "usuarios/".$usu_id."/".$resFoto?>"> </span>
-                                        <? echo calificacion_usuario($usu_id); ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group form-md-line-input has-info form-md-floating-label">
-                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-user"></i>
-                                                    </span>
-                                <input type="text" class="form-control" name="usern" id="usern" value="<?php echo $fullname; ?>" readonly>
-                            </div>
-                            <div class="col-sm-4 col-xs-1"></div>
-                        </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Celular</label>
-                            <div class="col-md-4">
-                                <label name="cell" id="cell" class="form-control"><?php echo $tel; ?></label></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Correo electrónico</label>
-                            <div class="col-md-4">
-                                <label name="username" id="username" class="form-control" ><?php echo $correo; ?> </label></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Genero</label>
-                            <div class="col-md-4">
-                                <label name="genero" id="genero" class="form-control" ><?php echo $genero; ?> </label></div>
-                        </div>
-                        <div class="form-actions">
-                            <div class="row">
-                                <div class="col-md-offset-3 col-md-9">
-                                    <a href="editar_perfil.php" class="btn blue button-previous">
-                                        <i class="fa fa-list-ul"></i> Editar perfil </a>
+                    <div class="row">
+                        <div class="col-lg-3"></div>
+                        <div class="col-md-3">
+                            <div class="mt-widget-1" style=" border: 0px !important;">
+                                <div class="mt-icon">
+                                    <a href="editar_perfil.php">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </div>
+                                <div class="mt-img" style="margin-bottom: 10px !important;">
+                                        <img src="<? echo "usuarios/".$usu_id."/perfil/res_perfil.jpg"?>" width="150" class="img-circle" style="border-radius: 50%;">  </div>
+                                <div class="mt-body">
+                                    <h3 class="mt-username"><? echo calificacion_usuario($usu_id); ?></h3>
+
+                                        <div class="row" style="padding-top: 20px;">
+
+                                            <label class="font-yellow" style="margin-right: 5px;"><? echo calificacion_usu($usu_id); ?></label>
+                                            <i class="fa fa-star font-yellow" style="margin-right: 10px;"></i>|
+
+                                            <label class="font-green" style="margin-left: 10px; margin-right: 5px;"><? echo cantidad_coment_usu($usu_id); ?></label>
+                                            <i class="fa fa-comments font-green" style="margin-right: 10px;"></i>|
+
+                                            <label class="font-purple" style="margin-left: 10px; margin-right: 5px;">1,7k</label>
+                                            <i class="fa fa-group font-purple" style="margin-right: 10px;"></i>
+
+                                        </div>
+
                                 </div>
                             </div>
                         </div>
+                    </div>
                         <?
                         $archivos = "";
-                        $directorio = "usuarios/$usu_id/sitio";
+                        $directory = "usuarios/$usu_id/sitio";
                         $recorrido_archivos = "";
-                        if (file_exists($directorio))
+                        if (file_exists($directory))
                         {
-                            $direct=opendir($directorio);
+                            $direct=opendir($directory);
                             while ($archivo = readdir($direct))
                             {
                                 if($archivo=='.' or $archivo=='..')
@@ -357,107 +335,56 @@ License: You must have a valid license purchased only from themeforest(the above
                                 }
                                 else
                                 {
-                                    $rut = $directorio."/".$archivo;
+                                    $rut = $directory."/".$archivo;
                                     $archivos .= $rut;
                                     $recorrido_archivos[] = $archivo;
                                 }
                             }
-                            closedir($directorio);
+                            closedir($directory);
                         }
 
-                        foreach ($recorrido_archivos as $vfotos){
+
 
 
 ?>
-                            <div id="jssor_1" style="position:relative;margin:0 auto;top:0px;left:0px;width:980px;height:380px;overflow:hidden;visibility:hidden;">
+                            <div id="jssor_1" style="position:relative;margin:0;auto;top:40px;left:0px;width:980px;height:380px;overflow:hidden;visibility:hidden;">
                             <!-- Loading Screen -->
                             <div data-u="loading" class="jssorl-004-double-tail-spin" style="position:absolute;top:0px;left:0px;text-align:center;background-color:rgba(0,0,0,0.7);">
                                 <img style="margin-top:-19px;position:relative;top:50%;width:38px;height:38px;" src="img/double-tail-spin.svg" />
                             </div>
                             <div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:980px;height:380px;overflow:hidden;">
+                                <? foreach ($recorrido_archivos as $vfotos){ ?>
                                 <div>
                                     <img data-u="image" src="<? echo 'usuarios/'.$usu_id.'/sitio/'.$vfotos ?>" />
                                 </div>
-                                <div>
-                                    <img data-u="image" src="usuarios/9/sitio/images.jpg" />
-                                </div>
-                                <div>
-                                    <img data-u="image" src="usuarios/9/sitio/digital_marketing.jpg" />
-                                </div>
-                                <div>
-                                    <img data-u="image" src="img/004.jpg" />
-                                </div>
-                                <div>
-                                    <img data-u="image" src="img/005.jpg" />
-                                </div>
-                                <div>
-                                    <img data-u="image" src="img/006.jpg" />
-                                </div>
-                                <div>
-                                    <img data-u="image" src="img/007.jpg" />
-                                </div>
-                                <div>
-                                    <img data-u="image" src="img/008.jpg" />
-                                </div>
-                                <div>
-                                    <img data-u="image" src="img/009.jpg" />
-                                </div>
-                                <div>
-                                    <img data-u="image" src="img/010.jpg" />
-                                </div>
-                                <div>
-                                    <img data-u="image" src="img/011.jpg" />
-                                </div>
-                                <div>
-                                    <img data-u="image" src="img/012.jpg" />
-                                </div>
-                                <a data-u="any" href="https://www.jssor.com" style="display:none">image gallery</a>
+
+                                    <?
+                                }
+                                ?>
                             </div>
                             <!-- Bullet Navigator -->
-                            <div data-u="navigator" class="jssorb051" style="position:absolute;bottom:12px;right:12px;" data-autocenter="1" data-scale="0.5" data-scale-bottom="0.75">
-                                <div data-u="prototype" class="i" style="width:16px;height:16px;">
+                                <!--<div data-u="navigator" class="jssorb051" style="position:absolute;bottom:12px;right:12px;" data-autocenter="1" data-scale="0.5" data-scale-bottom="0.75">
+                                    <div data-u="prototype" class="i" style="width:16px;height:16px;">
+                                        <svg viewbox="0 0 16000 16000" style="position:absolute;top:0;left:0;width:100%;height:100%;">
+                                            <circle class="b" cx="8000" cy="8000" r="5800"></circle>
+                                        </svg>
+                                    </div>
+                                </div>-->
+                            <!-- Arrow Navigator-->
+                                <!--<div data-u="arrowleft" class="jssora051" style="width:65px;height:65px;top:0px;left:45px;" data-autocenter="2" data-scale="0.75" data-scale-left="0.75">
                                     <svg viewbox="0 0 16000 16000" style="position:absolute;top:0;left:0;width:100%;height:100%;">
-                                        <circle class="b" cx="8000" cy="8000" r="5800"></circle>
+                                        <polyline class="a" points="11040,1920 4960,8000 11040,14080 "></polyline>
                                     </svg>
                                 </div>
-                            </div>
-                            <!-- Arrow Navigator -->
-                            <div data-u="arrowleft" class="jssora051" style="width:65px;height:65px;top:0px;left:45px;" data-autocenter="2" data-scale="0.75" data-scale-left="0.75">
-                                <svg viewbox="0 0 16000 16000" style="position:absolute;top:0;left:0;width:100%;height:100%;">
-                                    <polyline class="a" points="11040,1920 4960,8000 11040,14080 "></polyline>
-                                </svg>
-                            </div>
-                            <div data-u="arrowright" class="jssora051" style="width:65px;height:65px;top:0px;right:45px;" data-autocenter="2" data-scale="0.75" data-scale-right="0.75">
-                                <svg viewbox="0 0 16000 16000" style="position:absolute;top:0;left:0;width:100%;height:100%;">
-                                    <polyline class="a" points="4960,1920 11040,8000 4960,14080 "></polyline>
-                                </svg>
-                            </div>
+                                <div data-u="arrowright" class="jssora051" style="width:65px;height:65px;top:0px;right:45px;" data-autocenter="2" data-scale="0.75" data-scale-right="0.75">
+                                    <svg viewbox="0 0 16000 16000" style="position:absolute;top:0;left:0;width:100%;height:100%;">
+                                        <polyline class="a" points="4960,1920 11040,8000 4960,14080 "></polyline>
+                                    </svg>
+                                </div>-->
                         </div>
                         <!-- #endregion Jssor Slider End -->
-
-
-                            <?
-
-
-
-                        }
-
-                        echo "<pre>";print_r($GLOBALS);echo "</pre>";
-                        ?>
-
-
-
-
-
-
-
-
-
-
-
-
-                        <div class="form-actions">
-                            <div class="portlet light ">
+                        <div class="row"  style="padding-top: 40px;">
+                            <div class="portlet light col-lg-8">
                                 <div class="portlet-title tabbable-line">
                                     <div class="caption">
                                         <i class="icon-bubbles font-dark hide"></i>
@@ -482,7 +409,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <img src="<? echo 'usuarios/'.$valor['id_usuario_califica'].'/perfil/min_perfil.jpg' ?>" /> </div>
                                                         <div class="mt-comment-body">
                                                             <div class="mt-comment-info">
-                                                                <span class="mt-comment-author"><? echo $valor['nombre_completo'] ;?></span>
+                                                                <span class="mt-comment-author"><? echo nombre_usuario($valor['id_usuario_califica']);?></span>
                                                                 <span class="mt-comment-date"><? echo $valor['fecha'];?></span>
                                                             </div>
                                                             <div class="mt-comment-text"><? echo $valor['comentario'] ;?></div>
@@ -514,6 +441,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </form>
                 <!-- END FORM-->

@@ -220,8 +220,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                 // almacenar imagen en el servidor
                                 move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
                                 $minFoto = 'min_' . $foto;
+                                $midFoto = 'mid_' . $foto;
                                 $resFoto = 'res_' . $foto;
-                                resizeImagen($directorio . '/', $foto, 200, 200, $minFoto, $extension);
+                                resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
+                                resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
                                 resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
                                 unlink($directorio . '/' . $foto);
 
@@ -307,13 +309,13 @@ License: You must have a valid license purchased only from themeforest(the above
                             <div class="input-group left-addon col-lg-4 col-md-4 col-xs-2">
                                 <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
                                     <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
-                                        <img src="<? echo "usuarios/".$usu_id."/perfil/min_perfil.jpg"?>" alt="" class="img-circle" style="border-radius: 50%;"> </div>
+                                        <img src="<? echo "usuarios/".$usu_id."/perfil/res_perfil.jpg"?>" alt="" class="img-circle" style="border-radius: 50%;"> </div>
                                     <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
                                     <div>
 													<span class="btn default btn-file">
 														<span class="fileinput-new"> Seleccionar </span>
 														<span class="fileinput-exists"> Cambiar </span>
-														<input type="file" name="foto" id="foto" value="<? echo "usuarios/".$usu_id."/".$minFoto?>"> </span>
+														<input type="file" name="foto" id="foto" value="<? echo "usuarios/".$usu_id."/".$resFoto?>"> </span>
 
                                         <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a><? echo calificacion_usuario($usu_id); ?>
                                     </div>
