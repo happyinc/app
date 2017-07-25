@@ -42,10 +42,8 @@ License: You must have a valid license purchased only from themeforest(the above
 		include "include_css.php";
 		
 		?>
-		<!--<link href="../../externo/plugins/dist/dropzone.css" type="text/css" rel="stylesheet" />-->
 		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
-		<!--<script src="../../externo/plugins/dropzone.js"></script>-->
 		<script type="text/javascript">
 			//funcion que oculta y muestra div eniendo en cuenta la opcion seleccionada por el usuario
 			function mostrarReferencia(){

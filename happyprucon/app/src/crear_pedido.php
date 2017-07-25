@@ -37,10 +37,30 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN HEAD -->
 
     <head>
+
     <?php
     include "include_css.php";
     include "funciones.php";
-    
+    ?>
+     <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
+     <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+        
+            //funcion que oculta y muestra div teniendo en cuenta la opcion seleccionada por el usuario
+            function mostrarReferencia(){
+                if (document.crear_pedido.forma_adquisicion[1].checked == true || document.crear_pedido.forma_adquisicion[4].checked == true) {
+                    document.getElementById('dat_com').style.display='block';
+                } 
+                else if (document.crear_pedido.forma_adquisicion[1].checked == false || document.crear_pedido.forma_adquisicion[4].checked == false){
+                    document.getElementById('dat_com').style.display='none';
+                }
+                
+                else {
+                    document.getElementById('dat_com').style.display='none';
+                }   
+            }    
+        </script>
+    <?
         $id_producto = "";
     
         if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
@@ -56,10 +76,10 @@ License: You must have a valid license purchased only from themeforest(the above
         $objProd = new PDOModel();
         $objProd->where("id", $id_producto);
         $producto =  $objProd->select("producto");
+
+        // insert del producto
         ?>
-        <script>
-            
-        </script>
+       
     </head>
     <!-- END HEAD -->
 
@@ -228,19 +248,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
                                             <div class="well">
                                                 <ul class="list-inline">
-                                                    <li class="font-green">
-                                                        <i class="fa fa-check-circle-o" style="color:purple" aria-hidden="true"></i> <?
-                                                        $result1 =  $objProd->executeQuery("SELECT A.id, B. cantidad_despachada  FROM producto A, producto_disponibilidad B WHERE A.id_usuario = '".$id_producto."' AND B.id_producto = A.id AND  B.id_estado = 1;");
+                                                    <li class="font-purple">
+                                                        <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?
+                                                        $result1 =  $objProd->executeQuery("SELECT A. id, B. cantidad_despachada  FROM producto A, producto_disponibilidad B WHERE A.id = '".$id_producto."' AND B.id_producto = A.id AND  B.id_estado = 1;");
 
-                                                        foreach ($result1 as $key) {
+                                                        foreach ($result1 as $key) 
+                                                        {
                                                             $cantidad_des= $key['cantidad_despachada'];
                                                             echo $cantidad_des;
                                                         }
-                                                        ?></li>
-                                                    <li class="font-yellow">
-                                                        <i class="fa fa-star"></i> <?echo  calificacion_prod($producto[0]['id'])?></li>
-                                                    <li class="font-red">
-                                                        <?echo  cantidad_coment_prod($producto[0]['precio'])?></li>
+                                                        ?>
+                                                    </li>
+                                                    <li class="font-yellow"><i class="fa fa-star"></i> <?echo  calificacion_prod($producto[0]['id'])?></li>
+                                                    <li class="font-red"><?echo  "$".$producto[0]['precio']?></li>
                                                 </ul>
                                                 <h4><b>Ingredientes:</b></h4>
                                                 <?
@@ -255,14 +275,155 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </div>
                                      <div class="form-group form-md-line-input">
                                         <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                        
+                                            <div class="form-group">
+                                                <label class="control-label">Seleccione la cantidad a solicitar</label>
+                                                    <select class="form-control" id="cantidad_despachada" name="cantidad_despachada">
+                                                        <?
+                                                        $result2 =  $objProd->executeQuery("SELECT A. id, B. cantidad_disponible FROM producto A, producto_disponibilidad B WHERE A.id = '".$id_producto."' AND B.id_producto = A.id AND  B.id_estado = 1;");
+                                                        foreach ($result2 as $key) 
+                                                        {
+                                                            for ($i = 1; $i <= $key['cantidad_disponible']; $i++)
+                                                            {
+                                                                ?>
+                                                                    <option value="<?php echo $i ?>"><?php echo $i?></option>
+                                                                <?
+                                                            }
+                                                        }
+
+                                                        ?>
+                                                    </select>
+                                            </div>
                                         </div>
+                                    </div>
+                                    <div class="form-group form-md-line-input">
+                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Seleccione la forma de adquisicion</label>
+                                                <div class="input-group">
+                                                    <div class="icheck-list">
+                                                        <?
+                                                            $result3 =  $objProd->executeQuery("SELECT A. id_disponibilidad, B. id_forma_adquisicion, C.* FROM producto_disponibilidad A, disponibilidad_forma_adquisicion B, forma_adquisicion C WHERE A. id_producto= '".$id_producto."' and A.id_disponibilidad = B.id_disponibilidad and B.id_forma_adquisicion = C.id;");
+                                                            foreach ($result3 as $key) 
+                                                                {?>
+                                                                  <label>
+                                                                    <input type="radio" name="forma_adquisicion" id="forma_adquisicion[<?php echo $key["id"]?>]" class="icheck" data-radio="iradio_line-purple" data-label="<?echo $key["descripcion"]?>" style="position: absolute; opacity: 0;"  value="<?php echo $key["id"]?>" onclick="mostrarReferencia();">
+                                                                  </label>
+                                                                <?
+                                                        }?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="dat_com" style="display:none;" >
+                                        <div class="form-group form-md-line-input">
+                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group form-md-line-input">
+                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="input-icon">
+                                                     <i class="fa fa-map"></i>
+                                                        <select class="form-control" id="zona" name="zona">
+                                                         <?
+                                                            $objFor = new PDOModel();
+                                                            $objFor->where("id_estado", 1);
+                                                            $result3 =  $objFor->select("zonas");
+                                                            foreach ($result3 as $key) 
+                                                            {
+                                                                ?>
+                                                                   <option value="<?php echo $key["id"]?>"><?php echo $key["descripcion"]?></option>
+                                                                <?
+                                                            }
+
+                                                         ?>
+                                                         </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>
+                                        
+                                    <div class="form-group form-md-line-input">
+                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                             <label class="control-label"><?echo  "Valor del producto     $".$producto[0]['precio']?></label>
+                                         </div>
                                     </div>
 
                                     <div class="form-group form-md-line-input">
                                         <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <input class="btn red" name="editar" type="submit" id="pedido" value="Realizar pedido">
-                                            <input type="hidden" id="id_producto" name="id_producto" value="<? echo  $producto[0]['id'] ?>" />
+                                            <?
+                                                $total= $producto[0]['precio'];
+                                            ?>
+                                             <label class="control-label"><b><?echo  "Total      $".$total?></b></label>
+                                         </div>
+                                    </div>
+                                    
+                                    <!-- <div class="form-group form-md-line-input">
+                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <div class="input-icon">
+                                                <i class="fa fa-credit-card-alt"></i>
+                                                <label class="control-label">Seleccione el metodo de pago</label>
+                                                
+                                                <?
+                                                    $objTarjeta = new PDOModel();
+                                                    $objTarjeta->where("id_usuario", $usu_id);
+                                                    $objTarjeta->columns = array("count(*) tarjeta");
+                                                    $cuentaTotal =  $objTarjeta->select("usuarios_pagos");
+                                                    foreach ($cuentaTotal as $cuentaTot)
+                                                    {
+                                                        foreach ($cuentaTot as $cuentaTo)
+                                                        {
+                                                            $cuenta= $cuentaTo;
+                                                        }
+                                                    }
+
+                                                    if ($cuenta > 0)
+                                                    {
+                                                        ?>
+                                                         <div class="form-group">
+                                                            <label class="control-label">Seleccione la tarjeta</label>
+                                                            <select class="form-control" id="tarjeta" name="tarjeta">
+                                                                    <?
+                                                                        $objTarjeta->andOrOperator = "AND";
+                                                                        $objTarjeta->where("id_estado", 1);
+                                                                        $objTarjeta->where("id_usuario", $usu_id);
+                                                                        $info_tarjeta =  $objTarjeta->select("usuarios_pagos");
+
+                                                                        foreach ($info_tarjeta as $key) 
+                                                                            {
+                                                                                ?>
+                                                                                     <option value="<?php echo $item1["id"]?>"><?php echo "******".$key["tarjeta"]?></option>
+                                                                                <?
+                                                                            }
+                                                                    ?>
+                                                            </select>
+                                                            <input class="btn purple" name="crear" type="button" id="crear" value="Agregar" href="crear_tarjeta.php?id_usuario=<? echo $usu_id ?>">
+                                                        </div>
+                                                        <?
+                                                    }
+
+                                                    else if ($cuenta <= 0)
+                                                    {
+                                                        ?>
+                                                        <div class="form-group">
+                                                            <input class="btn purple" name="crear" type="button" id="crear" value="Agregar" href="crear_tarjeta.php?id_usuario=<? echo $usu_id ?>">
+                                                        </div>
+                                                        <?
+                                                    }
+                                                ?>
+                                            </div>  
+                                        </div>
+                                    </div>-->
+
+                                    <div class="form-group form-md-line-input">
+                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <input class="btn red" name="pedido" type="submit" id="pedido" value="Realizar pedido">
+                                            <input type="hidden" id="id_producto" name="id_producto" value="<? echo  $id_producto ?>" />
                                             <input type="hidden" id="formulario" name="formulario" value="crear_pedido"/>
                                         </div>
                                     </div>
@@ -293,7 +454,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                         </div>
                                                                         <div class="mt-comment-body">
                                                                             <div class="mt-comment-info">
-                                                                                <span class="mt-comment-author"><? echo $valor['nombre_completo'] ;?></span>
+                                                                                <span class="mt-comment-author"><? echo nombre_usuario($valor['id_usuario']) ;?></span>
                                                                                 <span class="mt-comment-date"><? echo $valor['fecha'];?></span>
                                                                             </div>
                                                                             <div class="mt-comment-text"><? echo $valor['comentario'] ;?></div>
@@ -339,6 +500,8 @@ License: You must have a valid license purchased only from themeforest(the above
             <?php
             include "include_js.php";
             ?> 
+            <script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
+            <script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
     </body>
 
 </html>

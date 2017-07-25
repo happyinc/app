@@ -50,6 +50,20 @@ License: You must have a valid license purchased only from themeforest(the above
 		$objProd->where("id_usuario", $usu_id);
 		$producto =  $objProd->select("producto");
 
+        if ( isset($_GET["anular"]) && $_GET["anular"] != '')
+        {
+                                                                
+           $updateData["id_estado"] = 2; 
+           $objProd->where("id_producto", $_GET["anular"] );
+           $objProd->update('producto_disponibilidad', $updateData);
+           $disponibilidad_eliminado= $objProd->rowsChanged;
+           if($disponibilidad_eliminado != 1)
+            {
+                ?><script type="text/javascript">
+                    alert("No se elimino la disponibilidad del producto");</script>
+                <?
+            }
+        }
        
 		?>
 		<script>
@@ -265,25 +279,10 @@ License: You must have a valid license purchased only from themeforest(the above
 													{
 														?>
                                                         
-                                                        <a  href="javascript:void(0);" onclick="eliminarDisponibilidad(<? echo $item["id"] ?>);">
+                                                        <a  href="gestion_producto.php?anular=<? echo $item["id"] ?>" onclick="eliminarDisponibilidad(<? echo $item["id"] ?>);">
                                                             <i class="fa fa-toggle-on fa-4x" style="color:green" aria-hidden="true"></i></a>
-                                                          <?php
-
-                                                          if($item["id"]!="")
-                                                            {
-                                                                
-                                                                $updateData["id_estado"] = 2; 
-                                                                $objProd->where("id_producto", $item["id"] );
-                                                                $objProd->update('producto_disponibilidad', $updateData);
-                                                                $disponibilidad_eliminado= $objProd->rowsChanged;
-                                                                        if($disponibilidad_eliminado != 1)
-                                                                        {
-                                                                            ?><script type="text/javascript">
-                                                                                alert("No se elimino la disponibilidad del producto");</script>
-                                                                            <?
-                                                                        }
-                                                            }
-													}
+                                                         <?php
+                                                    }
 													else if($result <= 0 || $relacion[0]["id_estado"]==2)
 													{
 														?><a  href="../src/crear_disponibilidad.php?id_producto=<? echo $item["id"]?>">
@@ -297,8 +296,7 @@ License: You must have a valid license purchased only from themeforest(the above
 										}
 										?>
 									<input type="hidden" id="formulario" name="formulario" value="gestion_producto"/>
-                                   <? //echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
-								</div>
+                                 </div>
 							</form>
 						</div>
                     </div>

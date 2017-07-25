@@ -238,7 +238,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <li class="font-green">
                                                                 <i class=" icon-social-twitter"></i> <?echo $item["cantidad_despachada"]?></li>
                                                             <li class="font-red">
-                                                                <i class="  icon-bubbles"></i> <?echo  cantidad_coment_prod($item["id_producto"])?></li>
+                                                                <i class="icon-bubbles"></i> <?echo  cantidad_coment_prod($item["id_producto"])?></li>
                                                         </ul>
                                                         <div class="mt-body-actions">
                                                             <div class="btn-group btn-group btn-group-justified">
