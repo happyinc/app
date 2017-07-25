@@ -234,6 +234,24 @@
 	}
 
 
+function cantidad_coment_usu($id_usuario){
+    $objComent = new PDOModel();
+    $objComent->where("id_usuario", $id_usuario);
+    $objComent->columns = array("count(*) comentario");
+    $cuentaTotal =  $objComent->select("calificacion_usuario");
+    foreach ($cuentaTotal as $cuentaTot)
+    {
+        foreach ($cuentaTot as $cuentaTo)
+        {
+            $cuenta= $cuentaTo;
+        }
+    }
+
+    return $cuenta;
+
+}
+
+
 
 
 
