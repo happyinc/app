@@ -61,25 +61,6 @@ License: You must have a valid license purchased only from themeforest(the above
     include "include_css.php";
     include "funciones.php";
     ?>
-    <!--Inicio Archivos para bootstrap file input -->
-
-    <link href="../../externo/plugins/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
-    <link href="../../externo/plugins/fileinput/themes/explorer/theme.css" media="all" rel="stylesheet" type="text/css"/>
-    <?
-    include "include_js.php";
-    ?>
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="../../externo/plugins/fileinput/js/plugins/purify.min.js"></script>
-    <script src="../../externo/plugins/fileinput/js/plugins/piexif.js"></script>
-    <script src="../../externo/plugins/fileinput/js/fileinput.js" type="text/javascript"></script>
-    <script src="../../externo/plugins/fileinput/js/plugins/sortable.js" type="text/javascript"></script>
-    <script src="../../externo/plugins/fileinput/themes/explorer/theme.js" type="text/javascript"></script>
-    <script src="../../externo/plugins/fileinput/js/locales/es.js" type="text/javascript"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
-    <!--FIN Archivos para bootstrap file input -->
-
-
 </head>
 <!-- END HEAD -->
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
@@ -201,40 +182,40 @@ License: You must have a valid license purchased only from themeforest(the above
                                 // Primero, hay que validar que se trata de un JPG/GIF/PNG
                                 $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
                                 $extension = end(explode(".", $_FILES["foto"]["name"]));
-                            if ((($_FILES["foto"]["type"] == "image/gif")
-                                    || ($_FILES["foto"]["type"] == "image/jpeg")
-                                    || ($_FILES["foto"]["type"] == "image/png")
-                                    || ($_FILES["foto"]["type"] == "image/gif")
-                                    || ($_FILES["foto"]["type"] == "image/bmp"))
-                                && in_array($extension, $allowedExts)) {
-                                // el archivo es un JPG/GIF/PNG, entonces...
+                                if ((($_FILES["foto"]["type"] == "image/gif")
+                                        || ($_FILES["foto"]["type"] == "image/jpeg")
+                                        || ($_FILES["foto"]["type"] == "image/png")
+                                        || ($_FILES["foto"]["type"] == "image/gif")
+                                        || ($_FILES["foto"]["type"] == "image/bmp"))
+                                    && in_array($extension, $allowedExts)) {
+                                    // el archivo es un JPG/GIF/PNG, entonces...
 
-                                $extension = end(explode('.', $_FILES['foto']['name']));
-                                $foto = "perfil". "." . $extension;
-                                $directorio = "usuarios/" . $usu_id. "/perfil/"; // directorio de tu elección
-                                if (file_exists($directorio)) {
+                                    $extension = end(explode('.', $_FILES['foto']['name']));
+                                    $foto = "perfil". "." . $extension;
+                                    $directorio = "usuarios/" . $usu_id. "/perfil/"; // directorio de tu elección
+                                    if (file_exists($directorio)) {
 
-                                } else {
-                                    mkdir($directorio, 0777, true);
+                                    } else {
+                                        mkdir($directorio, 0777, true);
+                                    }
+
+                                    // almacenar imagen en el servidor
+                                    move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
+                                    $minFoto = 'min_' . $foto;
+                                    $midFoto = 'mid_' . $foto;
+                                    $resFoto = 'res_' . $foto;
+                                    resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
+                                    resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
+                                    resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
+                                    unlink($directorio . '/' . $foto);
+
+                                } else { // El archivo no es JPG/GIF/PNG
+                                    $malformato = $_FILES["foto"]["type"];
+                                    ?>
+                                    <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
+                                    <?
+                                    //header("Location: crear_producto.php?id=echo $usu_id");
                                 }
-
-                                // almacenar imagen en el servidor
-                                move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
-                                $minFoto = 'min_' . $foto;
-                                $midFoto = 'mid_' . $foto;
-                                $resFoto = 'res_' . $foto;
-                                resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
-                                resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
-                                resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
-                                unlink($directorio . '/' . $foto);
-
-                            } else { // El archivo no es JPG/GIF/PNG
-                                $malformato = $_FILES["foto"]["type"];
-                                ?>
-                                <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
-                            <?
-                            //header("Location: crear_producto.php?id=echo $usu_id");
-                            }
 
                             } else { // El campo foto NO contiene una imagen
 
@@ -242,7 +223,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             }
 
                             echo "<script> alert('Usuario actualizado correctamente');
-                        window.location.assign('../../app/src/editar_perfil.php');</script>";
+                        window.location.assign('editar_perfil_cliente.php');</script>";
                         } else {
                             echo "<script> alert('No se pudo actualizar');</script>";
                         }
@@ -293,7 +274,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 ?>
 
                 <!-- BEGIN FORM-->
-                <form role="form" action="editar_perfil.php" class="form-horizontal" name="upd_datos" id="upd_datos" enctype="multipart/form-data" method="post">
+                <form role="form" class="form-horizontal" name="upd_datos" id="upd_datos" enctype="multipart/form-data" method="post">
                     <div class="form-body">
                         <div class="alert alert-danger display-hide">
                             <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
@@ -439,8 +420,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-unlock-alt"></i>
                                                                 </span>
-                                                             <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña nueva">
-                                                           </div>
+                                                                <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña nueva">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group form-md-line-input has-info form-md-floating-label">
@@ -449,7 +430,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-lock"></i>
                                                                 </span>
-                                                              <input type="password" class="form-control" name="repassword" id="repassword" placeholder="Repite contraseña">
+                                                                <input type="password" class="form-control" name="repassword" id="repassword" placeholder="Repite contraseña">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -466,82 +447,6 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 </form>
                 <!-- END FORM PASSWORD-->
-                <!-- BEGIN FORM FOTOS SITIO -->
-                <?
-                $archivos = "";
-                $directorio = "usuarios/$usu_id/sitio";
-                $recorrido_archivos = "";
-                if (file_exists($directorio))
-                {
-                    $direct=opendir($directorio);
-                    while ($archivo = readdir($direct))
-                    {
-                        if($archivo=='.' or $archivo=='..')
-                        {
-
-                        }
-                        else
-                        {
-                            $rut = $directorio."/".$archivo;
-                            $archivos .= "'".$rut."',";
-                            $recorrido_archivos[] = $archivo;
-                        }
-                    }
-                    closedir($directorio);
-                }
-
-                ?>
-                <form role="form" enctype="multipart/form-data" class="form-horizontal col-lg-12">
-                <div class="form-body">
-                    <div class="col-lg-2"></div>
-                    <div class="form-group col-lg-6">
-                        <h3 class="block bold" style="color: #520d9b">CAMBIAR FOTOS DEL SITIO</h3>
-                        <input id="fotos" name="fotos[]"  type="file" accept="image/*" multiple>
-                    </div>
-                    <div class="col-lg-3"></div>
-                </div>
-                </form>
-                <script>
-                    $(document).ready(function () {
-                        $("#test-upload").fileinput({
-                            'showPreview': false,
-                            'allowedFileExtensions': ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'JPG', 'JPEG', 'GIF', 'PNG', 'BMP'],
-                            'elErrorContainer': '#errorBlock'
-                        });
-                        $("#fotos").fileinput({
-                            language: 'es',
-                            'theme': 'explorer',
-                            'uploadUrl': 'actualiza_fotos_sitio.php',
-                            uploadAsync: false,
-                            minFileCount: 1,
-                            maxFileCount: 6,
-                            showUpload: true,
-                            showRemove: false,
-                            maxImageWidth: 600,
-                            resizeImage: true,
-                            overwriteInitial: false,
-                            initialPreviewAsData: true,
-                            browseOnZoneClick: true,
-                            initialPreview: [
-                                <? echo $archivos ?>
-                            ],
-                            initialPreviewConfig: [
-                                <?
-                                foreach ($recorrido_archivos as $clave => $valor) {
-                                    ?>
-                                        {caption: "<? echo $valor ?>", width: "120px", url: "borrar.php?d=<? echo $valor ?>", key: "<? echo $valor ?>"},
-                                    <?
-                                }
-                                ?>
-                            ],
-                            purifyHtml: true,
-                        });
-                    });
-                </script>
-
-                <div class="row">
-                </div>
-                <!-- END FORM FOTOS SITIO -->
             </div>
         </div>
         <!-- END CONTENT BODY -->
@@ -560,6 +465,9 @@ include "footer.php";
 <script src="../assets/global/plugins/excanvas.min.js"></script>
 <script src="../assets/global/plugins/ie8.fix.min.js"></script>
 <![endif]-->
+<?
+include "include_js.php";
+?>
 <script src="../assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <script src="../assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
 </body>
