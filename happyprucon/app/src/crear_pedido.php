@@ -42,24 +42,7 @@ License: You must have a valid license purchased only from themeforest(the above
     include "include_css.php";
     include "funciones.php";
     ?>
-     <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
-     <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
-        <script type="text/javascript">
-        
-            //funcion que oculta y muestra div teniendo en cuenta la opcion seleccionada por el usuario
-            function mostrarReferencia(){
-                if (document.crear_pedido.forma_adquisicion[1].checked == true || document.crear_pedido.forma_adquisicion[4].checked == true) {
-                    document.getElementById('dat_com').style.display='block';
-                } 
-                else if (document.crear_pedido.forma_adquisicion[1].checked == false || document.crear_pedido.forma_adquisicion[4].checked == false){
-                    document.getElementById('dat_com').style.display='none';
-                }
-                
-                else {
-                    document.getElementById('dat_com').style.display='none';
-                }   
-            }    
-        </script>
+    <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
     <?
         $id_producto = "";
     
@@ -77,13 +60,78 @@ License: You must have a valid license purchased only from themeforest(the above
         $objProd->where("id", $id_producto);
         $producto =  $objProd->select("producto");
 
-        // insert del producto
-        ?>
+        // insert del pedido
+        $id_pedido=0;
+        if(isset($_POST["formulario"]) && $_POST["formulario"] == "crear_pedido")
+        {
+            $fecha = date("Y-m-d H:i:s");
+            $fecha1 = explode(" ", $fecha);
+            $fecha_act=$fecha1[0];
+            $hora=$fecha1[1];
+
+            $objConn = new PDOModel();
+            $insertData["id_usuario"] = $usu_id;
+            $insertData["id_estado"] = 3;
+            $insertData["id_producto"] = $id_producto; 
+            $insertData["fecha"] = $fecha;
+            $insertData["cantidad"] = $_POST['cantidad_despachada'] ;
+            $objConn->insert('pedido', $insertData);
+
+            $id_pedido= $objConn->lastInsertId;
+
+            if ($id_pedido !="")
+            {
+                $insertDet["id_pedido"] = $id_pedido;
+                $insertDet["id_estado"] = 3;
+                $insertDet["fecha"] = $fecha_act; 
+                $insertDet["hora"] = $hora; 
+                $objConn->insert('detalle_pedido', $insertDet);
+
+                 $id_pedido_detalle= $objConn->lastInsertId;
+           
+            }
+
+            if($id_pedido =="" || $id_pedido_detalle =="")
+            {
+                    echo  $objConn->error;
+            }
+        }
+
+    ?>
+    <script>
+        function alertaPedidoCreado() 
+        {
+            var id_pedido=<?echo $id_pedido?>;
+            if(id_pedido >=1)
+            {
+                        swal({
+                                title:"Producto registrado con el id:" + <? echo $id_pedido?>,
+                                text: "¿Desea continuar con la confirmacion del pedido?",
+                                type: "success",
+                                showCancelButton: true,
+                                confirmButtonClass: "btn-danger",
+                                confirmButtonText: "Si, deseo hacerlo!",
+                                cancelButtonText: "No",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                        },
+                        function(isConfirm) {
+                            if (isConfirm) {
+                                swal("Ir", "En un momento sera dirigido a la pagina para continuar con el pedido.", "success");
+                                location.href="confirmar_pedido.php?id_pedido="+<? echo $id_pedido?>;
+                            } else {
+                                swal("Cancelar","se cancelo la confirmacion del pedido");
+                                location.href="crear_pedido.php?id_producto="+<? echo $id_producto?>
+                            }
+                        });
+            }
+        }
+        </script>
        
     </head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" >
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaPedidoCreado()">
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -295,132 +343,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <div class="form-group">
-                                                <label class="control-label">Seleccione la forma de adquisicion</label>
-                                                <div class="input-group">
-                                                    <div class="icheck-list">
-                                                        <?
-                                                            $result3 =  $objProd->executeQuery("SELECT A. id_disponibilidad, B. id_forma_adquisicion, C.* FROM producto_disponibilidad A, disponibilidad_forma_adquisicion B, forma_adquisicion C WHERE A. id_producto= '".$id_producto."' and A.id_disponibilidad = B.id_disponibilidad and B.id_forma_adquisicion = C.id;");
-                                                            foreach ($result3 as $key) 
-                                                                {?>
-                                                                  <label>
-                                                                    <input type="radio" name="forma_adquisicion" id="forma_adquisicion[<?php echo $key["id"]?>]" class="icheck" data-radio="iradio_line-purple" data-label="<?echo $key["descripcion"]?>" style="position: absolute; opacity: 0;"  value="<?php echo $key["id"]?>" onclick="mostrarReferencia();">
-                                                                  </label>
-                                                                <?
-                                                        }?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div id="dat_com" style="display:none;" >
-                                        <div class="form-group form-md-line-input">
-                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group form-md-line-input">
-                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                                <div class="form-group">
-                                                    <div class="input-icon">
-                                                     <i class="fa fa-map"></i>
-                                                        <select class="form-control" id="zona" name="zona">
-                                                         <?
-                                                            $objFor = new PDOModel();
-                                                            $objFor->where("id_estado", 1);
-                                                            $result3 =  $objFor->select("zonas");
-                                                            foreach ($result3 as $key) 
-                                                            {
-                                                                ?>
-                                                                   <option value="<?php echo $key["id"]?>"><?php echo $key["descripcion"]?></option>
-                                                                <?
-                                                            }
-
-                                                         ?>
-                                                         </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                     </div>
-                                        
-                                    <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                             <label class="control-label"><?echo  "Valor del producto     $".$producto[0]['precio']?></label>
-                                         </div>
-                                    </div>
-
-                                    <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <?
-                                                $total= $producto[0]['precio'];
-                                            ?>
-                                             <label class="control-label"><b><?echo  "Total      $".$total?></b></label>
-                                         </div>
-                                    </div>
-                                    
-                                    <!-- <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <div class="input-icon">
-                                                <i class="fa fa-credit-card-alt"></i>
-                                                <label class="control-label">Seleccione el metodo de pago</label>
-                                                
-                                                <?
-                                                    $objTarjeta = new PDOModel();
-                                                    $objTarjeta->where("id_usuario", $usu_id);
-                                                    $objTarjeta->columns = array("count(*) tarjeta");
-                                                    $cuentaTotal =  $objTarjeta->select("usuarios_pagos");
-                                                    foreach ($cuentaTotal as $cuentaTot)
-                                                    {
-                                                        foreach ($cuentaTot as $cuentaTo)
-                                                        {
-                                                            $cuenta= $cuentaTo;
-                                                        }
-                                                    }
-
-                                                    if ($cuenta > 0)
-                                                    {
-                                                        ?>
-                                                         <div class="form-group">
-                                                            <label class="control-label">Seleccione la tarjeta</label>
-                                                            <select class="form-control" id="tarjeta" name="tarjeta">
-                                                                    <?
-                                                                        $objTarjeta->andOrOperator = "AND";
-                                                                        $objTarjeta->where("id_estado", 1);
-                                                                        $objTarjeta->where("id_usuario", $usu_id);
-                                                                        $info_tarjeta =  $objTarjeta->select("usuarios_pagos");
-
-                                                                        foreach ($info_tarjeta as $key) 
-                                                                            {
-                                                                                ?>
-                                                                                     <option value="<?php echo $item1["id"]?>"><?php echo "******".$key["tarjeta"]?></option>
-                                                                                <?
-                                                                            }
-                                                                    ?>
-                                                            </select>
-                                                            <input class="btn purple" name="crear" type="button" id="crear" value="Agregar" href="crear_tarjeta.php?id_usuario=<? echo $usu_id ?>">
-                                                        </div>
-                                                        <?
-                                                    }
-
-                                                    else if ($cuenta <= 0)
-                                                    {
-                                                        ?>
-                                                        <div class="form-group">
-                                                            <input class="btn purple" name="crear" type="button" id="crear" value="Agregar" href="crear_tarjeta.php?id_usuario=<? echo $usu_id ?>">
-                                                        </div>
-                                                        <?
-                                                    }
-                                                ?>
-                                            </div>  
-                                        </div>
-                                    </div>-->
-
-                                    <div class="form-group form-md-line-input">
+                                   <div class="form-group form-md-line-input">
                                         <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
                                             <input class="btn red" name="pedido" type="submit" id="pedido" value="Realizar pedido">
                                             <input type="hidden" id="id_producto" name="id_producto" value="<? echo  $id_producto ?>" />
@@ -473,7 +397,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
                                             </div>
                                     </div>
-                                    <?// echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
+                                    <? echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
                                 </div>
                                 
                             </form>
@@ -500,8 +424,8 @@ License: You must have a valid license purchased only from themeforest(the above
             <?php
             include "include_js.php";
             ?> 
-            <script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
-            <script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+            <script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
     </body>
 
 </html>
