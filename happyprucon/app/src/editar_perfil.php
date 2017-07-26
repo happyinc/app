@@ -62,6 +62,7 @@ License: You must have a valid license purchased only from themeforest(the above
     include "funciones.php";
     ?>
     <!--Inicio Archivos para bootstrap file input -->
+
     <link href="../../externo/plugins/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
     <link href="../../externo/plugins/fileinput/themes/explorer/theme.css" media="all" rel="stylesheet" type="text/css"/>
     <?
@@ -156,7 +157,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 if(isset($_POST["btn1"])) {
                     $btn = $_POST["btn1"];
 
-                    if ($btn == "Cambiar") {
+                    if ($btn == "Guardar") {
                         $objConn = new PDOModel();
                         $updateUserData["password"] = md5($_POST['password']);
                         $objConn->where("id", $usu_id);
@@ -237,12 +238,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                             } else { // El campo foto NO contiene una imagen
 
-                            ?>
-                                <script type="text/javascript">
-                                    alert("No se ha seleccionado imagenes");
-                                    window.history.back();
-                                </script>
-                                <?
+
                             }
 
                             echo "<script> alert('Usuario actualizado correctamente');
@@ -303,21 +299,31 @@ License: You must have a valid license purchased only from themeforest(the above
                             <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
                         <div class="alert alert-success display-hide">
                             <button class="close" data-close="alert"></button> Your form validation is successful! </div>
-                        <h3 class="block bold" style="color: #520d9b">DATOS PERSONALES</h3>
-                        <div class="form-group form-md-line-input has-info form-md-floating-label">
-                            <label class="control-label col-lg-4 col-md-4 col-xs-2"></label>
-                            <div class="input-group left-addon col-lg-4 col-md-4 col-xs-2">
-                                <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
-                                    <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
-                                        <img src="<? echo "usuarios/".$usu_id."/perfil/res_perfil.jpg"?>" alt="" class="img-circle" style="border-radius: 50%;"> </div>
-                                    <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
-                                    <div>
-													<span class="btn default btn-file">
-														<span class="fileinput-new"> Seleccionar </span>
-														<span class="fileinput-exists"> Cambiar </span>
-														<input type="file" name="foto" id="foto" value="<? echo "usuarios/".$usu_id."/".$resFoto?>"> </span>
+                        <div class="row">
+                            <div class="col-lg-3"></div>
+                            <div class="col-md-3">
+                                <div class="mt-widget-1" style=" border: 0px !important;">
 
-                                        <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a><? echo calificacion_usuario($usu_id); ?>
+                                    <div class="img-circle fileinput fileinput-new" data-provides="fileinput" style="border-radius: 50%;">
+                                        <div class="mt-icon">
+                                            <!--<a href="editar_perfil.php">
+                                                <i class="fa fa-edit"></i>
+                                            </a>-->
+                                            <div>
+													<span class="btn btn-circle grey-gallery btn-file" style="border-radius: 50%; margin: 55px; margin-top: -17px;">
+														<span class="fileinput-new fa fa-camera" style="margin: -4px;"></span>
+														<span class="fileinput-exists"></span>
+														<input type="file" name="foto" id="foto" value="<? echo "usuarios/".$usu_id."/perfil/".$resFoto?>"> </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="img-circle fileinput-new thumbnail" style="width: 170px; height: 170px; border-radius: 50%;">
+                                            <img src="<? echo "usuarios/".$usu_id."/perfil/res_perfil.jpg"?>" class="img-circle" style="border-radius: 50%;"> </div>
+                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 170px; max-height: 170px; border-radius: 50%;"> </div>
+
+                                    </div>
+                                    <div class="mt-body">
+                                        <h3 class="mt-username"><? echo calificacion_usuario($usu_id); ?></h3>
                                     </div>
                                 </div>
                             </div>
@@ -363,6 +369,17 @@ License: You must have a valid license purchased only from themeforest(the above
                             </div>
                             <div class="col-sm-4 col-xs-1"></div>
                         </div>
+                        <div class="form-group form-md-line-input has-info form-md-floating-label">
+                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
+                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-lock"></i>
+                                                    </span>
+                                <input type="password" class="form-control" placeholder="*********" readonly>
+                                <span class="input-group-addon"><a data-toggle="modal" href="#responsive"  style="text-decoration: none;">CAMBIAR</a></span>
+                            </div>
+                            <div class="col-sm-4 col-xs-1"></div>
+                        </div>
                         <div class="form-group">
                             <label class="control-label col-md-3"></label>
                             <div class="col-md-4">
@@ -403,35 +420,47 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div class="form-body">
                         <div class="alert alert-danger display-hide">
                             <button class="close" data-close="alert"></button> Contraseñas no coinciden </div>
-                        <div class="alert alert-success display-hide">
-                            <button class="close" data-close="alert"></button> Your form validation is successful! </div>
-                        <h3 class="block bold" style="color: #520d9b">CAMBIO DE CONTRASEÑA</h3>
 
-                        <div class="form-group form-md-line-input has-info form-md-floating-label">
-                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-user"></i>
-                                                    </span>
-                                <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña nueva">
-                            </div>
-                            <div class="col-sm-4 col-xs-1"></div>
-                        </div>
-                        <div class="form-group form-md-line-input has-info form-md-floating-label">
-                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-user"></i>
-                                                    </span>
-                                <input type="password" class="form-control" name="repassword" id="repassword" placeholder="Repite contraseña">
-                            </div>
-                            <div class="col-sm-4 col-xs-1"></div>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <div class="row">
-                            <div class="col-md-offset-3 col-md-9">
-                                <input type="submit" id="register-submit-btn" class="btn blue" name="btn1" value="Cambiar"/>
+                        <div id="responsive" class="modal fade" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content col-lg-6">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                        <h4 class="modal-title">CAMBIO DE CONTRASEÑA</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="scroller" style="height:150px" data-always-visible="1">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h4>Some Input</h4>
+                                                    <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                        <div style="margin-left: 20px;">
+                                                            <div class="input-group left-addon ">
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-unlock-alt"></i>
+                                                                </span>
+                                                             <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña nueva">
+                                                           </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                        <div style="margin-left: 20px;">
+                                                            <div class="input-group left-addon">
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-lock"></i>
+                                                                </span>
+                                                              <input type="password" class="form-control" name="repassword" id="repassword" placeholder="Repite contraseña">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="submit" id="register-submit-btn" class="btn blue" name="btn1" value="Guardar"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -464,10 +493,10 @@ License: You must have a valid license purchased only from themeforest(the above
                 ?>
                 <form role="form" enctype="multipart/form-data" class="form-horizontal col-lg-12">
                 <div class="form-body">
-                       <h3 class="block bold" style="color: #520d9b">CAMBIAR FOTOS DEL SITIO</h3>
-                    <div class="col-lg-3"></div>
+                    <div class="col-lg-2"></div>
                     <div class="form-group col-lg-6">
-                        <input id="fotos" name="fotos[]" type="file" accept="image/*" multiple>
+                        <h3 class="block bold" style="color: #520d9b">CAMBIAR FOTOS DEL SITIO</h3>
+                        <input id="fotos" name="fotos[]"  type="file" accept="image/*" multiple>
                     </div>
                     <div class="col-lg-3"></div>
                 </div>
@@ -482,7 +511,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         $("#fotos").fileinput({
                             language: 'es',
                             'theme': 'explorer',
-                            'uploadUrl': 'upload.php',
+                            'uploadUrl': 'actualiza_fotos_sitio.php',
                             uploadAsync: false,
                             minFileCount: 1,
                             maxFileCount: 6,
@@ -531,6 +560,7 @@ include "footer.php";
 <script src="../assets/global/plugins/excanvas.min.js"></script>
 <script src="../assets/global/plugins/ie8.fix.min.js"></script>
 <![endif]-->
-
+<script src="../assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
 </body>
 </html>

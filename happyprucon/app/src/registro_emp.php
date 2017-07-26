@@ -351,10 +351,10 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             <div class="form-group form-md-line-input has-info form-md-floating-label">
                                                 <label class="control-label col-md-4 col-xs-2"></label>
                                                 <div class="input-group left-addon col-md-4 col-xs-2">
-                                                    <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
+                                                    <div class="img-circle fileinput fileinput-new " data-provides="fileinput" style="border-radius: 50%;">
                                                         <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
-                                                            <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt="" class="img-circle" style="border-radius: 50%;"> </div>
-                                                        <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
+                                                            <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" class="img-circle" style="border-radius: 50%;"> </div>
+                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
                                                         <div>
 													<span class="btn default btn-file">
 														<span class="fileinput-new"> Seleccionar </span>
@@ -636,7 +636,6 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                 $("#fotos").fileinput({
                                                     language: 'es',
                                                     'theme': 'explorer',
-                                                    'uploadUrl': 'upload.php',
                                                     uploadAsync: false,
                                                     minFileCount: 1,
                                                     maxFileCount: 6,
