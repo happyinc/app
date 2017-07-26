@@ -83,7 +83,9 @@ $objSe = new Sessions();
                                                     $objSe->set('genero', $res_usu[0]['genero']);
                                                     $objSe->set('telefono', $res_usu[0]['telefono']);
                                                     $objSe->set('correo', $res_usu[0]['correo']);
+                                                    $objSe->set('sueños', $res_usu[0]['meta']);
                                                     $objSe->set('origen',$_POST['form_login']);
+
 
 																									
 													echo "<script> window.location.assign('../app/src/index.php'); </script>";
@@ -109,6 +111,7 @@ $objSe = new Sessions();
                                                     $objSe->set('genero', $res_usu[0]['genero']);
                                                     $objSe->set('telefono', $res_usu[0]['telefono']);
                                                     $objSe->set('correo', $res_usu[0]['correo']);
+                                                    $objSe->set('sueños', $res_usu[0]['meta']);
                                                     $objSe->set('origen',$_POST['form_login']);
 
                                                     echo "<script> window.location.assign('../app/src/index.php'); </script>";

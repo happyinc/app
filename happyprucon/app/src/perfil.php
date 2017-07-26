@@ -196,95 +196,6 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- END PAGE HEADER-->
             <!-- BEGIN BOX BODY     CONTENIDO AQUI !!!!!!!!!! -->
             <div class="portlet light">
-                <?php
-                if(isset($_POST["btn1"])) {
-                    $btn = $_POST["btn1"];
-
-                    if ($btn == "Actualizar"){
-                        $objConn = new PDOModel();
-                        $updateUserData["nombre_completo"] = $_POST['fullname']." ".$_POST['lastname'];
-                        $updateUserData["nombre"] = $_POST['fullname'];
-                        $updateUserData["apellido"] = $_POST['lastname'];
-                        $updateUserData["genero"] = $_POST['genero'];
-                        $updateUserData["telefono"] = $_POST['cell'];
-                        $updateUserData["correo"] = $_POST['username'];
-                        $objConn->where("id", $_POST['iduser']);
-                        $objConn->update("usuarios", $updateUserData);
-
-                        if($objConn != ""){
-                            $objConn = new PDOModel();
-                            $objConn->where("id",$_POST['iduser']);
-                            $res_usu =  $objConn->select("usuarios");
-
-                            $objSe->init();
-                            $objSe->set('id_usuario', $res_usu[0]['id']);
-                            $objSe->set('id_roles', $res_usu[0]['id_roles']);
-                            $objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
-                            $objSe->set('nombre', $res_usu[0]['nombre']);
-                            $objSe->set('apellido', $res_usu[0]['apellido']);
-                            $objSe->set('genero', $res_usu[0]['genero']);
-                            $objSe->set('telefono', $res_usu[0]['telefono']);
-                            $objSe->set('correo', $res_usu[0]['correo']);
-
-
-                            if ($_FILES['foto']["size"] >= 1) {
-                                // Primero, hay que validar que se trata de un JPG/GIF/PNG
-                                $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
-                                $extension = end(explode(".", $_FILES["foto"]["name"]));
-                            if ((($_FILES["foto"]["type"] == "image/gif")
-                                    || ($_FILES["foto"]["type"] == "image/jpeg")
-                                    || ($_FILES["foto"]["type"] == "image/png")
-                                    || ($_FILES["foto"]["type"] == "image/gif")
-                                    || ($_FILES["foto"]["type"] == "image/bmp"))
-                                && in_array($extension, $allowedExts)) {
-                                // el archivo es un JPG/GIF/PNG, entonces...
-
-                                $extension = end(explode('.', $_FILES['foto']['name']));
-                                $foto = "perfil". "." . $extension;
-                                $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
-                                if (file_exists($directorio)) {
-
-                                } else {
-                                    mkdir($directorio, 0777, true);
-                                }
-
-                                // almacenar imagen en el servidor
-                                move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
-                                $minFoto = 'min_' . $foto;
-                                $resFoto = 'res_' . $foto;
-                                resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
-                                resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
-                                unlink($directorio . '/' . $foto);
-
-                                } else { // El archivo no es JPG/GIF/PNG
-                                    $malformato = $_FILES["foto"]["type"];
-                                    ?>
-                                    <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
-                                <?
-                                //header("Location: crear_producto.php?id=echo $usu_id");
-                                }
-
-                            } else { // El campo foto NO contiene una imagen
-
-                            ?>
-                                <script type="text/javascript">
-                                    alert("No se ha seleccionado imagenes");
-                                    window.history.back();
-                                </script>
-                                <?
-                            }
-
-                            echo "<script> alert('Usuario actualizado correctamente');
-                        window.location.assign('../../app/src/perfil.php');</script>";
-                        } else {
-                            echo "<script> alert('No se pudo actualizar');</script>";
-                        }
-                    }
-
-
-                }
-                ?>
-
                 <!-- BEGIN FORM-->
                 <form role="form" action="perfil.php" class="form-horizontal" name="upd_datos" id="upd_datos" enctype="multipart/form-data" method="post">
                     <div class="form-body">
@@ -399,7 +310,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <!-- BEGIN: Comments -->
                                                 <?
                                                 $objCon=new PDOModel();
-                                                $res_califica = $objCon->executeQuery("select A.* , B.* from usuarios A , calificacion_usuario B where A.id = B.id_usuario AND  A.id= '".$usu_id."' ");
+                                                $res_califica = $objCon->executeQuery("select A.* , B.* from usuarios A , calificacion_usuario B where A.id = B.id_usuario AND  A.id= '".$usu_id."' limit 0,4");
 
                                                 foreach ($res_califica as $valor){
                                                     ?>

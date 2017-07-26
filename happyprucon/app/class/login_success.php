@@ -52,6 +52,7 @@ $objSe->init();
                             $objSe->set('genero', $res_usu[0]['genero']);
                             $objSe->set('telefono', $res_usu[0]['telefono']);
                             $objSe->set('correo', $res_usu[0]['correo']);
+                            $objSe->set('sueños', $res_usu[0]['meta']);
 
 							echo "<script> window.location.assign('../../app/src/index.php'); </script>";
 						}
@@ -76,6 +77,7 @@ $objSe->init();
                             $objSe->set('genero', $res_usu[0]['genero']);
                             $objSe->set('telefono', $res_usu[0]['telefono']);
                             $objSe->set('correo', $res_usu[0]['correo']);
+                            $objSe->set('sueños', $res_usu[0]['meta']);
 
 							echo "<script> window.location.assign('../../app/src/index.php'); </script>";
 						}
@@ -131,6 +133,7 @@ $objSe->init();
                             $objSe->set('genero', $res_usu[0]['genero']);
                             $objSe->set('telefono', $res_usu[0]['telefono']);
                             $objSe->set('correo', $res_usu[0]['correo']);
+                            $objSe->set('sueños', $res_usu[0]['meta']);
 
                             echo "<script> window.location.assign('../../app/src/index.php'); </script>";
                         }
@@ -155,6 +158,7 @@ $objSe->init();
                             $objSe->set('genero', $res_usu[0]['genero']);
                             $objSe->set('telefono', $res_usu[0]['telefono']);
                             $objSe->set('correo', $res_usu[0]['correo']);
+                            $objSe->set('sueños', $res_usu[0]['meta']);
 
                             echo "<script> window.location.assign('../../app/src/index.php'); </script>";
                         }

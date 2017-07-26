@@ -126,6 +126,7 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
     $insertUserData["direccion"] = $_POST['direccion'];
     $insertUserData["latitud"] = $_POST['latitud'];
     $insertUserData["longitud"] = $_POST['longitu'];
+    $insertUserData["meta"] = $_POST['meta'];
     $insertUserData["token"] = 'yositokuqita';
     $objConn->insert("usuarios", $insertUserData);
 
@@ -348,26 +349,30 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             <button class="close" data-dismiss="alert"></button> Your form validation is successful! </div>
                                         <div class="tab-pane active" id="tab1">
 
-                                            <div class="form-group form-md-line-input has-info form-md-floating-label">
-                                                <label class="control-label col-md-4 col-xs-2"></label>
-                                                <div class="input-group left-addon col-md-4 col-xs-2">
-                                                    <div class="img-circle fileinput fileinput-new " data-provides="fileinput" style="border-radius: 50%;">
-                                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
-                                                            <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" class="img-circle" style="border-radius: 50%;"> </div>
-                                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
-                                                        <div>
-													<span class="btn default btn-file">
-														<span class="fileinput-new"> Seleccionar </span>
-														<span class="fileinput-exists"> Cambiar </span>
-														<input type="file" name="foto" id="foto"> </span>
+                                            <div class="row">
+                                                <div class="col-lg-3"></div>
+                                                <div class="col-md-3">
+                                                    <div class="mt-widget-1" style=" border: 0px !important;">
 
-                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>
+                                                        <div class="img-circle fileinput fileinput-new" data-provides="fileinput" style="border-radius: 50%;">
+                                                            <div class="mt-icon">
+                                                                <div>
+													<span class="btn btn-circle grey-gallery btn-file" style="border-radius: 50%; margin: 33px; margin-top: -18px;">
+														<span class="fileinput-new fa fa-camera" style="margin: -4px;"></span>
+														<span class="fileinput-exists"></span>
+														<input type="file" name="foto" id="foto"> </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="img-circle fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
+                                                                <img src="../../externo/img/foto-perfil.jpg" class="img-circle" style="border-radius: 50%;"> </div>
+                                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="form-group form-md-line-input has-info">
+                                            <div class="form-group form-md-line-input has-info" style="margin-top: 20px;">
                                                 <label class="control-label col-md-3"></label>
                                                 <div class="input-group left-addon col-md-4">
                                                         <span class="required input-group-addon">
@@ -466,6 +471,15 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                             <input type="radio" name="genero" value="Femenino" checked class="icheck"> Femenino </label>
                                                     </div>
                                                     <div id="form_gender_error"> </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-md-line-input has-info">
+                                                <label class="control-label col-md-3"></label>
+                                                <div class="input-group left-addon col-md-4">
+                                                        <span class="required input-group-addon">
+                                                        <i class="fa fa-line-chart"></i>
+                                                        </span>
+                                                    <textarea class="form-control" name="meta" id="meta" rows="5" placeholder="Sueños"></textarea>
                                                 </div>
                                             </div>
                                         </div>
