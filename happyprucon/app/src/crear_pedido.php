@@ -105,7 +105,7 @@ License: You must have a valid license purchased only from themeforest(the above
             if(id_pedido >=1)
             {
                         swal({
-                                title:"Producto registrado con el id:" + <? echo $id_pedido?>,
+                                title:"El pedido haa sido creado con el id:" + <? echo $id_pedido?>,
                                 text: "¿Desea continuar con la confirmacion del pedido?",
                                 type: "success",
                                 showCancelButton: true,
@@ -351,54 +351,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <input type="hidden" id="formulario" name="formulario" value="crear_pedido"/>
                                         </div>
                                     </div>
-                                    
-                                    <div class="portlet light">
-                                            <div class="portlet-title tabbable-line">
-                                                <div class="caption">
-                                                    <i class="icon-bubbles font-dark hide"></i>
-                                                    <span class="caption-subject"><h3 class="block bold" style="color: #520d9b">COMENTARIOS</h3></span>
-                                                </div>
-                                            </div>
-                                            <div class="portlet-body">
-                                                <div class="tab-content">
-                                                    <div class="scroller" style="height: 338px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
-                                                        <div class="tab-pane active" id="portlet_comments_1">
-                                                            <!-- BEGIN: Comments -->
-                                                            <?
-                                                            $objCon=new PDOModel();
-                                                            $res_califica = $objCon->executeQuery("select A.* , B.* from producto A , calificacion_producto B where A.id = B.id_producto AND  A.id= '".$id_producto."' ");
-
-                                                            foreach ($res_califica as $valor)
-                                                            {
-                                                                ?>
-                                                                <div class="mt-comments">
-                                                                    <div class="mt-comment">
-                                                                        <div class="mt-comment-img">
-                                                                            <img src="<? echo 'usuarios/'.$valor['id_usuario_califica'].'/perfil/min_perfil.jpg' ?>" /> 
-                                                                        </div>
-                                                                        <div class="mt-comment-body">
-                                                                            <div class="mt-comment-info">
-                                                                                <span class="mt-comment-author"><? echo nombre_usuario($valor['id_usuario']) ;?></span>
-                                                                                <span class="mt-comment-date"><? echo $valor['fecha'];?></span>
-                                                                            </div>
-                                                                            <div class="mt-comment-text"><? echo $valor['comentario'] ;?></div>
-                                                                            <div class="mt-comment-details">
-                                                                                <span class="mt-comment-status mt-comment-status-pending"><? echo print_calificacion($valor['calificacion']); ?></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div><?
-                                                            }
-                                                            ?>
-
-                                                            <!-- END: Comments -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                    </div>
-                                    <? echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
-                                </div>
+                                   
+                                 </div>
                                 
                             </form>
                         </div>

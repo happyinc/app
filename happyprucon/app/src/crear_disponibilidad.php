@@ -102,6 +102,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     $insertPd["id_producto"] = $id_producto;
                     $insertPd["id_disponibilidad"] = $id_disponibilidad; 
                     $insertPd["cantidad_disponible"] = $_POST["cantidad_disponible"];
+                    $insertPd["cantidad_despachada"] = 0;
                     $insertPd["id_estado"] = 1;
                     $insertPd["fecha"] = date("Y-m-d H:i:s"); 
                     $objConn->insert('producto_disponibilidad', $insertPd);

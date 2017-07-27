@@ -213,36 +213,40 @@ License: You must have a valid license purchased only from themeforest(the above
                                      foreach ($result as $item ) 
                                      {
                                         ?>  
-                                            <div class="col-md-6">
-                                                <div class="mt-widget-2" >
-                                                    <div class="mt-head" style="background-image: url(<? echo 'usuarios/'.$item['id_usuario'].'/bienes/'.$item['id_producto'].'/res_producto.jpg'?>);" >
-                                                        <div class="mt-head-label">
-                                                            <button type="button" class="btn btn-success"><?echo $item["precio"]?></button>
-                                                        </div>
-                                                        <div class="mt-head-user" >
-                                                            <div class="mt-head-user-img">
-                                                                <img src="<? echo 'usuarios/'.$item['id_usuario'].'/perfil/'.'/res_perfil.jpg'?>"> </div>
-                                                            <div class="mt-head-user-info" >
-                                                                <span class="mt-user-name"><?echo  nombre_usuario($item["id_usuario"])?></span>
-                                                                <span class="mt-user-time">
-                                                                    <i class="fa fa-star"></i><?echo  calificacion_usu($item["id_usuario"])?>  </span>
+                                            <div class="portlet light portlet-fit ">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="mt-widget-2" >
+                                                            <div class="mt-head" style="background-image: url(<? echo 'usuarios/'.$item['id_usuario'].'/bienes/'.$item['id_producto'].'/res_producto.jpg'?>);" >
+                                                                <div class="mt-head-label">
+                                                                    <button type="button" class="btn btn-success"><?echo $item["precio"]?></button>
+                                                                </div>
+                                                                <div class="mt-head-user" >
+                                                                    <div class="mt-head-user-img">
+                                                                        <img src="<? echo 'usuarios/'.$item['id_usuario'].'/perfil/'.'/res_perfil.jpg'?>"> </div>
+                                                                    <div class="mt-head-user-info" >
+                                                                        <span class="mt-user-name"><?echo  nombre_usuario($item["id_usuario"])?></span>
+                                                                        <span class="mt-user-time">
+                                                                            <i class="fa fa-star"></i><?echo  calificacion_usu($item["id_usuario"])?>  </span>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="mt-body" >
-                                                        <h3 class="mt-body-title" > <?echo $item["nombre"]?> </h3>
-                                                        <p class="mt-body-description"> <?echo $item["descripcion"]?> </p>
-                                                        <ul class="mt-body-stats">
-                                                            <li class="font-yellow">
-                                                                <i class="fa fa-star"></i> <?echo  calificacion_prod($item["id_producto"])?></li>
-                                                            <li class="font-green">
-                                                                <i class=" icon-social-twitter"></i> <?echo $item["cantidad_despachada"]?></li>
-                                                            <li class="font-red">
-                                                                <i class="icon-bubbles"></i> <?echo  cantidad_coment_prod($item["id_producto"])?></li>
-                                                        </ul>
-                                                        <div class="mt-body-actions">
-                                                            <div class="btn-group btn-group btn-group-justified">
-                                                                <a href="../src/crear_pedido.php?id_producto=<? echo $item["id_producto"]?>" class="btn">Hacer pedido </a>
+                                                            <div class="mt-body" >
+                                                                <h3 class="mt-body-title" > <?echo $item["nombre"]?> </h3>
+                                                                <p class="mt-body-description"> <?echo $item["descripcion"]?> </p>
+                                                                <ul class="mt-body-stats">
+                                                                    <li class="font-yellow">
+                                                                        <i class="fa fa-star" aria-hidden="true"></i> <?echo  calificacion_prod($item["id_producto"])?></li>
+                                                                    <li class="font-green">
+                                                                        <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?echo $item["cantidad_despachada"]?></li>
+                                                                    <li class="font-red">
+                                                                        <i class="icon-bubbles" aria-hidden="true"></i> <?echo  cantidad_coment_prod($item["id_producto"])?></li>
+                                                                </ul>
+                                                                <div class="mt-body-actions">
+                                                                    <div class="btn-group btn-group btn-group-justified">
+                                                                        <a href="../src/crear_pedido.php?id_producto=<? echo $item["id_producto"]?>" class="btn">Hacer pedido </a>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -42,9 +42,10 @@ License: You must have a valid license purchased only from themeforest(the above
     include "include_css.php";
     include "funciones.php";
     ?>
-     <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
-     <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
-     <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAOTpZg3Uhl0AItmrXORFIsGfJQNJiLHGg" type="text/javascript"></script>
+    <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAOTpZg3Uhl0AItmrXORFIsGfJQNJiLHGg" type="text/javascript"></script>
     
     <?
         $id_pedido = "";
@@ -58,16 +59,6 @@ License: You must have a valid license purchased only from themeforest(the above
              $id_pedido = $_GET["id_pedido"];
         }
 
-        $cantidad="";
-
-        if(isset($_POST["cantidad"]) && $_POST["cantidad"] != "")
-                {
-                    $cantidad = $_POST["cantidad"];
-                }
-                elseif(isset($_GET["cantidad"]) && $_GET["cantidad"] != "")
-                {
-                     $cantidad = $_GET["cantidad"];
-                }
 
         //informacion del pedido
         $objPedido = new PDOModel();
@@ -75,29 +66,115 @@ License: You must have a valid license purchased only from themeforest(the above
         $pedido =  $objPedido->select("pedido");
 
         $id_producto=$pedido[0]['id_producto'];
+
         //informacion de todos los productos seleccionado por parte del cliente
         $objProd = new PDOModel();
         $objProd->where("id", $id_producto);
         $producto =  $objProd->select("producto");
 
-        // insert del pedido
+        // poceso para confirmar el pedido
 
         if(isset($_POST["formulario"]) && $_POST["formulario"] == "confirmar_pedido")
         {
+            $fecha = date("Y-m-d H:i:s");
+            $fecha1 = explode(" ", $fecha);
+            $fecha_act=$fecha1[0];
+            $hora=$fecha1[1];
+
+
             $objConn = new PDOModel();
-            $updateData["id_zona"] = $_POST["zona"]; 
-            $updateData["id_estado"] = 5;
-            $updateData["id_ubicacion_cliente"] = $_POST["ubicacion"];
-            $updateData["forma_adquisicion"] = $_POST["forma_adquisicion"];
-            $updateData["precio"] = $_POST["total"];
-            $objConn->where("id", $id_pedido);
-            $objConn->update('pedido', $updateData);
 
-                
-                $producto_actualizado= $objConn->rowsChanged;
-
-            if($producto_actualizado == 1)
+            // si el pedido va con domicilio
+            if($_POST['forma_adquisicion']==1 || $_POST['forma_adquisicion']==4)
+            {
+                if ($_POST['direccion'] != "" && $_POST['tipodom'] != "" && $_POST['descripcion'] != "")
                 {
+                    ?>
+                         <script type="text/javascript">alert("campos no estan vacios") </script><?
+                    //se realiza el insert en la tabla ubicacion_cliente
+                    $insertUbi["id_usuario"] = $usu_id;
+                    $insertUbi["direccion"] = $_POST['direccion'];
+                    $insertUbi["latitud"] = $_POST['latitud'];
+                    $insertUbi["longitud"] = $_POST['longitu'];
+                    $insertUbi["fecha"] = $fecha;
+                    $insertUbi["detalle_direccion"] = $_POST['tipodom'];
+                    $insertUbi["descripcion"] = $_POST['descripcion'];
+                    $objConn->insert('ubicaciones_cliente', $insertUbi);
+                    $errorubi=$objConn->error;
+
+                    
+                         
+                    $id_ubicacion= $objConn->lastInsertId;
+
+                }
+                else
+                {
+                     $id_ubicacion= $_POST['ubicacion'];
+
+                }
+
+                $updateData["id_zona"] = $_POST["zona"]; 
+                $updateData["id_estado"] = 5;
+                $updateData["forma_adquisicion"] = $_POST["forma_adquisicion"];
+                $updateData["id_ubicacion_cliente"] = $id_ubicacion;
+                $updateData["precio"] = $_POST["total"];
+                $objConn->where("id", $id_pedido);
+                $objConn->update('pedido', $updateData);
+            }
+
+            else
+            {
+
+                //actualizacio en la tabla pedido si el pedido no contiene domicilio
+                
+                $updateData["id_estado"] = 5;
+                $updateData["forma_adquisicion"] = $_POST["forma_adquisicion"];
+                $updateData["precio"] = $_POST["total"];
+                $objConn->where("id", $id_pedido);
+                $objConn->update('pedido', $updateData);
+            }
+            
+
+            $pedido_actualizado= $objConn->rowsChanged;
+
+            if($pedido_actualizado == 1)
+                {
+                    //insert en la tabla detalle_pedido
+                    $insertDet["id_pedido"] = $id_pedido;
+                    $insertDet["id_estado"] = 5;
+                    $insertDet["fecha"] = $fecha_act; 
+                    $insertDet["hora"] = $hora; 
+                    $objConn->insert('detalle_pedido', $insertDet);
+
+                     $id_pedido_detalle= $objConn->lastInsertId;
+
+
+                     //////////////////////////
+                     // insert en la tabla ticket
+                    $insertTicket["fecha_i"] = $fecha;
+                    $insertTicket["id_usuario_o"] = $usu_id;
+                    $insertTicket["id_usuario_d"] = $producto[0]['id_usuario'];
+                    $insertTicket["id_pedido"] = $id_pedido; 
+                    $insertTicket["estado"] = 1;
+                    $objConn->insert('ticket', $insertTicket);
+                    $id_ticket= $objConn->lastInsertId;
+
+                    //se consulta en la tabla producto_disponibilidad
+                    $objConn->andOrOperator = "AND";
+                    $objConn->where("id_estado", 1);
+                    $objConn->where("id_producto", $id_producto);
+                    $disponibilidad =  $objConn->select("producto_disponibilidad");
+                    
+
+                    // se calcula el nuevo valor para la cantidad disponible y la cantidad despachada;
+                    $cantidad_disponible=$disponibilidad[0]['cantidad_disponible'] - $pedido[0]['cantidad'];
+                    $cantidad_pedida=$disponibilidad[0]['cantidad_despachada'] + $pedido[0]['cantidad'];
+
+                     // actualizar tabla producto_disponibilidad 
+                    $updateProd["cantidad_disponible"] = $cantidad_disponible; 
+                    $updateProd["cantidad_despachada"] = $cantidad_pedida;
+                    $objConn->where("id_producto", $id_producto);
+                    $objConn->update('producto_disponibilidad', $updateProd);
                     
                 }
         }
@@ -118,12 +195,38 @@ License: You must have a valid license purchased only from themeforest(the above
                 }
                   
             } 
+
+
+          /*  function alertaPedidoCofirmado() 
+        {
+            var id_pedido=<?echo $id_pedido?>;
+            if(id_pedido >=1)
+            {
+                        swal({
+                                title:"El pedido con el id:" + <? echo $id_pedido?>,
+                                text: "Ha sido confirmado",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonClass: "btn-danger",
+                                confirmButtonText: "Si, deseo hacerlo!",
+                                cancelButtonText: "No",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                        },
+                        function(isConfirm) {
+                            if (isConfirm) {
+                                swal("", "", "success");
+                                location.href="estado_pedido.php?id_pedido="+<? echo $id_pedido?>;
+                            } 
+                        });
+            }
+        }*/
    
         </script>
     </head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" >
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md"  ><!-- onload="alertaPedidoCofirmado()"-->
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -295,7 +398,43 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div id="dat_com" style="display:none;" >
                                         <div class="form-group form-md-line-input">
                                             <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                                 
+                                                    <script type="text/javascript">
+                                                        function initialize() {
+                                                            var options = {
+                                                            types: ['(regions)'],
+                                                            componentRestrictions: {country: "co"}
+                                                            };
+                                                            var input = document.getElementById('ciudad');
+                                                            var autocomplete = new google.maps.places.Autocomplete(input , options);
+                                                        }
+                                                        google.maps.event.addDomListener(window, 'load', initialize);
+
+
+                                                        var mostrarUbicacion = function() {
+                                                            var ciudade;
+                                                            ciudade = document.getElementById('resciu').value = document.getElementById('ciudad').value;
+                                                            var dir;
+                                                            dir = document.getElementById('resdir').value = document.getElementById('direccion').value;
+
+                                                            var ubica = ciudade+","+dir;
+                                                            // Creamos el objeto geodecoder
+                                                            var geocoder = new google.maps.Geocoder();
+
+                                                            address = document.getElementById('search').value=ubica;
+                                                            if (address != '') 
+                                                            {
+                                                                // Llamamos a la función geodecode pasandole la dirección que hemos introducido en la caja de texto.
+                                                                geocoder.geocode({'address': address}, function (results, status) {
+                                                                    if (status == 'OK') 
+                                                                    {
+                                                                        // Mostramos las coordenadas obtenidas en el p con id coordenadas
+                                                                        document.getElementById('latitud').value = results[0].geometry.location.lat();
+                                                                        document.getElementById('longitu').value = results[0].geometry.location.lng();
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    </script>
                                                         <?
                                                             $objUbicacion = new PDOModel();
                                                             $objUbicacion->where("id_usuario", $usu_id);
@@ -330,49 +469,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                          </select>
                                                                      </div>
                                                                  </div>
-                                                            <?
-                                                            }
-
-                                                            else if ($cuenta <= 0)
-                                                            {
-                                                                ?>
-                                                                   <script type="text/javascript">
-                                                                        function initialize() {
-                                                                            var options = {
-                                                                                types: ['(regions)'],
-                                                                                componentRestrictions: {country: "co"}
-                                                                            };
-                                                                            var input = document.getElementById('ciudad');
-                                                                            var autocomplete = new google.maps.places.Autocomplete(input , options);
-                                                                        }
-                                                                        google.maps.event.addDomListener(window, 'load', initialize);
-
-
-                                                                        var mostrarUbicacion = function() {
-                                                                            var ciudade;
-                                                                            ciudade = document.getElementById('resciu').value = document.getElementById('ciudad').value;
-                                                                            var dir;
-                                                                            dir = document.getElementById('resdir').value = document.getElementById('direccion').value;
-
-                                                                            var ubica = ciudade+","+dir;
-                                                                            // Creamos el objeto geodecoder
-                                                                            var geocoder = new google.maps.Geocoder();
-
-                                                                            address = document.getElementById('search').value=ubica;
-                                                                            if (address != '') {
-                                                                                // Llamamos a la función geodecode pasandole la dirección que hemos introducido en la caja de texto.
-                                                                                geocoder.geocode({'address': address}, function (results, status) {
-                                                                                    if (status == 'OK') {
-                                                                                        // Mostramos las coordenadas obtenidas en el p con id coordenadas
-                                                                                        document.getElementById('latitud').value = results[0].geometry.location.lat();
-                                                                                        document.getElementById('longitu').value = results[0].geometry.location.lng();
-
-                                                                                    }
-                                                                                });
-                                                                            }
-                                                                        }
-                                                                   </script>
-                                                                     <label class="control-label">Digite la direccion</label>
+                                                                 <label class="control-label">Si desea agregar una nueva ubicacion, escriba la siguiente informacion</label>
 
                                                 </div>
                                             </div>
@@ -397,9 +494,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     </span>
                                                                                 <select name="tipodom" id="tipodom" class="form-control">
                                                                                     <option value="">Tipo vivienda</option>
-                                                                                    <option value="1">Apartamento</option>
-                                                                                    <option value="2">Casa</option>
-                                                                                    <option value="3">Oficina</option>
+                                                                                    <option value="Apartamento">Apartamento</option>
+                                                                                    <option value="Casa">Casa</option>
+                                                                                    <option value="Oficina">Oficina</option>
                                                                                 </select>
                                                                             </div>
                                                                         </div>
@@ -420,6 +517,88 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <div><input type="hidden" id="latitud" name="latitud"/></div>
                                                                             <div><input type="hidden" id="longitu" name="longitu"/></div>
                                                                         </div>
+
+
+                                                                        <div class="form-group form-md-line-input">
+                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                                    <span class="required input-group-addon">
+                                                                                    <i class="fa fa-location-arrow"></i>
+                                                                                    </span>
+                                                                                    <textarea class="form-control" rows="2" name="descripcion" id="descripcion"  placeholder="Descripcion de la direccion"></textarea>
+                                                                                <span class="help-block"></span>
+                                                                            </div>
+                                                                        </div>
+
+
+
+                                                            <?
+                                                            }
+
+                                                            else if ($cuenta <= 0)
+                                                            {
+                                                                ?>
+                                                                     <label class="control-label">Escriba la informacion de su ubicacion</label>
+
+                                                </div>
+                                            </div>
+
+                                                                        <div class="form-group form-md-line-input">
+                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                                    <span class="required input-group-addon">
+                                                                                    <i class="fa fa-flag"></i>
+                                                                                    </span>
+                                                                                <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
+                                                                                <!-- Campo escondido que toma valor de ciudad -->
+                                                                                <input type="hidden" name="resciu" id="resciu" >
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group form-md-line-input">
+                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                                    <span class="required input-group-addon">
+                                                                                    <i class="fa fa-home"></i>
+                                                                                    </span>
+                                                                                <select name="tipodom" id="tipodom" class="form-control">
+                                                                                    <option value="">Tipo vivienda</option>
+                                                                                    <option value="Apartamento">Apartamento</option>
+                                                                                    <option value="Casa">Casa</option>
+                                                                                    <option value="Oficina">Oficina</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group form-md-line-input">
+                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                                    <span class="required input-group-addon">
+                                                                                    <i class="fa fa-map-signs"></i>
+                                                                                    </span>
+                                                                                <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();" placeholder="Dirección"/>
+                                                                                <span class="help-block"></span>
+                                                                                <!-- Campo escondido que toma valor de direccion -->
+                                                                                <input type="hidden" name="resdir" id="resdir">
+                                                                            </div>
+                                                                            <!-- Campos escondidos que toman valores de coordenadas -->
+                                                                            <div><input type="hidden" id="search"/></div>
+                                                                            <div><input type="hidden" id="latitud" name="latitud"/></div>
+                                                                            <div><input type="hidden" id="longitu" name="longitu"/></div>
+                                                                        </div>
+
+
+                                                                        <div class="form-group form-md-line-input">
+                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                                    <span class="required input-group-addon">
+                                                                                    <i class="fa fa-location-arrow"></i>
+                                                                                    </span>
+                                                                                    <textarea class="form-control" rows="2" name="descripcion" id="descripcion"  placeholder="Descripcion de la direccion"></textarea>
+                                                                                <span class="help-block"></span>
+                                                                            </div>
+                                                                        </div>
+
                                                                 <?
                                                             }
                                                         ?>
@@ -461,13 +640,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="form-group form-md-line-input">
                                         <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
                                         <?
+                                            //calculo del total que debe pagar el cliente tniendo en cunta el precio del 
+                                            //producto y la cantidad solicitada
                                             $total=  $pedido[0]['cantidad'] * $producto[0]['precio'];?>
                                              <label class="control-label"><b>Total a pagar     </b></label>
                                              <label class="control-label"><?php echo $total ?></label>
                                          </div>
                                     </div>
                                     
-                                    <!-- <div class="form-group form-md-line-input">
+                                    <div class="form-group form-md-line-input">
                                         <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
                                             <div class="input-icon">
                                                 <i class="fa fa-credit-card-alt"></i>
@@ -482,11 +663,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     {
                                                         foreach ($cuentaTot as $cuentaTo)
                                                         {
-                                                            $cuenta= $cuentaTo;
+                                                            $cuentaTar= $cuentaTo;
                                                         }
                                                     }
 
-                                                    if ($cuenta > 0)
+                                                    if ($cuentaTar > 0)
                                                     {
                                                         ?>
                                                          <div class="form-group">
@@ -506,12 +687,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             }
                                                                     ?>
                                                             </select>
+                                                        </div>
+                                                        <div class="form-group">
                                                             <input class="btn purple" name="crear" type="button" id="crear" value="Agregar" href="crear_tarjeta.php?id_usuario=<? echo $usu_id ?>">
                                                         </div>
                                                         <?
                                                     }
 
-                                                    else if ($cuenta <= 0)
+                                                    else if ($cuentaTar <= 0)
                                                     {
                                                         ?>
                                                         <div class="form-group">
@@ -522,16 +705,17 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 ?>
                                             </div>  
                                         </div>
-                                    </div>-->
+                                    </div>
 
                                     <div class="form-group form-md-line-input">
                                         <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
                                             <input class="btn red" name="confirmar" type="submit" id="confirmar" value="Confirmar pedido">
                                             <input type="hidden" id="id_pedido" name="id_pedido" value="<? echo  $id_pedido ?>" />
+                                            <input type="hidden" id="total" name="total" value="<? echo  $total ?>" />
                                             <input type="hidden" id="formulario" name="formulario" value="confirmar_pedido"/>
                                         </div>
                                     </div>
-                                    <?// echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
+                                    <?//echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
                                 </div>
                                 
                             </form>
@@ -557,7 +741,9 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- BEGIN CORE PLUGINS -->
             <?php
             include "include_js.php";
-            ?> 
+            ?>
+            <script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+            <script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script> 
             <script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
             <script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
 
