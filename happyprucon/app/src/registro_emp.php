@@ -301,7 +301,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
         <div class="col-lg-12">
             <div class="col-md-12">
                 <div class="portlet light " id="form_wizard_1">
-                    <div class="portlet-title">
+                    <div class="portlet-title" hidden>
 
 
                     </div>
@@ -309,7 +309,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                         <form role="form" class="form-horizontal" action="registro_emp.php" name="registro_emp" id="registro_emp" enctype="multipart/form-data" method="POST">
                             <div class="form-wizard">
                                 <div class="form-body">
-                                    <ul class="nav nav-pills nav-justified steps">
+                                    <ul class="nav nav-pills nav-justified steps" hidden>
                                         <li>
                                             <a href="#tab1" data-toggle="tab" class="step">
                                                 <span class="number"> 1 </span>
@@ -339,7 +339,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             </a>
                                         </li>
                                     </ul>
-                                    <div id="bar" class="progress progress-striped" role="progressbar">
+                                    <div id="bar" class="progress progress-striped" role="progressbar" hidden>
                                         <div class="progress-bar progress-bar-success"> </div>
                                     </div>
                                     <div class="tab-content">
@@ -350,8 +350,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                         <div class="tab-pane active" id="tab1">
 
                                             <div class="row">
-                                                <div class="col-lg-3"></div>
-                                                <div class="col-md-3">
+                                                <div class="col-lg-3 col-sm-3"></div>
+                                                <div class="col-md-3 col-sm-4">
                                                     <div class="mt-widget-1" style=" border: 0px !important;">
 
                                                         <div class="img-circle fileinput fileinput-new" data-provides="fileinput" style="border-radius: 50%;">
@@ -373,8 +373,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                 </div>
                                             </div>
                                             <div class="form-group form-md-line-input has-info" style="margin-top: 20px;">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                                <label class="control-label col-md-3 col-sm-3"></label>
+                                                <div class="input-group left-addon col-md-3 col-sm-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-newspaper-o"></i>
                                                         </span>
@@ -394,8 +394,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             </div>
 
                                             <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                                <label class="control-label col-md-3 col-sm-3"></label>
+                                                <div class="input-group left-addon col-md-3 col-sm-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-cc"></i>
                                                         </span>
@@ -409,8 +409,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             <input class="form-control placeholder-no-fix" type="hidden" name="acep-terms" value="<?php echo $acep_terms; ?>"/>
 
                                             <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                                <label class="control-label col-md-3 col-sm-3"></label>
+                                                <div class="input-group left-addon col-md-3 col-sm-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-user"></i>
                                                         </span>
@@ -419,8 +419,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             </div>
 
                                             <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                                <label class="control-label col-md-3 col-sm-3"></label>
+                                                <div class="input-group left-addon col-md-3 col-sm-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-user"></i>
                                                         </span>
@@ -429,8 +429,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             </div>
 
                                             <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                                <label class="control-label col-md-3 col-sm-3"></label>
+                                                <div class="input-group left-addon col-md-3 col-sm-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-tablet"></i>
                                                         </span>
@@ -440,8 +440,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             </div>
 
                                             <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                                <label class="control-label col-md-3 col-sm-3"></label>
+                                                <div class="input-group left-addon col-md-3 col-sm-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-envelope"></i>
                                                         </span>
@@ -449,8 +449,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                 </div>
                                             </div>
                                             <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                                <label class="control-label col-md-3 col-sm-3"></label>
+                                                <div class="input-group left-addon col-md-3 col-sm-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-unlock-alt"></i>
                                                         </span>
@@ -460,10 +460,10 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             </div>
 
                                             <div class="form-group">
-                                                <label class="control-label col-md-3">
+                                                <label class="control-label col-md-3 col-sm-3">
 
                                                 </label>
-                                                <div class="col-md-4">
+                                                <div class="col-md-4 col-sm-4">
                                                     <div class="radio-list">
                                                         <label>
                                                             <input type="radio" name="genero" value="Masculino" class="icheck"> Masculino </label>
@@ -474,8 +474,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                 </div>
                                             </div>
                                             <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                                <label class="control-label col-md-3 col-sm-3"></label>
+                                                <div class="input-group left-addon col-md-3 col-sm-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-line-chart"></i>
                                                         </span>
@@ -584,8 +584,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                 </h4>
                                             </div>
                                             <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                                <label class="control-label col-md-3 col-sm-3"></label>
+                                                <div class="input-group left-addon col-md-3 col-sm-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-flag"></i>
                                                         </span>
@@ -596,8 +596,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             </div>
 
                                             <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                                <label class="control-label col-md-3 col-sm-3"></label>
+                                                <div class="input-group left-addon col-md-3 col-sm-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-home"></i>
                                                         </span>
@@ -611,8 +611,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             </div>
 
                                             <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                                <label class="control-label col-md-3 col-sm-3"></label>
+                                                <div class="input-group left-addon col-md-3 col-sm-4">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-map-signs"></i>
                                                         </span>

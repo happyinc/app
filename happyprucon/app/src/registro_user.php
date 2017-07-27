@@ -28,13 +28,12 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <head>
     <meta charset="utf-8" />
-    <title>Metronic Admin Theme #2 | Bootstrap Form Wizard</title>
+    <title>Logueo</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <meta content="Preview page of Metronic Admin Theme #2 for bootstrap form wizard demos using Twitter Bootstrap Wizard Plugin" name="description" />
+    <meta content="Preview page of Metronic Admin Theme #2 for " name="description" />
     <meta content="" name="author" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="../../externo/plugins/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
@@ -51,16 +50,15 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
     <link href="../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
     <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link href="../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL STYLES -->
     <!-- BEGIN THEME LAYOUT STYLES -->
     <link href="../assets/layouts/layout2/css/layout.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/layouts/layout2/css/themes/blue.min.css" rel="stylesheet" type="text/css" id="style_color" />
     <link href="../assets/layouts/layout2/css/custom.min.css" rel="stylesheet" type="text/css" />
     <!-- END THEME LAYOUT STYLES -->
     <link rel="shortcut icon" href="favicon.ico" />
-
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="../../externo/plugins/fileinput/js/fileinput.min.js" type="text/javascript"></script>
     <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAOTpZg3Uhl0AItmrXORFIsGfJQNJiLHGg" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
 </head>
@@ -85,10 +83,14 @@ $rol_cli = isset($_SESSION['cliente']) ? $_SESSION['cliente'] : null ;
 //variables recibidas del rol escogido
 if($rol_emp != ""){
     $rol = $rol_emp;
+    $gustos = "TU ESPECIALIDAD";
+    $escoge_gusto = "Cuales son tus especialidades";
 }
 
 if($rol_cli != ""){
     $rol = $rol_cli;
+    $gustos = "TUS GUSTOS";
+    $escoge_gusto = "Cuales son tus gustos";
 }
 
 //condicionales para unificar variables de correo
@@ -119,39 +121,37 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
     $insertUserData["direccion"] = $_POST['direccion'];
     $insertUserData["latitud"] = $_POST['latitud'];
     $insertUserData["longitud"] = $_POST['longitu'];
+    $insertUserData["meta"] = $_POST['meta'];
     $insertUserData["token"] = 'yositokuqita';
     $objConn->insert("usuarios", $insertUserData);
-
     $id_usuario = $objConn->lastInsertId;
+
+    $insertSe["id_usuario"] = $id_usuario;
+    $insertSe["origen"] = "W";
+    $insertSe["f_login"] = date("Y-m-d H:i:s");
+    $insertSe["estado"] = "A";
+    $insertSe["ip"] = $_SERVER['REMOTE_ADDR'];
+    $objConn->insert("sesion", $insertSe);
+    $ultima_sesion = $objConn->lastInsertId;
 
     if ($id_usuario != "") {
 
-        $carpetaAdjunta="usuarios/".$id_usuario."/sitio/";
-        if (file_exists($carpetaAdjunta)) {
+        $objConn->where("id",$id_usuario);
+        $res_usu =  $objConn->select("usuarios");
 
-        } else {
-            mkdir($carpetaAdjunta, 0777, true);
-        }
+        $objSe->init();
+        $objSe->set('sesion_activa',$ultima_sesion);
+        $objSe->set('id_usuario', $res_usu[0]['id']);
+        $objSe->set('id_roles', $res_usu[0]['id_roles']);
+        $objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
+        $objSe->set('nombre', $res_usu[0]['nombre']);
+        $objSe->set('apellido', $res_usu[0]['apellido']);
+        $objSe->set('genero', $res_usu[0]['genero']);
+        $objSe->set('telefono', $res_usu[0]['telefono']);
+        $objSe->set('correo', $res_usu[0]['correo']);
+        $objSe->set('sueños', $res_usu[0]['meta']);
+        $objSe->set('origen',$_POST['form_login']);
 
-        $Imagenes = count($_FILES['fotos']['name']);
-
-        for($i = 0; $i < $Imagenes; $i++ ){
-
-            $nombreArchivo=$_FILES['fotos']['name'][$i];
-            $nombreTemporal=$_FILES['fotos']['tmp_name'][$i];
-
-            $rutaArchivo=$carpetaAdjunta.$nombreArchivo;
-
-            move_uploaded_file($nombreTemporal,$rutaArchivo);
-
-            $infoImagenesSubidas[$i]=array("caption"=>"$nombreArchivo","height"=>"120px","url"=>"borrar.php","key"=>$nombreArchivo);
-            $imagenesSubidas[$i]="<img height='120px' src='$rutaArchivo' class='file-preview-image'>";
-        }
-
-        $arr = array("file_id"=>0, "overwriteInitial"=>true,"initialPreviewConfig"=>$infoImagenesSubidas,
-            "initialPreview"=>$imagenesSubidas);
-
-        echo json_encode($arr);
 
         //Recorre el array para insertar los datos en la tabla de gustos
         $bienes = $_POST["tipo_bienes"];
@@ -202,9 +202,11 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
             // almacenar imagen en el servidor
             move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
             $minFoto = 'min_' . $foto;
+            $midFoto = 'mid_' . $foto;
             $resFoto = 'res_' . $foto;
-            resizeImagen($directorio . '/', $foto, 65, 65, $minFoto, $extension);
-            resizeImagen($directorio . '/', $foto, 500, 500, $resFoto, $extension);
+            resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
+            resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
+            resizeImagen($directorio . '/', $foto, 600, 600, $resFoto, $extension);
             unlink($directorio . '/' . $foto);
 
         } else { // El archivo no es JPG/GIF/PNG
@@ -217,15 +219,10 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
 
         } else { // El campo foto NO contiene una imagen
 
-        ?>
-            <script type="text/javascript">
-                alert("No se ha seleccionado imagenes");
-            </script>
-            <?
         }
 
         echo "<script> alert('Registrado correctamente');
-						window.location.assign('../../app/src/logueo.html');</script>";
+						window.location.assign('../../app/src/index.php');</script>";
     } else {
         echo "<script> alert('Usuario ya existe');
 						window.location.assign('../../app/src/logueo.html');</script>";
@@ -274,402 +271,345 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
 
 
 ?>
-
-<body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
-<!-- BEGIN HEADER & CONTENT DIVIDER -->
-<div class="clearfix"> </div>
-<!-- END HEADER & CONTENT DIVIDER -->
-<!-- BEGIN CONTAINER -->
-<div class="page-content">
-    <!-- BEGIN CONTENT -->
-
-    <!-- BEGIN CONTENT BODY -->
-    <div class="page-content col-lg-12">
-        <!-- BEGIN PAGE HEADER-->
-
-        <!-- END PAGE HEADER-->
-        <div class="col-lg-12">
-            <div class="col-md-12">
-                <div class="portlet light " id="form_wizard_1">
-                    <div class="portlet-title">
+<body class=" login">
+<div class="content" style="padding-bottom: 0 !important; padding-top: 5px !important; padding-left: 20px !important; padding-right: 20px !important; width: 370px !important;">
+    <!-- BEGIN LOGIN FORM -->
+    <div class="portlet light " id="form_wizard_1" style="box-shadow: none !important; margin-bottom: 0 !important;">
+        <div class="portlet-title" hidden>
 
 
-                    </div>
-                    <div class="portlet-body form">
-                        <form role="form" class="form-horizontal" action="registro_emp.php" name="registro_emp" id="registro_emp" enctype="multipart/form-data" method="POST">
-                            <div class="form-wizard">
-                                <div class="form-body">
-                                    <ul class="nav nav-pills nav-justified steps">
-                                        <li>
-                                            <a href="#tab1" data-toggle="tab" class="step">
-                                                <span class="number"> 1 </span>
-                                                <span class="desc">
+        </div>
+        <div class="portlet-body form">
+            <form role="form" class="form-horizontal" action="registro_user.php" name="registro_user" id="registro_user" enctype="multipart/form-data" method="POST">
+                <div class="form-wizard">
+                    <div class="form-body">
+                        <ul class="nav nav-pills nav-justified steps" hidden>
+                            <li>
+                                <a href="#tab1" data-toggle="tab" class="step">
+                                    <span class="number"> 1 </span>
+                                    <span class="desc">
                                                                 <i class="fa fa-check"></i> Datos </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#tab2" data-toggle="tab" class="step">
-                                                <span class="number"> 2 </span>
-                                                <span class="desc">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#tab2" data-toggle="tab" class="step">
+                                    <span class="number"> 2 </span>
+                                    <span class="desc">
                                                                 <i class="fa fa-check"></i> Especialidad </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#tab3" data-toggle="tab" class="step active">
-                                                <span class="number"> 3 </span>
-                                                <span class="desc">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#tab3" data-toggle="tab" class="step active">
+                                    <span class="number"> 3 </span>
+                                    <span class="desc">
                                                                 <i class="fa fa-check"></i> Ubicación </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#tab4" data-toggle="tab" class="step">
-                                                <span class="number"> 4 </span>
-                                                <span class="desc">
-                                                                <i class="fa fa-check"></i> Fotos </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <div id="bar" class="progress progress-striped" role="progressbar">
-                                        <div class="progress-bar progress-bar-success"> </div>
-                                    </div>
-                                    <div class="tab-content">
-                                        <div class="alert alert-danger display-none">
-                                            <button class="close" data-dismiss="alert"></button> You have some form errors. Please check below. </div>
-                                        <div class="alert alert-success display-none">
-                                            <button class="close" data-dismiss="alert"></button> Your form validation is successful! </div>
-                                        <div class="tab-pane active" id="tab1">
+                                </a>
+                            </li>
+                        </ul>
+                        <div id="bar" class="progress progress-striped" role="progressbar">
+                            <div class="progress-bar progress-bar-success"> </div>
+                        </div>
+                        <div class="tab-content">
+                            <div class="alert alert-danger display-none">
+                                <button class="close" data-dismiss="alert"></button> You have some form errors. Please check below. </div>
+                            <div class="alert alert-success display-none">
+                                <button class="close" data-dismiss="alert"></button> Your form validation is successful! </div>
+                            <div class="tab-pane active" id="tab1">
 
-                                            <div class="form-group form-md-line-input has-info form-md-floating-label">
-                                                <label class="control-label col-md-4 col-xs-2"></label>
-                                                <div class="input-group left-addon col-md-4 col-xs-2">
-                                                    <div class="fileinput fileinput-new img-circle" data-provides="fileinput" style="border-radius: 50%;">
-                                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
-                                                            <img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt="" class="img-circle" style="border-radius: 50%;"> </div>
-                                                        <div class="fileinput-preview fileinput-exists" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
-                                                        <div>
-													<span class="btn default btn-file">
-														<span class="fileinput-new"> Seleccionar </span>
-														<span class="fileinput-exists"> Cambiar </span>
+                                <div class="row">
+                                    <div class="">
+                                        <div class="mt-widget-1" style=" border: 0px !important;">
+
+                                            <div class="img-circle fileinput fileinput-new" data-provides="fileinput" style="border-radius: 50%;">
+                                                <div class="mt-icon">
+                                                    <div>
+													<span class="btn btn-circle grey-gallery btn-file" style="border-radius: 50%; margin: 33px; margin-top: -18px;">
+														<span class="fileinput-new fa fa-camera" style="margin: -4px;"></span>
+														<span class="fileinput-exists"></span>
 														<input type="file" name="foto" id="foto"> </span>
-
-                                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Quitar </a>
-                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                                <div class="img-circle fileinput-new thumbnail" style="width: 200px; height: 200px; border-radius: 50%;">
+                                                    <img src="../../externo/img/foto-perfil.jpg" class="img-circle" style="border-radius: 50%;"> </div>
+                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px; border-radius: 50%;"> </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input has-info" style="margin-top: 20px;">
+                                    <label class="control-label"></label>
+                                    <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-newspaper-o"></i>
                                                         </span>
-                                                    <select name="tipodoc" id="tipodoc" class="form-control">
-                                                        <option></option >
-                                                        <?php
-                                                        $objDoc = new PDOModel();
-                                                        $objDoc->where("id_estado", 1);
-                                                        $objDoc->orderByCols = array("descripcion");
-                                                        $result =  $objDoc->select("tipos_doc");
-                                                        foreach($result as $item){
-                                                            ?><option value="<?php echo $item["id"]?>"><?php echo $item["descripcion"]?></option><?php
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                        <select name="tipodoc" id="tipodoc" class="form-control">
+                                            <option></option >
+                                            <?php
+                                            $objDoc = new PDOModel();
+                                            $objDoc->where("id_estado", 1);
+                                            $objDoc->orderByCols = array("descripcion");
+                                            $result =  $objDoc->select("tipos_doc");
+                                            foreach($result as $item){
+                                                ?><option value="<?php echo $item["id"]?>"><?php echo $item["descripcion"]?></option><?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
 
-                                            <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-cc"></i>
                                                         </span>
-                                                    <input type="number" class="form-control" name="cedula" id="cedula" placeholder="Identificación" />
-                                                    <span class="help-block"></span>
-                                                </div>
-                                            </div>
+                                        <input type="number" class="form-control" name="cedula" id="cedula" placeholder="Identificación" />
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="form_login" name="form_login" value="W">
+                                <!--Campos escondidos de rol y aceptacion de terminos-->
+                                <input class="form-control placeholder-no-fix" type="hidden" name="roles" value="<?php echo $rol; ?>"/>
+                                <input class="form-control placeholder-no-fix" type="hidden" name="acep-terms" value="<?php echo $acep_terms; ?>"/>
 
-                                            <!--Campos escondidos de rol y aceptacion de terminos-->
-                                            <input class="form-control placeholder-no-fix" type="hidden" name="roles" value="<?php echo $rol; ?>"/>
-                                            <input class="form-control placeholder-no-fix" type="hidden" name="acep-terms" value="<?php echo $acep_terms; ?>"/>
-
-                                            <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-user"></i>
                                                         </span>
-                                                    <input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $user_face; ?>" placeholder="Nombres" />
-                                                </div>
-                                            </div>
+                                        <input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo $user_face; ?>" placeholder="Nombres" />
+                                    </div>
+                                </div>
 
-                                            <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-user"></i>
                                                         </span>
-                                                    <input type="text" class="form-control" name="lastname" id="lastname" value="<?php echo $ape_face; ?>" placeholder="Apellidos"/>
-                                                </div>
-                                            </div>
+                                        <input type="text" class="form-control" name="lastname" id="lastname" value="<?php echo $ape_face; ?>" placeholder="Apellidos"/>
+                                    </div>
+                                </div>
 
-                                            <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-tablet"></i>
                                                         </span>
-                                                    <input type="number" class="form-control" name="cell" id="cell" value="<?php echo $cell; ?>" placeholder="Celular"/>
-                                                    <span class="help-block"></span>
-                                                </div>
-                                            </div>
+                                        <input type="number" class="form-control" name="cell" id="cell" value="<?php echo $cell; ?>" placeholder="Celular"/>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
 
-                                            <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-envelope"></i>
                                                         </span>
-                                                    <input type="email" class="form-control" name="username" value="<?php echo $mail; ?>" placeholder="Correo electrónico" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
+                                        <input type="email" class="form-control" name="username" value="<?php echo $mail; ?>" placeholder="Correo electrónico" />
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-unlock-alt"></i>
                                                         </span>
-                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" />
-                                                    <span class="help-block"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">
-
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <div class="radio-list">
-                                                        <label>
-                                                            <input type="radio" name="genero" value="Masculino" class="icheck"> Masculino </label>
-                                                        <label>
-                                                            <input type="radio" name="genero" value="Femenino" checked class="icheck"> Femenino </label>
-                                                    </div>
-                                                    <div id="form_gender_error"> </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane" id="tab2">
-                                            <h3 class="block bold" style="color: #520d9b">TU ESPECIALIDAD</h3>
-                                            <div style="padding-bottom: 50px">
-                                                <h4>
-                                                    <p class="font-grey-gallery bold">
-                                                        Lo que quieres con lo que tienes
-                                                    </p>
-                                                </h4>
-                                            </div>
-                                            <!-- BEGIN ACCORDION PORTLET-->
-                                            <div class="portlet-body">
-                                                <div class="panel-group accordion" id="accordion1">
-                                                    <?php
-                                                    $objCat = new PDOModel();
-                                                    $objCat->where("id_estado", 1);
-                                                    $result =  $objCat->select("bienes");
-                                                    $tipo_bienes = "";
-                                                    foreach($result as $item){
-                                                        $tipo_bienes .= $item["nombre"]."-";
-                                                        $temporal = $item["nombre"];
-                                                        ?>
-                                                        <div class="panel panel-default">
-                                                            <div class="panel-heading">
-                                                                <h4 class="panel-title bold">
-                                                                    <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_<?php echo $item["id"]?>" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  alt="" /><?php echo $item["nombre"]?></a>
-                                                                </h4>
-                                                            </div>
-                                                            <div id="collapse_<?php echo $item["id"]?>" class="panel-collapse collapse">
-                                                                <div class="panel-body"><?php
-
-                                                                    $objCat->andOrOperator = "AND";
-                                                                    $objCat->where("id_bienes", $item["id"]);
-                                                                    $objCat->where("id_estado", 1);
-                                                                    $objCat->orderByCols = array("descripcion");
-                                                                    $result1 =  $objCat->select("categoria");
-                                                                    foreach($result1 as $item1){
-                                                                        ?><label>
-                                                                        <input type="checkbox" class="icheck" name="<? echo $temporal ?>[]" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
-                                                                    }
-                                                                    ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>  <?
-                                                    }
-
-                                                    $tipo_bienes = trim($tipo_bienes, "-");
-
-                                                    ?>
-                                                    <input type="hidden" name="tipo_bienes" value="<?php $tipo_bienes; ?>"/>
-                                                </div>
-                                            </div>
-                                            <!-- END ACCORDION PORTLET-->
-                                        </div>
-                                        <div class="tab-pane" id="tab3">
-                                            <script type="text/javascript">
-                                                function initialize() {
-                                                    var options = {
-                                                        types: ['(regions)'],
-                                                        componentRestrictions: {country: "co"}
-                                                    };
-                                                    var input = document.getElementById('ciudad');
-                                                    var autocomplete = new google.maps.places.Autocomplete(input , options);
-                                                }
-                                                google.maps.event.addDomListener(window, 'load', initialize);
-
-
-                                                var mostrarUbicacion = function() {
-                                                    var ciudade;
-                                                    ciudade = document.getElementById('resciu').value = document.getElementById('ciudad').value;
-                                                    var dir;
-                                                    dir = document.getElementById('resdir').value = document.getElementById('direccion').value;
-
-                                                    var ubica = ciudade+","+dir;
-                                                    // Creamos el objeto geodecoder
-                                                    var geocoder = new google.maps.Geocoder();
-
-                                                    address = document.getElementById('search').value=ubica;
-                                                    if (address != '') {
-                                                        // Llamamos a la función geodecode pasandole la dirección que hemos introducido en la caja de texto.
-                                                        geocoder.geocode({'address': address}, function (results, status) {
-                                                            if (status == 'OK') {
-                                                                // Mostramos las coordenadas obtenidas en el p con id coordenadas
-                                                                document.getElementById('latitud').value = results[0].geometry.location.lat();
-                                                                document.getElementById('longitu').value = results[0].geometry.location.lng();
-
-                                                            }
-                                                        });
-                                                    }
-                                                }
-
-
-                                            </script>
-                                            <h3 class="block bold" style="color: #520d9b">TU UBICACIÓN</h3>
-                                            <div style="padding-bottom: 50px">
-                                                <h4>
-                                                    <p class="font-grey-gallery bold">
-                                                        Lo que quieres con lo que tienes
-                                                    </p>
-                                                </h4>
-                                            </div>
-                                            <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
-                                                        <span class="required input-group-addon">
-                                                        <i class="fa fa-flag"></i>
-                                                        </span>
-                                                    <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
-                                                    <!-- Campo escondido que toma valor de ciudad -->
-                                                    <input type="hidden" name="resciu" id="resciu" >
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
-                                                        <span class="required input-group-addon">
-                                                        <i class="fa fa-home"></i>
-                                                        </span>
-                                                    <select name="tipodom" id="tipodom" class="form-control">
-                                                        <option value="">Tipo vivienda</option>
-                                                        <option value="1">Apartamento</option>
-                                                        <option value="2">Casa</option>
-                                                        <option value="3">Oficina</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group form-md-line-input has-info">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="input-group left-addon col-md-4">
-                                                        <span class="required input-group-addon">
-                                                        <i class="fa fa-map-signs"></i>
-                                                        </span>
-                                                    <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();" placeholder="Dirección"/>
-                                                    <span class="help-block"></span>
-                                                    <!-- Campo escondido que toma valor de direccion -->
-                                                    <input type="hidden" name="resdir" id="resdir">
-                                                </div>
-                                                <!-- Campos escondidos que toman valores de coordenadas -->
-                                                <div><input type="hidden" id="search"/></div>
-                                                <div><input type="hidden" id="latitud" name="latitud"/></div>
-                                                <div><input type="hidden" id="longitu" name="longitu"/></div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane" id="tab4">
-                                            <h3 class="block bold" style="color: #520d9b">FOTOS DEL SITIO</h3>
-                                            <div style="padding-bottom: 50px">
-                                                <h4>
-                                                    <p class="font-grey-gallery bold">
-                                                        Lo que quieres con lo que tienes
-                                                    </p>
-                                                </h4>
-                                            </div>
-                                            <div class="form-group">
-                                                <input id="fotos" name="fotos[]" type="file" class="file" multiple=true class="file-loading">
-                                            </div>
-                                            <div id = "errorBlock" class = "help-block" > </ div>
-                                            <script>
-                                                $("#fotos").fileinput({
-                                                    uploadAsync: false,
-                                                    minFileCount: 1,
-                                                    maxFileCount: 6,
-                                                    allowedFileExtensions : [ "jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP" ],
-                                                    maxFilePreviewSize : 2048,
-                                                    showUpload: true,
-                                                    showRemove: false,
-                                                    initialPreview: [<?php foreach ($images as $image) {?>
-                                                        "<img src='<?php echo $image; ?>' height='120px' class='file-preview-image'> ",
-                                                        <?php } ?>],
-                                                    initialPreviewConfig: [<?php foreach ($images as $image) { $infoImagenes=explode("/",$image);?>
-                                                        {caption: "<?php echo $infoImagenes[1];?>", height:"120px", url:"borrar.php", key:"<?php echo $infoImagenes[1];?>"},
-                                                        <?php } ?>]
-                                                });
-                                            </script>
-                                            <div class="form-group">
-                                                <button class="btn btn-primary">Submit</button>
-                                                <button class="btn btn-default" type="reset">Reset</button>
-                                            </div>
-                                        </div>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" />
+                                        <span class="help-block"></span>
                                     </div>
                                 </div>
-                                <div class="form-actions">
-                                    <div class="row">
-                                        <div class="col-md-offset-3 col-md-9">
-                                            <a href="javascript:;" class="btn default button-previous">
-                                                <i class="fa fa-angle-left"></i> Atras </a>
-                                            <a href="javascript:;" class="btn btn-outline green button-next"> Siguiente
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                            <button href="javascript:;" class="btn green button-submit" name="btn1" value="registrar"> Registrar
-                                                <i class="fa fa-check"></i>
-                                            </button>
-                                            <input type="hidden" id="formulario" name="formulario" value="Registrar"/>
 
+                                <div class="form-group">
+                                    <label class="control-label">
+
+                                    </label>
+                                    <div class="row">
+                                        <div class="radio-list">
+                                            <label class="col-xs-6">
+                                                <input type="radio" name="genero" value="Masculino" class="icheck"> Masculino </label>
+                                            <label class="col-xs-6">
+                                                <input type="radio" name="genero" value="Femenino" checked class="icheck"> Femenino </label>
                                         </div>
+                                        <div id="form_gender_error"> </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
+                                                        <span class="required input-group-addon">
+                                                        <i class="fa fa-line-chart"></i>
+                                                        </span>
+                                        <textarea class="form-control" name="meta" id="meta" rows="5" placeholder="Sueños"></textarea>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                            <div class="tab-pane" id="tab2">
+                                <h3 class="block bold" style="color: #520d9b"><? echo $gustos; ?></h3>
+                                <div style="padding-bottom: 50px">
+                                    <h4>
+                                        <p class="font-grey-gallery bold">
+                                            <? echo $escoge_gusto; ?>
+                                        </p>
+                                    </h4>
+                                </div>
+                                <!-- BEGIN ACCORDION PORTLET-->
+                                <div class="portlet-body">
+                                    <div class="panel-group accordion" id="accordion1">
+                                        <?php
+                                        $objCat = new PDOModel();
+                                        $objCat->where("id_estado", 1);
+                                        $result =  $objCat->select("bienes");
+                                        $tipo_bienes = "";
+                                        foreach($result as $item){
+                                            $tipo_bienes .= $item["nombre"]."-";
+                                            $temporal = $item["nombre"];
+                                            ?>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title bold">
+                                                        <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_<?php echo $item["id"]?>" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  alt="" /><?php echo $item["nombre"]?></a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse_<?php echo $item["id"]?>" class="panel-collapse collapse">
+                                                    <div class="panel-body"><?php
+
+                                                        $objCat->andOrOperator = "AND";
+                                                        $objCat->where("id_bienes", $item["id"]);
+                                                        $objCat->where("id_estado", 1);
+                                                        $objCat->orderByCols = array("descripcion");
+                                                        $result1 =  $objCat->select("categoria");
+                                                        foreach($result1 as $item1){
+                                                            ?><label>
+                                                            <input type="checkbox" class="icheck" name="<? echo $temporal ?>[]" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </div>
+                                            </div>  <?
+                                        }
+
+                                        $tipo_bienes = trim($tipo_bienes, "-");
+
+                                        ?>
+                                        <input type="hidden" name="tipo_bienes" value="<?php $tipo_bienes; ?>"/>
+                                    </div>
+                                </div>
+                                <!-- END ACCORDION PORTLET-->
+                            </div>
+                            <div class="tab-pane" id="tab3">
+                                <script type="text/javascript">
+                                    function initialize() {
+                                        var options = {
+                                            types: ['(regions)'],
+                                            componentRestrictions: {country: "co"}
+                                        };
+                                        var input = document.getElementById('ciudad');
+                                        var autocomplete = new google.maps.places.Autocomplete(input , options);
+                                    }
+                                    google.maps.event.addDomListener(window, 'load', initialize);
+
+
+                                    var mostrarUbicacion = function() {
+                                        var ciudade;
+                                        ciudade = document.getElementById('resciu').value = document.getElementById('ciudad').value;
+                                        var dir;
+                                        dir = document.getElementById('resdir').value = document.getElementById('direccion').value;
+
+                                        var ubica = ciudade+","+dir;
+                                        // Creamos el objeto geodecoder
+                                        var geocoder = new google.maps.Geocoder();
+
+                                        address = document.getElementById('search').value=ubica;
+                                        if (address != '') {
+                                            // Llamamos a la función geodecode pasandole la dirección que hemos introducido en la caja de texto.
+                                            geocoder.geocode({'address': address}, function (results, status) {
+                                                if (status == 'OK') {
+                                                    // Mostramos las coordenadas obtenidas en el p con id coordenadas
+                                                    document.getElementById('latitud').value = results[0].geometry.location.lat();
+                                                    document.getElementById('longitu').value = results[0].geometry.location.lng();
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+
+                                </script>
+                                <h3 class="block bold" style="color: #520d9b">TU UBICACIÓN</h3>
+                                <div style="padding-bottom: 50px">
+                                    <h4>
+                                        <p class="font-grey-gallery bold">
+                                            Lo que quieres con lo que tienes
+                                        </p>
+                                    </h4>
+                                </div>
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
+                                                        <span class="required input-group-addon">
+                                                        <i class="fa fa-flag"></i>
+                                                        </span>
+                                        <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
+                                        <!-- Campo escondido que toma valor de ciudad -->
+                                        <input type="hidden" name="resciu" id="resciu" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
+                                                        <span class="required input-group-addon">
+                                                        <i class="fa fa-home"></i>
+                                                        </span>
+                                        <select name="tipodom" id="tipodom" class="form-control">
+                                            <option value="">Tipo vivienda</option>
+                                            <option value="1">Apartamento</option>
+                                            <option value="2">Casa</option>
+                                            <option value="3">Oficina</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
+                                                        <span class="required input-group-addon">
+                                                        <i class="fa fa-map-signs"></i>
+                                                        </span>
+                                        <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();" placeholder="Dirección"/>
+                                        <span class="help-block"></span>
+                                        <!-- Campo escondido que toma valor de direccion -->
+                                        <input type="hidden" name="resdir" id="resdir">
+                                    </div>
+                                    <!-- Campos escondidos que toman valores de coordenadas -->
+                                    <div><input type="hidden" id="search"/></div>
+                                    <div><input type="hidden" id="latitud" name="latitud"/></div>
+                                    <div><input type="hidden" id="longitu" name="longitu"/></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions" style="border-bottom: 0 !important;">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <a href="javascript:;" class="btn default button-previous">
+                                    <i class="fa fa-angle-left"></i> Atras </a>
+                                <a href="javascript:;" class="btn btn-outline green button-next"> Siguiente
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                                <button href="javascript:;" class="btn green button-submit" name="btn1" value="registrar"> Registrar
+                                    <i class="fa fa-check"></i>
+                                </button>
+                                <input type="hidden" id="formulario" name="formulario" value="Registrar"/>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-    <!-- END CONTENT BODY -->
 
-    <!-- END CONTENT -->
+    <!-- END LOGIN FORM -->
 
 </div>
-<!-- END CONTAINER -->
+<!-- END LOGIN -->
 <!--[if lt IE 9]>
 <script src="../assets/global/plugins/respond.min.js"></script>
 <script src="../assets/global/plugins/excanvas.min.js"></script>
@@ -685,10 +625,11 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
-<script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/wizard-user.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
 <script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
@@ -696,7 +637,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
 <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="../assets/pages/scripts/wizard-user.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/login.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
 <script src="../assets/layouts/layout2/scripts/layout.min.js" type="text/javascript"></script>
@@ -713,7 +654,6 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
         });
     })
 </script>
-
 </body>
 
 </html>
