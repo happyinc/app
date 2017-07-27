@@ -13,7 +13,7 @@ var FormWizard = function () {
                 return "<img class='flag' src='../../assets/global/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
             }
 
-            var form = $('#registro_emp');
+            var form = $('#registro_user');
             var error = $('.alert-danger', form);
             var success = $('.alert-success', form);
 
@@ -24,6 +24,9 @@ var FormWizard = function () {
                 focusInvalid: false, // do not focus the last invalid input
                 rules: {
                     //account
+                    foto: {
+                        required: true
+                    },
                     tipodoc: {
                         required: true
                     },
@@ -109,7 +112,7 @@ var FormWizard = function () {
             });
 
             var displayConfirm = function() {
-                $('#tab4 .form-control-static', form).each(function(){
+                $('#tab3 .form-control-static', form).each(function(){
                     var input = $('[name="'+$(this).attr("data-display")+'"]', form);
                     if (input.is(":radio")) {
                         input = $('[name="'+$(this).attr("data-display")+'"]:checked', form);

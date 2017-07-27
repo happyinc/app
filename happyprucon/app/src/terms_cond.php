@@ -116,7 +116,7 @@ if($rol_emp == 2){
         </div>
     </div>
     <!-- BEGIN LOGIN FORM -->
-    <form class="login-form" action="registro_emp.php" method="post">
+    <form class="login-form" action="registro_user.php" method="post">
         <div class="row">
             <div class="col-lg-3 col-md-3 col-xs-3" style="margin-bottom: 10px"></div>
             <div class="col-lg-6 col-md-6 col-xs-6" style="margin-bottom: 10px">
