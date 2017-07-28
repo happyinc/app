@@ -251,7 +251,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div class="note note-info">
                         <div class="portlet-body">
                             <?php
-                            $categoria="";
+                            /*$categoria="";
                             $objCon=new PDOModel();
                             $records = $objCon->executeQuery("select A.* , B.* from producto A , pedido B where A.id = B.id_producto AND B.id_estado = 7 AND A.id_usuario = '".$usu_id."' orderby A.id");
                             foreach ($records as $pedidos){
@@ -264,64 +264,39 @@ License: You must have a valid license purchased only from themeforest(the above
                                 $result1 =  $objCon->select("categoria");
 
                                 $bien["".$result1[0]["id_bienes"].""]=$bien["".$result1[0]["id_bienes"].""]+1;
-                            }
+                            }*/
+
+
+
                             ?>
                             <div class="tabbable tabbable-tabdrop">
-                                <ul class="nav nav-tabs">
+                                <?php
+                                $objCat = new PDOModel();
+                                $objCat->where("id_estado", 1);
+                                $result =  $objCat->select("bienes");
+                                foreach($result as $item) {
+                                    ?>
+                                    <ul class="nav nav-tabs">
                                     <li class="active">
-                                        <a href="#tab1" data-toggle="tab">Section 1</a>
+                                        <a href="#tab<? echo $item['id']; ?>"
+                                           data-toggle="tab"><? echo $item['nombre']; ?></a>
                                     </li>
-                                    <li>
-                                        <a href="#tab2" data-toggle="tab">Section 2</a>
-                                    </li>
-                                    <li>
-                                        <a href="#tab3" data-toggle="tab">Section 3</a>
-                                    </li>
-                                    <li>
-                                        <a href="#tab4" data-toggle="tab">Section 4</a>
-                                    </li>
-                                    <li>
-                                        <a href="#tab5" data-toggle="tab">Section 5</a>
-                                    </li>
-                                    <li>
-                                        <a href="#tab6" data-toggle="tab">Section 6</a>
-                                    </li>
-                                    <li>
-                                        <a href="#tab7" data-toggle="tab">Section 7</a>
-                                    </li>
-                                    <li>
-                                        <a href="#tab8" data-toggle="tab">Section 8</a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="tab1">
-                                        <p> I'm in Section 1. </p>
-                                    </div>
-                                    <div class="tab-pane" id="tab2">
-                                        <p> Howdy, I'm in Section 2. </p>
-                                    </div>
-                                    <div class="tab-pane" id="tab3">
-                                        <p> Howdy, I'm in Section 3. </p>
-                                    </div>
-                                    <div class="tab-pane" id="tab4">
-                                        <p> Howdy, I'm in Section 4. </p>
-                                    </div>
-                                    <div class="tab-pane" id="tab5">
-                                        <p> Howdy, I'm in Section 5. </p>
-                                    </div>
-                                    <div class="tab-pane" id="tab6">
-                                        <p> Howdy, I'm in Section 6. </p>
-                                    </div>
-                                    <div class="tab-pane" id="tab7">
-                                        <p> Howdy, I'm in Section 7. </p>
-                                    </div>
-                                    <div class="tab-pane" id="tab8">
-                                        <p> Howdy, I'm in Section 8. </p>
-                                    </div>
-                                    <div class="tab-pane" id="tab9">
-                                        <p> Howdy, I'm in Section 9. </p>
-                                    </div>
-                                </div>
+
+                                    </ul><?
+
+
+                                    $result1 =  $objCat->executeQuery("SELECT * FROM producto A, pedido B WHERE A.id= B.id_producto and B.id_estado = '7' and A.id_usuario = '".$usu_id."' ");
+                                    foreach ($result1 as $item1) {
+
+                                        ?>
+                                        <div class="tab-content">
+                                        <div class="tab-pane active" id="tab<? echo $item1['id']; ?>">
+                                            <p><? echo $item1['descripcion']; ?></p>
+                                        </div>
+                                        </div><?
+                                    }
+                                }
+                                ?>
                             </div>
                             <p> &nbsp; </p>
                             <p> &nbsp; </p>
