@@ -88,7 +88,7 @@ $objSe = new Sessions();
 
 
 																									
-													echo "<script> window.location.assign('../app/src/index.php'); </script>";
+													echo "<script> window.location.assign('../app/src/gestion_pedido.php'); </script>";
 												}
 												else if($rol == 3)
 												{
@@ -114,7 +114,7 @@ $objSe = new Sessions();
                                                     $objSe->set('sueños', $res_usu[0]['meta']);
                                                     $objSe->set('origen',$_POST['form_login']);
 
-                                                    echo "<script> window.location.assign('../app/src/index.php'); </script>";
+                                                    echo "<script> window.location.assign('../app/src/gestion_pedido.php'); </script>";
 												}
 										}else{
 											$fallo = $res_usu[0]["acceso_fallido"]+1;

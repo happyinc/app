@@ -222,7 +222,7 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
         }
 
         echo "<script> alert('Registrado correctamente');
-						window.location.assign('../../app/src/index.php');</script>";
+						window.location.assign('gestion_pedido.php');</script>";
     } else {
         echo "<script> alert('Usuario ya existe');
 						window.location.assign('../../app/src/logueo.html');</script>";

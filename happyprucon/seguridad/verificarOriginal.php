@@ -96,13 +96,12 @@ class Verificar{
 												$this->objSe->init();
 												$this->objSe->set('id',$ultima_sesion);
 												
-												echo "<script> window.location.assign('../../app/src/admin_2_material_design/index.php'); </script>";
+												echo "<script> window.location.assign(gestion_pedido.phpdido.php'); </script>";
 											}
 											else
 											{
-												echo "<script> window.location.assign('../../app/src/admin_2_material_design/index.php'); </script>";
-											}
-									}else{
+												echo "<script> window.location.assign(gestion_pedido.php); </script>";
+						gestion_pedido.php							}else{
 										$fallo = $res_usu[0]["acceso_fallido"]+1;
 										$objConn = new PDOModel(); 
 										$updateUser["acceso_fallido"] = $fallo;

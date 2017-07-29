@@ -54,7 +54,7 @@ $objSe->init();
                             $objSe->set('correo', $res_usu[0]['correo']);
                             $objSe->set('sueños', $res_usu[0]['meta']);
 
-							echo "<script> window.location.assign('../../app/src/index.php'); </script>";
+							echo "<script> window.location.assign('../src/gestion_pedido.php'); </script>";
 						}
 						else if($rol == 3){
 
@@ -79,7 +79,7 @@ $objSe->init();
                             $objSe->set('correo', $res_usu[0]['correo']);
                             $objSe->set('sueños', $res_usu[0]['meta']);
 
-							echo "<script> window.location.assign('../../app/src/index.php'); </script>";
+							echo "<script> window.location.assign('../src/gestion_pedido.php'); </script>";
 						}
 						
 					}
@@ -135,7 +135,7 @@ $objSe->init();
                             $objSe->set('correo', $res_usu[0]['correo']);
                             $objSe->set('sueños', $res_usu[0]['meta']);
 
-                            echo "<script> window.location.assign('../../app/src/index.php'); </script>";
+                            echo "<script> window.location.assign('../src/gestion_pedido.php'); </script>";
                         }
                         else if($rol == 3){
 
@@ -160,7 +160,7 @@ $objSe->init();
                             $objSe->set('correo', $res_usu[0]['correo']);
                             $objSe->set('sueños', $res_usu[0]['meta']);
 
-                            echo "<script> window.location.assign('../../app/src/index.php'); </script>";
+                            echo "<script> window.location.assign('../src/gestion_pedido.php'); </script>";
                         }
 						
 					}

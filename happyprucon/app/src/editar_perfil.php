@@ -137,7 +137,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 <ul class="page-breadcrumb">
                     <li>
                         <i class="icon-home"></i>
-                        <a href="index.php">Home</a>
+                        <a href="gestion_pedido.php">Home</a>
                         <i class="fa fa-angle-right"></i>
                     </li>
                     <li>

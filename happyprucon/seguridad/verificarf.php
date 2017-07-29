@@ -53,7 +53,7 @@ if($result[0]['count(*)'] == 1){
         $objSe->set('sueños', $res_usu[0]['meta']);
         $objSe->set('origen',$_POST['form_login_face']);
 
-        echo "<script> window.location.assign('../app/src/index.php'); </script>";
+        echo "<script> window.location.assign('../app/src/gestion_pedido.php'); </script>";
     }
     else if($rol == 3)
     {
@@ -79,7 +79,7 @@ if($result[0]['count(*)'] == 1){
         $objSe->set('sueños', $res_usu[0]['meta']);
         $objSe->set('origen',$_POST['form_login']);
 
-        echo "<script> window.location.assign('../app/src/index.php'); </script>";
+        echo "<script> window.location.assign('../app/src/gestion_pedido.php'); </script>";
     }
 
 }else{
