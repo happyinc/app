@@ -538,9 +538,9 @@ License: You must have a valid license purchased only from themeforest(the above
 											</div>
 										</div>
 									</div>
-									<div class="form-group form-md-line-input">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<button type="submit" class="btn purple" name="guardar" id="guardar" value="guardar"> Crear producto </button>
+									<div class="form-actions">
+                                        <div class="col-md-offset-3 col-md-9">
+											<button type="submit" class="btn btn-circle purple" name="guardar" id="guardar" value="guardar"> Crear producto </button>
 											<input type="hidden" id="formulario" name="formulario" value="crear_producto"/>
 										</div>
 									</div>

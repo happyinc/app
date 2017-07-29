@@ -367,48 +367,48 @@ License: You must have a valid license purchased only from themeforest(the above
                         
                     <!-- END PAGE HEADER-->
                     </div>
-                    <div class="portlet light">
-                        <div class="portlet-body form">
-                            <form role="form" class="form-horizontal" name="confirmar_pedido"  id="confirmar_pedido" action="confirmar_pedido.php" enctype="multipart/form-data" method="post">
-                                <div class="form-body">
-                                   <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <div class="form-group">
-                                                <label class="control-label">Seleccione la forma de adquisicion</label>
-                                                 <!--<div class="input-group">
-                                                    <div class="icheck-list">-->
-                                                    <div class="radio-list">
+                        <div class="col-md-12">
+                            <div class="portlet box red">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <span>Confirmar pedido</span>
+                                    </div>
+                                </div>
+                            <div class="portlet-body form">
+                                <form role="form" class="form-horizontal" name="confirmar_pedido"  id="confirmar_pedido" action="confirmar_pedido.php" enctype="multipart/form-data" method="post">
+                                    <div class="form-body">
+                                       <div class="form-group form-md-line-input">
+                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Seleccione la forma de adquisicion</label>
+                                                    <div class="input-group">
                                                         <?
                                                             $result3 =  $objProd->executeQuery("SELECT A. id_disponibilidad, B. id_forma_adquisicion, C.* FROM producto_disponibilidad A, disponibilidad_forma_adquisicion B, forma_adquisicion C WHERE A. id_producto= '".$id_producto."' and A.id_disponibilidad = B.id_disponibilidad and B.id_forma_adquisicion = C.id;");
                                                             foreach ($result3 as $key) 
-                                                                {?>
-                                                                    <label> <input type="radio" id="forma_adquisicion" name="forma_adquisicion" value="<?php echo $key["id"]?>" data-title="si" onclick="mostrarReferencia(<?php echo $key["id"]?>);"/><? echo $key["descripcion"]?></label>
-                                                                  <!--<label>
-                                                                    <input type="radio" name="forma_adquisicion" id="forma_adquisicion" class="icheck" data-radio="iradio_line-purple" data-label="<?echo $key["descripcion"]?>" style="position: absolute; opacity: 0;"  value="<?php echo $key["id"]?>" onclick="mostrarReferencia(<?php echo $key["id"]?>);">
-                                                                  </label>-->
-                                                                <?
-                                                                }?>
-                                                        </div>
-                                                    <!--</div>
-                                                </div>-->
+                                                            {
+                                                            ?>
+                                                                <label> <input type="radio" id="forma_adquisicion" name="forma_adquisicion" value="<?php echo $key["id"]?>" data-title="si" onclick="mostrarReferencia(<?php echo $key["id"]?>);"/><? echo $key["descripcion"]?></label>
+                                                                     
+                                                            <?
+                                                            ?>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div id="dat_com" style="display:none;" >
-                                        <div class="form-group form-md-line-input">
-                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                        <div id="dat_com" style="display:none;" >
+                                            <div class="form-group form-md-line-input">
+                                                <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
                                                     <script type="text/javascript">
                                                         function initialize() {
                                                             var options = {
                                                             types: ['(regions)'],
                                                             componentRestrictions: {country: "co"}
-                                                            };
+                                                             };
                                                             var input = document.getElementById('ciudad');
                                                             var autocomplete = new google.maps.places.Autocomplete(input , options);
                                                         }
                                                         google.maps.event.addDomListener(window, 'load', initialize);
-
 
                                                         var mostrarUbicacion = function() {
                                                             var ciudade;
@@ -418,7 +418,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             var ubica = ciudade+","+dir;
                                                             // Creamos el objeto geodecoder
-                                                            var geocoder = new google.maps.Geocoder();
+                                                             var geocoder = new google.maps.Geocoder();
 
                                                             address = document.getElementById('search').value=ubica;
                                                             if (address != '') 
@@ -435,290 +435,294 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             }
                                                         }
                                                     </script>
-                                                        <?
-                                                            $objUbicacion = new PDOModel();
-                                                            $objUbicacion->where("id_usuario", $usu_id);
-                                                            $objUbicacion->columns = array("count(*) direccion");
-                                                            $cuentaTotal =  $objUbicacion->select("ubicaciones_cliente");
-                                                            foreach ($cuentaTotal as $cuentaTot)
+                                                    <?
+                                                        $objUbicacion = new PDOModel();
+                                                        $objUbicacion->where("id_usuario", $usu_id);
+                                                        $objUbicacion->columns = array("count(*) direccion");
+                                                        $cuentaTotal =  $objUbicacion->select("ubicaciones_cliente");
+                                                        foreach ($cuentaTotal as $cuentaTot)
+                                                        {
+                                                            foreach ($cuentaTot as $cuentaTo)
                                                             {
-                                                                    foreach ($cuentaTot as $cuentaTo)
-                                                                    {
-                                                                        $cuenta= $cuentaTo;
-                                                                    }
+                                                                 $cuenta= $cuentaTo;
                                                             }
+                                                        }
 
-                                                             if ($cuenta > 0)
-                                                             {
-                                                               ?><div class="form-group">
-                                                                    <div class="input-icon">
-                                                                         <i class="fa fa-map-signs"></i> 
-                                                                           <select class="form-control" id="ubicacion" name="ubicacion"> 
-                                                                        <?
-
-                                                                            $objUbicacion->where("id_usuario", $usu_id);
-                                                                            $result4 =  $objUbicacion->select("ubicaciones_cliente");
-                                                                            foreach ($result4 as $key) 
-                                                                            {
-                                                                                ?>
-                                                                                   <option value="<?php echo $key["id"]?>"><?php echo $key["direccion"]?></option>
-                                                                                <?
-                                                                            }
-
-                                                                         ?>
-                                                                         </select>
-                                                                     </div>
-                                                                 </div>
-                                                                 <label class="control-label">Si desea agregar una nueva ubicacion, escriba la siguiente informacion</label>
-
-                                                </div>
-                                            </div>
-
-                                                                        <div class="form-group form-md-line-input">
-                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                                                                    <span class="required input-group-addon">
-                                                                                    <i class="fa fa-flag"></i>
-                                                                                    </span>
-                                                                                <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
-                                                                                <!-- Campo escondido que toma valor de ciudad -->
-                                                                                <input type="hidden" name="resciu" id="resciu" >
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="form-group form-md-line-input">
-                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                                                                    <span class="required input-group-addon">
-                                                                                    <i class="fa fa-home"></i>
-                                                                                    </span>
-                                                                                <select name="tipodom" id="tipodom" class="form-control">
-                                                                                    <option value="">Tipo vivienda</option>
-                                                                                    <option value="Apartamento">Apartamento</option>
-                                                                                    <option value="Casa">Casa</option>
-                                                                                    <option value="Oficina">Oficina</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="form-group form-md-line-input">
-                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                                                                    <span class="required input-group-addon">
-                                                                                    <i class="fa fa-map-signs"></i>
-                                                                                    </span>
-                                                                                <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();" placeholder="Dirección"/>
-                                                                                <span class="help-block"></span>
-                                                                                <!-- Campo escondido que toma valor de direccion -->
-                                                                                <input type="hidden" name="resdir" id="resdir">
-                                                                            </div>
-                                                                            <!-- Campos escondidos que toman valores de coordenadas -->
-                                                                            <div><input type="hidden" id="search"/></div>
-                                                                            <div><input type="hidden" id="latitud" name="latitud"/></div>
-                                                                            <div><input type="hidden" id="longitu" name="longitu"/></div>
-                                                                        </div>
-
-
-                                                                        <div class="form-group form-md-line-input">
-                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                                                                    <span class="required input-group-addon">
-                                                                                    <i class="fa fa-location-arrow"></i>
-                                                                                    </span>
-                                                                                    <textarea class="form-control" rows="2" name="descripcion" id="descripcion"  placeholder="Descripcion de la direccion"></textarea>
-                                                                                <span class="help-block"></span>
-                                                                            </div>
-                                                                        </div>
-
-
-
-                                                            <?
-                                                            }
-
-                                                            else if ($cuenta <= 0)
-                                                            {
-                                                                ?>
-                                                                     <label class="control-label">Escriba la informacion de su ubicacion</label>
-
-                                                </div>
-                                            </div>
-
-                                                                        <div class="form-group form-md-line-input">
-                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                                                                    <span class="required input-group-addon">
-                                                                                    <i class="fa fa-flag"></i>
-                                                                                    </span>
-                                                                                <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
-                                                                                <!-- Campo escondido que toma valor de ciudad -->
-                                                                                <input type="hidden" name="resciu" id="resciu" >
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="form-group form-md-line-input">
-                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                                                                    <span class="required input-group-addon">
-                                                                                    <i class="fa fa-home"></i>
-                                                                                    </span>
-                                                                                <select name="tipodom" id="tipodom" class="form-control">
-                                                                                    <option value="">Tipo vivienda</option>
-                                                                                    <option value="Apartamento">Apartamento</option>
-                                                                                    <option value="Casa">Casa</option>
-                                                                                    <option value="Oficina">Oficina</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="form-group form-md-line-input">
-                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                                                                    <span class="required input-group-addon">
-                                                                                    <i class="fa fa-map-signs"></i>
-                                                                                    </span>
-                                                                                <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();" placeholder="Dirección"/>
-                                                                                <span class="help-block"></span>
-                                                                                <!-- Campo escondido que toma valor de direccion -->
-                                                                                <input type="hidden" name="resdir" id="resdir">
-                                                                            </div>
-                                                                            <!-- Campos escondidos que toman valores de coordenadas -->
-                                                                            <div><input type="hidden" id="search"/></div>
-                                                                            <div><input type="hidden" id="latitud" name="latitud"/></div>
-                                                                            <div><input type="hidden" id="longitu" name="longitu"/></div>
-                                                                        </div>
-
-
-                                                                        <div class="form-group form-md-line-input">
-                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                                            <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                                                                    <span class="required input-group-addon">
-                                                                                    <i class="fa fa-location-arrow"></i>
-                                                                                    </span>
-                                                                                    <textarea class="form-control" rows="2" name="descripcion" id="descripcion"  placeholder="Descripcion de la direccion"></textarea>
-                                                                                <span class="help-block"></span>
-                                                                            </div>
-                                                                        </div>
-
-                                                                <?
-                                                            }
+                                                        if ($cuenta > 0)
+                                                        {
                                                         ?>
-                                                    
-                                        <div class="form-group form-md-line-input">
-                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                                <div class="form-group">
-                                                    <div class="input-icon">
-                                                     <i class="fa fa-map"></i>
-                                                        <select class="form-control" id="zona" name="zona">
-                                                         <?
+                                                            <div class="form-group">
+                                                                <div class="input-icon">
+                                                                    <i class="fa fa-map-signs"></i> 
+                                                                    <select class="form-control" id="ubicacion" name="ubicacion"> 
+                                                                    <?
+                                                                        $objUbicacion->where("id_usuario", $usu_id);
+                                                                        $result4 =  $objUbicacion->select("ubicaciones_cliente");
+                                                                        foreach ($result4 as $key) 
+                                                                        {
+                                                                            ?>
+                                                                                <option value="<?php echo $key["id"]?>"><?php echo $key["direccion"]?></option>
+                                                                            <?
+                                                                        }
 
-                                                            $objFor = new PDOModel();
-                                                            $objFor->where("id_estado", 1);
-                                                            $result3 =  $objFor->select("zonas");
-                                                            foreach ($result3 as $key) 
-                                                            {
-                                                                ?>
-                                                                   <option value="<?php echo $key["id"]?>"><?php echo $key["descripcion"]?></option>
+                                                                        ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group form-md-line-input">
+                                                 <div class="col-md-8 col-lg-8 col-xs-12 col-sm-12">
+                                                        <label class="control-label">Si desea agregar una nueva ubicacion, escriba la siguiente informacion</label>
+                                                 </div>
+                                            </div>
+                                            <div class="form-group form-md-line-input">
+                                                <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                    <span class="required input-group-addon">
+                                                        <i class="fa fa-flag"></i>
+                                                    </span>
+                                                    <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
+                                                    <!-- Campo escondido que toma valor de ciudad -->
+                                                    <input type="hidden" name="resciu" id="resciu" >
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group form-md-line-input">
+                                                <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                    <span class="required input-group-addon">
+                                                        <i class="fa fa-home"></i>
+                                                    </span>
+                                                    <select name="tipodom" id="tipodom" class="form-control">
+                                                        <option value="">Tipo vivienda</option>
+                                                        <option value="Apartamento">Apartamento</option>
+                                                        <option value="Casa">Casa</option>
+                                                        <option value="Oficina">Oficina</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group form-md-line-input">
+                                                <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                    <span class="required input-group-addon">
+                                                        <i class="fa fa-map-signs"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();" placeholder="Dirección"/>
+                                                    <span class="help-block"></span>
+                                                    <!-- Campo escondido que toma valor de direccion -->
+                                                    <input type="hidden" name="resdir" id="resdir">
+                                                </div>
+                                                <!-- Campos escondidos que toman valores de coordenadas -->
+                                                <div><input type="hidden" id="search"/></div>
+                                                <div><input type="hidden" id="latitud" name="latitud"/></div>
+                                                <div><input type="hidden" id="longitu" name="longitu"/></div>
+                                            </div>
+
+                                            <div class="form-group form-md-line-input">
+                                                <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                    <span class="required input-group-addon">
+                                                        <i class="fa fa-location-arrow"></i>
+                                                    </span>
+                                                    <textarea class="form-control" rows="2" name="descripcion" id="descripcion"  placeholder="Descripcion de la direccion"></textarea>
+                                                    <span class="help-block"></span>
+                                                </div>
+                                            </div>
+
+
+
                                                                 <?
-                                                            }
+                                                                }
 
-                                                         ?>
-                                                         </select>
+                                                                else if ($cuenta <= 0)
+                                                                {
+                                                                ?>
+                                                                    <div class="form-group form-md-line-input">
+                                                                        <div class="form-group form-md-line-input">
+                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                            <label class="control-label">Escriba la informacion de su ubicacion</label>
+                                                                        </div>
+                                                                    </div>
+                                                              
+                                                                    <div class="form-group form-md-line-input">
+                                                                        <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                        <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                            <span class="required input-group-addon">
+                                                                                <i class="fa fa-flag"></i>
+                                                                            </span>
+                                                                            <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
+                                                                            <!-- Campo escondido que toma valor de ciudad -->
+                                                                            <input type="hidden" name="resciu" id="resciu" >
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group form-md-line-input">
+                                                                        <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                        <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                            <span class="required input-group-addon">
+                                                                                <i class="fa fa-home"></i>
+                                                                            </span>
+                                                                            <select name="tipodom" id="tipodom" class="form-control">
+                                                                                <option value="">Tipo vivienda</option>
+                                                                                <option value="Apartamento">Apartamento</option>
+                                                                                <option value="Casa">Casa</option>
+                                                                                <option value="Oficina">Oficina</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group form-md-line-input">
+                                                                        <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                        <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                            <span class="required input-group-addon">
+                                                                                <i class="fa fa-map-signs"></i>
+                                                                            </span>
+                                                                            <input type="text" class="form-control" name="direccion" id="direccion" onchange="mostrarUbicacion();" placeholder="Dirección"/>
+                                                                            <span class="help-block"></span>
+                                                                            <!-- Campo escondido que toma valor de direccion -->
+                                                                            <input type="hidden" name="resdir" id="resdir">
+                                                                        </div>
+                                                                        <!-- Campos escondidos que toman valores de coordenadas -->
+                                                                        <div><input type="hidden" id="search"/></div>
+                                                                        <div><input type="hidden" id="latitud" name="latitud"/></div>
+                                                                        <div><input type="hidden" id="longitu" name="longitu"/></div>
+                                                                    </div>
+
+
+                                                                    <div class="form-group form-md-line-input">
+                                                                        <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                        <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                            <span class="required input-group-addon">
+                                                                                <i class="fa fa-location-arrow"></i>
+                                                                            </span>
+                                                                            <textarea class="form-control" rows="2" name="descripcion" id="descripcion"  placeholder="Descripcion de la direccion"></textarea>
+                                                                            <span class="help-block"></span>
+                                                                        </div>
+                                                                            </div>
+
+                                                                    <?
+                                                                }
+                                                            ?>
+                                                        
+                                            <div class="form-group form-md-line-input">
+                                                <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="input-icon">
+                                                         <i class="fa fa-map"></i>
+                                                            <select class="form-control" id="zona" name="zona">
+                                                             <?
+
+                                                                $objFor = new PDOModel();
+                                                                $objFor->where("id_estado", 1);
+                                                                $result3 =  $objFor->select("zonas");
+                                                                foreach ($result3 as $key) 
+                                                                {
+                                                                    ?>
+                                                                       <option value="<?php echo $key["id"]?>"><?php echo $key["descripcion"]?></option>
+                                                                    <?
+                                                                }
+
+                                                             ?>
+                                                             </select>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                         </div>
+                                            
+                                        <div class="form-group form-md-line-input">
+                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                <label class="control-label">Valor del producto </label>
+                                                 <label class="control-label"><?php echo $producto[0]['precio'] ?></label>
+                                                 
+                                             </div>
                                         </div>
-                                     </div>
-                                        
-                                    <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <label class="control-label">Valor del producto </label>
-                                             <label class="control-label"><?php echo $producto[0]['precio'] ?></label>
-                                             
-                                         </div>
-                                    </div>
 
-                                    <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                        <?
-                                            //calculo del total que debe pagar el cliente tniendo en cunta el precio del 
-                                            //producto y la cantidad solicitada
-                                            $total=  $pedido[0]['cantidad'] * $producto[0]['precio'];?>
-                                             <label class="control-label"><b>Total a pagar     </b></label>
-                                             <label class="control-label"><?php echo $total ?></label>
-                                         </div>
+                                        <div class="form-group form-md-line-input">
+                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <?
+                                                //calculo del total que debe pagar el cliente tniendo en cunta el precio del 
+                                                //producto y la cantidad solicitada
+                                                $total=  $pedido[0]['cantidad'] * $producto[0]['precio'];?>
+                                                 <label class="control-label"><b>Total a pagar     </b></label>
+                                                 <label class="control-label"><?php echo $total ?></label>
+                                             </div>
+                                        </div>
+                                        
+                                        <div class="form-group form-md-line-input">
+                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                <div class="input-icon">
+                                                    <i class="fa fa-credit-card-alt"></i>
+                                                    <label class="control-label">Seleccione el metodo de pago</label>
+                                                    
+                                                    <?
+                                                        $objTarjeta = new PDOModel();
+                                                        $objTarjeta->where("id_usuario", $usu_id);
+                                                        $objTarjeta->columns = array("count(*) tarjeta");
+                                                        $cuentaTotal =  $objTarjeta->select("usuarios_pagos");
+                                                        foreach ($cuentaTotal as $cuentaTot)
+                                                        {
+                                                            foreach ($cuentaTot as $cuentaTo)
+                                                            {
+                                                                $cuentaTar= $cuentaTo;
+                                                            }
+                                                        }
+
+                                                        if ($cuentaTar > 0)
+                                                        {
+                                                            ?>
+                                                             <div class="form-group form-md-line-input">
+                                                                <label class="control-label">Seleccione la tarjeta</label>
+                                                                <select class="form-control" id="tarjeta" name="tarjeta">
+                                                                        <?
+                                                                            $objTarjeta->andOrOperator = "AND";
+                                                                            $objTarjeta->where("id_estado", 1);
+                                                                            $objTarjeta->where("id_usuario", $usu_id);
+                                                                            $info_tarjeta =  $objTarjeta->select("usuarios_pagos");
+
+                                                                            foreach ($info_tarjeta as $key) 
+                                                                                {
+                                                                                    ?>
+                                                                                         <option value="<?php echo $item1["id"]?>"><?php echo "******".$key["tarjeta"]?></option>
+                                                                                    <?
+                                                                                }
+                                                                        ?>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input class="btn btn-circle purple" name="crear" type="button" id="crear" value="Agregar" href="crear_tarjeta.php?id_usuario=<? echo $usu_id ?>">
+                                                            </div>
+                                                            <?
+                                                        }
+
+                                                        else if ($cuentaTar <= 0)
+                                                        {
+                                                            ?>
+                                                            <div class="form-group">
+                                                                <input class="btn btn-circle purple" name="crear" type="button" id="crear" value="Agregar" href="crear_tarjeta.php?id_usuario=<? echo $usu_id ?>">
+                                                            </div>
+                                                            <?
+                                                        }
+                                                    ?>
+                                                </div>  
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <div class="col-md-offset-3 col-md-9">
+                                                <input class="btn btn-circle red" name="confirmar" type="submit" id="confirmar" value="Confirmar pedido">
+                                                <input type="hidden" id="id_pedido" name="id_pedido" value="<? echo  $id_pedido ?>" />
+                                                <input type="hidden" id="total" name="total" value="<? echo  $total ?>" />
+                                                <input type="hidden" id="formulario" name="formulario" value="confirmar_pedido"/>
+                                            </div>
+                                        </div>
+                                        <?//echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
                                     </div>
                                     
-                                    <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <div class="input-icon">
-                                                <i class="fa fa-credit-card-alt"></i>
-                                                <label class="control-label">Seleccione el metodo de pago</label>
-                                                
-                                                <?
-                                                    $objTarjeta = new PDOModel();
-                                                    $objTarjeta->where("id_usuario", $usu_id);
-                                                    $objTarjeta->columns = array("count(*) tarjeta");
-                                                    $cuentaTotal =  $objTarjeta->select("usuarios_pagos");
-                                                    foreach ($cuentaTotal as $cuentaTot)
-                                                    {
-                                                        foreach ($cuentaTot as $cuentaTo)
-                                                        {
-                                                            $cuentaTar= $cuentaTo;
-                                                        }
-                                                    }
-
-                                                    if ($cuentaTar > 0)
-                                                    {
-                                                        ?>
-                                                         <div class="form-group">
-                                                            <label class="control-label">Seleccione la tarjeta</label>
-                                                            <select class="form-control" id="tarjeta" name="tarjeta">
-                                                                    <?
-                                                                        $objTarjeta->andOrOperator = "AND";
-                                                                        $objTarjeta->where("id_estado", 1);
-                                                                        $objTarjeta->where("id_usuario", $usu_id);
-                                                                        $info_tarjeta =  $objTarjeta->select("usuarios_pagos");
-
-                                                                        foreach ($info_tarjeta as $key) 
-                                                                            {
-                                                                                ?>
-                                                                                     <option value="<?php echo $item1["id"]?>"><?php echo "******".$key["tarjeta"]?></option>
-                                                                                <?
-                                                                            }
-                                                                    ?>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <input class="btn purple" name="crear" type="button" id="crear" value="Agregar" href="crear_tarjeta.php?id_usuario=<? echo $usu_id ?>">
-                                                        </div>
-                                                        <?
-                                                    }
-
-                                                    else if ($cuentaTar <= 0)
-                                                    {
-                                                        ?>
-                                                        <div class="form-group">
-                                                            <input class="btn purple" name="crear" type="button" id="crear" value="Agregar" href="crear_tarjeta.php?id_usuario=<? echo $usu_id ?>">
-                                                        </div>
-                                                        <?
-                                                    }
-                                                ?>
-                                            </div>  
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <input class="btn red" name="confirmar" type="submit" id="confirmar" value="Confirmar pedido">
-                                            <input type="hidden" id="id_pedido" name="id_pedido" value="<? echo  $id_pedido ?>" />
-                                            <input type="hidden" id="total" name="total" value="<? echo  $total ?>" />
-                                            <input type="hidden" id="formulario" name="formulario" value="confirmar_pedido"/>
-                                        </div>
-                                    </div>
-                                    <?//echo "<pre>";print_r($GLOBALS); echo "<pre>"; ?>
-                                </div>
-                                
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

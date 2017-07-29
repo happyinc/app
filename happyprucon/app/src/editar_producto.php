@@ -595,11 +595,11 @@ License: You must have a valid license purchased only from themeforest(the above
 											</div>
 										</div>
 									</div>
-									<div class="form-group form-md-line-input">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+									<div class="form-actions">
+                                        <div class="col-md-offset-3 col-md-9">
 										
-											<input class="btn purple" name="editar" type="submit" id="editar" value="Editar">
-											<input class="btn red" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick=" eliminarProducto();">
+											<input class="btn  btn-circle purple" name="editar" type="submit" id="editar" value="Editar">
+											<input class="btn btn-circle red" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick=" eliminarProducto();">
 											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
 											<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
 										</div>
@@ -637,17 +637,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	                                                                        <div class="mt-comment-text"><? echo $valor['comentario'] ;?></div>
 	                                                                        <div class="mt-comment-details">
 	                                                                            <span class="mt-comment-status mt-comment-status-pending"><? echo print_calificacion($valor['calificacion']); ?></span>
-	                                                                            <!--<ul class="mt-comment-actions">
-	                                                                                <li>
-	                                                                                    <a href="#">Quick Edit</a>
-	                                                                                </li>
-	                                                                                <li>
-	                                                                                    <a href="#">View</a>
-	                                                                                </li>
-	                                                                                <li>
-	                                                                                    <a href="#">Delete</a>
-	                                                                                </li>
-	                                                                            </ul>-->
+	                                                                           
 	                                                                        </div>
 	                                                                    </div>
 	                                                                </div>

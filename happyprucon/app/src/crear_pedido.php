@@ -272,89 +272,85 @@ License: You must have a valid license purchased only from themeforest(the above
                         
                     <!-- END PAGE HEADER-->
                     </div>
-                    <div class="portlet light">
-                        <div class="portlet-body form">
-                            <form role="form" class="form-horizontal" name="crear_pedido"  id="crear_pedido" action="crear_pedido.php" enctype="multipart/form-data" method="post">
-                                <div class="form-body">
-                                    <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <div class=" portlet box red">
-                                                <div class="portlet-title portlet box red">
-                                                    <div class="caption" >
-                                                        <span align><? echo $producto[0]['nombre']; ?> </span>
-                                                     </div>
+                    <div class="col-md-12">
+                        <div class="portlet box red">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <span><? echo $producto[0]['nombre']; ?></span>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <form role="form" class="form-horizontal" name="crear_pedido"  id="crear_pedido" action="crear_pedido.php" enctype="multipart/form-data" method="post">
+                                    <div class="form-body">
+                                    
+                                        <div class="form-group form-md-line-input">
+                                            <div class="col-md-8 col-lg-8 col-xs-12 col-sm-12">
+                                                <img src="<? echo 'usuarios/'.$producto[0]['id_usuario'].'/bienes/'.$producto[0]['id'].'/res_producto.jpg'?>" class="img-responsive pic-bordered">
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-md-line-input">
+                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                <div class="well">
+                                                    <ul class="list-inline">
+                                                        <li class="font-purple">
+                                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?
+                                                            $result1 =  $objProd->executeQuery("SELECT A. id, B. cantidad_despachada  FROM producto A, producto_disponibilidad B WHERE A.id = '".$id_producto."' AND B.id_producto = A.id AND  B.id_estado = 1;");
+
+                                                            foreach ($result1 as $key) 
+                                                            {
+                                                                $cantidad_des= $key['cantidad_despachada'];
+                                                                echo $cantidad_des;
+                                                            }
+                                                            ?>
+                                                        </li>
+                                                        <li class="font-yellow"><i class="fa fa-star"></i> <?echo  calificacion_prod($producto[0]['id'])?></li>
+                                                        <li class="font-red"><?echo  "$".$producto[0]['precio']?></li>
+                                                    </ul>
+                                                    <h4><b>Ingredientes:</b></h4>
+                                                    <?
+                                                        $result2 =  $objProd->executeQuery("SELECT A.*, B.*  FROM composicion_producto A, composicion B WHERE A.id_producto = '".$id_producto."' AND B.id = A.id_composicion AND B.id_estado = 1;");
+                                                        foreach ($result2 as $key) {
+                                                            $composicion= $key['nombre'];
+                                                            echo '-'.' '.$composicion.'<br>';
+                                                        }
+                                                    ?>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                     <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <img src="<? echo 'usuarios/'.$producto[0]['id_usuario'].'/bienes/'.$producto[0]['id'].'/res_producto.jpg'?>">
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <div class="well">
-                                                <ul class="list-inline">
-                                                    <li class="font-purple">
-                                                        <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?
-                                                        $result1 =  $objProd->executeQuery("SELECT A. id, B. cantidad_despachada  FROM producto A, producto_disponibilidad B WHERE A.id = '".$id_producto."' AND B.id_producto = A.id AND  B.id_estado = 1;");
-
-                                                        foreach ($result1 as $key) 
-                                                        {
-                                                            $cantidad_des= $key['cantidad_despachada'];
-                                                            echo $cantidad_des;
-                                                        }
-                                                        ?>
-                                                    </li>
-                                                    <li class="font-yellow"><i class="fa fa-star"></i> <?echo  calificacion_prod($producto[0]['id'])?></li>
-                                                    <li class="font-red"><?echo  "$".$producto[0]['precio']?></li>
-                                                </ul>
-                                                <h4><b>Ingredientes:</b></h4>
-                                                <?
-                                                    $result2 =  $objProd->executeQuery("SELECT A.*, B.*  FROM composicion_producto A, composicion B WHERE A.id_producto = '".$id_producto."' AND B.id = A.id_composicion AND B.id_estado = 1;");
-                                                    foreach ($result2 as $key) {
-                                                        $composicion= $key['nombre'];
-                                                        echo '-'.' '.$composicion.'<br>';
-                                                    }
-                                                ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                     <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <div class="form-group">
-                                                <label class="control-label">Seleccione la cantidad a solicitar</label>
-                                                    <select class="form-control" id="cantidad_despachada" name="cantidad_despachada">
-                                                        <?
-                                                        $result2 =  $objProd->executeQuery("SELECT A. id, B. cantidad_disponible FROM producto A, producto_disponibilidad B WHERE A.id = '".$id_producto."' AND B.id_producto = A.id AND  B.id_estado = 1;");
-                                                        foreach ($result2 as $key) 
-                                                        {
-                                                            for ($i = 1; $i <= $key['cantidad_disponible']; $i++)
+                                        <div class="form-group form-md-line-input">
+                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Seleccione la cantidad a solicitar</label>
+                                                        <select class="form-control" id="cantidad_despachada" name="cantidad_despachada">
+                                                            <?
+                                                            $result2 =  $objProd->executeQuery("SELECT A. id, B. cantidad_disponible FROM producto A, producto_disponibilidad B WHERE A.id = '".$id_producto."' AND B.id_producto = A.id AND  B.id_estado = 1;");
+                                                            foreach ($result2 as $key) 
                                                             {
-                                                                ?>
-                                                                    <option value="<?php echo $i ?>"><?php echo $i?></option>
-                                                                <?
+                                                                for ($i = 1; $i <= $key['cantidad_disponible']; $i++)
+                                                                {
+                                                                    ?>
+                                                                        <option value="<?php echo $i ?>"><?php echo $i?></option>
+                                                                    <?
+                                                                }
                                                             }
-                                                        }
 
-                                                        ?>
-                                                    </select>
+                                                            ?>
+                                                        </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <div class="col-md-offset-3 col-md-9">
+                                                <input class="btn btn btn-circle red" name="pedido" type="submit" id="pedido" value="Realizar pedido">
+                                                <input type="hidden" id="id_producto" name="id_producto" value="<? echo  $id_producto ?>" />
+                                                <input type="hidden" id="formulario" name="formulario" value="crear_pedido"/>
                                             </div>
                                         </div>
                                     </div>
-
-                                   <div class="form-group form-md-line-input">
-                                        <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                            <input class="btn red" name="pedido" type="submit" id="pedido" value="Realizar pedido">
-                                            <input type="hidden" id="id_producto" name="id_producto" value="<? echo  $id_producto ?>" />
-                                            <input type="hidden" id="formulario" name="formulario" value="crear_pedido"/>
-                                        </div>
-                                    </div>
-                                   
-                                 </div>
-                                
-                            </form>
+                                    
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
