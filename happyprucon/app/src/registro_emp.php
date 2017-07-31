@@ -637,7 +637,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                 </h4>
                                             </div>
                                             <div class="form-group">
-                                                <input id="fotos" name="fotos[]" type="file" class="file" multiple class="file-loading">
+                                                <input id="fotos" name="fotos[]" type="file" multiple class="file-loading">
                                             </div>
                                             <div id = "errorBlock" class = "help-block" > </div>
                                             <script>

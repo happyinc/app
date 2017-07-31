@@ -85,12 +85,14 @@ if($rol_emp != ""){
     $rol = $rol_emp;
     $gustos = "TU ESPECIALIDAD";
     $escoge_gusto = "Cuales son tus especialidades";
+    $index = "fotos_sitio.php";
 }
 
 if($rol_cli != ""){
     $rol = $rol_cli;
     $gustos = "TUS GUSTOS";
     $escoge_gusto = "Cuales son tus gustos";
+    $index = "gestion_pedido.php";
 }
 
 //condicionales para unificar variables de correo
@@ -154,22 +156,15 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
 
 
         //Recorre el array para insertar los datos en la tabla de gustos
-        $bienes = $_POST["tipo_bienes"];
-        $bien= explode('-',$bienes);
+        $bienes = $_POST["categoria"];
 
-        foreach ($bien as $item2){
-            $nombre_bien = $item2;
-            foreach ($_POST["".$nombre_bien.""] as $clave => $valor) {
-                if($valor != "")
-                {
+        foreach ($bienes  as $clave => $valor){
                     $id_catagoria = $valor;
                     $objConn = new PDOModel();
                     $insertUserGusto["id_usuario"] = $id_usuario;
                     $insertUserGusto["id_categoria"] = $id_catagoria;
                     $insertUserGusto["id_estado"] = 1;
                     $objConn->insert("gustos", $insertUserGusto);
-                }
-            }
         }
 
         $objConn = new PDOModel();
@@ -458,10 +453,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                         $objCat = new PDOModel();
                                         $objCat->where("id_estado", 1);
                                         $result =  $objCat->select("bienes");
-                                        $tipo_bienes = "";
                                         foreach($result as $item){
-                                            $tipo_bienes .= $item["nombre"]."-";
-                                            $temporal = $item["nombre"];
                                             ?>
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
@@ -479,18 +471,15 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                         $result1 =  $objCat->select("categoria");
                                                         foreach($result1 as $item1){
                                                             ?><label>
-                                                            <input type="checkbox" class="icheck" name="<? echo $temporal ?>[]" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
+                                                            <input type="checkbox" class="icheck" name="categoria[]" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" /></label><?php
                                                         }
                                                         ?>
                                                     </div>
                                                 </div>
                                             </div>  <?
                                         }
-
-                                        $tipo_bienes = trim($tipo_bienes, "-");
-
                                         ?>
-                                        <input type="hidden" name="tipo_bienes" value="<?php $tipo_bienes; ?>"/>
+
                                     </div>
                                 </div>
                                 <!-- END ACCORDION PORTLET-->
