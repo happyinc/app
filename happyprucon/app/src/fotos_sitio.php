@@ -33,7 +33,6 @@ License: You must have a valid license purchased only from themeforest(the above
 <head>
     <?php
     include "include_css.php";
-    include "funciones.php";
     ?>
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link href="../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
@@ -63,23 +62,18 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN LOGIN -->
 <div class="content">
     <!-- BEGIN LOGIN FORM -->
-    <form role="form" enctype="multipart/form-data" action="fotos_sitio.php" class="form-horizontal">
+    <form role="form" enctype="multipart/form-data" class="form-horizontal">
         <div class="form-body">
             <div class="form-group">
                 <h3 class="block bold" style="color: #520d9b">FOTOS DEL SITIO</h3>
-                <input id="fotos" name="fotos[]"  type="file" accept="image/*" multiple>
-            </div>
-        </div>
-        <div class="form-actions">
-            <div class="row">
-                <div class="col-md-offset-3 col-md-9">
-
-                    <button href="javascript:;" class="btn green button-submit" name="btn1" value="registrar"> Registrar
-                        <i class="fa fa-check"></i>
-                    </button>
-                    <input type="hidden" id="formulario" name="formulario" value="Registrar"/>
-
+                <div style="padding-bottom: 50px">
+                    <h4>
+                        <p class="font-grey-gallery bold">
+                            Lo que quieres con lo que tienes
+                        </p>
+                    </h4>
                 </div>
+                <input id="fotos" name="fotos[]"  type="file" accept="image/*" multiple>
             </div>
         </div>
     </form>
@@ -93,7 +87,7 @@ License: You must have a valid license purchased only from themeforest(the above
             $("#fotos").fileinput({
                 language: 'es',
                 'theme': 'explorer',
-                'uploadUrl': 'actualiza_fotos_sitio.php',
+                'uploadUrl': 'subir_fotos_sitio.php',
                 uploadAsync: false,
                 minFileCount: 1,
                 maxFileCount: 6,
