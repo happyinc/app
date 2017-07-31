@@ -10,10 +10,10 @@
     $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
 
-    /*if($rol!=3){
+    if($rol!=3){
         echo "<script> alert('Usuario no autorizado');
                         window.location.assign('logueo.html');</script>";
-    }   */
+    }   
 ?>  
 <!DOCTYPE html>
 <!-- 
@@ -251,8 +251,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
                     <!-- END THEME PANEL -->
-                    <h1 class="page-title"> Productos disponibles
-                        <small>Productos disponibles</small>
+                    <h1 class="page-title"> Hacer pedido
+                        <small>Hacer pedido</small>
                     </h1>
                     <div class="page-bar">
                         <ul class="page-breadcrumb">
@@ -262,11 +262,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <a href="#">Productos disponibles</a>
+                                <a href="#">Hacer pedido</a>
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <span>Productos disponibles</span>
+                                <span>Hacer pedido</span>
                             </li>
                         </ul>
                         
