@@ -228,40 +228,45 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <form role="form" class="form-horizontal" name="estado_pedido"  id="estado_pedido" action="estado_pedido.php" enctype="multipart/form-data" method="post">
                                     <div class="form-body">
                                         <div class="form-group form-md-line-input">
-                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-                                                 <img src="<? echo 'usuarios/'.$producto[0]['id_usuario'].'/bienes/'.$producto[0]['id'].'/res_producto.jpg'?>">
-                                                 
-                                             </div>
+                                            <div class="col-lg-4"></div>
+                                                <div class="col-md-4" align="center">
+                                                    <img src="<? echo 'usuarios/'.$producto[0]['id_usuario'].'/bienes/'.$producto[0]['id'].'/res_producto.jpg'?>" class="img-responsive pic-bordered">
+                                                </div>
+                                            <div class="col-lg-4"></div>
                                         </div>
 
                                        <div class="form-group form-md-line-input">
-                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <div class="col-lg-4"></div>
+                                            <div class="col-md-4">
                                                 <label class="control-label">Precio: $</label>
                                                  <label class="control-label"><?php echo $pedido[0]['precio'] ?></label>
-                                                 
-                                             </div>
+                                            </div>
+                                            <div class="col-lg-4"></div>
                                         </div>
 
                                         <div class="form-group form-md-line-input">
-                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                           <div class="col-lg-4"></div>
+                                                 <div class="col-md-4">
                                                 <label class="control-label">Nombre del plato: </label>
-                                                 <label class="control-label"><?php echo $producto[0]['nombre'] ?></label>
-                                                 
-                                             </div>
+                                            </div>
+                                            <div class="col-lg-4"></div>
                                         </div>
                                         
                                         <div class="form-group form-md-line-input">
-                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <div class="col-lg-4"></div>
+                                            <div class="col-md-4">
                                                 <label class="control-label">Cantidad: </label>
                                                  <label class="control-label"><?php echo $pedido[0]['cantidad'] ?></label>
                                                  
-                                             </div>
+                                            </div>
+                                            <div class="col-lg-4"></div>
                                         </div>
 
                                         
                                       
                                       <div class="form-group form-md-line-input">
-                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <div class="col-lg-4"></div>
+                                            <div class="col-md-4">
                                                 <label class="control-label">Direccion:</label>
                                                 <?
                                                     $objDir = new PDOModel();
@@ -270,11 +275,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 ?>
                                                  <label class="control-label"><?php echo $direccion[0]['direccion'] ?></label>
                                                  
-                                             </div>
+                                            </div>
+                                            <div class="col-lg-4"></div>
                                         </div>
 
                                         <div class="form-group form-md-line-input">
-                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <div class="col-lg-4"></div>
+                                            <div class="col-md-4">
                                                 <label class="control-label">Estado: </label>
                                                 <?
                                                     $objEst = new PDOModel();
@@ -284,15 +291,17 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                  <label class="control-label"><?php echo $estado[0]['descripcion'] ?></label>
                                                  
-                                             </div>
+                                            </div>
+                                             <div class="col-lg-4"></div>
                                         </div>
 
                                         <div class="form-actions">
-                                            <div class="col-md-offset-3 col-md-9">
-                                                
+                                            <div class="col-lg-4"></div>
+                                            <div class="col-md-4"  align="center">
                                                 <a href="disponibilidad_emprendedor.php"><input  name="navegar" type="button" class="btn btn-circle red" id="navegar" value="Seguir navegando" /></a>
-                                               <input type="hidden" id="formulario" name="formulario" value="estado_pedido"/>
+                                                <input type="hidden" id="formulario" name="formulario" value="estado_pedido"/>
                                             </div>
+                                            <div class="col-md-4">
                                         </div>
                                     </div>
                                     

@@ -92,15 +92,9 @@ License: You must have a valid license purchased only from themeforest(the above
             $objConn = new PDOModel();
 
               //calculo de lo que se le debe pagar al emprendedor
-                ?>
-                    <script type="text/javascript">alert("<? echo $_POST["total"]?>");
-                       alert("<? echo $categoria[0]['comision']?>");
-                    </script>
-                <?
+               
                 $cxp= $_POST["total"] - (($_POST["total"] * $categoria[0]['comision']) / 100);
-                 ?>
-                    <script type="text/javascript">alert("<? echo $cxp?>");</script>
-                <?
+                 
 
 
             // si el pedido va con domicilio
@@ -768,7 +762,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                             <div class="form-actions">
                                                 <div class="col-lg-4"></div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-4" align="center">
                                                     <input class="btn btn-circle red" name="confirmar" type="submit" id="confirmar" value="Confirmar pedido">
                                                     <input type="hidden" id="id_pedido" name="id_pedido" value="<? echo  $id_pedido ?>" />
                                                     <input type="hidden" id="total" name="total" value="<? echo  $total ?>" />
