@@ -1,32 +1,20 @@
 <?php
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
-    require_once'../../externo/plugins/PDOModel.php';
+	require_once'../../externo/plugins/PDOModel.php';
 	require'../class/sessions.php';
+	$objSe = new Sessions();
+	$objSe->init();
 
-$usu_id = "";
-    
-        if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
-        {
-            $usu_id = $_POST["id_usuario"];
-        }
-        elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
-        {
-             $usu_id = $_GET["id_usuario"];
-        }
-$objUbicacion = new PDOModel();
-$objUbicacion->where("id_usuario", $usu_id);
-$res_usuarios =  $objUbicacion->select("usuarios");
-foreach ($res_usuarios as $usuarios)
-{
-        $rol = $usuarios["rol"] ;
-        $fullname = $usuarios["fullname"] ;                                                        
-}
-	
-/*	if($rol!=2){
+	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
+	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
+
+
+	if($rol!=2){
 		echo "<script> alert('Usuario no autorizado');
 						window.location.assign('logueo.html');</script>";
-	}	*/
-?>	
+	}	
+?>
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
@@ -50,67 +38,92 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <head>
 	<?php
+
 	include "include_css.php";
+	include "funciones.php";
 	
-	?>
-	<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
-    <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />	
-		<?
+	
+		$id_producto = "";
+	
+        if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
+        {
+            $id_producto = $_POST["id_producto"];
+        }
+        elseif(isset($_GET["id_producto"]) && $_GET["id_producto"] != "")
+        {
+             $id_producto = $_GET["id_producto"];
+        }
+		?>
+		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+		
+			
+	    <?
+		"";
 		$objProd = new PDOModel();
-		$objProd->andOrOperator = "AND";
-		$objProd->where("id_estado", 1);
-		$objProd->where("id_usuario", $usu_id);
+		$objProd->where("id", $id_producto);
 		$producto =  $objProd->select("producto");
 
-        if ( isset($_GET["anular"]) && $_GET["anular"] != '')
-        {
-                                                                
-           $updateData["id_estado"] = 2; 
-           $objProd->where("id_producto", $_GET["anular"] );
-           $objProd->update('producto_disponibilidad', $updateData);
-           $disponibilidad_eliminado= $objProd->rowsChanged;
-           if($disponibilidad_eliminado != 1)
-            {
-                ?><script type="text/javascript">
-                    alert("No se elimino la disponibilidad del producto");</script>
-                <?
-            }
-        }
-       
+        
+		if(isset($_POST["formulario"]) && $_POST["formulario"] == "editar_producto" )
+		{
+			
+			if(isset($_POST["editar"]) && $_POST["editar"]== "Editar")
+			{
+				$objConn = new PDOModel();
+				$updateData["nombre"] = $_POST["nombre"]; 
+				$updateData["descripcion"] = $_POST["descripcion"];
+				$updateData["especial"] = $_POST["especialidad"];
+				$updateData["precio"] = $_POST["precio"];
+				$updateData["fecha"] = date("Y-m-d H:i:s"); 
+				$objConn->where("id", $id_producto);
+				$objConn->update('producto', $updateData);
+
+				
+				$producto_actualizado= $objConn->rowsChanged;
+
+
+			}
+		}		
+	
 		?>
-		<script>
-		function eliminarDisponibilidad(id)
-		  	{
-                 var id = id
-		  		swal({
-						title:"¿Desea eliminar la disponibilidad del producto:"+id+"?",
-						text: "",
-						type: "warning",
-						showCancelButton: true,
-						confirmButtonClass: "btn-danger",
-						confirmButtonText: "Si, deseo hacerlo!",
-						cancelButtonText: "No",
-						closeOnConfirm: false,
-						closeOnCancel: false
-				},
-				function(isConfirm) 
-				{
-					if (isConfirm) {
-						swal("Ir", "La disponibilidad ha sido eliminada del producto", "success");
-						location.href="gestion_producto.php";
+		<script type="text/javascript">
+		
+			function alertaProducto(producto_actualizado) 
+			{
+				
+				var producto = producto_actualizado;
+				
+				
+					if(producto >= 1)
+					{
+						swal({
+							title:"Producto con el id:" + <? echo $id_producto ?>+"ha sido actualizado",
+							text: "",
+							type: "success",
+							showCancelButton: false,
+							confirmButtonClass: "btn-success",
+							confirmButtonText: "Producto actualizado!",
+							cancelButtonText: "No",
+							closeOnConfirm: false,
+							closeOnCancel: false
+						},
+						function(isConfirm) {
+							if (isConfirm) {
+								swal("", "", "success");
+								location.href="gestion_producto.php";
+							} 
+						});
 					}
-					else 
-                    {
-						swal("Cancelar","se cancelo la eliminacion del producto");
-						location.href="gestion_producto.php";
-					}
-				});
-		  	}	
+			}
+		  		
 		</script>
+
+
 	</head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" >
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -230,8 +243,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
                     <!-- END THEME PANEL -->
-                    <h1 class="page-title"> Gestion del producto
-                        <small>Gestion de los productos</small>
+                    <h1 class="page-title"> Gestion pedido
+                        <small>Gestion de pedidos </small>
                     </h1>
                     <div class="page-bar">
                         <ul class="page-breadcrumb">
@@ -241,11 +254,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <a href="#">Gestion del producto</a>
+                                <a href="#">Gestion pedido</a>
                                 <i class="fa fa-angle-right"></i>
                             </li>
                             <li>
-                                <span>Gestion de los productos</span>
+                                <span>Gestion pedido</span>
                             </li>
                         </ul>
                         
@@ -253,62 +266,95 @@ License: You must have a valid license purchased only from themeforest(the above
 					</div>
 					<div class="portlet light">
 						<div class="portlet-body form">
-							<form role="form" class="form-horizontal" name="gestion_producto"  id="gestion_producto" action="gestion_producto.php" enctype="multipart/form-data" method="post">
+							<form role="form" class="form-horizontal" name="gestion_pedido_detalle"  id="gestion_pedido_detalle" action="gestion_pedido_detalle.php" enctype="multipart/form-data" method="post">
 								<div class="form-body">
+									
+									
+									
 									<div class="form-group form-md-line-input">
-										<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-											<a href="../src/crear_producto.php"><i class="fa fa-plus-circle fa-5x" style="color:gray" aria-hidden="true"></i></a>
-										</div>
-										<div class="col-md-9 col-lg-9 col-xs-8 col-sm-8">
-											Crear Bien o Servicio
+										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+											<div class="input-icon">
+												<div>
+												<label class="control-label col-md-3">¿El producto es su especialidad?
+													<span class="required"> * </span>
+												</label>
+												</div>
+												<div class="radio-list">
+													<?if($producto[0]['especial'] == "s") 
+													{?> 
+														<label> <input type="radio" id="especialidad_0" name="especialidad" value="s" data-title="si" checked />Si</label>
+														<label> <input type="radio" id="especialidad_1" name="especialidad" value="n" data-title="no"/> No</label>
+													<?}
+													else if ($producto[0]['especial'] == "n")
+													{?>
+														<label> <input type="radio" id="especialidad_0" name="especialidad" value="s" data-title="si"/>Si</label>
+														<label> <input type="radio" id="especialidad_1" name="especialidad" value="n" data-title="no" checked /> No</label>
+													<?}?>
+												
+												</div>
+												<i class="fa fa-star"></i>
+											</div>
 										</div>
 									</div>
-									<?php
-									foreach($producto as $item)
-										{
-											?>
-											<div class="form-group form-md-line-input">
-												<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
+									<div class="form-actions">
+                                        <div class="col-md-offset-3 col-md-9">
+										
+											<input class="btn  btn-circle purple" name="editar" type="submit" id="editar" value="Editar">
+											<input class="btn btn-circle red" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick=" eliminarProducto();">
+											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
+											<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
+										</div>
+									</div>
 
-													<div class="fileinput-new thumbnail img-circle" style="width: 150px; height: 150px;">
-                                                        <a href="../src/editar_producto.php?id_producto=<? echo $item["id"]?>"><img src="<? echo "usuarios/".$usu_id."/bienes/".$item["id"]."/res_producto.jpg"?>" alt="">
-                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn purple-studio">Editar</div> </a>
 
-													</div>
-												</div>
-												<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
-													<?php echo $item["nombre"]?><br>
-													<?php echo $item["descripcion"]?><br>
-													<?php echo "$ ".$item["precio"]?>
-												</div>
-												<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-													<?php
-													
-													$objProd->where("id_producto", $item["id"]);
-													$relacion =  $objProd->select("producto_disponibilidad");
-													$result=$objProd->totalRows;
-													if($relacion[0]["id_estado"]==1)
-													{
-														?>
-                                                        
-                                                        <a  href="gestion_producto.php?anular=<? echo $item["id"] ?>" onclick="eliminarDisponibilidad(<? echo $item["id"] ?>);">
-                                                            <i class="fa fa-toggle-on fa-4x" style="color:green" aria-hidden="true"></i></a>
-                                                         <?php
-                                                    }
-													else if($result <= 0 || $relacion[0]["id_estado"]==2)
-													{
-														?><a  href="../src/crear_disponibilidad.php?id_producto=<? echo $item["id"]?>">
-															<i class="fa fa-toggle-off fa-4x" style="color:red" aria-hidden="true"></i></a>
-                                                    <?php
-													}
-													?>
-												</div>
-                                                <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id"] ?>" />
-											</div><?php
-										}
-										?>
-									<input type="hidden" id="formulario" name="formulario" value="gestion_producto"/>
-                                 </div>
+                                        <div class="portlet light ">
+                                            <div class="portlet-title tabbable-line">
+                                                <div class="caption">
+                                                    <i class="icon-bubbles font-dark hide"></i>
+                                                    <span class="caption-subject"><h3 class="block bold" style="color: #520d9b">COMENTARIOS</h3></span>
+                                                </div>
+
+                                            </div>
+                                            <div class="portlet-body">
+                                                <div class="tab-content">
+                                                    <div class="scroller" style="height: 338px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
+                                                        <div class="tab-pane active" id="portlet_comments_1">
+                                                            <!-- BEGIN: Comments -->
+                                                            <?
+                                                            $objCon=new PDOModel();
+                                                            $res_califica = $objCon->executeQuery("select A.* , B.* from producto A , calificacion_producto B where A.id = B.id_producto AND  A.id= '".$id_producto."' ");
+
+                                                            foreach ($res_califica as $valor){
+                                                                ?>
+                                                                <div class="mt-comments">
+	                                                                <div class="mt-comment">
+	                                                                    <div class="mt-comment-img">
+	                                                                        <img src="<? echo 'usuarios/'.$valor['id_usuario_califica'].'/perfil/min_perfil.jpg' ?>" /> </div>
+	                                                                    <div class="mt-comment-body">
+	                                                                        <div class="mt-comment-info">
+	                                                                            <span class="mt-comment-author"><? echo nombre_usuario($valor['id_usuario_califica']);?></span>
+	                                                                            <span class="mt-comment-date"><? echo $valor['fecha'];?></span>
+	                                                                        </div>
+	                                                                        <div class="mt-comment-text"><? echo $valor['comentario'] ;?></div>
+	                                                                        <div class="mt-comment-details">
+	                                                                            <span class="mt-comment-status mt-comment-status-pending"><? echo print_calificacion($valor['calificacion']); ?></span>
+	                                                                           
+	                                                                        </div>
+	                                                                    </div>
+	                                                                </div>
+                                                                </div><?
+                                                            }
+                                                            ?>
+
+                                                            <!-- END: Comments -->
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+								</div>
 							</form>
 						</div>
                     </div>
@@ -333,9 +379,9 @@ License: You must have a valid license purchased only from themeforest(the above
             <?php
             include "include_js.php";
 			?> 
-			<script src="../assets/pages/scripts/components-bootstrap-switch.min.js" type="text/javascript"></script>
-            <script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
-            <script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
+			<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+			<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
+
     </body>
 
 </html>

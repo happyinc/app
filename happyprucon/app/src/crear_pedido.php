@@ -284,12 +284,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <div class="form-body">
                                     
                                         <div class="form-group form-md-line-input">
-                                            <div class="col-md-8 col-lg-8 col-xs-12 col-sm-12">
+                                            <div class="col-lg-4"></div>
+                                            <div class="col-md-4" align="center">
                                                 <img src="<? echo 'usuarios/'.$producto[0]['id_usuario'].'/bienes/'.$producto[0]['id'].'/res_producto.jpg'?>" class="img-responsive pic-bordered">
                                             </div>
+                                            <div class="col-lg-4"></div>
                                         </div>
                                         <div class="form-group form-md-line-input">
-                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <div class="col-lg-4"></div>
+                                            <div class="col-md-4" align="center">
                                                 <div class="well">
                                                     <ul class="list-inline">
                                                         <li class="font-purple">
@@ -302,10 +305,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 echo $cantidad_des;
                                                             }
                                                             ?>
-                                                        </li>
-                                                        <li class="font-yellow"><i class="fa fa-star"></i> <?echo  calificacion_prod($producto[0]['id'])?></li>
+                                                        </li>|
+                                                        <li class="font-yellow"><i class="fa fa-star"></i> <?echo  calificacion_prod($producto[0]['id'])?></li>|
                                                         <li class="font-red"><?echo  "$".$producto[0]['precio']?></li>
                                                     </ul>
+                                                    
                                                     <h4><b>Ingredientes:</b></h4>
                                                     <?
                                                         $result2 =  $objProd->executeQuery("SELECT A.*, B.*  FROM composicion_producto A, composicion B WHERE A.id_producto = '".$id_producto."' AND B.id = A.id_composicion AND B.id_estado = 1;");
@@ -316,9 +320,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     ?>
                                                 </div>
                                             </div>
+                                            <div class="col-lg-4"></div>
                                         </div>
                                         <div class="form-group form-md-line-input">
-                                            <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                            <div class="col-lg-4"></div>
+                                             <div class="col-md-4" align="center">
                                                 <div class="form-group">
                                                     <label class="control-label">Seleccione la cantidad a solicitar</label>
                                                         <select class="form-control" id="cantidad_despachada" name="cantidad_despachada">
@@ -338,15 +344,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </select>
                                                 </div>
                                             </div>
+                                            <div class="col-lg-4"></div>
                                         </div>
-
+                                        
                                         <div class="form-actions">
-                                            <div class="col-md-offset-3 col-md-9">
+                                            <div class="col-lg-4"></div>
+                                            <div class="col-md-4" align="center">
                                                 <input class="btn btn btn-circle red" name="pedido" type="submit" id="pedido" value="Realizar pedido">
                                                 <input type="hidden" id="id_producto" name="id_producto" value="<? echo  $id_producto ?>" />
                                                 <input type="hidden" id="formulario" name="formulario" value="crear_pedido"/>
                                             </div>
+                                            <div class="col-lg-4"></div>
                                         </div>
+                                         
                                     </div>
                                     
                                 </form>

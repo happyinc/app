@@ -72,6 +72,13 @@ License: You must have a valid license purchased only from themeforest(the above
         $objProd->where("id", $id_producto);
         $producto =  $objProd->select("producto");
 
+
+        //consulta para traer la comision del producto teniendo en cuenta la categoria 
+        $objCat = new PDOModel();
+        $objCat->where("id", $producto[0]['id_categoria']);
+        $categoria =  $objCat->select("categoria");
+
+
         // poceso para confirmar el pedido
 
         if(isset($_POST["formulario"]) && $_POST["formulario"] == "confirmar_pedido")
@@ -83,6 +90,18 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
             $objConn = new PDOModel();
+
+              //calculo de lo que se le debe pagar al emprendedor
+                ?>
+                    <script type="text/javascript">alert("<? echo $_POST["total"]?>");
+                       alert("<? echo $categoria[0]['comision']?>");
+                    </script>
+                <?
+                $cxp= $_POST["total"] - (($_POST["total"] * $categoria[0]['comision']) / 100);
+                 ?>
+                    <script type="text/javascript">alert("<? echo $cxp?>");</script>
+                <?
+
 
             // si el pedido va con domicilio
             if($_POST['forma_adquisicion']==1 || $_POST['forma_adquisicion']==4)
@@ -113,11 +132,15 @@ License: You must have a valid license purchased only from themeforest(the above
 
                 }
 
+              
                 $updateData["id_zona"] = $_POST["zona"]; 
                 $updateData["id_estado"] = 5;
                 $updateData["forma_adquisicion"] = $_POST["forma_adquisicion"];
                 $updateData["id_ubicacion_cliente"] = $id_ubicacion;
                 $updateData["precio"] = $_POST["total"];
+                $updateData["comision"] = $categoria[0]['comision'];
+                $updateData["cxp"] = $cxp;
+          
                 $objConn->where("id", $id_pedido);
                 $objConn->update('pedido', $updateData);
             }
@@ -130,6 +153,8 @@ License: You must have a valid license purchased only from themeforest(the above
                 $updateData["id_estado"] = 5;
                 $updateData["forma_adquisicion"] = $_POST["forma_adquisicion"];
                 $updateData["precio"] = $_POST["total"];
+                $updateData["comision"] = $categoria[0]['comision'];
+                $updateData["cxp"] = $cxp;
                 $objConn->where("id", $id_pedido);
                 $objConn->update('pedido', $updateData);
             }
@@ -197,7 +222,7 @@ License: You must have a valid license purchased only from themeforest(the above
             } 
 
 
-        function alertaPedidoConfirmado(pedido_actualizado) 
+       function alertaPedidoConfirmado(pedido_actualizado) 
         {
             
             var pedido = pedido_actualizado;
@@ -379,7 +404,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                     <form role="form" class="form-horizontal" name="confirmar_pedido"  id="confirmar_pedido" action="confirmar_pedido.php" enctype="multipart/form-data" method="post">
                                         <div class="form-body">
                                            <div class="form-group form-md-line-input">
-                                                <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                <div class="col-lg-4"></div>
+                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label class="control-label">Seleccione la forma de adquisicion</label>
                                                         <div class="input-group">
@@ -396,12 +422,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </div>
                                                     </div>
 												</div>
+                                               
                                             </div>
 										
 
                                             <div id="dat_com" style="display:none;" >
                                                 <div class="form-group form-md-line-input">
-                                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                    <div class="col-lg-4"></div>
+                                                    <div class="col-md-4">
                                                         <script type="text/javascript">
                                                             function initialize() {
                                                                 var options = {
@@ -473,15 +501,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     </div>
                                                                 </div>
                                                     </div>
+                                                    <div class="col-lg-4"></div>
                                                 </div>
                                                 <div class="form-group form-md-line-input">
-                                                     <div class="col-md-8 col-lg-8 col-xs-12 col-sm-12">
-                                                            <label class="control-label">Si desea agregar una nueva ubicacion, escriba la siguiente informacion</label>
+                                                    <div class="col-lg-4"></div>
+                                                     <div class="col-md-4">
+                                                            <label>Si desea agregar una nueva ubicacion, escriba la siguiente informacion :</label>
                                                      </div>
+                                                     <div class="col-lg-4"></div>
                                                 </div>
                                                 <div class="form-group form-md-line-input">
-                                                    <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                    <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                    <div class="col-lg-4"></div>
+                                                    <div class="input-group left-addon col-md-4">
                                                         <span class="required input-group-addon">
                                                             <i class="fa fa-flag"></i>
                                                         </span>
@@ -489,11 +520,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <!-- Campo escondido que toma valor de ciudad -->
                                                         <input type="hidden" name="resciu" id="resciu" >
                                                     </div>
+                                                    <div class="col-lg-4"></div>
                                                 </div>
 
                                                 <div class="form-group form-md-line-input">
-                                                    <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                    <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                    <div class="col-lg-4"></div>
+                                                    <div class="input-group left-addon col-md-4">
                                                         <span class="required input-group-addon">
                                                             <i class="fa fa-home"></i>
                                                         </span>
@@ -504,11 +536,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <option value="Oficina">Oficina</option>
                                                         </select>
                                                     </div>
+                                                    <div class="col-lg-4"></div>
                                                 </div>
 
                                                 <div class="form-group form-md-line-input">
-                                                    <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                    <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                    <div class="col-lg-4"></div>
+                                                    <div class="input-group left-addon col-md-4">
                                                         <span class="required input-group-addon">
                                                             <i class="fa fa-map-signs"></i>
                                                         </span>
@@ -521,17 +554,20 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <div><input type="hidden" id="search"/></div>
                                                     <div><input type="hidden" id="latitud" name="latitud"/></div>
                                                     <div><input type="hidden" id="longitu" name="longitu"/></div>
+                                                    <div class="col-lg-4"></div>
                                                 </div>
 
                                                 <div class="form-group form-md-line-input">
-                                                    <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                    <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                    <div class="col-lg-4"></div>
+                                                    
+                                                    <div class="input-group left-addon col-md-4">
                                                         <span class="required input-group-addon">
                                                             <i class="fa fa-location-arrow"></i>
                                                         </span>
                                                         <textarea class="form-control" rows="2" name="descripcion" id="descripcion"  placeholder="Descripcion de la direccion"></textarea>
                                                         <span class="help-block"></span>
                                                     </div>
+                                                     <div class="col-lg-4"></div>
                                                 </div>
 
 
@@ -543,14 +579,16 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     {
                                                                     ?>
                                                                         <div class="form-group form-md-line-input">
-                                                                            <div class="form-group form-md-line-input">
-                                                                                <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
-                                                                                <label class="control-label">Escriba la informacion de su ubicacion</label>
+                                                                            <div class="col-lg-4"></div>
+                                                                            <div class="col-md-4">
+                                                                                <label>Escriba la informacion de su ubicacion</label>
                                                                             </div>
+                                                                            <div class="col-lg-4"></div>
                                                                         </div>
                                                                   
                                                                         <div class="form-group form-md-line-input">
-                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                             <div class="col-lg-4"></div>
+                                                                            <label class="col-md-4"></label>
                                                                             <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
                                                                                 <span class="required input-group-addon">
                                                                                     <i class="fa fa-flag"></i>
@@ -559,10 +597,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                 <!-- Campo escondido que toma valor de ciudad -->
                                                                                 <input type="hidden" name="resciu" id="resciu" >
                                                                             </div>
+                                                                            <div class="col-lg-4"></div>
                                                                         </div>
 
                                                                         <div class="form-group form-md-line-input">
-                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                            <div class="col-lg-4"></div>
+                                                                            <label class="col-md-4"></label>
                                                                             <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
                                                                                 <span class="required input-group-addon">
                                                                                     <i class="fa fa-home"></i>
@@ -574,10 +614,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                     <option value="Oficina">Oficina</option>
                                                                                 </select>
                                                                             </div>
+                                                                            <div class="col-lg-4"></div>
                                                                         </div>
 
                                                                         <div class="form-group form-md-line-input">
-                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                            <div class="col-lg-4"></div>
+                                                                            <label class="col-md-4"></label>
                                                                             <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
                                                                                 <span class="required input-group-addon">
                                                                                     <i class="fa fa-map-signs"></i>
@@ -591,11 +633,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                             <div><input type="hidden" id="search"/></div>
                                                                             <div><input type="hidden" id="latitud" name="latitud"/></div>
                                                                             <div><input type="hidden" id="longitu" name="longitu"/></div>
+                                                                             <div class="col-lg-4"></div>
                                                                         </div>
 
 
                                                                         <div class="form-group form-md-line-input">
-                                                                            <label class="col-md-10 col-lg-10 col-xs-12 col-sm-12"></label>
+                                                                             <div class="col-lg-4"></div>
+                                                                            <label class="col-md-4"></label>
                                                                             <div class="input-group left-addon col-md-10 col-lg-10 col-xs-12 col-sm-12">
                                                                                 <span class="required input-group-addon">
                                                                                     <i class="fa fa-location-arrow"></i>
@@ -603,6 +647,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                                 <textarea class="form-control" rows="2" name="descripcion" id="descripcion"  placeholder="Descripcion de la direccion"></textarea>
                                                                                 <span class="help-block"></span>
                                                                             </div>
+                                                                             <div class="col-lg-4"></div>
                                                                         </div>
 
                                                                         <?
@@ -610,7 +655,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 ?>
                                                             
                                                 <div class="form-group form-md-line-input">
-                                                    <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                    <div class="col-lg-4"></div>
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
                                                             <div class="input-icon">
                                                              <i class="fa fa-map"></i>
@@ -632,19 +678,23 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-lg-4"></div>
                                                 </div>
                                              </div>
                                                 
                                             <div class="form-group form-md-line-input">
-                                                <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                <div class="col-lg-4"></div>
+                                                <div class="col-md-4">
                                                     <label class="control-label">Valor del producto </label>
                                                      <label class="control-label"><?php echo $producto[0]['precio'] ?></label>
                                                      
                                                  </div>
+                                                  <div class="col-lg-4"></div>
                                             </div>
 
                                             <div class="form-group form-md-line-input">
-                                                <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                <div class="col-lg-4"></div>
+                                                <div class="col-md-4">
                                                 <?
                                                     //calculo del total que debe pagar el cliente tniendo en cunta el precio del 
                                                     //producto y la cantidad solicitada
@@ -652,10 +702,12 @@ License: You must have a valid license purchased only from themeforest(the above
                                                      <label class="control-label"><b>Total a pagar     </b></label>
                                                      <label class="control-label"><?php echo $total ?></label>
                                                  </div>
+                                                 <div class="col-lg-4"></div>
                                             </div>
                                             
                                             <div class="form-group form-md-line-input">
-                                                <div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                <div class="col-lg-4"></div>
+                                                <div class="col-md-4">
                                                     <div class="input-icon">
                                                         <i class="fa fa-credit-card-alt"></i>
                                                         <label class="control-label">Seleccione el metodo de pago</label>
@@ -711,17 +763,19 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         ?>
                                                     </div>  
                                                 </div>
+                                                 <div class="col-lg-4"></div>
                                             </div>
 
                                             <div class="form-actions">
-                                                <div class="col-md-offset-3 col-md-9">
+                                                <div class="col-lg-4"></div>
+                                                <div class="col-md-4">
                                                     <input class="btn btn-circle red" name="confirmar" type="submit" id="confirmar" value="Confirmar pedido">
                                                     <input type="hidden" id="id_pedido" name="id_pedido" value="<? echo  $id_pedido ?>" />
                                                     <input type="hidden" id="total" name="total" value="<? echo  $total ?>" />
                                                     <input type="hidden" id="formulario" name="formulario" value="confirmar_pedido"/>
                                                 </div>
+                                                <div class="col-lg-4"></div>
                                             </div>
-                                        
                                         </div>
                                         
                                     </form>

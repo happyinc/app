@@ -2,19 +2,18 @@
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
     require_once'../../externo/plugins/PDOModel.php';
 	require'../class/sessions.php';
-	$objSe = new Sessions();
-	$objSe->init();
+	
 
 
-$usu_id = "";
+$id_usuario = "";
     
         if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
         {
-            $usu_id = $_POST["id_usuario"];
+            $id_usuario = $_POST["id_usuario"];
         }
         elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
         {
-             $usu_id = $_GET["id_usuario"];
+             $id_usuario = $_GET["id_usuario"];
         }
 $objUbicacion = new PDOModel();
 $objUbicacion->where("id_usuario", $usu_id);
@@ -55,26 +54,13 @@ License: You must have a valid license purchased only from themeforest(the above
 	<?php
 	include "include_css.php";
     include "funciones.php";
-	
-        $id_usuario = 5;
-    
-       /* if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
-        {
-            $id_usuario = $_POST["id_usuario"];
-        }
-        elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
-        {
-             $id_usuario = $_GET["id_usuario"];
-        }*/
+
 
         //informacion de todos los productos del emprendedor
 		$objProd = new PDOModel();
         $result =  $objProd->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE A.id_usuario =  '".$id_usuario."' AND B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1;");
 
 		?>
-		<script>
-			
-		</script>
 	</head>
     <!-- END HEAD -->
 
@@ -229,18 +215,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="col-md-4" align="center">
                                             <div class="mt-widget-1" style=" border: 0px !important;">
                                                 <div class="mt-img" style="margin-bottom: 10px !important;">
-                                                        <img src="<? echo "usuarios/".$usu_id."/perfil/res_perfil.jpg"?>" width="150" class="img-circle" style="border-radius: 50%;">  </div>
+                                                        <img src="<? echo "usuarios/".$id_usuario."/perfil/res_perfil.jpg"?>" width="150" class="img-circle" style="border-radius: 50%;">  </div>
                                                 <div class="mt-body">
-                                                    <h3 class="mt-username"><? echo calificacion_usuario($usu_id); ?></h3>
+                                                    <h3 class="mt-username"><? echo calificacion_usuario($id_usuario); ?></h3>
                                                         <div class="row" style="padding-top: 20px;">
-                                                            <label class="font-yellow" style="margin-right: 5px;"><? echo nombre_usuario($usu_id) ?></label>                                       
+                                                            <label class="font-yellow" style="margin-right: 5px;"><? echo nombre_usuario($id_usuario) ?></label>                                       
                                                         </div>
                                                         <div class="row" style="padding-top: 20px;">
 
-                                                            <label class="font-yellow" style="margin-right: 5px;"><? echo calificacion_usu($usu_id); ?></label>
+                                                            <label class="font-yellow" style="margin-right: 5px;"><? echo calificacion_usu($id_usuario); ?></label>
                                                             <i class="fa fa-star font-yellow" style="margin-right: 10px;"></i>|
 
-                                                            <label class="font-green" style="margin-left: 10px; margin-right: 5px;"><? echo cantidad_coment_usu($usu_id); ?></label>
+                                                            <label class="font-green" style="margin-left: 10px; margin-right: 5px;"><? echo cantidad_coment_usu($id_usuario); ?></label>
                                                             <i class="fa fa-comments font-green" style="margin-right: 10px;"></i>|
 
                                                             <label class="font-purple" style="margin-left: 10px; margin-right: 5px;">1,7k</label>
