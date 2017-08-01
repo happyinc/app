@@ -124,7 +124,6 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
     $insertUserData["latitud"] = $_POST['latitud'];
     $insertUserData["longitud"] = $_POST['longitu'];
     $insertUserData["meta"] = $_POST['meta'];
-    $insertUserData["token"] = 'yositokuqita';
     $objConn->insert("usuarios", $insertUserData);
     $id_usuario = $objConn->lastInsertId;
 
@@ -151,7 +150,7 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
         $objSe->set('genero', $res_usu[0]['genero']);
         $objSe->set('telefono', $res_usu[0]['telefono']);
         $objSe->set('correo', $res_usu[0]['correo']);
-        $objSe->set('sueños', $res_usu[0]['meta']);
+        $objSe->set('suenos', $res_usu[0]['meta']);
         $objSe->set('origen',$_POST['form_login']);
 
 
@@ -413,7 +412,14 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                         <span class="help-block"></span>
                                     </div>
                                 </div>
-
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
+                                                        <span class="required input-group-addon">
+                                                        <i class="fa fa-line-chart"></i>
+                                                        </span>
+                                        <textarea class="form-control" name="meta" id="meta" rows="5" placeholder="Sueños"></textarea>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label">
 
@@ -428,14 +434,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                         <div id="form_gender_error"> </div>
                                     </div>
                                 </div>
-                                <div class="form-group form-md-line-input has-info">
-                                    <div class="input-group left-addon">
-                                                        <span class="required input-group-addon">
-                                                        <i class="fa fa-line-chart"></i>
-                                                        </span>
-                                        <textarea class="form-control" name="meta" id="meta" rows="5" placeholder="Sueños"></textarea>
-                                    </div>
-                                </div>
+
                             </div>
                             <div class="tab-pane" id="tab2">
                                 <h3 class="block bold" style="color: #520d9b"><? echo $gustos; ?></h3>

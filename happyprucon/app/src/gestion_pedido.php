@@ -9,8 +9,27 @@ $usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
+$usu_id = "";
+
+if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
+{
+    $usu_id = $_POST["id_usuario"];
+}
+elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
+{
+    $usu_id = $_GET["id_usuario"];
+}
+$objUbicacion = new PDOModel();
+$objUbicacion->where("id_usuario", $usu_id);
+$res_usuarios =  $objUbicacion->select("usuarios");
+foreach ($res_usuarios as $usuarios)
+{
+    $rol = $usuarios["rol"] ;
+    $fullname = $usuarios["fullname"] ;
+}
+
 if($rol==2 ||  $rol==3){
-    echo "<script> alert('Bienvenido!!  $fullname');</script>";
+
 }else{
 	echo "<script> alert('Usuario no autorizado');
 					window.location.assign('logueo.html');</script>";
