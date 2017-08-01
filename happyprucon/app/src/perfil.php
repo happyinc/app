@@ -15,13 +15,31 @@ $genero = isset($_SESSION['genero']) ? $_SESSION['genero'] : null ;
 $tel = isset($_SESSION['telefono']) ? $_SESSION['telefono'] : null ;
 $correo = isset($_SESSION['correo']) ? $_SESSION['correo'] : null ;
 
-if($rol==2){
-
-}else{
-    echo "<script> alert('Usuario no autorizado');
-					window.location.assign('logueo.html');</script>";
-
+$usu_id = "";
+    
+        if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
+        {
+            $usu_id = $_POST["id_usuario"];
+        }
+        elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
+        {
+             $usu_id = $_GET["id_usuario"];
+        }
+$objUbicacion = new PDOModel();
+$objUbicacion->where("id_usuario", $usu_id);
+$res_usuarios =  $objUbicacion->select("usuarios");
+foreach ($res_usuarios as $usuarios)
+{
+        $rol = $usuarios["rol"] ;
+        $fullname = $usuarios["fullname"] ;
+        $name = $usuarios["name"] ;
+        $lastname = $usuarios["lastname"] ;
+        $genero = $usuarios["genero"] ;
+        $tel = $usuarios["tel"] ;
+        $correo = $usuarios["correo"] ;                                                         
 }
+
+
 
 ?>
 <!DOCTYPE html>
