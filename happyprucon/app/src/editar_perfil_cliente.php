@@ -14,6 +14,31 @@ $lastname = isset($_SESSION['apellido']) ? $_SESSION['apellido'] : null ;
 $genero = isset($_SESSION['genero']) ? $_SESSION['genero'] : null ;
 $tel = isset($_SESSION['telefono']) ? $_SESSION['telefono'] : null ;
 $correo = isset($_SESSION['correo']) ? $_SESSION['correo'] : null ;
+$meta = isset($_SESSION['suenos']) ? $_SESSION['suenos'] : null ;
+
+$usu_id = "";
+
+if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
+{
+    $usu_id = $_POST["id_usuario"];
+}
+elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
+{
+    $usu_id = $_GET["id_usuario"];
+}
+$objUbicacion = new PDOModel();
+$objUbicacion->where("id_usuario", $usu_id);
+$res_usuarios =  $objUbicacion->select("usuarios");
+foreach ($res_usuarios as $usuarios)
+{
+    $rol = $usuarios["rol"] ;
+    $fullname = $usuarios["fullname"] ;
+    $name = $usuarios["name"] ;
+    $lastname = $usuarios["lastname"] ;
+    $genero = $usuarios["genero"] ;
+    $tel = $usuarios["tel"] ;
+    $correo = $usuarios["correo"] ;
+}
 
 if($rol==2){
 
@@ -358,6 +383,16 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     </span>
                                 <input type="password" class="form-control" placeholder="*********" readonly>
                                 <span class="input-group-addon"><a data-toggle="modal" href="#responsive"  style="text-decoration: none;">CAMBIAR</a></span>
+                            </div>
+                            <div class="col-sm-4 col-xs-1"></div>
+                        </div>
+                        <div class="form-group form-md-line-input has-info">
+                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
+                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                                                        <span class="required input-group-addon">
+                                                        <i class="fa fa-line-chart"></i>
+                                                        </span>
+                                <textarea class="form-control" name="meta" id="meta" rows="3"><?php echo $meta; ?></textarea>
                             </div>
                             <div class="col-sm-4 col-xs-1"></div>
                         </div>

@@ -14,7 +14,31 @@ $lastname = isset($_SESSION['apellido']) ? $_SESSION['apellido'] : null ;
 $genero = isset($_SESSION['genero']) ? $_SESSION['genero'] : null ;
 $tel = isset($_SESSION['telefono']) ? $_SESSION['telefono'] : null ;
 $correo = isset($_SESSION['correo']) ? $_SESSION['correo'] : null ;
+$meta = isset($_SESSION['suenos']) ? $_SESSION['suenos'] : null ;
 
+$usu_id = "9";
+
+if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
+{
+    $usu_id = $_POST["id_usuario"];
+}
+elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
+{
+    $usu_id = $_GET["id_usuario"];
+}
+$objUbicacion = new PDOModel();
+$objUbicacion->where("id_usuario", $usu_id);
+$res_usuarios =  $objUbicacion->select("usuarios");
+foreach ($res_usuarios as $usuarios)
+{
+    $rol = $usuarios["rol"] ;
+    $fullname = $usuarios["fullname"] ;
+    $name = $usuarios["name"] ;
+    $lastname = $usuarios["lastname"] ;
+    $genero = $usuarios["genero"] ;
+    $tel = $usuarios["tel"] ;
+    $correo = $usuarios["correo"] ;
+}
 if($rol==2){
 
 }else{
@@ -61,6 +85,11 @@ License: You must have a valid license purchased only from themeforest(the above
     include "include_css.php";
     include "funciones.php";
     ?>
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL PLUGINS -->
     <!--Inicio Archivos para bootstrap file input -->
 
     <link href="../../externo/plugins/fileinput/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
@@ -380,6 +409,28 @@ License: You must have a valid license purchased only from themeforest(the above
                             </div>
                             <div class="col-sm-4 col-xs-1"></div>
                         </div>
+                        <div class="form-group form-md-line-input has-info">
+                            <div class="col-lg-3 col-sm-4 col-xs-1"></div>
+                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                                                        <span class="required input-group-addon">
+                                                        <i class="fa fa-line-chart"></i>
+                                                        </span>
+                                <textarea class="form-control" name="meta" id="meta" rows="3"><?php echo $meta; ?></textarea>
+                            </div>
+                            <div class="col-sm-4 col-xs-1"></div>
+                        </div>
+                        <?
+                        $objCon=new PDOModel();
+                        $res_gustos = $objCon->executeQuery("select A.* , B.* from categoria A , gustos B where A.id = B.id_categoria AND  B.id_usuario = '".$usu_id."' ");
+
+                        foreach ($res_gustos as $valor) {
+                            ?><label>
+                            <input type="checkbox" class="icheck" name="categoria[]"
+                                   data-checkbox="icheckbox_line-purple" value="<?php echo $valor["id"] ?>"
+                                   data-label="<?php echo $valor["descripcion"] ?>"/></label>
+                            <?
+                        }
+                        ?>
                         <div class="form-group">
                             <label class="control-label col-md-3"></label>
                             <div class="col-md-4">
@@ -560,6 +611,14 @@ include "footer.php";
 <script src="../assets/global/plugins/excanvas.min.js"></script>
 <script src="../assets/global/plugins/ie8.fix.min.js"></script>
 <![endif]-->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+<script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <script src="../assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
 </body>
