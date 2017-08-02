@@ -9,6 +9,30 @@ $usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
+$id_user = "";
+
+if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
+{
+    $id_user = $_POST["id_usuario"];
+}
+elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
+{
+    $id_user = $_GET["id_usuario"];
+}
+$objUbicacion = new PDOModel();
+$objUbicacion->where("id_usuario", $id_user);
+$res_usuarios =  $objUbicacion->select("usuarios");
+foreach ($res_usuarios as $usuarios)
+{
+    $rol = $usuarios["rol"] ;
+    $fullname = $usuarios["fullname"] ;
+    $name = $usuarios["name"] ;
+    $lastname = $usuarios["lastname"] ;
+    $genero = $usuarios["genero"] ;
+    $tel = $usuarios["tel"] ;
+    $correo = $usuarios["correo"] ;
+}
+
 
 if($rol!=2){
     echo "<script> alert('Usuario no autorizado');

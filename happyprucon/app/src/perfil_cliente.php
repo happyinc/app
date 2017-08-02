@@ -12,23 +12,26 @@ $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:n
 $tel = isset($_SESSION['telefono']) ? $_SESSION['telefono'] : null ;
 $correo = isset($_SESSION['correo']) ? $_SESSION['correo'] : null ;
 
-$usu_id = "";
+$id_user = "";
 
 if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
 {
-    $usu_id = $_POST["id_usuario"];
+    $id_user = $_POST["id_usuario"];
 }
 elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
 {
-    $usu_id = $_GET["id_usuario"];
+    $id_user = $_GET["id_usuario"];
 }
 $objUbicacion = new PDOModel();
-$objUbicacion->where("id_usuario", $usu_id);
+$objUbicacion->where("id_usuario", $id_user);
 $res_usuarios =  $objUbicacion->select("usuarios");
 foreach ($res_usuarios as $usuarios)
 {
     $rol = $usuarios["rol"] ;
     $fullname = $usuarios["fullname"] ;
+    $name = $usuarios["name"] ;
+    $lastname = $usuarios["lastname"] ;
+    $genero = $usuarios["genero"] ;
     $tel = $usuarios["tel"] ;
     $correo = $usuarios["correo"] ;
 }
