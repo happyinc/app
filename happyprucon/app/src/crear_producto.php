@@ -2,18 +2,25 @@
 	//error_reporting(E_ERROR | E_WARNING | E_PARSE);
 	require_once'../../externo/plugins/PDOModel.php';
 	require'../class/sessions.php';
-	$objSe = new Sessions();
-	$objSe->init();
-
-	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
-	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
-	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
-
-
-	if($rol!=2){
-		echo "<script> alert('Usuario no autorizado');
-						window.location.assign('logueo.html');</script>";
-	}	
+	$id_usuario = "";
+    
+        if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
+        {
+            $id_usuario = $_POST["id_usuario"];
+        }
+        elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
+        {
+             $id_usuario = $_GET["id_usuario"];
+        }
+		$objUbicacion = new PDOModel();
+		$objUbicacion->where("id", $id_usuario);
+		$res_usuarios =  $objUbicacion->select("usuarios");
+		foreach ($res_usuarios as $usuarios)
+		{
+		        $rol = $usuarios["rol"] ;
+		        $fullname = $usuarios["fullname"] ;                                                        
+		}
+			
 ?>
 <!DOCTYPE html>
 <!-- 
@@ -113,7 +120,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				$insertData["especial"] = $_POST["especialidad"];
 				$insertData["precio"] = $_POST["precio"];
 				$insertData["fecha"] = date("Y-m-d H:i:s"); 
-				$insertData["id_usuario"] = $usu_id ;
+				$insertData["id_usuario"] = $id_usuario ;
 				$objConn->insert('producto', $insertData);
 
 				$id_producto= $objConn->lastInsertId;
@@ -133,7 +140,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						{
 							$extension = end(explode('.', $_FILES['foto']['name']));
 							$foto = "producto.jpg";
-							$directorio = "usuarios/".$usu_id."/bienes/".$id_producto.""; // directorio de tu elección
+							$directorio = "usuarios/".$id_usuario."/bienes/".$id_producto.""; // directorio de tu elección
 							if(file_exists($directorio)) 
 											{
 												
@@ -258,7 +265,7 @@ License: You must have a valid license purchased only from themeforest(the above
 								location.href="crear_disponibilidad.php?id_producto="+<? echo $id_producto?>;
 							} else {
 								swal("Cancelar","se cancelo la creacion de la disponibilidad del producto");
-								location.href="gestion_producto.php"
+								location.href="gestion_producto.php?id_usuario=<? echo $id_usuario ?>"
 							}
 						});
 			}

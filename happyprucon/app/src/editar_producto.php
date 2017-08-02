@@ -2,19 +2,28 @@
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
 	require_once'../../externo/plugins/PDOModel.php';
 	require'../class/sessions.php';
-	$objSe = new Sessions();
-	$objSe->init();
+	$id_usuario = "";
+    
+        if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
+        {
+            $id_usuario = $_POST["id_usuario"];
+        }
+        elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
+        {
+             $usuid_usuario_id = $_GET["id_usuario"];
+        }
+		$objUbicacion = new PDOModel();
+		$objUbicacion->where("id", $id_usuario);
+		$res_usuarios =  $objUbicacion->select("usuarios");
+		foreach ($res_usuarios as $usuarios)
+		{
+		        $rol = $usuarios["rol"] ;
+		        $fullname = $usuarios["fullname"] ;                                                        
+		}
+			
+		
+?>	
 
-	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
-	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
-	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
-
-
-	if($rol!=2){
-		echo "<script> alert('Usuario no autorizado');
-						window.location.assign('logueo.html');</script>";
-	}	
-?>
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
@@ -139,7 +148,7 @@ License: You must have a valid license purchased only from themeforest(the above
 							// el archivo es un JPG/GIF/PNG, entonces...
 							$extension = end(explode('.', $_FILES['foto']['name']));
 							$foto = "producto".".".$extension;
-							$directorio = "usuarios/".$usu_id."/bienes/".$id_producto.""; // directorio de tu elección
+							$directorio = "usuarios/".$id_usuario."/bienes/".$id_producto.""; // directorio de tu elección
 							if(file_exists($directorio)) 
 							{
 												
@@ -188,8 +197,6 @@ License: You must have a valid license purchased only from themeforest(the above
 								$insertDataComp["id_producto"] = $id_producto;
 								$objConn->insert('composicion_producto', $insertDataComp);
 							}
-
-
 				}
 				else
 				{
@@ -213,7 +220,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				$producto_eliminado= $objConn->rowsChanged;
 				if($producto_eliminado < 1){
 					?>
-						<script type="text/javascript">location.href="gestion_producto.php";</script>
+						<script type="text/javascript">location.href="gestion_producto.php?id_usuario=<? echo $id_usuario ?>";</script>
 					<?
 				}
 			}  
@@ -286,7 +293,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						function(isConfirm) {
 							if (isConfirm) {
 								swal("", "", "success");
-								location.href="gestion_producto.php";
+								location.href="gestion_producto.php?id_usuario=<? echo $id_usuario ?>";
 							} 
 						});
 					}
@@ -313,7 +320,7 @@ License: You must have a valid license purchased only from themeforest(the above
 							
 							} else {
 								swal("Cancelar","se cancelo la eliminacion del producto");
-								location.href="gestion_producto.php"
+								location.href="gestion_producto.php?id_usuario=<? echo $id_usuario ?>"
 							}
 						});
 		  	}	
@@ -472,13 +479,13 @@ License: You must have a valid license purchased only from themeforest(the above
 										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
 											<div class="fileinput fileinput-new" data-provides="fileinput">
 												<div class="fileinput-new thumbnail img-circle" style="width: 200px; height: 200px;">
-													<img src="<? echo "usuarios/".$usu_id."/bienes/".$id_producto."/res_producto.jpg"?>" alt=""> </div>
+													<img src="<? echo "usuarios/".$id_usuario."/bienes/".$id_producto."/res_producto.jpg"?>" alt=""> </div>
 												<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
 												<div>
 													<span class="btn default btn-file">
 														<span class="fileinput-new"> Seleccione la imagen </span>
 														<span class="fileinput-exists"> Cambiar </span>
-														<input type="file" name="foto" id="foto" value="<?echo "usuarios/".$usu_id."/bienes/".$id_producto."/".$resFoto?>"> 
+														<input type="file" name="foto" id="foto" value="<?echo "usuarios/".$id_usuario."/bienes/".$id_producto."/".$resFoto?>"> 
 													</span>
 													<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
 												</div> 
@@ -602,6 +609,7 @@ License: You must have a valid license purchased only from themeforest(the above
 											<input class="btn btn-circle red" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick=" eliminarProducto();">
 											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
 											<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
+											<input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
 										</div>
 									</div>
 

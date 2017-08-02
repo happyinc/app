@@ -408,7 +408,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 foreach ($result3 as $key) 
                                                                 {
                                                                 ?>
-                                                                    <label> <input type="radio" id="forma_adquisicion" name="forma_adquisicion" value="<?php echo $key["id"]?>" data-title="si" onclick="mostrarReferencia(<?php echo $key["id"]?>);"/><? echo $key["descripcion"]?></label>
+                                                                    <label> <input type="radio" id="forma_adquisicion" name="forma_adquisicion" value="<?php echo $key["id"]?>" data-title="si" onclick="mostrarReferencia(<?php echo $key["id"]?>);"/><? echo $key["descripcion"]?></label></div>br>
                                                                          
                                                                 <?
 																}

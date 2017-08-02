@@ -3,18 +3,18 @@
     require_once'../../externo/plugins/PDOModel.php';
 	require'../class/sessions.php';
 
-$usu_id = "";
+$id_usuario = "";
     
         if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
         {
-            $usu_id = $_POST["id_usuario"];
+            $id_usuario = $_POST["id_usuario"];
         }
         elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
         {
-             $usu_id = $_GET["id_usuario"];
+             $id_usuario = $_GET["id_usuario"];
         }
 $objUbicacion = new PDOModel();
-$objUbicacion->where("id_usuario", $usu_id);
+$objUbicacion->where("id", $id_usuario);
 $res_usuarios =  $objUbicacion->select("usuarios");
 foreach ($res_usuarios as $usuarios)
 {
@@ -22,10 +22,7 @@ foreach ($res_usuarios as $usuarios)
         $fullname = $usuarios["fullname"] ;                                                        
 }
 	
-/*	if($rol!=2){
-		echo "<script> alert('Usuario no autorizado');
-						window.location.assign('logueo.html');</script>";
-	}	*/
+		
 ?>	
 <!DOCTYPE html>
 <!-- 
@@ -59,7 +56,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		$objProd = new PDOModel();
 		$objProd->andOrOperator = "AND";
 		$objProd->where("id_estado", 1);
-		$objProd->where("id_usuario", $usu_id);
+		$objProd->where("id_usuario", $id_usuario);
 		$producto =  $objProd->select("producto");
 
         if ( isset($_GET["anular"]) && $_GET["anular"] != '')
@@ -271,7 +268,7 @@ License: You must have a valid license purchased only from themeforest(the above
 												<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
 
 													<div class="fileinput-new thumbnail img-circle" style="width: 150px; height: 150px;">
-                                                        <a href="../src/editar_producto.php?id_producto=<? echo $item["id"]?>"><img src="<? echo "usuarios/".$usu_id."/bienes/".$item["id"]."/res_producto.jpg"?>" alt="">
+                                                        <a href="../src/editar_producto.php?id_producto=<? echo $item["id"]?>"><img src="<? echo "usuarios/".$id_usuario."/bienes/".$item["id"]."/res_producto.jpg"?>" alt="">
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn purple-studio">Editar</div> </a>
 
 													</div>
@@ -304,6 +301,7 @@ License: You must have a valid license purchased only from themeforest(the above
 													?>
 												</div>
                                                 <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id"] ?>" />
+                                                <input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
 											</div><?php
 										}
 										?>

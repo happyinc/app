@@ -2,18 +2,25 @@
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
 	require_once'../../externo/plugins/PDOModel.php';
 	require'../class/sessions.php';
-	$objSe = new Sessions();
-	$objSe->init();
-
-	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
-	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
-	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
-
-
-	if($rol!=2){
-		echo "<script> alert('Usuario no autorizado');
-						window.location.assign('logueo.html');</script>";
-	}	
+	$id_usuario = "";
+    
+        if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
+        {
+            $id_usuario = $_POST["id_usuario"];
+        }
+        elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
+        {
+             $id_usuario = $_GET["id_usuario"];
+        }
+		$objUbicacion = new PDOModel();
+		$objUbicacion->where("id", $id_usuario);
+		$res_usuarios =  $objUbicacion->select("usuarios");
+		foreach ($res_usuarios as $usuarios)
+		{
+		        $rol = $usuarios["rol"] ;
+		        $fullname = $usuarios["fullname"] ;                                                        
+		}
+			
 ?>
 <!DOCTYPE html>
 <!-- 
@@ -43,7 +50,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	include "funciones.php";
 	
 	
-		$id_producto = "";
+		$id_producto = 116;
 	
         if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
         {
@@ -53,57 +60,118 @@ License: You must have a valid license purchased only from themeforest(the above
         {
              $id_producto = $_GET["id_producto"];
         }
+
+        $id_forma_adquisicion = "";
+	
+        if(isset($_POST["id_forma_adquisicion"]) && $_POST["id_forma_adquisicion"] != "")
+        {
+            $id_forma_adquisicion = $_POST["id_forma_adquisicion"];
+        }
+        elseif(isset($_GET["id_forma_adquisicion"]) && $_GET["id_forma_adquisicion"] != "")
+        {
+             $id_forma_adquisicion = $_GET["id_forma_adquisicion"];
+        }
+
 		?>
 		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
-		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
 		
 			
 	    <?
-		"";
-		$objProd = new PDOModel();
-		$objProd->where("id", $id_producto);
-		$producto =  $objProd->select("producto");
+		$result1="";
+		$objConn = new PDOModel();
 
-        
-		if(isset($_POST["formulario"]) && $_POST["formulario"] == "editar_producto" )
+		if($id_producto !="")
 		{
-			
-			if(isset($_POST["editar"]) && $_POST["editar"]== "Editar")
+			$result1 = $objConn->executeQuery("SELECT C.* FROM (SELECT A.id, A.id_usuario,A.id_zona, A.id_estado,A.id_producto,A.id_ubicacion_cliente,A.fecha,A.precio,A.forma_adquisicion,A.cantidad,A.comision,A.cxp, B.id_categoria,B.nombre,B.descripcion  FROM pedido A, producto B WHERE B.id_usuario = '".$id_usuario."' AND B.id = A.id_producto AND A.id_estado = 7 ) C WHERE C.id_producto = '".$id_producto."' order by A.id;");
+
+		}
+
+		if($id_forma_adquisicion !="")
+		{
+			$result1 = $objConn->executeQuery("SELECT C.* FROM (SELECT A.id, A.id_usuario,A.id_zona, A.id_estado,A.id_producto,A.id_ubicacion_cliente,A.fecha,A.precio,A.forma_adquisicion,A.cantidad,A.comision,A.cxp, B.id_categoria,B.nombre,B.descripcion  FROM pedido A, producto B WHERE B.id_usuario = '".$id_usuario."' AND B.id = A.id_producto AND A.id_estado = 7) C WHERE C.forma_adquisicion = '".$id_forma_adquisicion."' order by A.id;");
+
+		}
+
+
+
+		//manejo de la fecha para hacer el insert en la tabla detalle pedido
+        $fecha = date("Y-m-d H:i:s");
+        $fecha1 = explode(" ", $fecha);
+        $fecha_act=$fecha1[0];
+        $hora=$fecha1[1];
+        
+
+		if(isset($_POST["formulario"]) && $_POST["formulario"] == "gestion_pedido_detalle" )
+		{
+			$id_pedido=$_POST['id_pedido'];
+			if(isset($_POST["despachar"]) && $_POST["despachar"]== "Despachar")
 			{
-				$objConn = new PDOModel();
-				$updateData["nombre"] = $_POST["nombre"]; 
-				$updateData["descripcion"] = $_POST["descripcion"];
-				$updateData["especial"] = $_POST["especialidad"];
-				$updateData["precio"] = $_POST["precio"];
-				$updateData["fecha"] = date("Y-m-d H:i:s"); 
-				$objConn->where("id", $id_producto);
-				$objConn->update('producto', $updateData);
+				?>
+					<script type="text/javascript">alert("entro a despachar")</script><?
+				$updateData["id_estado"] = 8; 
+				$objConn->where("id",   $id_pedido);
+				$objConn->update('pedido', $updateData);
 
 				
-				$producto_actualizado= $objConn->rowsChanged;
+				$pedido_actualizado= $objConn->rowsChanged;
 
+				if($pedido_actualizado == 1)
+				{
+					//insert en la tabla detalle_pedido
+                    $insertDet["id_pedido"] = $id_pedido;
+                    $insertDet["id_estado"] = 8;
+                    $insertDet["fecha"] = $fecha_act; 
+                    $insertDet["hora"] = $hora; 
+                    $objConn->insert('detalle_pedido', $insertDet);
+
+                     $id_pedido_detalle= $objConn->lastInsertId;
+				}
+			}
+
+
+			if(isset($_POST["entregar"]) && $_POST["entregar"]== "Entregar")
+			{
+				?>
+					<script type="text/javascript">alert("entro a entregar")</script><?
+				$updateData["id_estado"] = 9; 
+				$objConn->where("id", $id_pedido);
+				$objConn->update('pedido', $updateData);
+
+				$pedido_actualizado= $objConn->rowsChanged;
+				if($pedido_actualizado == 1)
+				{
+					//insert en la tabla detalle_pedido
+                    $insertDet["id_pedido"] =  $id_pedido;
+                    $insertDet["id_estado"] = 9;
+                    $insertDet["fecha"] = $fecha_act; 
+                    $insertDet["hora"] = $hora; 
+                    $objConn->insert('detalle_pedido', $insertDet);
+
+                     $id_pedido_detalle= $objConn->lastInsertId;
+				}
 
 			}
+
 		}		
 	
 		?>
 		<script type="text/javascript">
 		
-			function alertaProducto(producto_actualizado) 
+			function alertaPedido(pedido_actualizado) 
 			{
 				
-				var producto = producto_actualizado;
+				var pedido = pedido_actualizado;
 				
 				
-					if(producto >= 1)
+					if(pedido >= 1)
 					{
 						swal({
-							title:"Producto con el id:" + <? echo $id_producto ?>+"ha sido actualizado",
+							title:"Pedido con el id:" + <? echo $id_pedido ?>+"ha sido gestionado",
 							text: "",
 							type: "success",
 							showCancelButton: false,
 							confirmButtonClass: "btn-success",
-							confirmButtonText: "Producto actualizado!",
+							confirmButtonText: "Pedido actualizado!",
 							cancelButtonText: "No",
 							closeOnConfirm: false,
 							closeOnCancel: false
@@ -111,7 +179,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						function(isConfirm) {
 							if (isConfirm) {
 								swal("", "", "success");
-								location.href="gestion_producto.php";
+								location.href="gestion_pedido.php";
 							} 
 						});
 					}
@@ -123,7 +191,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	</head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onclick="alertaPedido(<? echo $pedido_actualizado ?>)">
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -268,92 +336,75 @@ License: You must have a valid license purchased only from themeforest(the above
 						<div class="portlet-body form">
 							<form role="form" class="form-horizontal" name="gestion_pedido_detalle"  id="gestion_pedido_detalle" action="gestion_pedido_detalle.php" enctype="multipart/form-data" method="post">
 								<div class="form-body">
-									
-									
-									
-									<div class="form-group form-md-line-input">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="input-icon">
-												<div>
-												<label class="control-label col-md-3">¿El producto es su especialidad?
-													<span class="required"> * </span>
-												</label>
+									<?foreach($result1 as $item)
+										{
+										?>
+											<div class="form-group form-md-line-input">
+												<div class="col-lg-4"></div>
+												<div class="col-md-4 well well-lg">
+													<div class="col-md-4" align="center">
+															<img src="<? echo 'usuarios/'.$item["id_usuario"].'/perfil/'.'/mid_perfil.jpg'?>" class="img-responsive pic-bordered">
+													</div>
+														<div class="col-md-4">
+															<div class="row">
+																<label class="control-label"><?php echo nombre_usuario( $item['id_usuario'] ) ?></label>
+															</div>
+															<div class="row">
+																<label class="control-label"><?
+
+																	$objConn->where("id", $item["id_producto"]);
+																	$producto =  $objConn->select("producto"); 
+																	echo $producto[0]['nombre'];
+																	echo " "."-";
+																	echo $item['cantidad'];  ?>
+																</label>
+															</div>
+															<div class="row">
+															<label class="control-label"><?php 
+																$objConn->where("id", $item["forma_adquisicion"]);
+																$forma_adquisicion =  $objConn->select("forma_adquisicion"); 
+																echo $forma_adquisicion[0]['descripcion']; ?>
+																
+															</label>
+															</div>
+														</div>
+														<div class="col-md-4">
+															<div class="row">
+																<label class="control-label"><?php echo  $item['id']  ?></label>
+															</div>
+															<div class="row"></div>
+															<div class="row">
+																<?
+																if($item['forma_adquisicion']== 1 || $item['forma_adquisicion']== 4 )
+																{
+																	?>
+																		<input class="btn  btn-circle purple" name="despachar" type="submit" id="despachar" value="Despachar">
+																	<?
+																}
+																else
+																{
+																	?>
+																		<input class="btn  btn-circle purple" name="entregar" type="submit" id="entregar" value="Entregar">
+																	<?
+																}
+																?>
+															</div>
+
+														</div>
+													
 												</div>
-												<div class="radio-list">
-													<?if($producto[0]['especial'] == "s") 
-													{?> 
-														<label> <input type="radio" id="especialidad_0" name="especialidad" value="s" data-title="si" checked />Si</label>
-														<label> <input type="radio" id="especialidad_1" name="especialidad" value="n" data-title="no"/> No</label>
-													<?}
-													else if ($producto[0]['especial'] == "n")
-													{?>
-														<label> <input type="radio" id="especialidad_0" name="especialidad" value="s" data-title="si"/>Si</label>
-														<label> <input type="radio" id="especialidad_1" name="especialidad" value="n" data-title="no" checked /> No</label>
-													<?}?>
-												
-												</div>
-												<i class="fa fa-star"></i>
+												<div class="col-lg-4"></div>
 											</div>
-										</div>
+
+											<input type="hidden" id="id_pedido" name="id_pedido" value="<? echo $item['id'] ?>" />
+
+										<?
+
+										}
+									?>
+									<div class="col-md-offset-3 col-md-9">
+										<input type="hidden" id="formulario" name="formulario" value="gestion_pedido_detalle"/>
 									</div>
-									<div class="form-actions">
-                                        <div class="col-md-offset-3 col-md-9">
-										
-											<input class="btn  btn-circle purple" name="editar" type="submit" id="editar" value="Editar">
-											<input class="btn btn-circle red" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick=" eliminarProducto();">
-											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
-											<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
-										</div>
-									</div>
-
-
-                                        <div class="portlet light ">
-                                            <div class="portlet-title tabbable-line">
-                                                <div class="caption">
-                                                    <i class="icon-bubbles font-dark hide"></i>
-                                                    <span class="caption-subject"><h3 class="block bold" style="color: #520d9b">COMENTARIOS</h3></span>
-                                                </div>
-
-                                            </div>
-                                            <div class="portlet-body">
-                                                <div class="tab-content">
-                                                    <div class="scroller" style="height: 338px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
-                                                        <div class="tab-pane active" id="portlet_comments_1">
-                                                            <!-- BEGIN: Comments -->
-                                                            <?
-                                                            $objCon=new PDOModel();
-                                                            $res_califica = $objCon->executeQuery("select A.* , B.* from producto A , calificacion_producto B where A.id = B.id_producto AND  A.id= '".$id_producto."' ");
-
-                                                            foreach ($res_califica as $valor){
-                                                                ?>
-                                                                <div class="mt-comments">
-	                                                                <div class="mt-comment">
-	                                                                    <div class="mt-comment-img">
-	                                                                        <img src="<? echo 'usuarios/'.$valor['id_usuario_califica'].'/perfil/min_perfil.jpg' ?>" /> </div>
-	                                                                    <div class="mt-comment-body">
-	                                                                        <div class="mt-comment-info">
-	                                                                            <span class="mt-comment-author"><? echo nombre_usuario($valor['id_usuario_califica']);?></span>
-	                                                                            <span class="mt-comment-date"><? echo $valor['fecha'];?></span>
-	                                                                        </div>
-	                                                                        <div class="mt-comment-text"><? echo $valor['comentario'] ;?></div>
-	                                                                        <div class="mt-comment-details">
-	                                                                            <span class="mt-comment-status mt-comment-status-pending"><? echo print_calificacion($valor['calificacion']); ?></span>
-	                                                                           
-	                                                                        </div>
-	                                                                    </div>
-	                                                                </div>
-                                                                </div><?
-                                                            }
-                                                            ?>
-
-                                                            <!-- END: Comments -->
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
 								</div>
 							</form>
 						</div>

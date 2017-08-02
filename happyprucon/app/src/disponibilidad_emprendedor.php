@@ -16,7 +16,7 @@ $id_usuario = "";
              $id_usuario = $_GET["id_usuario"];
         }
 $objUbicacion = new PDOModel();
-$objUbicacion->where("id_usuario", $usu_id);
+$objUbicacion->where("id", $id_usuario);
 $res_usuarios =  $objUbicacion->select("usuarios");
 foreach ($res_usuarios as $usuarios)
 {
