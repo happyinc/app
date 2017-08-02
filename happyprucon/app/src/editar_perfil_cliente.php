@@ -16,18 +16,18 @@ $tel = isset($_SESSION['telefono']) ? $_SESSION['telefono'] : null ;
 $correo = isset($_SESSION['correo']) ? $_SESSION['correo'] : null ;
 $meta = isset($_SESSION['suenos']) ? $_SESSION['suenos'] : null ;
 
-$usu_id = "";
+$id_user = "";
 
 if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
 {
-    $usu_id = $_POST["id_usuario"];
+    $id_user = $_POST["id_usuario"];
 }
 elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
 {
-    $usu_id = $_GET["id_usuario"];
+    $id_user = $_GET["id_usuario"];
 }
 $objUbicacion = new PDOModel();
-$objUbicacion->where("id_usuario", $usu_id);
+$objUbicacion->where("id_usuario", $id_user);
 $res_usuarios =  $objUbicacion->select("usuarios");
 foreach ($res_usuarios as $usuarios)
 {
@@ -86,6 +86,11 @@ License: You must have a valid license purchased only from themeforest(the above
     include "include_css.php";
     include "funciones.php";
     ?>
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL PLUGINS -->
 </head>
 <!-- END HEAD -->
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
@@ -184,6 +189,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         $updateUserData["genero"] = $_POST['genero'];
                         $updateUserData["telefono"] = $_POST['cell'];
                         $updateUserData["correo"] = $_POST['username'];
+                        $updateUserData["meta"] = $_POST['meta'];
                         $objConn->where("id", $_POST['iduser']);
                         $objConn->update("usuarios", $updateUserData);
 
@@ -191,6 +197,23 @@ License: You must have a valid license purchased only from themeforest(the above
                             $objConn = new PDOModel();
                             $objConn->where("id",$_POST['iduser']);
                             $res_usu =  $objConn->select("usuarios");
+
+                            $usuario = $res_usu[0]['id'];
+
+                            $objConn->where("id_usuario", $usuario);
+                            $objConn->delete(gustos);
+
+                            //Recorre el array para insertar los datos en la tabla de gustos
+                            $bienes = $_POST["categoria"];
+
+                            foreach ($bienes  as $clave => $valor){
+                                $id_catagoria = $valor;
+                                $objConn = new PDOModel();
+                                $insertUserGusto["id_usuario"] = $usuario;
+                                $insertUserGusto["id_categoria"] = $id_catagoria;
+                                $insertUserGusto["id_estado"] = 1;
+                                $objConn->insert("gustos", $insertUserGusto);
+                            }
 
                             $objSe->init();
                             $objSe->set('id_usuario', $res_usu[0]['id']);
@@ -396,6 +419,59 @@ License: You must have a valid license purchased only from themeforest(the above
                             </div>
                             <div class="col-sm-4 col-xs-1"></div>
                         </div>
+                        <?
+                        $sel_gusto = array();
+                        $objCon=new PDOModel();
+                        $res_gustos = $objCon->executeQuery("select A.* , B.* from categoria A , gustos B where A.id = B.id_categoria AND  B.id_usuario = '".$usu_id."' ");
+
+                        foreach ($res_gustos as $valor){
+
+                            $sel_gusto[] = $valor["id_categoria"];
+                        }
+                        ?>
+
+                        <!-- BEGIN ACCORDION PORTLET-->
+                        <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="portlet-body col-lg-5">
+                                <div class="panel-group accordion" id="accordion1">
+                                    <?php
+                                    $objCat = new PDOModel();
+                                    $objCat->where("id_estado", 1);
+                                    $result =  $objCat->select("bienes");
+                                    foreach($result as $item){
+                                        ?>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title bold">
+                                                    <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_<?php echo $item["id"]?>" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  class="img-responsive" /><?php echo $item["nombre"]?></a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse_<?php echo $item["id"]?>" class="panel-collapse in collapse">
+                                                <div class="panel-body"><?php
+
+                                                    $objCat->andOrOperator = "AND";
+                                                    $objCat->where("id_bienes", $item["id"]);
+                                                    $objCat->where("id_estado", 1);
+                                                    $objCat->orderByCols = array("descripcion");
+                                                    $result1 =  $objCat->select("categoria");
+                                                    foreach($result1 as $item1){
+                                                        ?>
+                                                        <label>
+                                                        <input type="checkbox" class="icheck" name="categoria[]" data-checkbox="icheckbox_line-purple" value="<?php echo $item1["id"]?>" data-label="<?php echo $item1["descripcion"]?>" <? if (in_array($item1["id"], $sel_gusto)){echo "checked";}?>/>
+                                                        </label><?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </div>
+                                        </div>  <?
+                                    }
+                                    ?>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END ACCORDION PORTLET-->
                         <div class="form-group">
                             <label class="control-label col-md-3"></label>
                             <div class="col-md-4">
@@ -503,6 +579,14 @@ include "footer.php";
 <?
 include "include_js.php";
 ?>
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+<script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <script src="../assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
 </body>

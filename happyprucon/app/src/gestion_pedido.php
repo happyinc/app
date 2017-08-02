@@ -9,25 +9,6 @@ $usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
-$usu_id = "";
-
-if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
-{
-    $usu_id = $_POST["id_usuario"];
-}
-elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
-{
-    $usu_id = $_GET["id_usuario"];
-}
-$objUbicacion = new PDOModel();
-$objUbicacion->where("id_usuario", $usu_id);
-$res_usuarios =  $objUbicacion->select("usuarios");
-foreach ($res_usuarios as $usuarios)
-{
-    $rol = $usuarios["rol"] ;
-    $fullname = $usuarios["fullname"] ;
-}
-
 if($rol==2 ||  $rol==3){
 
 }else{
@@ -267,60 +248,70 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
                     <!-- END PAGE HEADER-->
-                    <div class="note note-info">
-                        <div class="portlet-body">
-                            <?php
-                            /*$categoria="";
-                            $objCon=new PDOModel();
-                            $records = $objCon->executeQuery("select A.* , B.* from producto A , pedido B where A.id = B.id_producto AND B.id_estado = 7 AND A.id_usuario = '".$usu_id."' orderby A.id");
-                            foreach ($records as $pedidos){
-                                    $categoria["".$pedidos["id_categoria"].""]=$categoria["".$pedidos["id_categoria"].""]+1;
-                            }
-                            $bien="";
-                            foreach ($categoria as $valor => $item){
-
-                                $objCon->where("id", $valor);
-                                $result1 =  $objCon->select("categoria");
-
-                                $bien["".$result1[0]["id_bienes"].""]=$bien["".$result1[0]["id_bienes"].""]+1;
-                            }*/
 
 
+                    <div class="col-lg-6 col-xs-12 col-sm-12">
+                        <div class="portlet light ">
+                            <div class="portlet-title tabbable-line">
+                                <div class="caption">
+                                    <i class=" icon-social-twitter font-dark hide"></i>
+                                    <span class="caption-subject font-dark bold uppercase">HAPPY FOOD</span>
+                                </div>
 
-                            ?>
-                            <div class="tabbable tabbable-tabdrop">
-                                <?php
-                                $objCat = new PDOModel();
-                                $objCat->where("id_estado", 1);
-                                $result =  $objCat->select("bienes");
-                                foreach($result as $item) {
-                                    ?>
-                                    <ul class="nav nav-tabs">
-                                    <li class="active">
-                                        <a href="#tab<? echo $item['id']; ?>"
-                                           data-toggle="tab"><? echo $item['nombre']; ?></a>
-                                    </li>
-
-                                    </ul><?
-
-
-                                    $result1 =  $objCat->executeQuery("SELECT * FROM producto A, pedido B WHERE A.id= B.id_producto and B.id_estado = '7' and A.id_usuario = '".$usu_id."' ");
-                                    foreach ($result1 as $item1) {
-
-                                        ?>
-                                        <div class="tab-content">
-                                        <div class="tab-pane active" id="tab<? echo $item1['id']; ?>">
-                                            <p><? echo $item1['descripcion']; ?></p>
-                                        </div>
-                                        </div><?
-                                    }
-                                }
-                                ?>
                             </div>
-                            <p> &nbsp; </p>
-                            <p> &nbsp; </p>
+                            <div class="portlet-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_actions_pending">
+                                        <!-- BEGIN: Actions -->
+                                        <?
+                                        $objCat = new PDOModel();
+
+                                        //$result1 =  $objCat->executeQuery("SELECT * FROM producto A, pedido B WHERE A.id= B.id_producto and B.id_estado = '7' and A.id_usuario = '".$usu_id."' ");
+
+                                        $result1 = $objCat->executeQuery("SELECT A.id_producto , B.nombre, B.descripcion, count(*) as pedido FROM pedido as A, producto as B WHERE A.id_producto = B.id and B.id_usuario = '".$usu_id."' group by A.id_producto");
+                                        foreach ($result1 as $item1) {
+
+                                            ?>
+
+
+                                            <div class="mt-actions">
+                                                <div class="mt-action">
+                                                    <div class="fileinput-new thumbnail" style="width: 150px;">
+                                                        <img src="<? echo "usuarios/".$usu_id."/bienes/".$item1["id_producto"]."/res_producto.jpg"?>" class="img-responsive"/></div>
+                                                    <div class="mt-action-body">
+                                                        <div class="mt-action-row">
+                                                            <div class="mt-action-info ">
+                                                                <div class="mt-action-details ">
+                                                                    <span class="mt-action-author"><? echo $item1['nombre']; ?></span>
+                                                                    <p class="mt-action-desc"><? echo $item1['descripcion']; ?></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mt-action-datetime ">
+                                                                <span class="mt-action-date"><? echo $item1['pedido']; ?></span>
+                                                            </div>
+                                                            <div class="mt-action-buttons ">
+                                                                <div class="btn-group-circle">
+                                                                    <button type="button"
+                                                                            class="btn btn-default mt-ladda-btn ladda-button btn-circle">VER DETALLE
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <?
+                                        }
+                                        ?>
+                                        <!-- END: Actions -->
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
