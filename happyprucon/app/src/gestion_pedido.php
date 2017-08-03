@@ -41,6 +41,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <head><?php
         include "include_css.php";
+        include "funciones.php";
         ?> </head>
     <!-- END HEAD -->
 
@@ -248,70 +249,92 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                     </div>
                     <!-- END PAGE HEADER-->
-
-
-                    <div class="col-lg-6 col-xs-12 col-sm-12">
-                        <div class="portlet light ">
-                            <div class="portlet-title tabbable-line">
-                                <div class="caption">
-                                    <i class=" icon-social-twitter font-dark hide"></i>
-                                    <span class="caption-subject font-dark bold uppercase">HAPPY FOOD</span>
-                                </div>
-
+                    <div class="portlet light portlet-fit " style="margin-bottom: 1px !important;">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-microphone font-dark hide"></i>
+                                <span class="caption-subject bold font-dark uppercase"> HAPPY FOOD </span>
                             </div>
+                        </div>
                             <div class="portlet-body">
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="tab_actions_pending">
-                                        <!-- BEGIN: Actions -->
+                                <form role="form" class="form-horizontal" action="gestion_pedido_detalle.php" name="producto" id="producto" method="POST">
+                                    <div class="row">
                                         <?
-                                        $objCat = new PDOModel();
+                                        $objGes = new PDOModel();
 
-                                        //$result1 =  $objCat->executeQuery("SELECT * FROM producto A, pedido B WHERE A.id= B.id_producto and B.id_estado = '7' and A.id_usuario = '".$usu_id."' ");
+                                        $result = $objGes->executeQuery("SELECT A.id_producto , B.nombre, B.descripcion, count(*) as pedido FROM pedido as A, producto as B WHERE A.id_producto = B.id and A.id_estado = '7' and B.id_usuario = '".$usu_id."' group by A.id_producto");
+                                        foreach ($result as $item) {
 
-                                        $result1 = $objCat->executeQuery("SELECT A.id_producto , B.nombre, B.descripcion, count(*) as pedido FROM pedido as A, producto as B WHERE A.id_producto = B.id and B.id_usuario = '".$usu_id."' group by A.id_producto");
-                                        foreach ($result1 as $item1) {
-
-                                            ?>
-
-
-                                            <div class="mt-actions">
-                                                <div class="mt-action">
-                                                    <div class="fileinput-new thumbnail" style="width: 150px;">
-                                                        <img src="<? echo "usuarios/".$usu_id."/bienes/".$item1["id_producto"]."/res_producto.jpg"?>" class="img-responsive"/></div>
-                                                    <div class="mt-action-body">
-                                                        <div class="mt-action-row">
-                                                            <div class="mt-action-info ">
-                                                                <div class="mt-action-details ">
-                                                                    <span class="mt-action-author"><? echo $item1['nombre']; ?></span>
-                                                                    <p class="mt-action-desc"><? echo $item1['descripcion']; ?></p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="mt-action-datetime ">
-                                                                <span class="mt-action-date"><? echo $item1['pedido']; ?></span>
-                                                            </div>
-                                                            <div class="mt-action-buttons ">
-                                                                <div class="btn-group-circle">
-                                                                    <button type="button"
-                                                                            class="btn btn-default mt-ladda-btn ladda-button btn-circle">VER DETALLE
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                        ?>
+                                        <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 10px;">
+                                            <div class="mt-widget-2" >
+                                                <div class="mt-head" style="background-image: url(<? echo "usuarios/".$usu_id."/bienes/".$item["id_producto"]."/res_producto.jpg"?>); height: 190px;" >
+                                                   <div class="mt-head-user" >
+                                                        <div class="mt-head-user-img"></div>
                                                     </div>
                                                 </div>
+                                                <div class="mt-body" style="padding-top: 70px !important;">
+                                                    <h3 class="mt-body-title"> <? echo $item['nombre']; ?> </h3>
+                                                    <p class="mt-body-description" style="margin: 0 !important;"> <? echo $item['descripcion']; ?> </p>
+                                                    <ul class="mt-body-stats">
+                                                        <li class="font-purple">
+                                                            <i class="fa fa-check"></i> <? echo $item['pedido']; ?> </li>
+                                                        <li class="font-red">
+                                                            <i class="  icon-bubbles"></i> <? echo cantidad_coment_prod($item['id_producto']); ?> </li>
+                                                    </ul>
+                                                    <div class="btn-group-circle" style="margin-bottom: 20px;">
+                                                        <button type="submit"
+                                                                class="btn btn-default mt-ladda-btn ladda-button" style="border-radius: 10px;">VER DETALLE
+                                                        </button>
+                                                        <input type="hidden" name="id_producto" id="id_producto" value="<? echo $item['id_producto'];?>"/>
+                                                        <input type="hidden" name="id_usuario" id="id_usuario" value="<? echo $usu_id;?>"/>
+                                                    </div>
 
+                                                </div>
                                             </div>
+                                        </div>
                                             <?
                                         }
                                         ?>
-                                        <!-- END: Actions -->
+                                    </div>
+                                </form>
+                            </div>
+                    </div>
+                    <div class="portlet light portlet-fit " style="margin-bottom: 0 !important;">
+                        <div class="portlet-title" style="margin-bottom: 0 !important;">
+                            <form role="form" class="form-horizontal" action="gestion_pedido_detalle.php" name="adquisicion" id="adquisicion" method="POST">
+
+
+
+
+                                    <div class="row">
+                                        <center>
+                                            <?
+                                            $objGes = new PDOModel();
+
+                                            //$result1 =  $objCat->executeQuery("SELECT * FROM producto A, pedido B WHERE A.id= B.id_producto and B.id_estado = '7' and A.id_usuario = '".$usu_id."' ");
+
+                                            $result1 = $objGes->executeQuery("SELECT A.id_producto , A.forma_adquisicion, B.nombre, B.descripcion, count(*) as adquirido FROM pedido as A, producto as B WHERE A.id_producto = B.id and A.id_estado = '7' and B.id_usuario = '".$usu_id."' group by A.forma_adquisicion");
+                                            foreach ($result1 as $item1) {
+
+                                            ?>
+
+                                                <label class="btn  grey btn-outline btn-circle "><span class="badge badge-danger"><? echo $item1['adquirido'];?></span>
+                                                    <a href="gestion_pedido_detalle.php?id_usuario=<? echo $usu_id;?>&id_forma_adquisicion=<? echo $item1['forma_adquisicion'];?>" ><i class="fa fa-home fa-2x" style="color: purple"></i></a></label>
+                                                <?
+                                            }
+                                            ?>
+
+                                        </center>
                                     </div>
 
-                                </div>
-                            </div>
+
+
+
+                            </form>
+
                         </div>
                     </div>
-
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
