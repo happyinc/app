@@ -562,7 +562,7 @@ License: You must have a valid license purchased only from themeforest(the above
 																		$result2 =  $objConn1->select("composicion");
 																		foreach($result2 as $item2)
 																		{
-																			?>'<option value="<?php echo $item2["id"]?>"><?php echo $item2["nombre"]?></option>'+<?php
+																			?><option value="<?php echo $item2["id"]?>"><?php echo $item2["nombre"]?></option> <?php
 																		}
 																	?>
 																	</select>

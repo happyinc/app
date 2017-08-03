@@ -1,8 +1,8 @@
 <?php
-	error_reporting(E_ERROR | E_WARNING | E_PARSE);
-	require_once'../../externo/plugins/PDOModel.php';
-	require'../class/sessions.php';
-	$id_usuario = "";
+    error_reporting(E_ERROR | E_WARNING | E_PARSE);
+    require_once'../../externo/plugins/PDOModel.php';
+    require'../class/sessions.php';
+    $id_usuario = "";
     
         if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
         {
@@ -12,15 +12,15 @@
         {
              $id_usuario = $_GET["id_usuario"];
         }
-		$objUbicacion = new PDOModel();
-		$objUbicacion->where("id", $id_usuario);
-		$res_usuarios =  $objUbicacion->select("usuarios");
-		foreach ($res_usuarios as $usuarios)
-		{
-		        $rol = $usuarios["rol"] ;
-		        $fullname = $usuarios["fullname"] ;                                                        
-		}
-			
+        $objUbicacion = new PDOModel();
+        $objUbicacion->where("id", $id_usuario);
+        $res_usuarios =  $objUbicacion->select("usuarios");
+        foreach ($res_usuarios as $usuarios)
+        {
+                $rol = $usuarios["rol"] ;
+                $fullname = $usuarios["fullname"] ;                                                        
+        }
+            
 ?>
 <!DOCTYPE html>
 <!-- 
@@ -44,14 +44,14 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN HEAD -->
 
     <head>
-	<?php
+    <?php
 
-	include "include_css.php";
-	include "funciones.php";
-	
-	
-		$id_producto = 116;
-	
+    include "include_css.php";
+    include "funciones.php";
+    
+    
+        $id_producto = 121;
+    
         if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
         {
             $id_producto = $_POST["id_producto"];
@@ -62,7 +62,7 @@ License: You must have a valid license purchased only from themeforest(the above
         }
 
         $id_forma_adquisicion = "";
-	
+    
         if(isset($_POST["id_forma_adquisicion"]) && $_POST["id_forma_adquisicion"] != "")
         {
             $id_forma_adquisicion = $_POST["id_forma_adquisicion"];
@@ -72,52 +72,55 @@ License: You must have a valid license purchased only from themeforest(the above
              $id_forma_adquisicion = $_GET["id_forma_adquisicion"];
         }
 
-		?>
-		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
-		
-			
-	    <?
-		$result1="";
-		$objConn = new PDOModel();
+        ?>
+        <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+        
+            
+        <?
+        $result1="";
+        $objConn = new PDOModel();
 
-		if($id_producto !="")
-		{
-			$result1 = $objConn->executeQuery("SELECT C.* FROM (SELECT A.id, A.id_usuario,A.id_zona, A.id_estado,A.id_producto,A.id_ubicacion_cliente,A.fecha,A.precio,A.forma_adquisicion,A.cantidad,A.comision,A.cxp, B.id_categoria,B.nombre,B.descripcion  FROM pedido A, producto B WHERE B.id_usuario = '".$id_usuario."' AND B.id = A.id_producto AND A.id_estado = 7 ) C WHERE C.id_producto = '".$id_producto."' order by A.id;");
+        if($id_producto !="")
+        {
+            $result1 = $objConn->executeQuery("SELECT C.* FROM (SELECT A.id, A.id_usuario,A.id_zona, A.id_estado,A.id_producto,A.id_ubicacion_cliente,A.fecha,A.precio,A.forma_adquisicion,A.cantidad,A.comision,A.cxp, B.id_categoria,B.nombre,B.descripcion  FROM pedido A, producto B WHERE B.id_usuario = '".$id_usuario."' AND B.id = A.id_producto AND A.id_estado = 7 ) C WHERE C.id_producto = '".$id_producto."';");
+        }
 
-		}
-
-		if($id_forma_adquisicion !="")
-		{
-			$result1 = $objConn->executeQuery("SELECT C.* FROM (SELECT A.id, A.id_usuario,A.id_zona, A.id_estado,A.id_producto,A.id_ubicacion_cliente,A.fecha,A.precio,A.forma_adquisicion,A.cantidad,A.comision,A.cxp, B.id_categoria,B.nombre,B.descripcion  FROM pedido A, producto B WHERE B.id_usuario = '".$id_usuario."' AND B.id = A.id_producto AND A.id_estado = 7) C WHERE C.forma_adquisicion = '".$id_forma_adquisicion."' order by A.id;");
-
-		}
+        if($id_forma_adquisicion !="")
+        {
+            $result1 = $objConn->executeQuery("SELECT C.* FROM (SELECT A.id, A.id_usuario,A.id_zona, A.id_estado,A.id_producto,A.id_ubicacion_cliente,A.fecha,A.precio,A.forma_adquisicion,A.cantidad,A.comision,A.cxp, B.id_categoria,B.nombre,B.descripcion  FROM pedido A, producto B WHERE B.id_usuario = '".$id_usuario."' AND B.id = A.id_producto AND A.id_estado = 7) C WHERE C.forma_adquisicion = '".$id_forma_adquisicion."';");
+        }
 
 
 
-		//manejo de la fecha para hacer el insert en la tabla detalle pedido
+        //manejo de la fecha para hacer el insert en la tabla detalle pedido
         $fecha = date("Y-m-d H:i:s");
         $fecha1 = explode(" ", $fecha);
         $fecha_act=$fecha1[0];
         $hora=$fecha1[1];
         
 
-		if(isset($_POST["formulario"]) && $_POST["formulario"] == "gestion_pedido_detalle" )
-		{
-			$id_pedido=$_POST['id_pedido'];
-			if(isset($_POST["despachar"]) && $_POST["despachar"]== "Despachar")
-			{
-				?>
-					<script type="text/javascript">alert("entro a despachar")</script><?
-				$updateData["id_estado"] = 8; 
-				$objConn->where("id",   $id_pedido);
-				$objConn->update('pedido', $updateData);
+        if(isset($_POST["formulario"]) && $_POST["formulario"] == "gestion_pedido_detalle" )
+        {
+            ?>
+                <script type="text/javascript">alert("pedido recibido<? echo $_POST['id_pedido']?>") </script>
+                <script type="text/javascript">alert("forma recibido<? echo $_POST['forma_ad']?>") </script>
+             <?
+            $id_pedido=$_POST['id_pedido'];
+            if(isset($_POST["despachar"]) && $_POST["despachar"]== "Despachar" )
+            {
+                ?>
+                    <script type="text/javascript">alert("despachar")</script>
+                <?
+                $updateData["id_estado"] = 8; 
+                $objConn->where("id",   $id_pedido);
+                $objConn->update('pedido', $updateData);
 
-				
-				$pedido_actualizado= $objConn->rowsChanged;
+                
+                $pedido_actualizado= $objConn->rowsChanged;
 
-				if($pedido_actualizado == 1)
-				{
-					//insert en la tabla detalle_pedido
+                if($pedido_actualizado == 1)
+                {
+                    //insert en la tabla detalle_pedido
                     $insertDet["id_pedido"] = $id_pedido;
                     $insertDet["id_estado"] = 8;
                     $insertDet["fecha"] = $fecha_act; 
@@ -125,22 +128,32 @@ License: You must have a valid license purchased only from themeforest(the above
                     $objConn->insert('detalle_pedido', $insertDet);
 
                      $id_pedido_detalle= $objConn->lastInsertId;
-				}
-			}
+                }
+                else 
+                {
+                    ?>
+                        <script type="text/javascript">alert("No se pudo actualizar el pedido")
+                        window.history.back();
+                        </script>
+                    <?
+                }
+            }
 
 
-			if(isset($_POST["entregar"]) && $_POST["entregar"]== "Entregar")
-			{
-				?>
-					<script type="text/javascript">alert("entro a entregar")</script><?
-				$updateData["id_estado"] = 9; 
-				$objConn->where("id", $id_pedido);
-				$objConn->update('pedido', $updateData);
+            if(isset($_POST["entregar"]) && $_POST["entregar"]== "Entregar")
+            {
 
-				$pedido_actualizado= $objConn->rowsChanged;
-				if($pedido_actualizado == 1)
-				{
-					//insert en la tabla detalle_pedido
+                ?>
+                    <script type="text/javascript">alert("entregar")</script>
+                <?
+                $updateData["id_estado"] = 9; 
+                $objConn->where("id", $id_pedido);
+                $objConn->update('pedido', $updateData);
+
+                $pedido_actualizado= $objConn->rowsChanged;
+                if($pedido_actualizado == 1)
+                {
+                    //insert en la tabla detalle_pedido
                     $insertDet["id_pedido"] =  $id_pedido;
                     $insertDet["id_estado"] = 9;
                     $insertDet["fecha"] = $fecha_act; 
@@ -148,50 +161,53 @@ License: You must have a valid license purchased only from themeforest(the above
                     $objConn->insert('detalle_pedido', $insertDet);
 
                      $id_pedido_detalle= $objConn->lastInsertId;
-				}
+                }
+                else 
+                {
+                    ?>
+                        <script type="text/javascript">alert("No se pudo actualizar el pedido")
+                        window.history.back();
+                        </script>
+                    <?
+                }
 
-			}
-
-		}		
-	
-		?>
-		<script type="text/javascript">
-		
-			function alertaPedido(pedido_actualizado) 
-			{
-				
-				var pedido = pedido_actualizado;
-				
-				
-					if(pedido >= 1)
-					{
-						swal({
-							title:"Pedido con el id:" + <? echo $id_pedido ?>+"ha sido gestionado",
-							text: "",
-							type: "success",
-							showCancelButton: false,
-							confirmButtonClass: "btn-success",
-							confirmButtonText: "Pedido actualizado!",
-							cancelButtonText: "No",
-							closeOnConfirm: false,
-							closeOnCancel: false
-						},
-						function(isConfirm) {
-							if (isConfirm) {
-								swal("", "", "success");
-								location.href="gestion_pedido.php";
-							} 
-						});
-					}
-			}
-		  		
-		</script>
+            }
+        }       
+    
+        ?>
+        <script type="text/javascript">
+        
+            function alertaPedido(id) 
+            {
+                
+                var id = id;
+                swal({
+                        title:"Pedido con el id:" + id +"ha sido gestionado",
+                        text: "",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonClass: "btn-success",
+                        confirmButtonText: "Pedido actualizado!",
+                        cancelButtonText: "No",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        swal("", "", "success");
+                        location.href="gestion_pedido.php?id_usuario=<? echo $id_usuario ?>";
+                    } 
+                });
+                    
+            }
+                
+        </script>
 
 
-	</head>
+    </head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onclick="alertaPedido(<? echo $pedido_actualizado ?>)">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" >
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -212,12 +228,12 @@ License: You must have a valid license purchased only from themeforest(the above
                 <!-- DOC: Remove "hide" class to enable the page header actions -->
                
                 <!-- END PAGE ACTIONS -->
-				<!-- BEGIN HEADER -->
-					<?php
-						include "cabecera.php";
-					?>
-				<!-- END HEADER -->
-			</div>
+                <!-- BEGIN HEADER -->
+                    <?php
+                        include "cabecera.php";
+                    ?>
+                <!-- END HEADER -->
+            </div>
             <!-- END HEADER INNER -->
         </div>
         <!-- END HEADER -->
@@ -226,11 +242,11 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- END HEADER & CONTENT DIVIDER -->
         <!-- BEGIN CONTAINER -->
         <div class="page-container">
-			<!-- BEGIN SIDEBAR -->
-			<?php
-					include "menu.php";
-			?>
-			<!-- END SIDEBAR -->
+            <!-- BEGIN SIDEBAR -->
+            <?php
+                    include "menu.php";
+            ?>
+            <!-- END SIDEBAR -->
             <!-- BEGIN CONTENT -->
             <div class="page-content-wrapper">
                 <!-- BEGIN CONTENT BODY -->
@@ -238,7 +254,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <!-- BEGIN PAGE HEADER-->
                     <!-- BEGIN THEME PANEL -->
                     <div class="theme-panel">
-						<div class="toggler-close">
+                        <div class="toggler-close">
                             <i class="icon-close"></i>
                         </div>
                         <div class="theme-options">
@@ -331,83 +347,86 @@ License: You must have a valid license purchased only from themeforest(the above
                         </ul>
                         
                     <!-- END PAGE HEADER-->
-					</div>
-					<div class="portlet light">
-						<div class="portlet-body form">
-							<form role="form" class="form-horizontal" name="gestion_pedido_detalle"  id="gestion_pedido_detalle" action="gestion_pedido_detalle.php" enctype="multipart/form-data" method="post">
-								<div class="form-body">
-									<?foreach($result1 as $item)
-										{
-										?>
-											<div class="form-group form-md-line-input">
-												<div class="col-lg-4"></div>
-												<div class="col-md-4 well well-lg">
-													<div class="col-md-4" align="center">
-															<img src="<? echo 'usuarios/'.$item["id_usuario"].'/perfil/'.'/mid_perfil.jpg'?>" class="img-responsive pic-bordered">
-													</div>
-														<div class="col-md-4">
-															<div class="row">
-																<label class="control-label"><?php echo nombre_usuario( $item['id_usuario'] ) ?></label>
-															</div>
-															<div class="row">
-																<label class="control-label"><?
+                    </div>
+                    <div class="portlet light">
+                        <div class="portlet-body form">
+                            <form role="form" class="form-horizontal" name="gestion_pedido_detalle"  id="gestion_pedido_detalle" action="gestion_pedido_detalle.php" enctype="multipart/form-data" method="post">
+                                <div class="form-body">
+                                    <?foreach($result1 as $item)
+                                        {
+                                        ?>
+                                            <div class="form-group form-md-line-input">
+                                                <div class="col-lg-4"></div>
+                                                <div class="col-md-4 well well-lg">
+                                                    <div class="col-md-3" align="center">
+                                                            <img src="<? echo 'usuarios/'.$item["id_usuario"].'/perfil/'.'mid_perfil.jpg'?>" class="img-responsive pic-bordered">
+                                                    </div>
+                                                        <div class="col-md-6">
+                                                            <div class="row">
+                                                                <label class="control-label"><?php echo nombre_usuario( $item['id_usuario'] ) ?></label>
+                                                            </div>
+                                                            <div class="row">
+                                                                <label class="control-label"><?
 
-																	$objConn->where("id", $item["id_producto"]);
-																	$producto =  $objConn->select("producto"); 
-																	echo $producto[0]['nombre'];
-																	echo " "."-";
-																	echo $item['cantidad'];  ?>
-																</label>
-															</div>
-															<div class="row">
-															<label class="control-label"><?php 
-																$objConn->where("id", $item["forma_adquisicion"]);
-																$forma_adquisicion =  $objConn->select("forma_adquisicion"); 
-																echo $forma_adquisicion[0]['descripcion']; ?>
-																
-															</label>
-															</div>
-														</div>
-														<div class="col-md-4">
-															<div class="row">
-																<label class="control-label"><?php echo  $item['id']  ?></label>
-															</div>
-															<div class="row"></div>
-															<div class="row">
-																<?
-																if($item['forma_adquisicion']== 1 || $item['forma_adquisicion']== 4 )
-																{
-																	?>
-																		<input class="btn  btn-circle purple" name="despachar" type="submit" id="despachar" value="Despachar">
-																	<?
-																}
-																else
-																{
-																	?>
-																		<input class="btn  btn-circle purple" name="entregar" type="submit" id="entregar" value="Entregar">
-																	<?
-																}
-																?>
-															</div>
+                                                                    $objConn->where("id", $item["id_producto"]);
+                                                                    $producto =  $objConn->select("producto"); 
+                                                                    echo $producto[0]['nombre'];
+                                                                    echo " "."-"." ";
+                                                                    echo $item['cantidad'];  ?>
+                                                                </label>
+                                                            </div>
+                                                            <div class="row">
+                                                            <label class="control-label"><?php 
+                                                                $objConn->where("id", $item["forma_adquisicion"]);
+                                                                $forma_adquisicion =  $objConn->select("forma_adquisicion"); 
+                                                                echo $forma_adquisicion[0]['descripcion']; ?>
+                                                                
+                                                            </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="row">
+                                                                <label class="control-label"><?php echo  $item['id']  ?></label>
+                                                            </div>
+                                                            <div class="row"></div>
+                                                            <div class="row">
+                                                                <?
+                                                                if($item['forma_adquisicion']== 1 || $item['forma_adquisicion']== 4 )
+                                                                {
+                                                                    ?>
+                                                                        <input class="btn  btn-circle purple" name="despachar" type="submit" id="despachar" value="Despachar" onclick="alertaPedido(<? echo $item['id'] ?>)">
+                                                                         
+                                                                    <?
+                                                                }
+                                                                else if ($item['forma_adquisicion']== 2 || $item['forma_adquisicion']== 3 )
+                                                                {
+                                                                    ?>
+                                                                        <input class="btn  btn-circle purple" name="entregar" type="submit" id="entregar" value="Entregar" onclick="alertaPedido(<? echo $item['id'] ?>)">
+                                                                        
+                                                                    <?
+                                                                }
+                                                                ?>
+                                                                <input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
+                                                                <input type="hidden" id="id_pedido" name="id_pedido" value="<? echo $item['id'] ?>" />
+                                                                <input type="hidden" id="forma_ad" name="forma_ad" value="<? echo $item['forma_adquisicion'] ?>" />
 
-														</div>
-													
-												</div>
-												<div class="col-lg-4"></div>
-											</div>
+                                                            </div>
 
-											<input type="hidden" id="id_pedido" name="id_pedido" value="<? echo $item['id'] ?>" />
+                                                        </div>
+                                                </div>
+                                                <div class="col-lg-4"></div>
+                                            </div> 
+                                        <?
 
-										<?
-
-										}
-									?>
-									<div class="col-md-offset-3 col-md-9">
-										<input type="hidden" id="formulario" name="formulario" value="gestion_pedido_detalle"/>
-									</div>
-								</div>
-							</form>
-						</div>
+                                        }
+                                       // echo "<pre>"; print_r($GLOBALS); echo "</pre>";
+                                    ?>
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <input type="hidden" id="formulario" name="formulario" value="gestion_pedido_detalle"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <!-- END CONTENT BODY -->
@@ -416,7 +435,7 @@ License: You must have a valid license purchased only from themeforest(the above
             
         </div>
         <!-- END CONTAINER -->
-		 <!-- BEGIN FOOTER -->
+         <!-- BEGIN FOOTER -->
         <?php
             include "footer.php";
         ?>
@@ -429,9 +448,9 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- BEGIN CORE PLUGINS -->
             <?php
             include "include_js.php";
-			?> 
-			<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
-			<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
+            ?> 
+            <script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+            <script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
 
     </body>
 
