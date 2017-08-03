@@ -50,7 +50,9 @@ License: You must have a valid license purchased only from themeforest(the above
     include "funciones.php";
     
     
-        $id_producto = 116;
+
+        $id_producto = "";
+
     
         if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
         {
@@ -418,9 +420,15 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <?
                                             $i++;
                                         }
+
                                         //echo "<pre>"; print_r($GLOBALS); echo "</pre>";
                                      ?>
                             </div>
+                                     
+                                    ?>
+                                   
+                                </div>
+
                         </div>
                     </div>
                 </div>
