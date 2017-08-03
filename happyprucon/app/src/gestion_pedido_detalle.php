@@ -50,7 +50,7 @@ License: You must have a valid license purchased only from themeforest(the above
     include "funciones.php";
     
     
-        $id_producto = 121;
+        $id_producto = 116;
     
         if(isset($_POST["id_producto"]) && $_POST["id_producto"] != "")
         {
@@ -101,16 +101,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
         if(isset($_POST["formulario"]) && $_POST["formulario"] == "gestion_pedido_detalle" )
         {
-            ?>
-                <script type="text/javascript">alert("pedido recibido<? echo $_POST['id_pedido']?>") </script>
-                <script type="text/javascript">alert("forma recibido<? echo $_POST['forma_ad']?>") </script>
-             <?
+    
             $id_pedido=$_POST['id_pedido'];
             if(isset($_POST["despachar"]) && $_POST["despachar"]== "Despachar" )
             {
-                ?>
-                    <script type="text/javascript">alert("despachar")</script>
-                <?
                 $updateData["id_estado"] = 8; 
                 $objConn->where("id",   $id_pedido);
                 $objConn->update('pedido', $updateData);
@@ -143,9 +137,6 @@ License: You must have a valid license purchased only from themeforest(the above
             if(isset($_POST["entregar"]) && $_POST["entregar"]== "Entregar")
             {
 
-                ?>
-                    <script type="text/javascript">alert("entregar")</script>
-                <?
                 $updateData["id_estado"] = 9; 
                 $objConn->where("id", $id_pedido);
                 $objConn->update('pedido', $updateData);
@@ -195,7 +186,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 function(isConfirm) {
                     if (isConfirm) {
                         swal("", "", "success");
-                        location.href="gestion_pedido.php?id_usuario=<? echo $id_usuario ?>";
+                        location.href="gestion_pedido_detalle.php?id_usuario=<? echo $id_usuario ?>";
                     } 
                 });
                     
@@ -350,82 +341,86 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                     <div class="portlet light">
                         <div class="portlet-body form">
-                            <form role="form" class="form-horizontal" name="gestion_pedido_detalle"  id="gestion_pedido_detalle" action="gestion_pedido_detalle.php" enctype="multipart/form-data" method="post">
-                                <div class="form-body">
-                                    <?foreach($result1 as $item)
+                            <div class="form-body">
+                                    <?
+                                    $i = 0;
+                                    foreach($result1 as $item)
                                         {
                                         ?>
-                                            <div class="form-group form-md-line-input">
-                                                <div class="col-lg-4"></div>
-                                                <div class="col-md-4 well well-lg">
-                                                    <div class="col-md-3" align="center">
-                                                            <img src="<? echo 'usuarios/'.$item["id_usuario"].'/perfil/'.'mid_perfil.jpg'?>" class="img-responsive pic-bordered">
-                                                    </div>
-                                                        <div class="col-md-6">
-                                                            <div class="row">
-                                                                <label class="control-label"><?php echo nombre_usuario( $item['id_usuario'] ) ?></label>
-                                                            </div>
-                                                            <div class="row">
-                                                                <label class="control-label"><?
-
-                                                                    $objConn->where("id", $item["id_producto"]);
-                                                                    $producto =  $objConn->select("producto"); 
-                                                                    echo $producto[0]['nombre'];
-                                                                    echo " "."-"." ";
-                                                                    echo $item['cantidad'];  ?>
-                                                                </label>
-                                                            </div>
-                                                            <div class="row">
-                                                            <label class="control-label"><?php 
-                                                                $objConn->where("id", $item["forma_adquisicion"]);
-                                                                $forma_adquisicion =  $objConn->select("forma_adquisicion"); 
-                                                                echo $forma_adquisicion[0]['descripcion']; ?>
-                                                                
-                                                            </label>
-                                                            </div>
+                                            <form role="form" class="form-horizontal" name="gestion_pedido_detalle<?echo $i?>"  id="gestion_pedido_detalle<?echo $i?>" action="gestion_pedido_detalle.php" enctype="multipart/form-data" method="post">
+                                                <div class="form-group form-md-line-input">
+                                                    <div class="col-lg-4"></div>
+                                                    <div class="col-md-4 well well-lg">
+                                                        <div class="col-md-3" align="center">
+                                                                <img src="<? echo 'usuarios/'.$item["id_usuario"].'/perfil/'.'mid_perfil.jpg'?>" class="img-responsive pic-bordered">
                                                         </div>
-                                                        <div class="col-md-3">
-                                                            <div class="row">
-                                                                <label class="control-label"><?php echo  $item['id']  ?></label>
-                                                            </div>
-                                                            <div class="row"></div>
-                                                            <div class="row">
-                                                                <?
-                                                                if($item['forma_adquisicion']== 1 || $item['forma_adquisicion']== 4 )
-                                                                {
-                                                                    ?>
-                                                                        <input class="btn  btn-circle purple" name="despachar" type="submit" id="despachar" value="Despachar" onclick="alertaPedido(<? echo $item['id'] ?>)">
-                                                                         
-                                                                    <?
-                                                                }
-                                                                else if ($item['forma_adquisicion']== 2 || $item['forma_adquisicion']== 3 )
-                                                                {
-                                                                    ?>
-                                                                        <input class="btn  btn-circle purple" name="entregar" type="submit" id="entregar" value="Entregar" onclick="alertaPedido(<? echo $item['id'] ?>)">
+                                                            <div class="col-md-6">
+                                                                <div class="row">
+                                                                    <label class="control-label"><?php echo nombre_usuario( $item['id_usuario'] ) ?></label>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <label class="control-label"><?
+
+                                                                        $objConn->where("id", $item["id_producto"]);
+                                                                        $producto =  $objConn->select("producto"); 
+                                                                        echo $producto[0]['nombre'];
+                                                                        echo " "."-"." ";
+                                                                        echo $item['cantidad'];  ?>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <label class="control-label"><?php 
+                                                                        $objConn->where("id", $item["forma_adquisicion"]);
+                                                                        $forma_adquisicion =  $objConn->select("forma_adquisicion"); 
+                                                                        echo $forma_adquisicion[0]['descripcion']; ?>
                                                                         
-                                                                    <?
-                                                                }
-                                                                ?>
-                                                                <input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
-                                                                <input type="hidden" id="id_pedido" name="id_pedido" value="<? echo $item['id'] ?>" />
-                                                                <input type="hidden" id="forma_ad" name="forma_ad" value="<? echo $item['forma_adquisicion'] ?>" />
-
+                                                                    </label>
+                                                                </div>
                                                             </div>
-
-                                                        </div>
-                                                </div>
-                                                <div class="col-lg-4"></div>
-                                            </div> 
+                                                            <div class="col-md-3">
+                                                                <div class="row">
+                                                                    <label class="control-label"><?php echo  $item['id']  ?></label>
+                                                                </div>
+                                                                <div class="row"></div>
+                                                                <div class="row">
+                                                                    <?
+                                                                    if($item['forma_adquisicion']== 1 || $item['forma_adquisicion']== 4 )
+                                                                    {
+                                                                        ?>
+                                                                            <input class="btn  btn-circle purple" name="despachar" type="submit" id="despachar" value="Despachar" onclick="alertaPedido(<? echo $item['id'] ?>)">
+                                                                            <input type="hidden" id="id_pedido" name="id_pedido" value="<? echo $item['id'] ?>" />
+                                                                            <input type="hidden" id="forma_ad" name="forma_ad" value="<? echo $item['forma_adquisicion'] ?>" />
+                                                                            <input type="hidden" id="formulario" name="formulario" value="gestion_pedido_detalle"/>
+                                                                             
+                                                                                
+                                                                             
+                                                                        <?
+                                                                    }
+                                                                    else if ($item['forma_adquisicion']== 2 || $item['forma_adquisicion']== 3 )
+                                                                    {
+                                                                        ?>
+                                                                            <input class="btn  btn-circle purple" name="entregar" type="submit" id="entregar" value="Entregar" onclick="alertaPedido(<? echo $item['id'] ?>)">
+                                                                            <input type="hidden" id="id_pedido" name="id_pedido" value="<? echo $item['id'] ?>" />
+                                                                            <input type="hidden" id="forma_ad" name="forma_ad" value="<? echo $item['forma_adquisicion'] ?>" />
+                                                                            <input type="hidden" id="formulario" name="formulario" value="gestion_pedido_detalle"/>
+                                                                           
+                                                                                
+                                                                        <?
+                                                                    }
+                                                                    ?>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                    <div class="col-lg-4"></div>
+                                                </div> 
+                                                <input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
+                                            </form>
                                         <?
-
+                                            $i++;
                                         }
-                                       // echo "<pre>"; print_r($GLOBALS); echo "</pre>";
-                                    ?>
-                                    <div class="col-md-offset-3 col-md-9">
-                                        <input type="hidden" id="formulario" name="formulario" value="gestion_pedido_detalle"/>
-                                    </div>
-                                </div>
-                            </form>
+                                        //echo "<pre>"; print_r($GLOBALS); echo "</pre>";
+                                     ?>
+                            </div>
                         </div>
                     </div>
                 </div>
