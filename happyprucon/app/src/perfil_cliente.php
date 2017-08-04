@@ -151,8 +151,8 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div class="form-body">
 
                         <div class="row">
-                            <div class="col-lg-3"></div>
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-4 col-sm-4"></div>
+                            <div class="col-lg-3 col-md-4 col-sm-4">
                                 <div class="mt-widget-1" style=" border: 0px !important;">
                                     <div class="mt-icon">
                                         <a href="editar_perfil.php">
@@ -184,7 +184,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                     <div class="form-group form-md-line-input has-info form-md-floating-label" style="margin-top: 20px;">
                         <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                        <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                        <div class="input-group left-addon col-lg-3 col-md-4 col-sm-4 col-xs-10">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-user"></i>
                                                     </span>
@@ -194,7 +194,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                     <div class="form-group form-md-line-input has-info form-md-floating-label">
                         <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                        <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                        <div class="input-group left-addon col-lg-3 col-md-4 col-sm-4 col-xs-10">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-tablet"></i>
                                                     </span>
@@ -204,7 +204,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                     <div class="form-group form-md-line-input has-info form-md-floating-label">
                         <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                        <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                        <div class="input-group left-addon col-lg-3 col-md-4 col-sm-4 col-xs-10">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-envelope"></i>
                                                     </span>
@@ -214,7 +214,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                     <div class="form-group form-md-line-input has-info form-md-floating-label">
                         <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                        <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                        <div class="input-group left-addon col-lg-3 col-md-4 col-sm-4 col-xs-10">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-lock"></i>
                                                     </span>

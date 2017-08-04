@@ -1,16 +1,16 @@
 <?php 
 error_reporting(E_ALL ^ E_NOTICE);
-include 'sessions.php';
 include'../../externo/plugins/PDOModel.php';
+include 'sessions.php';
 
 date_default_timezone_set("America/Bogota");
 
 $objSe = new Sessions();
 $objSe->init();
 	   
-	if($kitse=isset($_SESSION['login_via']['status']))
+	if(isset($_SESSION['login_via']['status']))
 	{
-		if($kitse=='Phone'){ 			
+		if($_SESSION['login_via']['status']=='Phone'){
 			
 			 $cell = $_SESSION['phone']['national_number'];	
 			 
@@ -86,12 +86,12 @@ $objSe->init();
 					else
 					{
 						echo "<script> alert('Telefono no se encuentra registrado');
-							window.location.assign('../../app/src/sel_rol.php');</script>";
+							window.location.assign('../src/sel_rol.php');</script>";
 							
 							$cell = $_SESSION['phone']['national_number'];
 					}
 		}
-		else if($kitse =='Email')
+		else if($_SESSION['login_via']['status']=='Email')
 		{
 			$correo = $_SESSION['email']['address'];		
 			
@@ -167,7 +167,7 @@ $objSe->init();
 					else
                     {
 						echo "<script> alert('Email no se encuentra registrado');
-							window.location.assign('../../app/src/sel_rol.php');</script>";
+							window.location.assign('../src/sel_rol.php');</script>";
 							
 							$correo = $_SESSION['email']['address'];
 					}

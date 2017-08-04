@@ -219,8 +219,8 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div class="form-body">
 
                     <div class="row">
-                        <div class="col-lg-3"></div>
-                        <div class="col-md-3">
+                        <div class="col-lg-3 col-md-4 col-sm-4"></div>
+                        <div class="col-lg-3 col-md-4 col-sm-4">
                             <div class="mt-widget-1" style=" border: 0px !important;">
                                 <div class="mt-icon">
                                     <a href="editar_perfil.php">

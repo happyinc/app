@@ -317,11 +317,31 @@ License: You must have a valid license purchased only from themeforest(the above
                                             $result1 = $objGes->executeQuery("SELECT A.id_producto , A.forma_adquisicion, B.nombre, B.descripcion, count(*) as adquirido FROM pedido as A, producto as B WHERE A.id_producto = B.id and A.id_estado = '7' and B.id_usuario = '".$usu_id."' group by A.forma_adquisicion");
                                             foreach ($result1 as $item1) {
 
+                                                if($item1['forma_adquisicion'] == 1){
+
+                                                    $icono = "fa fa-home fa-2x";
+
+
+                                                }
+                                                if($item1['forma_adquisicion'] == 2){
+
+
+                                                    $icono = "fa fa-ship fa-2x";
+
+                                                }
+                                                if($item1['forma_adquisicion'] == 4){
+
+
+                                                    $icono = "fa fa-motorcycle fa-2x";
+
+                                                }
+
+
                                             ?>
 
-                                                <label class="btn  grey btn-outline btn-circle "><span class="badge badge-danger"><? echo $item1['adquirido'];?></span>
-                                                    <a href="gestion_pedido_detalle.php?id_usuario=<? echo $usu_id;?>&id_forma_adquisicion=<? echo $item1['forma_adquisicion'];?>" ><i class="fa fa-home fa-2x" style="color: purple"></i></a></label>
-                                                <?
+                                                           <a href="gestion_pedido_detalle.php?id_usuario=<? echo $usu_id;?>&id_forma_adquisicion=<? echo $item1['forma_adquisicion'];?>" ><i class="<? echo $icono; ?>" style="color: purple"></i></a>
+                                                <span class="badge badge-danger" style="margin-top: -30px; margin-left: -12px; margin-right: 20px;"><? echo $item1['adquirido'];?></span>
+                                            <?
                                             }
                                             ?>
 
