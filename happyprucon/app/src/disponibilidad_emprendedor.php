@@ -283,7 +283,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-3"></div
+                                                    <div class="col-lg-3"></div>
                                                 </div>
                                             </div>
                                             <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id_producto"] ?>" />
