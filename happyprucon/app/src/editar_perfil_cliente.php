@@ -329,8 +329,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         <div class="alert alert-success display-hide">
                             <button class="close" data-close="alert"></button> Your form validation is successful! </div>
                         <div class="row">
-                            <div class="col-lg-3"></div>
-                            <div class="col-md-3">
+                            <div class="col-lg-3 col-md-4 col-sm-4"></div>
+                            <div class="col-lg-3 col-md-4 col-sm-4">
                                 <div class="mt-widget-1" style=" border: 0px !important;">
 
                                     <div class="img-circle fileinput fileinput-new" data-provides="fileinput" style="border-radius: 50%;">
@@ -359,7 +359,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                         <div class="form-group form-md-line-input has-info form-md-floating-label">
                             <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                            <div class="input-group left-addon col-lg-3 col-md-4 col-sm-4 col-xs-10">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-user"></i>
                                                     </span>
@@ -370,7 +370,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                         <div class="form-group form-md-line-input has-info form-md-floating-label">
                             <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                            <div class="input-group left-addon col-lg-3 col-md-4 col-sm-4 col-xs-10">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-user"></i>
                                                     </span>
@@ -380,7 +380,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                         <div class="form-group form-md-line-input has-info form-md-floating-label">
                             <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                            <div class="input-group left-addon col-lg-3 col-md-4 col-sm-4 col-xs-10">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-tablet"></i>
                                                     </span>
@@ -390,7 +390,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                         <div class="form-group form-md-line-input has-info form-md-floating-label">
                             <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                            <div class="input-group left-addon col-lg-3 col-md-4 col-sm-4 col-xs-10">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-envelope"></i>
                                                     </span>
@@ -400,7 +400,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                         <div class="form-group form-md-line-input has-info form-md-floating-label">
                             <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                            <div class="input-group left-addon col-lg-3 col-md-4 col-sm-4 col-xs-10">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-lock"></i>
                                                     </span>
@@ -411,7 +411,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                         <div class="form-group form-md-line-input has-info">
                             <div class="col-lg-3 col-sm-4 col-xs-1"></div>
-                            <div class="input-group left-addon col-lg-3 col-md-3 col-sm-4 col-xs-10">
+                            <div class="input-group left-addon col-lg-3 col-md-4 col-sm-4 col-xs-10">
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-line-chart"></i>
                                                         </span>
@@ -432,8 +432,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
                         <!-- BEGIN ACCORDION PORTLET-->
                         <div class="row">
-                            <div class="col-lg-2"></div>
-                            <div class="portlet-body col-lg-5">
+                            <div class="col-lg-2 col-md-2 col-sm-3"></div>
+                            <div class="portlet-body col-lg-5 col-md-8 col-sm-6">
                                 <div class="panel-group accordion" id="accordion1">
                                     <?php
                                     $objCat = new PDOModel();
@@ -473,8 +473,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         </div>
                         <!-- END ACCORDION PORTLET-->
                         <div class="form-group">
-                            <label class="control-label col-md-3"></label>
-                            <div class="col-md-4">
+                            <label class="control-label col-md-4 col-sm-4"></label>
+                            <div class="col-md-4 col-sm-4">
                                 <div class="radio-list">
                                     <label>
                                         <input type="radio" name="genero" value="Masculino" <?php echo $chequeado;?> class="icheck" > Masculino </label>
@@ -486,7 +486,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                     <div class="form-actions">
                         <div class="row">
-                            <div class="col-md-offset-3 col-md-9">
+                            <div class="col-md-offset-4 col-md-9 col-sm-offset-4 col-sm-9">
                                 <input type="submit" id="register-submit-btn" class="btn blue" name="btn1" value="Actualizar"/>
                             </div>
                         </div>

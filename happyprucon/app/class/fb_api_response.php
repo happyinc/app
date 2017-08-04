@@ -1,4 +1,5 @@
-<?php 
+<?php
+require_once'../../externo/plugins/PDOModel.php';
    include 'sessions.php';
 	$objSe = new Sessions();
 	$objSe->init();
@@ -8,7 +9,7 @@
 	if(isset($_POST['code']))
 	{
 		$code = $_POST['code'];
-		
+
 		require('FacebookAccountKitApiResponse.php');			
 		
 		$obj = new FacebookAccountKitApiResponse($code);
@@ -19,8 +20,8 @@
 		{
 			$obj->makeAppSecretProof();
 		
-			$user_info = $obj->getAccountKitAccountInfo();	
-			
+			$user_info = $obj->getAccountKitAccountInfo();
+
 			if(isset($user_info->phone))
 			{
 								
@@ -38,7 +39,7 @@
 			}
 			else if(isset($user_info->email))
 			{
-								
+
 				$_SESSION['email']['id'] = $user_info->email->id;
 				$_SESSION['email']['address'] = $user_info->email->address;
 				$_SESSION['login_via']['status'] = "Email";
