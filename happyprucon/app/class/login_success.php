@@ -80,7 +80,11 @@ $objSe->init();
                             $objSe->set('sueños', $res_usu[0]['meta']);
 
 							echo "<script> window.location.assign('../src/gestion_pedido.php'); </script>";
-						}
+						}else{
+                            echo "<script> alert('Usuario no autorizado');
+							window.location.assign('../src/logueo.html');</script>";
+
+                        }
 						
 					}
 					else
@@ -161,6 +165,10 @@ $objSe->init();
                             $objSe->set('suenos', $res_usu[0]['meta']);
 
                             echo "<script> window.location.assign('../src/gestion_pedido.php'); </script>";
+                        }else{
+                            echo "<script> alert('Usuario no autorizado');
+							window.location.assign('../src/logueo.html');</script>";
+
                         }
 						
 					}
