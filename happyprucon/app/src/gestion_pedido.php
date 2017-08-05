@@ -9,9 +9,8 @@ $usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
 $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
-if($rol==2 ||  $rol==3){
+if($rol!=2 ){
 
-}else{
 	echo "<script> alert('Usuario no autorizado');
 					window.location.assign('logueo.html');</script>";
 

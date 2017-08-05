@@ -20,14 +20,14 @@ $objUbicacion->where("id", $id_usuario);
 $res_usuarios =  $objUbicacion->select("usuarios");
 foreach ($res_usuarios as $usuarios)
 {
-        $rol = $usuarios["rol"] ;
+       $rol = $usuarios["id_roles"] ;
         $fullname = $usuarios["fullname"] ;                                                        
 }
-    /*
+    
 	if($rol!=3){
 		echo "<script> alert('Usuario no autorizado');
 						window.location.assign('logueo.html');</script>";
-	}	*/
+	}	
 ?>	
 <!DOCTYPE html>
 <!-- 
