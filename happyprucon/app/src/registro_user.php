@@ -266,7 +266,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
 
 ?>
 <body class=" login">
-<div class="content" style="padding-bottom: 0 !important; padding-top: 5px !important; padding-left: 20px !important; padding-right: 20px !important; width: 370px !important;">
+<div class="content" style="padding-bottom: 0 !important; padding-top: 5px !important; padding-left: 20px !important; padding-right: 20px !important;">
     <!-- BEGIN LOGIN FORM -->
     <div class="portlet light " id="form_wizard_1" style="box-shadow: none !important; margin-bottom: 0 !important;">
         <div class="portlet-title" hidden>
@@ -457,7 +457,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
                                                     <h4 class="panel-title bold">
-                                                        <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_<?php echo $item["id"]?>" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  class="img-responsive" /><?php echo $item["nombre"]?></a>
+                                                        <a class="accordion-toggle" style="background-color: #<? echo $item['color'] ?>;" data-toggle="collapse" data-parent="#accordion1" href="#collapse_<?php echo $item["id"]?>" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  class="img-responsive" /><?php echo $item["nombre"]?></a>
                                                     </h4>
                                                 </div>
                                                 <div id="collapse_<?php echo $item["id"]?>" class="panel-collapse collapse">
