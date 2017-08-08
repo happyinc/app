@@ -100,12 +100,12 @@ License: You must have a valid license purchased only from themeforest(the above
 				{
 					if (isConfirm) {
 						swal("Ir", "La disponibilidad ha sido eliminada del producto", "success");
-						location.href="gestion_producto.php";
+						location.href="gestion_producto.php?id_usuario=<? echo $id_usuario ?>";
 					}
 					else 
                     {
 						swal("Cancelar","se cancelo la eliminacion del producto");
-						location.href="gestion_producto.php";
+						location.href="gestion_producto.php?id_usuario=<? echo $id_usuario ?>";
 					}
 				});
 		  	}	
