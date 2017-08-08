@@ -49,6 +49,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE LEVEL STYLES -->
 		<link href="../../externo/plugins/bootstrap-social-gh-pages/bootstrap-social.css" rel="stylesheet" type="text/css" />
         <link href="../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
+        <link href="../css/hhmain.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
@@ -58,12 +59,12 @@ License: You must have a valid license purchased only from themeforest(the above
 	
     <body class=" login">
         <!-- BEGIN LOGIN -->
-        <div class="content">
+        <div class="content centrado-porcentual">
 			<div align="center" style="padding-bottom: 10px"><a href="logueo.html">
                     <img src="../../externo/img/logo-default.png" width="230px" alt="" /> </a>
                 </div>
             <!-- BEGIN LOGIN FORM -->
-            <form name="form-face" id="for-face" action="../../seguridad/verificarf.php" method="post">
+            <form name="form-face" id="form-face" action="../../seguridad/verificarf.php" method="post">
                 <div style="padding-bottom: 50px">
                     <h4>
                         <p class="font-grey-gallery bold">
@@ -74,11 +75,14 @@ License: You must have a valid license purchased only from themeforest(the above
                 <div class="row">
 
                     <!--Campos escondidos para envio de datos de facebook -->
+                    <input type="hidden" id="form_login_face" name="form_login_face" value="W">
                     <input type="hidden" name="nom-face" id="nom-face">
                     <input type="hidden" name="ape-face" id="ape-face">
                     <input type="hidden" name="mail" id="mail">
-
-                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px;">
+                        <a href="sel_rol.php" class="btn btn-block btn-social btn-circle green-jungle" style="text-align: center" ><span class="fa fa-list"></span> REGISTRO MANUAL </a>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px; margin-top: 20px;">
                         <a href="#" type="submit" id="login" class="btn btn-block btn-social  btn-circle blue-steel" style="text-align: center" ><span class="fa fa-facebook"></span> REGISTRATE CON FACEBOOK </a>
                     </div>
                     <script>
@@ -93,6 +97,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     </script>
                 </div>
             </form>
+
             <div class="row">
 
                 <div class="social-icons">
@@ -103,8 +108,9 @@ License: You must have a valid license purchased only from themeforest(the above
                         <button onclick="loginWithSMS();" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center" ><span class="fa fa-tablet"></span> REGISTRATE CON TU CELULAR </button>
                     </div>
                     <form id="accountkit_form" name="accountkit_form" action="../class/fb_api_response.php" method="POST" style="display: none;">
-                        <input type="hidden" id="code" name="code">
-                        <input type="hidden" id="csrf_nonce" name="csrf_nonce">
+                        <input type="text" id="form_login_kit" name="form_login_kit" value="W">
+                        <input type="text" id="code" name="code">
+                        <input type="text" id="csrf_nonce" name="csrf_nonce">
                         <input type="submit" value="Submit" hidden>
                     </form>
                 </div>
@@ -132,7 +138,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		    AccountKit.init(
 		      {
 		        
-				appId:"321796101590357", 
+				appId:"128324841091354",
 		        state:"{{csrf}}", 
 		        version:"v1.1"
 		      }

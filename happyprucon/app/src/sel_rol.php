@@ -53,6 +53,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE LEVEL STYLES -->
 		<link href="../../externo/plugins/bootstrap-social-gh-pages/bootstrap-social.css" rel="stylesheet" type="text/css" />
         <link href="../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
+        <link href="../css/hhmain.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
@@ -74,7 +75,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	?>
     <body class=" login">
         <!-- BEGIN LOGIN -->
-        <div class="content">
+        <div class="content centrado-porcentual">
 			<div align="center" style="padding-bottom: 50px;"><a href="logueo.html">
                     <img src="../../externo/img/logo-default.png" width="230px" alt="" /> </a>
                 </div>

@@ -36,6 +36,7 @@ License: You must have a valid license purchased only from themeforest(the above
     ?>
     <!-- BEGIN PAGE LEVEL STYLES -->
     <link href="../assets/pages/css/login-3.min.css" rel="stylesheet" type="text/css" />
+    <link href="../css/hhmain.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL STYLES -->
     <!--Inicio Archivos para bootstrap file input -->
 
@@ -60,7 +61,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- END HEAD -->
 <body class=" login">
 <!-- BEGIN LOGIN -->
-<div class="content">
+<div class="content centrado-porcentual">
     <!-- BEGIN LOGIN FORM -->
     <form role="form" enctype="multipart/form-data" class="form-horizontal">
         <div class="form-body">
