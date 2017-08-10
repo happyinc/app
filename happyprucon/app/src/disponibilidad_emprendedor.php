@@ -24,10 +24,10 @@ foreach ($res_usuarios as $usuarios)
         $fullname = $usuarios["fullname"] ;                                                        
 }
     
-	if($rol!=3){
+	/*if($rol!=3){
 		echo "<script> alert('Usuario no autorizado');
 						window.location.assign('logueo.html');</script>";
-	}	
+	}*/	
 ?>	
 <!DOCTYPE html>
 <!-- 
