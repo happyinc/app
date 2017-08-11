@@ -73,15 +73,25 @@ License: You must have a valid license purchased only from themeforest(the above
     include "include_css.php";
     ?>
 
-        <link href="../assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+
 
     <?php
     $objConn = new PDOModel();
     $result =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1;");
 
-    if(isset($_POST["formulario"]) && $_POST["formulario"] == "buscar" )
+    if(isset($_POST["buscarb"]) && $_POST["buscarb"] != "" )
     {
-         $result1 =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%xxx%'  OR A.descripcion LIKE '%ham%' );");
+         $result1 =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%'".$POST['buscar']."'%'  OR A.descripcion LIKE '%'".$POST['buscar']."'%' );");///preguntar
+    }
+    
+    $consulta=$result1;
+
+    if(isset($_POST["buscarf"]) && $_POST["buscarf"] != "" )
+    {
+         $result1 =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%'".$POST['buscar']."'%'  OR A.descripcion LIKE '%'".$POST['buscar']."'%' );");
+    
     }
 
     ?>
@@ -160,8 +170,18 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- BEGIN BOX BODY     CONTENIDO AQUI !!!!!!!!!! -->
 
             <div class="portlet light">
+                    
+                      <div class="col-md-4">
+                        <div class="input-group">
+                          <input type="search" name="buscar" id="buscar" class="form-control">
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit" name="buscarb" value="buscarb"><i class="fa fa-search"></i></button>
+                          </span>
+                        </div>
+                      </div>
+                    
                     <!-- Trigger the modal with a button -->
-                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+                    <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">Filtros</button>
 
                     <!-- Modal -->
                     <div id="myModal" class="modal fade" role="dialog">
@@ -179,45 +199,44 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <p>Seleccione el filtro de busqueda.</p>
 
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">Categoria</label>
-                                        <div class="col-md-4">
-                                            <div class="btn-group bootstrap-select bs-select form-control"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="Mustard"><span class="filter-option pull-left">Mustard</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox"><ul class="dropdown-menu inner" role="listbox" aria-expanded="false"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">Mustard</span><span class="fa fa-check check-mark"></span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Ketchup</span><span class="fa fa-check check-mark"></span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Relish</span><span class="fa fa-check check-mark"></span></a></li></ul></div>
-                                                <select class="bs-select form-control" tabindex="-98">
-                                                    <option>Mustard</option>
-                                                    <option>Ketchup</option>
-                                                    <option>Relish</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                        <label for="categoria" class="control-label">categoria</label>
+                                        <select id="categoria" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="categoria">
+                                            <option></option>
+                                                <option value="AK">Alaska</option>
+                                                <option value="HI">Hawaii</option>
+                                         </select>
+                                         
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Emprendedor</label>
-                                        <div class="col-md-4">
-                                            <div class="btn-group bootstrap-select bs-select form-control"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="Mustard"><span class="filter-option pull-left">Mustard</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox"><ul class="dropdown-menu inner" role="listbox" aria-expanded="false"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">Mustard</span><span class="fa fa-check check-mark"></span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Ketchup</span><span class="fa fa-check check-mark"></span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Relish</span><span class="fa fa-check check-mark"></span></a></li></ul></div>
-                                                <select class="bs-select form-control" tabindex="-98">
-                                                    <option>Mustard</option>
-                                                    <option>Ketchup</option>
-                                                    <option>Relish</option>
-                                                </select>
-                                            </div>
-                                        </div>
+
+                                     <div class="form-group">
+                                        <label for="emprendedor" class="control-label">emprendedor</label>
+                                        <select id="emprendedor" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="emprendedor">
+                                            <option></option>
+                                                <option value="AK">Alaska</option>
+                                                <option value="HI">Hawaii</option>
+                                         </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Rango de precio</label>
-                                        <div class="col-md-4">
-                                            <div class="btn-group bootstrap-select bs-select form-control"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="Mustard"><span class="filter-option pull-left">Mustard</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox"><ul class="dropdown-menu inner" role="listbox" aria-expanded="false"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">Mustard</span><span class="fa fa-check check-mark"></span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Ketchup</span><span class="fa fa-check check-mark"></span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Relish</span><span class="fa fa-check check-mark"></span></a></li></ul></div>
-                                                <select class="bs-select form-control" tabindex="-98">
-                                                    <option>Mustard</option>
-                                                    <option>Ketchup</option>
-                                                    <option>Relish</option>
-                                                </select>
-                                            </div>
+
+                                     <div class="form-group">
+                                        <label for="precio" class="control-label">precio</label>
+                                        <select id="precio" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="precio">
+                                            <option></option>
+                                                <option value="AK">Alaska</option>
+                                                <option value="HI">Hawaii</option>
+                                         </select>
+                                    </div>
+
+                                    <div class="form-actions">
+                                        <div class="col-md-offset-3 col-md-9">
+                                            <button type="submit" class="btn btn-circle purple" name="enviar" id="enviar" value="enviar"> Enviar </button>
                                         </div>
                                     </div>
 
                             </form>
                             <input type="hidden" id="formulario" name="formulario" value="buscar"/>
-                            <input type="hidden" id="buscarf" name="buscarf" value="buscarf"/>
+                           <!-- <input type="hidden" id="buscarf" name="buscarf" value="buscarf"/>
+                            <input type="hidden" id="emprendedor" name="emprendedor" value="buscarf"/>
+                            <input type="hidden" id="categoria" name="categoria" value="buscarf"-->
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -226,6 +245,13 @@ License: You must have a valid license purchased only from themeforest(the above
 
                       </div>
                     </div>
+
+                    <?
+                        echo "la categoria es:"."".$_POST["categoria"]."</br>";
+                        echo "el emprendedor es:"."".$_POST["emprendedor"]."</br>";
+                        echo "el precio es:"."".$_POST["precio"];
+
+                    ?>
             </div>
         </div>
         <!-- END CONTENT BODY -->
@@ -247,7 +273,12 @@ include "footer.php";
 <?
 include "include_js.php";
 ?>
-<script src="../assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
+ <!--<script src="../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>-->
+ <script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+
+ <script src="../assets/pages/scripts/components-select2.min.js" type="text/javascript"></script>
+
+
 
 
 </body>

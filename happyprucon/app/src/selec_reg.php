@@ -82,7 +82,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px;">
                         <a href="sel_rol.php" class="btn btn-block btn-social btn-circle green-jungle" style="text-align: center" ><span class="fa fa-list"></span> REGISTRO MANUAL </a>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px; margin-top: 20px;" hidden>
+                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px; margin-top: 20px;">
                         <a href="#" type="submit" id="login" class="btn btn-block btn-social  btn-circle blue-steel" style="text-align: center" ><span class="fa fa-facebook"></span> REGISTRATE CON FACEBOOK </a>
                     </div>
                     <script>
@@ -98,7 +98,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 </div>
             </form>
 
-            <div class="row" hidden>
+            <div class="row">
 
                 <div class="social-icons">
                     <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
