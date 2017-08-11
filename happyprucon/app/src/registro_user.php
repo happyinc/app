@@ -158,12 +158,12 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
         $bienes = $_POST["categoria"];
 
         foreach ($bienes  as $clave => $valor){
-                    $id_catagoria = $valor;
-                    $objConn = new PDOModel();
-                    $insertUserGusto["id_usuario"] = $id_usuario;
-                    $insertUserGusto["id_categoria"] = $id_catagoria;
-                    $insertUserGusto["id_estado"] = 1;
-                    $objConn->insert("gustos", $insertUserGusto);
+            $id_catagoria = $valor;
+            $objConn = new PDOModel();
+            $insertUserGusto["id_usuario"] = $id_usuario;
+            $insertUserGusto["id_categoria"] = $id_catagoria;
+            $insertUserGusto["id_estado"] = 1;
+            $objConn->insert("gustos", $insertUserGusto);
         }
 
         $objConn = new PDOModel();
@@ -176,40 +176,40 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
             // Primero, hay que validar que se trata de un JPG/GIF/PNG
             $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
             $extension = end(explode(".", $_FILES["foto"]["name"]));
-        if ((($_FILES["foto"]["type"] == "image/gif")
-                || ($_FILES["foto"]["type"] == "image/jpeg")
-                || ($_FILES["foto"]["type"] == "image/png")
-                || ($_FILES["foto"]["type"] == "image/gif")
-                || ($_FILES["foto"]["type"] == "image/bmp"))
-            && in_array($extension, $allowedExts)) {
-            // el archivo es un JPG/GIF/PNG, entonces...
+            if ((($_FILES["foto"]["type"] == "image/gif")
+                    || ($_FILES["foto"]["type"] == "image/jpeg")
+                    || ($_FILES["foto"]["type"] == "image/png")
+                    || ($_FILES["foto"]["type"] == "image/gif")
+                    || ($_FILES["foto"]["type"] == "image/bmp"))
+                && in_array($extension, $allowedExts)) {
+                // el archivo es un JPG/GIF/PNG, entonces...
 
-            $extension = end(explode('.', $_FILES['foto']['name']));
-            $foto = "perfil". "." . $extension;
-            $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
-            if (file_exists($directorio)) {
+                $extension = end(explode('.', $_FILES['foto']['name']));
+                $foto = "perfil". "." . $extension;
+                $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
+                if (file_exists($directorio)) {
 
-            } else {
-                mkdir($directorio, 0777, true);
+                } else {
+                    mkdir($directorio, 0777, true);
+                }
+
+                // almacenar imagen en el servidor
+                move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
+                $minFoto = 'min_' . $foto;
+                $midFoto = 'mid_' . $foto;
+                $resFoto = 'res_' . $foto;
+                resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
+                resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
+                resizeImagen($directorio . '/', $foto, 600, 600, $resFoto, $extension);
+                unlink($directorio . '/' . $foto);
+
+            } else { // El archivo no es JPG/GIF/PNG
+                $malformato = $_FILES["foto"]["type"];
+                ?>
+                <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
+                <?
+                //header("Location: crear_producto.php?id=echo $usu_id");
             }
-
-            // almacenar imagen en el servidor
-            move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
-            $minFoto = 'min_' . $foto;
-            $midFoto = 'mid_' . $foto;
-            $resFoto = 'res_' . $foto;
-            resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
-            resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
-            resizeImagen($directorio . '/', $foto, 600, 600, $resFoto, $extension);
-            unlink($directorio . '/' . $foto);
-
-        } else { // El archivo no es JPG/GIF/PNG
-            $malformato = $_FILES["foto"]["type"];
-            ?>
-            <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
-        <?
-        //header("Location: crear_producto.php?id=echo $usu_id");
-        }
 
         } else { // El campo foto NO contiene una imagen
 
@@ -581,10 +581,9 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                 <a href="javascript:;" class="btn btn-outline green button-next"> Siguiente
                                     <i class="fa fa-angle-right"></i>
                                 </a>
-                                <button href="javascript:;" class="btn green button-submit" name="btn1" value="registrar"> Registrar
+                                <button type="submit" class="btn green button-submit" id="formulario" name="formulario" value="Registrar"> Registrar
                                     <i class="fa fa-check"></i>
                                 </button>
-                                <input type="hidden" id="formulario" name="formulario" value="Registrar"/>
 
                             </div>
                         </div>
