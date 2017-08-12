@@ -71,6 +71,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <head>
     <?php
     include "include_css.php";
+    include "funciones.php";
     ?>
 
         <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
@@ -78,19 +79,21 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
     <?php
+    $result="";
     $objConn = new PDOModel();
     $result =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1;");
 
-    if(isset($_POST["buscarb"]) && $_POST["buscarb"] != "" )
+    if(isset($_POST["buscar"]) && $_POST["buscar"] != "" && isset($_POST["buscarb"]) && $_POST["buscarb"] == "buscarb")
     {
-         $result1 =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%'".$POST['buscar']."'%'  OR A.descripcion LIKE '%'".$POST['buscar']."'%' );");///preguntar
+         $result =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%'".$POST['buscar']."'%'  OR A.descripcion LIKE '%'".$POST['buscar']."'%' );");
     }
     
-    $consulta=$result1;
+    
+     $consulta =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%'".$POST['buscar']."'%'  OR A.descripcion LIKE '%'".$POST['buscar']."'%' );");
 
     if(isset($_POST["buscarf"]) && $_POST["buscarf"] != "" )
     {
-         $result1 =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%'".$POST['buscar']."'%'  OR A.descripcion LIKE '%'".$POST['buscar']."'%' );");
+         $consulta =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%'".$POST['buscar']."'%'  OR A.descripcion LIKE '%'".$POST['buscar']."'%' )AND ();");
     
     }
 
@@ -170,88 +173,142 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- BEGIN BOX BODY     CONTENIDO AQUI !!!!!!!!!! -->
 
             <div class="portlet light">
-                    
-                      <div class="col-md-4">
-                        <div class="input-group">
-                          <input type="search" name="buscar" id="buscar" class="form-control">
-                          <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit" name="buscarb" value="buscarb"><i class="fa fa-search"></i></button>
-                          </span>
+                <div class="portlet-body form">
+                    <div class="form-body">   
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="search" name="buscar" id="buscar" class="form-control">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit" name="buscarb" value="buscarb"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
                         </div>
-                      </div>
-                    
-                    <!-- Trigger the modal with a button -->
-                    <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">Filtros</button>
+                        
+                        <!-- Trigger the modal with a button -->
+                        <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">Filtros</button>
 
-                    <!-- Modal -->
-                    <div id="myModal" class="modal fade" role="dialog">
-                      <div class="modal-dialog">
+                        <!-- Modal -->
+                        <div id="myModal" class="modal fade" role="dialog">
+                          <div class="modal-dialog">
 
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Filtros de busqueda</h4>
-                          </div>
-                          <div class="modal-body">
-                            <form role="form" class="form-horizontal" name="buscar" id="buscar" action="buscar.php" enctype="multipart/form-data" method="POST">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Filtros de busqueda</h4>
+                              </div>
+                              <div class="modal-body">
+                                <form role="form" class="form-horizontal" name="fbuscar" id="fbuscar" action="buscar.php" enctype="multipart/form-data" method="POST">
 
-                                <p>Seleccione el filtro de busqueda.</p>
+                                    <p>Seleccione el filtro de busqueda.</p>
 
-                                    <div class="form-group">
-                                        <label for="categoria" class="control-label">categoria</label>
-                                        <select id="categoria" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="categoria">
-                                            <option></option>
-                                                <option value="AK">Alaska</option>
-                                                <option value="HI">Hawaii</option>
-                                         </select>
-                                         
-                                    </div>
-
-                                     <div class="form-group">
-                                        <label for="emprendedor" class="control-label">emprendedor</label>
-                                        <select id="emprendedor" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="emprendedor">
-                                            <option></option>
-                                                <option value="AK">Alaska</option>
-                                                <option value="HI">Hawaii</option>
-                                         </select>
-                                    </div>
-
-                                     <div class="form-group">
-                                        <label for="precio" class="control-label">precio</label>
-                                        <select id="precio" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="precio">
-                                            <option></option>
-                                                <option value="AK">Alaska</option>
-                                                <option value="HI">Hawaii</option>
-                                         </select>
-                                    </div>
-
-                                    <div class="form-actions">
-                                        <div class="col-md-offset-3 col-md-9">
-                                            <button type="submit" class="btn btn-circle purple" name="enviar" id="enviar" value="enviar"> Enviar </button>
+                                        <div class="form-group">
+                                            <label for="categoria" class="control-label">categoria</label>
+                                            <select id="categoria" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="categoria">
+                                                <option></option>
+                                                    <option value="AK">Alaska</option>
+                                                    <option value="HI">Hawaii</option>
+                                             </select>
+                                             
                                         </div>
-                                    </div>
 
-                            </form>
-                            <input type="hidden" id="formulario" name="formulario" value="buscar"/>
-                           <!-- <input type="hidden" id="buscarf" name="buscarf" value="buscarf"/>
-                            <input type="hidden" id="emprendedor" name="emprendedor" value="buscarf"/>
-                            <input type="hidden" id="categoria" name="categoria" value="buscarf"-->
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                         <div class="form-group">
+                                            <label for="emprendedor" class="control-label">emprendedor</label>
+                                            <select id="emprendedor" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="emprendedor">
+                                                <option></option>
+                                                    <option value="AK">Alaska</option>
+                                                    <option value="HI">Hawaii</option>
+                                             </select>
+                                        </div>
+
+                                         <div class="form-group">
+                                            <label for="precio" class="control-label">precio</label>
+                                            <select id="precio" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="precio">
+                                                <option></option>
+                                                    <option value="AK">Alaska</option>
+                                                    <option value="HI">Hawaii</option>
+                                             </select>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <div class="col-md-offset-3 col-md-9">
+                                                <button type="submit" class="btn btn-circle purple" name="enviar" id="enviar" value="enviar"> Enviar </button>
+                                            </div>
+                                        </div>
+
+                                </form>
+                                <input type="hidden" id="formulario" name="formulario" value="fbuscar"/>
+                                <input type="hidden" id="buscarf" name="buscarf" value=""/>
+                                <!--<input type="hidden" id="emprendedor" name="emprendedor" value="buscarf"/>
+                                <input type="hidden" id="categoria" name="categoria" value="buscarf"-->
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+
                           </div>
                         </div>
 
-                      </div>
-                    </div>
+                        <?
+                            echo "la categoria es:"."".$_POST["categoria"]."</br>";
+                            echo "el emprendedor es:"."".$_POST["emprendedor"]."</br>";
+                            echo "el precio es:"."".$_POST["precio"];
+                        ?>
 
-                    <?
-                        echo "la categoria es:"."".$_POST["categoria"]."</br>";
-                        echo "el emprendedor es:"."".$_POST["emprendedor"]."</br>";
-                        echo "el precio es:"."".$_POST["precio"];
-
-                    ?>
+                        <div class="form-group form-md-line-input">
+                            <?
+                            foreach ($result as $item ) 
+                            {
+                            ?>  
+                                <div class="portlet light portlet-fit ">
+                                    <div class="row">
+                                        <div class="col-lg-3"></div>
+                                            <div class="col-md-6" align="center">
+                                                <div class="mt-widget-2" >
+                                                    <div class="mt-head" style="background-image: url(<? echo 'usuarios/'.$item['id_usuario'].'/bienes/'.$item['id_producto'].'/res_producto.jpg'?>);" >
+                                                        <div class="mt-head-label">
+                                                            <button type="button" class="btn btn-success">$ <?echo number_format($item["precio"],0)?></button>
+                                                        </div>
+                                                        <div class="mt-head-user" >
+                                                            <div class="mt-head-user-img">
+                                                                <img src="<? echo 'usuarios/'.$item['id_usuario'].'/perfil/'.'/res_perfil.jpg'?>"> </div>
+                                                            <div class="mt-head-user-info" >
+                                                                <span class="mt-user-name"><?echo  nombre_usuario($item["id_usuario"])?></span>
+                                                                <span class="mt-user-time">
+                                                                    <i class="fa fa-star"></i><?echo  calificacion_usu($item["id_usuario"])?>  </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mt-body" >
+                                                        <h3 class="mt-body-title" > <?echo $item["nombre"]?> </h3>
+                                                        <p class="mt-body-description"> <?echo $item["descripcion"]?> </p>
+                                                        <ul class="mt-body-stats">
+                                                            <li class="font-yellow">
+                                                                <i class="fa fa-star" aria-hidden="true"></i> <?echo  calificacion_prod($item["id_producto"])?></li>
+                                                            <li class="font-green">
+                                                                <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?echo $item["cantidad_despachada"]?></li>
+                                                            <li class="font-red">
+                                                                <i class="icon-bubbles" aria-hidden="true"></i> <?echo  cantidad_coment_prod($item["id_producto"])?></li>
+                                                        </ul>
+                                                        <div class="mt-body-actions">
+                                                            <div class="btn-group btn-group btn-group-justified">
+                                                                <a href="../src/crear_pedido.php?id_producto=<? echo $item["id_producto"]?>" class="btn">Hacer pedido </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <div class="col-lg-3"></div>
+                                    </div>
+                                </div>
+                            <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id_producto"] ?>" />
+                            </br></br>
+                            <?     
+                            }?>
+                        </div>
+                    </div> 
+                </div> 
             </div>
         </div>
         <!-- END CONTENT BODY -->
