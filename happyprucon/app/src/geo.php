@@ -46,15 +46,14 @@ $objSe = new Sessions();
         $res_usu =  $objConn->select("usuarios");
         foreach ($res_usu as $ubica){
         ?>
+        var prueba<? echo $ubica['id']?> = {lat: <? echo $ubica['latitud'] ?>, lng: <? echo $ubica['longitud'] ?>};
 
-        var prueba = {lat: 3.439718, lng: -76.50036};
-
-        var contentString = '<div id="content">' +
+        var contentString<? echo $ubica['id']?> = '<div id="content">' +
             '<div id="siteNotice">' +
             '</div>' +
             '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
             '<div id="bodyContent">' +
-            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+            '<p><b>Uluru<? echo $ubica['nombre']?></b>, also referred to as <b>Ayers Rock</b>, is a large ' +
             'sandstone rock formation in the southern part of the ' +
             'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
             'south west of the nearest large town, Alice Springs; 450&#160;km ' +
@@ -70,17 +69,18 @@ $objSe = new Sessions();
             '</div>' +
             '</div>';
 
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString
+        var infowindow<? echo $ubica['id']?> = new google.maps.InfoWindow({
+            content: contentString<? echo $ubica['id']?>
         });
 
-        var marker = new google.maps.Marker({
-            position: prueba,
-            map: map,
-            title: 'Prueba de ubicacion'
+        var marker<? echo $ubica['id']?> = new google.maps.Marker({
+            position: prueba<? echo $ubica['id']?>,
+            map: map
+            ,
+            title: 'Prueba de ubicacion<? echo $ubica['id']?>'
         });
-        marker.addListener('click', function () {
-            infowindow.open(map, marker);
+        marker<? echo $ubica['id']?>.addListener('click', function () {
+            infowindow<? echo $ubica['id']?>.open(map, marker<? echo $ubica['id']?>);
         });
 
         <?
