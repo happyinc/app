@@ -80,20 +80,30 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <?php
     $result="";
+    $fecha=date("Y-m-d H:i:s");
     $objConn = new PDOModel();
-    $result =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1;");
+    $result =  $objConn->executeQuery("SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin;");
 
-    if(isset($_POST["buscar"]) && $_POST["buscar"] != "" && isset($_POST["buscarb"]) && $_POST["buscarb"] == "buscarb")
+
+
+    if(isset($_POST["formulario"]) && $_POST["formulario"] == "1buscar")
     {
-         $result =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%'".$POST['buscar']."'%'  OR A.descripcion LIKE '%'".$POST['buscar']."'%' );");
+        if(isset($_POST["buscar"]) && $_POST["buscar"] != "")
+        {
+            $buscar = $_POST['buscar'];
+            $result =  $objConn->executeQuery("SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin AND ( A.nombre LIKE '%$buscar%'  OR A.descripcion LIKE '%$buscar%' );");
+        }
+        else 
+        {
+            ?> <script type="text/javascript">alert("Para realizar la busqueda debe escribir un item");</script><?
+        }
     }
     
-    
-     $consulta =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%'".$POST['buscar']."'%'  OR A.descripcion LIKE '%'".$POST['buscar']."'%' );");
+   //  $consulta =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%'".$POST['buscar']."'%'  OR A.descripcion LIKE '%'".$POST['buscar']."'%' );");
 
     if(isset($_POST["buscarf"]) && $_POST["buscarf"] != "" )
     {
-         $consulta =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%'".$POST['buscar']."'%'  OR A.descripcion LIKE '%'".$POST['buscar']."'%' )AND ();");
+         $consulta =  $objConn->executeQuery("SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin AND ( A.nombre LIKE '%$buscar%'  OR A.descripcion LIKE '%$buscar%' )AND ();");
     
     }
 
@@ -174,23 +184,25 @@ License: You must have a valid license purchased only from themeforest(the above
 
             <div class="portlet light">
                 <div class="portlet-body form">
-                    <div class="form-body">   
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <input type="search" name="buscar" id="buscar" class="form-control">
-                                <span class="input-group-btn">
-                                    <!--<button class="btn btn-default" type="submit" name="buscarb" value="buscarb"><i class="fa fa-search"></i></button>-->
-                                    <input class="btn  btn-circle purple" name="buscarb" type="submit" id="buscarb" value="Buscar">
-                                    <!--<input class="btn btn-circle red" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick=" eliminarProducto();">-->
-                                </span>
+                    <div class="form-body"> 
+                        <form role="form" class="form-horizontal" name="1buscar" id="1buscar" action="buscar.php" enctype="multipart/form-data" method="POST">  
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="search" name="buscar" id="buscar" class="form-control">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit" name="buscarb" value="buscarb"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
+                            <input type="hidden" id="formulario" name="formulario" value="1buscar"/>
+                        </form>
                         
+                         
                         <!-- Trigger the modal with a button -->
                         <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">Filtros</button>
 
                         <!-- Modal -->
-                        <div id="myModal" class="modal fade" role="dialog">
+                        <div i||d="myModal" class="modal fade" role="dialog">
                           <div class="modal-dialog">
 
                             <!-- Modal content-->
@@ -266,46 +278,47 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="portlet light portlet-fit ">
                                     <div class="row">
                                         <div class="col-lg-3"></div>
-                                            <div class="col-md-6" align="center">
-                                                <div class="mt-widget-2" >
-                                                    <div class="mt-head" style="background-image: url(<? echo 'usuarios/'.$item['id_usuario'].'/bienes/'.$item['id_producto'].'/res_producto.jpg'?>);" >
-                                                        <div class="mt-head-label">
-                                                            <button type="button" class="btn btn-success">$ <?echo number_format($item["precio"],0)?></button>
-                                                        </div>
-                                                        <div class="mt-head-user" >
-                                                            <div class="mt-head-user-img">
-                                                                <img src="<? echo 'usuarios/'.$item['id_usuario'].'/perfil'.'/res_perfil.jpg'?>"> </div>
-                                                            <div class="mt-head-user-info" >
-                                                                <span class="mt-user-name"><?echo  nombre_usuario($item["id_usuario"])?></span>
-                                                                <span class="mt-user-time">
+                                        <div class="col-md-6" align="center">
+                                            <div class="mt-widget-2" >
+                                                <div class="mt-head" style="background-image: url(<? echo 'usuarios/'.$item['id_usuario'].'/bienes/'.$item['id_producto'].'/res_producto.jpg'?>);" >
+                                                    <div class="mt-head-label">
+                                                        <button type="button" class="btn btn-success">$ <?echo number_format($item["precio"],0)?></button>
+                                                    </div>
+                                                    <div class="mt-head-user" >
+                                                        <div class="mt-head-user-img">
+                                                            <img src="<? echo 'usuarios/'.$item['id_usuario'].'/perfil'.'/res_perfil.jpg'?>"> </div>
+                                                        <div class="mt-head-user-info" >
+                                                            <span class="mt-user-name"><?echo  nombre_usuario($item["id_usuario"])?></span>
+                                                            <span class="mt-user-time">
                                                                     <i class="fa fa-star"></i><?echo  calificacion_usu($item["id_usuario"])?>  </span>
-                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="mt-body" >
-                                                        <h3 class="mt-body-title" > <?echo $item["nombre"]?> </h3>
-                                                        <p class="mt-body-description"> <?echo $item["descripcion"]?> </p>
-                                                        <ul class="mt-body-stats">
-                                                            <li class="font-yellow">
-                                                                <i class="fa fa-star" aria-hidden="true"></i> <?echo  calificacion_prod($item["id_producto"])?></li>
-                                                            <li class="font-green">
-                                                                <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?echo $item["cantidad_despachada"]?></li>
-                                                            <li class="font-red">
-                                                                <i class="icon-bubbles" aria-hidden="true"></i> <?echo  cantidad_coment_prod($item["id_producto"])?></li>
-                                                        </ul>
-                                                        <div class="mt-body-actions">
-                                                            <div class="btn-group btn-group btn-group-justified">
-                                                                <a href="../src/crear_pedido.php?id_producto=<? echo $item["id_producto"]?>" class="btn">Hacer pedido </a>
-                                                            </div>
+                                                </div>
+                                                <div class="mt-body" >
+                                                    <h3 class="mt-body-title" > <?echo $item["nombre"]?> </h3>
+                                                    <p class="mt-body-description"> <?echo $item["descripcion"]?> </p>
+                                                    <ul class="mt-body-stats">
+                                                        <li class="font-yellow">
+                                                            <i class="fa fa-star" aria-hidden="true"></i> <?echo  calificacion_prod($item["id_producto"])?></li>
+                                                        <li class="font-green">
+                                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?echo $item["cantidad_despachada"]?></li>
+                                                        <li class="font-red">
+                                                            <i class="icon-bubbles" aria-hidden="true"></i> <?echo  cantidad_coment_prod($item["id_producto"])?></li>
+                                                    </ul>
+                                                    <div class="mt-body-actions">
+                                                        <div class="btn-group btn-group btn-group-justified">
+                                                            <a href="../src/crear_pedido.php?id_producto=<? echo $item["id_producto"]?>" class="btn">Hacer pedido </a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                         <div class="col-lg-3"></div>
                                     </div>
                                 </div>
-                            <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id_producto"] ?>" />
-                            </br></br>
+                                <?// echo "<pre>";print_r($GLOBALS); echo "</pre>";?>
+                                <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id_producto"] ?>" />
+                                </br></br>
                             <?     
                             }?>
                         </div>

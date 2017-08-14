@@ -54,11 +54,12 @@ License: You must have a valid license purchased only from themeforest(the above
 	<?php
 	include "include_css.php";
     include "funciones.php";
-
+    $fecha=date("Y-m-d H:i:s");
 
         //informacion de todos los productos del emprendedor
 		$objProd = new PDOModel();
-        $result =  $objProd->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE A.id_usuario =  '".$id_usuario."' AND B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1;");
+        $result =  $objProd->executeQuery("SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE A.id_usuario = '".$id_usuario."' AND B.id_producto = A.id AND B.cantidad_disponible > 0 AND B.id_estado = 1 AND B.id_disponibilidad= C.id AND '".$fecha."' BETWEEN C.fecha_inicio AND C.fecha_fin;");
+       
 
 		?>
 	</head>

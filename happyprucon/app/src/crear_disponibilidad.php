@@ -1,20 +1,33 @@
 <?php
-	//error_reporting(E_ERROR | E_WARNING | E_PARSE);
-	require_once'../../externo/plugins/PDOModel.php';
-	require'../class/sessions.php';
-	$objSe = new Sessions();
-	$objSe->init();
+    error_reporting(E_ERROR | E_WARNING | E_PARSE);
+    require_once'../../externo/plugins/PDOModel.php';
+    require'../class/sessions.php';
+    $id_usuario = "";
+    
+        if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
+        {
+            $id_usuario = $_POST["id_usuario"];
+        }
+        elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
+        {
+             $usuid_usuario_id = $_GET["id_usuario"];
+        }
+        $objUbicacion = new PDOModel();
+        $objUbicacion->where("id", $id_usuario);
+        $res_usuarios =  $objUbicacion->select("usuarios");
+        foreach ($res_usuarios as $usuarios)
+        {
+                $rol = $usuarios["rol"] ;
+                $fullname = $usuarios["fullname"] ;                                                        
+        }
+    /*if($rol!=2){
 
-	$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
-	$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
-	$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
+    echo "<script> alert('Usuario no autorizado');
+        window.location.assign('logueo.html');</script>";
 
-
-	if($rol!=2){
-		echo "<script> alert('Usuario no autorizado');
-						window.location.assign('logueo.html');</script>";
-	}	
-?>
+}   */  
+        
+?>  
 <!DOCTYPE html>
 <!-- 
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
@@ -440,7 +453,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			  // demo 5
                 $("#cantidad").ionRangeSlider({
                     grid: true,
-                    from: 1,
+                    from: 0,
                     to: 5,
                     values: [1, 2, 3, 4, 5]
                 });
