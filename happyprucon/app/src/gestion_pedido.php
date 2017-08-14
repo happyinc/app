@@ -256,7 +256,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             </div>
                         </div>
                             <div class="portlet-body">
-                                <form role="form" class="form-horizontal" action="gestion_pedido_detalle.php" name="producto" id="producto" method="POST">
+                                <form role="form" class="form-horizontal" action="gestion_pedido_detalle.php" name="ges_pedido" id="ges_pedido" method="POST">
                                     <div class="row">
                                         <?
                                         $objGes = new PDOModel();
@@ -282,11 +282,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             <i class="  icon-bubbles"></i> <? echo cantidad_coment_prod($item['id_producto']); ?> </li>
                                                     </ul>
                                                     <div class="btn-group-circle" style="margin-bottom: 20px;">
-                                                        <button type="submit"
+                                                        <a href="gestion_pedido_detalle.php?id_usuario=<? echo $usu_id;?>&id_producto=<? echo $item['id_producto'];?>" type="submit"
                                                                 class="btn btn-default mt-ladda-btn ladda-button" style="border-radius: 10px;">VER DETALLE
-                                                        </button>
-                                                        <input type="hidden" name="id_producto" id="id_producto" value="<? echo $item['id_producto'];?>"/>
-                                                        <input type="hidden" name="id_usuario" id="id_usuario" value="<? echo $usu_id;?>"/>
+                                                        </a>
                                                     </div>
 
                                                 </div>
