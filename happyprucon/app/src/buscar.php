@@ -179,7 +179,9 @@ License: You must have a valid license purchased only from themeforest(the above
                             <div class="input-group">
                                 <input type="search" name="buscar" id="buscar" class="form-control">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit" name="buscarb" value="buscarb"><i class="fa fa-search"></i></button>
+                                    <!--<button class="btn btn-default" type="submit" name="buscarb" value="buscarb"><i class="fa fa-search"></i></button>-->
+                                    <input class="btn  btn-circle purple" name="buscarb" type="submit" id="buscarb" value="Buscar">
+                                    <!--<input class="btn btn-circle red" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick=" eliminarProducto();">-->
                                 </span>
                             </div>
                         </div>
@@ -272,7 +274,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </div>
                                                         <div class="mt-head-user" >
                                                             <div class="mt-head-user-img">
-                                                                <img src="<? echo 'usuarios/'.$item['id_usuario'].'/perfil/'.'/res_perfil.jpg'?>"> </div>
+                                                                <img src="<? echo 'usuarios/'.$item['id_usuario'].'/perfil'.'/res_perfil.jpg'?>"> </div>
                                                             <div class="mt-head-user-info" >
                                                                 <span class="mt-user-name"><?echo  nombre_usuario($item["id_usuario"])?></span>
                                                                 <span class="mt-user-time">
