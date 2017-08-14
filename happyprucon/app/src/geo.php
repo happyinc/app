@@ -8,6 +8,10 @@ $objSe = new Sessions();
 <!DOCTYPE html>
 <html>
 <head>
+    <?php
+    include "include_css.php";
+    include "funciones.php";
+    ?>
     <title>Geolocation</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
@@ -46,35 +50,33 @@ $objSe = new Sessions();
         $res_usu =  $objConn->select("usuarios");
         foreach ($res_usu as $ubica){
         ?>
-        var prueba<? echo $ubica['id']?> = {lat: <? echo $ubica['latitud'] ?>, lng: <? echo $ubica['longitud'] ?>};
+        var ubicaciones<? echo $ubica['id']?> = {lat: <? echo $ubica['latitud'] ?>, lng: <? echo $ubica['longitud'] ?>};
 
-        var contentString<? echo $ubica['id']?> = '<div id="content">' +
-            '<div id="siteNotice">' +
-            '</div>' +
-            '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
-            '<div id="bodyContent">' +
-            '<p><b>Uluru<? echo $ubica['nombre']?></b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-            'sandstone rock formation in the southern part of the ' +
-            'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
-            'south west of the nearest large town, Alice Springs; 450&#160;km ' +
-            '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major ' +
-            'features of the Uluru - Kata Tjuta National Park. Uluru is ' +
-            'sacred to the Pitjantjatjara and Yankunytjatjara, the ' +
-            'Aboriginal people of the area. It has many springs, waterholes, ' +
-            'rock caves and ancient paintings. Uluru is listed as a World ' +
-            'Heritage Site.</p>' +
-            '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-            'https://en.wikipedia.org/w/index.php?title=Uluru</a> ' +
-            '(last visited June 22, 2009).</p>' +
-            '</div>' +
-            '</div>';
+        var contentString<? echo $ubica['id']?> = '<div id="content" style="padding-left: 20px !important;">' +
+            '<div class="mt-widget-2" >'+
+            '<div class="mt-head" style="background-image: url(usuarios/<?echo$ubica["id"];?>/perfil/mid_perfil.jpg); height: 100px;" >'+
+        '<div class="mt-head-user-img"></div>'+
+        '</div>'+
+        '</div>'+
+        '<div class="mt-body" style="padding-top: 80px !important;">'+
+        '<h3 class="mt-body-title"> <? echo $ubica["nombre"]; ?> </h3>'+
+        '<ul class="mt-body-stats">'+
+        '<? echo $ubica["id"]; ?>'+
+        '</ul>'+
+        '<div class="btn-group-circle">'+
+        '<input type="hidden" name="id_usuario" id="id_usuario" value="<? echo $ubica["id"]; ?>"/>'+
+        '<center><a href="" type="submit" class="btn red-mint btn-outline sbold uppercase" style="border-radius: 10px;">DISPONIBILIDAD</button></center>'+
+        '</div>'+
+        '</div>'+
+        '</div>';
+
 
         var infowindow<? echo $ubica['id']?> = new google.maps.InfoWindow({
             content: contentString<? echo $ubica['id']?>
         });
 
         var marker<? echo $ubica['id']?> = new google.maps.Marker({
-            position: prueba<? echo $ubica['id']?>,
+            position: ubicaciones<? echo $ubica['id']?>,
             map: map
             ,
             title: 'Prueba de ubicacion<? echo $ubica['id']?>'
@@ -115,8 +117,12 @@ $objSe = new Sessions();
             'Error: Your browser doesn\'t support geolocation.');
     }
 </script>
+<?
+include "include_js.php";
+?>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOTpZg3Uhl0AItmrXORFIsGfJQNJiLHGg&callback=initMap">
 </script>
+
 </body>
 </html>
