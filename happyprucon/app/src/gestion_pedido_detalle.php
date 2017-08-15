@@ -393,7 +393,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 <div class="row"></div>
                                                                 <div class="row">
                                                                     <?
-                                                                    if($item['forma_adquisicion']== 1 || $item['forma_adquisicion']== 4 )
+                                                                    if($item['forma_adquisicion']== 1)
                                                                     {
                                                                         ?>
                                                                             <input class="btn  btn-circle purple" name="despachar" type="submit" id="despachar" value="Despachar" onclick="alertaPedido(<? echo $item['id'] ?>)">

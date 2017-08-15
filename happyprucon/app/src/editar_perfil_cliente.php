@@ -444,8 +444,17 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title bold">
-                                                    <a class="bg-yellow-crusta bg-font-yellow-crusta accordion-toggle" style="background-color: #<? echo $item['color'] ?>;" data-toggle="collapse" data-parent="#accordion1" href="#collapse_<?php echo $item["id"]?>" value="<?php echo $item["id"]?>"><img src="bienes/<?php echo $item["id"]?>/bien.png" width="75px" class="img-responsive"/><?php echo $item["nombre"]?></a>
-                                                </h4>
+                                                <a class="accordion-toggle" style="background-color: #<? echo $item['color'] ?>;" data-toggle="collapse" data-parent="#accordion1" href="#collapse_<?php echo $item["id"]?>" value="<?php echo $item["id"]?>">
+                                                    <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                            <img src="bienes/<?php echo $item["id"]?>/bien.png" width="60px" class="img-responsive"/>
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="display: flex; justify-content: center; align-content: center; flex-direction: column;">
+                                                             <p><b class="font-white"><?php echo $item["nombre"]?></b></p>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </h4>
                                             </div>
                                             <div id="collapse_<?php echo $item["id"]?>" class="panel-collapse in collapse">
                                                 <div class="panel-body"><?php

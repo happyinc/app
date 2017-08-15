@@ -326,12 +326,6 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     $icono = "fa fa-ship fa-2x";
 
                                                 }
-                                                if($item1['forma_adquisicion'] == 4){
-
-
-                                                    $icono = "fa fa-motorcycle fa-2x";
-
-                                                }
 
 
                                             ?>

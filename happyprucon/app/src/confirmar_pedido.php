@@ -98,7 +98,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
             // si el pedido va con domicilio
-            if($_POST['forma_adquisicion']==1 || $_POST['forma_adquisicion']==4)
+            if($_POST['forma_adquisicion']==1)
             {
                 if ($_POST['direccion'] != "" && $_POST['tipodom'] != "" && $_POST['descripcion'] != "")
                 {
