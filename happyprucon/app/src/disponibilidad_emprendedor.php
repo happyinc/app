@@ -216,7 +216,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="col-md-4" align="center">
                                             <div class="mt-widget-1" style=" border: 0px !important;">
                                                 <div class="mt-img" style="margin-bottom: 10px !important;">
-                                                        <img src="<? echo "usuarios/".$id_usuario."/perfil/res_perfil.jpg"?>" width="150" class="img-circle" style="border-radius: 50%;">  </div>
+                                                        <img src="<? echo "usuarios/".$id_usuario."/perfil/res_perfil.jpg"?>" width="150" class="img-circle" style="border-radius: 50%;">  
+                                                </div>
                                                 <div class="mt-body">
                                                     <h3 class="mt-username"><? echo calificacion_usuario($id_usuario); ?></h3>
                                                         <div class="row" style="padding-top: 20px;">
@@ -232,9 +233,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                                             <label class="font-purple" style="margin-left: 10px; margin-right: 5px;">1,7k</label>
                                                             <i class="fa fa-group font-purple" style="margin-right: 10px;"></i>
-
                                                         </div>
-
+                                                         <div class="row" style="padding-top: 20px;">
+                                                            <p><b>Lo que quiero:</b></p><?echo  ($item["meta"])?>  </span>
+                                                        </div>
                                                 </div>
                                             </div>
                                         </div>

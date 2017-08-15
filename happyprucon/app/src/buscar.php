@@ -39,6 +39,17 @@ foreach ($res_usuarios as $usuarios)
     $tel = $usuarios["tel"] ;
     $correo = $usuarios["correo"] ;
 }
+
+$buscar = "";
+
+if(isset($_POST["buscar"]) && $_POST["buscar"] != "")
+{
+    $buscar = $_POST["buscar"];
+}
+elseif(isset($_GET["buscar"]) && $_GET["buscar"] != "")
+{
+    $buscar = $_GET["buscar"];
+}
 /*if($rol!=2){
 
 }else{
@@ -82,28 +93,32 @@ License: You must have a valid license purchased only from themeforest(the above
     $result="";
     $fecha=date("Y-m-d H:i:s");
     $objConn = new PDOModel();
-    $result =  $objConn->executeQuery("SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin;");
+    $query_todos = "SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin ";
+    
 
-
-
-    if(isset($_POST["formulario"]) && $_POST["formulario"] == "1buscar")
-    {
         if(isset($_POST["buscar"]) && $_POST["buscar"] != "")
         {
-            $buscar = $_POST['buscar'];
-            $result =  $objConn->executeQuery("SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin AND ( A.nombre LIKE '%$buscar%'  OR A.descripcion LIKE '%$buscar%' );");
-        }
-        else 
-        {
-            ?> <script type="text/javascript">alert("Para realizar la busqueda debe escribir un item");</script><?
-        }
-    }
-    
-   //  $consulta =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%'".$POST['buscar']."'%'  OR A.descripcion LIKE '%'".$POST['buscar']."'%' );");
+            
+            $query_todos = $query_todos."AND (A.nombre LIKE '%$buscar%' OR A.descripcion LIKE '%$buscar%')";
 
-    if(isset($_POST["buscarf"]) && $_POST["buscarf"] != "" )
+        }
+    
+    
+   // $consulta = $objConn->executeQuery("SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin AND (A.nombre LIKE '%$buscar%' OR A.descripcion LIKE '%$buscar%');");
+
+    if(isset($_POST["formulario"]) && $_POST["formulario"] == "fbuscar")
     {
-         $consulta =  $objConn->executeQuery("SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin AND ( A.nombre LIKE '%$buscar%'  OR A.descripcion LIKE '%$buscar%' )AND ();");
+
+
+        if(isset($_POST["categoria"]) && $_POST["categoria"] != "")
+        {
+            $query_todos = $query_todos." AND A.id_categoria = '".$_POST["categoria"]."' ";
+        }
+
+         if(isset($_POST["emprendedor"]) && $_POST["emprendedor"] != "")
+        {
+            $query_todos = $query_todos." AND A.id_usuario = '".$_POST["emprendedor"]."' ";
+        }
     
     }
 
@@ -188,7 +203,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <form role="form" class="form-horizontal" name="1buscar" id="1buscar" action="buscar.php" enctype="multipart/form-data" method="POST">  
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <input type="search" name="buscar" id="buscar" class="form-control">
+                                    <input type="search" name="buscar" id="buscar" class="form-control" value="<? echo $buscar ?>">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default" type="submit" name="buscarb" value="buscarb"><i class="fa fa-search"></i></button>
                                     </span>
@@ -213,34 +228,81 @@ License: You must have a valid license purchased only from themeforest(the above
                               </div>
                               <div class="modal-body">
                                 <form role="form" class="form-horizontal" name="fbuscar" id="fbuscar" action="buscar.php" enctype="multipart/form-data" method="POST">
+                                    <?
+                                        $categoria_f = "";
+                                        $asociado_f = "";
+                                        $precio_max = 0;
+                                        $precio_min = 0;
+                                        $contador = 0;
+                                        $result =  $objConn->executeQuery($query_todos);
+                                        foreach ($result as $item ) 
+                                        {
+                                            $categoria_f["".$item["id_categoria"].""] = $categoria_f["".$item["id_categoria"].""]+1;
+                                            $asociado_f["".$item["id_usuario"].""] = $asociado_f["".$item["id_usuario"].""]+1;
 
+                                            if($contador == 0)
+                                            {
+                                                $precio_max = $item["precio"];
+                                                $precio_min = $item["precio"];
+                                            }
+                                            else
+                                            {
+                                                if($item["precio"] < $precio_min)  
+                                                {
+                                                    $precio_min = $item["precio"];
+                                                }
+                                                else if($item["precio"] > $precio_max)  
+                                                {
+                                                    $precio_max = $item["precio"];
+                                                }
+                                            }
+                                        }
+
+                                    ?>
                                     <p>Seleccione el filtro de busqueda.</p>
 
                                         <div class="form-group">
                                             <label for="categoria" class="control-label">categoria</label>
-                                            <select id="categoria" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="categoria">
+                                            <select id="categoria" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="categoria" onchange="">
                                                 <option></option>
-                                                    <option value="AK">Alaska</option>
-                                                    <option value="HI">Hawaii</option>
+                                                    <?
+                                                    foreach ($categoria_f as $key => $value) {
+                                                        ?>
+                                                        <option value="<? echo $key ?>"><? echo "$key - $value Productos"?></option>
+                                                        <?
+                                                    }
+                                                    ?>
                                              </select>
                                              
                                         </div>
 
                                          <div class="form-group">
                                             <label for="emprendedor" class="control-label">emprendedor</label>
-                                            <select id="emprendedor" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="emprendedor">
+                                            <select id="emprendedor" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="emprendedor" onchange="">
                                                 <option></option>
-                                                    <option value="AK">Alaska</option>
-                                                    <option value="HI">Hawaii</option>
+                                                     <?
+                                                    foreach ($asociado_f as $key => $value) {
+                                                        ?>
+                                                        <option value="<? echo $key ?>"><? echo "$key - $value Productos"?></option>
+                                                        <?
+                                                    }
+                                                    ?>
                                              </select>
                                         </div>
 
                                          <div class="form-group">
                                             <label for="precio" class="control-label">precio</label>
-                                            <select id="precio" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="precio">
+                                            <select id="precio" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="precio" onchange="">
                                                 <option></option>
-                                                    <option value="AK">Alaska</option>
-                                                    <option value="HI">Hawaii</option>
+                                                    <?
+                                                    $i=0;
+                                                    for ($i=$precio_min; $i>= $precio_max; $i=$i+2000) {
+                                                        ?>
+                                                        <option value="<? echo $i ?>"><? echo $i?></option>
+                                                        <?
+                                                    }
+                                                    ?>
+                                                    
                                              </select>
                                         </div>
 
@@ -250,17 +312,17 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                         </div>
 
-                                </form>
+                                
                                 <input type="hidden" id="formulario" name="formulario" value="fbuscar"/>
-                                <input type="hidden" id="buscarf" name="buscarf" value=""/>
+                                <input type="hidden" name="buscar" id="buscar" value="<? echo $buscar ?>">
                                 <!--<input type="hidden" id="emprendedor" name="emprendedor" value="buscarf"/>
                                 <input type="hidden" id="categoria" name="categoria" value="buscarf"-->
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close <? echo $buscar ?></button>
                               </div>
                             </div>
-
+                                </form>
                           </div>
                         </div>
 
@@ -272,6 +334,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
                         <div class="form-group form-md-line-input">
                             <?
+                            //echo $query_todos;
+                            $result =  $objConn->executeQuery($query_todos);
                             foreach ($result as $item ) 
                             {
                             ?>  
@@ -316,7 +380,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="col-lg-3"></div>
                                     </div>
                                 </div>
-                                <?// echo "<pre>";print_r($GLOBALS); echo "</pre>";?>
+                                <?//echo "<pre>";print_r($GLOBALS); echo "</pre>";?>
                                 <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id_producto"] ?>" />
                                 </br></br>
                             <?     

@@ -132,7 +132,7 @@
 	}
 
 /// calcula el promedio del emprendedor
-/// solo trae el valor numerico de la calificacion del empendedor
+/// solo trae el valor numerico de la calificacion del emprendedor
 	function calificacion_usu($id_usuario)
 	{
 		$objCal = new PDOModel();
@@ -215,7 +215,6 @@
 	}
 
 	//funcion que trae el numero total de cometarios que tiene un producto
-
 	function cantidad_coment_prod($id_producto){
 		$objComent = new PDOModel();
 		$objComent->where("id_producto", $id_producto);
