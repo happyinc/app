@@ -52,22 +52,23 @@ $objSe = new Sessions();
         ?>
         var ubicaciones<? echo $ubica['id']?> = {lat: <? echo $ubica['latitud'] ?>, lng: <? echo $ubica['longitud'] ?>};
 
-        var contentString<? echo $ubica['id']?> = '<div id="content" style="padding-left: 20px !important;">' +
-            '<div class="mt-widget-2" >'+
-            '<div class="mt-head" style="background-image: url(usuarios/<?echo$ubica["id"];?>/perfil/mid_perfil.jpg); height: 100px;" >'+
-        '<div class="mt-head-user-img"></div>'+
-        '</div>'+
-        '</div>'+
-        '<div class="mt-body" style="padding-top: 80px !important;">'+
-        '<h3 class="mt-body-title"> <? echo $ubica["nombre"]; ?> </h3>'+
-        '<ul class="mt-body-stats">'+
-        '<? echo $ubica["id"]; ?>'+
-        '</ul>'+
-        '<div class="btn-group-circle">'+
-        '<input type="hidden" name="id_usuario" id="id_usuario" value="<? echo $ubica["id"]; ?>"/>'+
-        '<center><a href="" type="submit" class="btn red-mint btn-outline sbold uppercase" style="border-radius: 10px;">DISPONIBILIDAD</button></center>'+
-        '</div>'+
-        '</div>'+
+        var contentString<? echo $ubica['id']?> =
+        '<div id="content" style="padding-left: 20px !important; border-radius: 20px;">' +
+            '<div class="mt-widget-2" style="border: 0 !important" >'+
+                '<div class="mt-head" style="background-image: url(usuarios/<?echo$ubica["id"];?>/perfil/mid_perfil.jpg); height: 100px;" >'+
+                    '<div class="mt-head-user-img"></div>'+
+                '</div>'+
+            '</div>'+
+            '<div class="mt-body" style="padding-top: 80px !important;">'+
+                '<h3 class="mt-body-title bold"> <? echo $ubica["nombre"]; ?> </h3>'+
+                    '<ul class="mt-body-stats">'+
+                        '<? echo $ubica["id"]; ?>'+
+                    '</ul>'+
+                '<div class="btn-group-circle">'+
+                    '<input type="hidden" name="id_usuario" id="id_usuario" value="<? echo $ubica["id"]; ?>"/>'+
+                    '<center><a href="" type="submit" class="btn red-mint btn-outline sbold uppercase" style="border-radius: 10px;">DISPONIBILIDAD</button></center>'+
+                '</div>'+
+            '</div>'+
         '</div>';
 
 
