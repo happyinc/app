@@ -202,7 +202,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">Filtros</button>
 
                         <!-- Modal -->
-                        <div i||d="myModal" class="modal fade" role="dialog">
+                        <div id="myModal" class="modal fade" role="dialog">
                           <div class="modal-dialog">
 
                             <!-- Modal content-->
