@@ -66,7 +66,7 @@ $objSe = new Sessions();
                     '</ul>'+
                 '<div class="btn-group-circle">'+
                     '<input type="hidden" name="id_usuario" id="id_usuario" value="<? echo $ubica["id"]; ?>"/>'+
-                    '<center><a href="" type="submit" class="btn red-mint btn-outline sbold uppercase" style="border-radius: 10px;">DISPONIBILIDAD</button></center>'+
+                    '<center><a href="disponibilidad_emprendedor.php?id_usuario=<? echo $ubica["id"]; ?>" type="submit" class="btn red-mint btn-outline sbold uppercase" style="border-radius: 10px;">DISPONIBILIDAD</button></center>'+
                 '</div>'+
             '</div>'+
         '</div>';
