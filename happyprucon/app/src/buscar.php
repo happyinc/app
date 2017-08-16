@@ -294,13 +294,13 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <label for="precio" class="control-label">precio</label>
                                             <select id="precio" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="precio" onchange="">
                                                 <option></option>
-                                                    <?
+                                                    <?/*
                                                     $i=0;
                                                     for ($i=$precio_min; $i>= $precio_max; $i=$i+2000) {
                                                         ?>
                                                         <option value="<? echo $i ?>"><? echo $i?></option>
                                                         <?
-                                                    }
+                                                    }*/
                                                     ?>
                                                     
                                              </select>
