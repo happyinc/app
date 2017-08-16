@@ -158,12 +158,12 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
         $bienes = $_POST["categoria"];
 
         foreach ($bienes  as $clave => $valor){
-                    $id_catagoria = $valor;
-                    $objConn = new PDOModel();
-                    $insertUserGusto["id_usuario"] = $id_usuario;
-                    $insertUserGusto["id_categoria"] = $id_catagoria;
-                    $insertUserGusto["id_estado"] = 1;
-                    $objConn->insert("gustos", $insertUserGusto);
+            $id_catagoria = $valor;
+            $objConn = new PDOModel();
+            $insertUserGusto["id_usuario"] = $id_usuario;
+            $insertUserGusto["id_categoria"] = $id_catagoria;
+            $insertUserGusto["id_estado"] = 1;
+            $objConn->insert("gustos", $insertUserGusto);
         }
 
         $objConn = new PDOModel();
@@ -176,40 +176,40 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
             // Primero, hay que validar que se trata de un JPG/GIF/PNG
             $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
             $extension = end(explode(".", $_FILES["foto"]["name"]));
-        if ((($_FILES["foto"]["type"] == "image/gif")
-                || ($_FILES["foto"]["type"] == "image/jpeg")
-                || ($_FILES["foto"]["type"] == "image/png")
-                || ($_FILES["foto"]["type"] == "image/gif")
-                || ($_FILES["foto"]["type"] == "image/bmp"))
-            && in_array($extension, $allowedExts)) {
-            // el archivo es un JPG/GIF/PNG, entonces...
+            if ((($_FILES["foto"]["type"] == "image/gif")
+                    || ($_FILES["foto"]["type"] == "image/jpeg")
+                    || ($_FILES["foto"]["type"] == "image/png")
+                    || ($_FILES["foto"]["type"] == "image/gif")
+                    || ($_FILES["foto"]["type"] == "image/bmp"))
+                && in_array($extension, $allowedExts)) {
+                // el archivo es un JPG/GIF/PNG, entonces...
 
-            $extension = end(explode('.', $_FILES['foto']['name']));
-            $foto = "perfil". "." . $extension;
-            $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
-            if (file_exists($directorio)) {
+                $extension = end(explode('.', $_FILES['foto']['name']));
+                $foto = "perfil". "." . $extension;
+                $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
+                if (file_exists($directorio)) {
 
-            } else {
-                mkdir($directorio, 0777, true);
+                } else {
+                    mkdir($directorio, 0777, true);
+                }
+
+                // almacenar imagen en el servidor
+                move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
+                $minFoto = 'min_' . $foto;
+                $midFoto = 'mid_' . $foto;
+                $resFoto = 'res_' . $foto;
+                resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
+                resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
+                resizeImagen($directorio . '/', $foto, 600, 600, $resFoto, $extension);
+                unlink($directorio . '/' . $foto);
+
+            } else { // El archivo no es JPG/GIF/PNG
+                $malformato = $_FILES["foto"]["type"];
+                ?>
+                <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
+                <?
+                //header("Location: crear_producto.php?id=echo $usu_id");
             }
-
-            // almacenar imagen en el servidor
-            move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
-            $minFoto = 'min_' . $foto;
-            $midFoto = 'mid_' . $foto;
-            $resFoto = 'res_' . $foto;
-            resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
-            resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
-            resizeImagen($directorio . '/', $foto, 600, 600, $resFoto, $extension);
-            unlink($directorio . '/' . $foto);
-
-        } else { // El archivo no es JPG/GIF/PNG
-            $malformato = $_FILES["foto"]["type"];
-            ?>
-            <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
-        <?
-        //header("Location: crear_producto.php?id=echo $usu_id");
-        }
 
         } else { // El campo foto NO contiene una imagen
 
@@ -268,7 +268,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
 <body class=" login">
 <div class="content" style="padding-bottom: 0 !important; padding-top: 5px !important; padding-left: 20px !important; padding-right: 20px !important;">
     <!-- BEGIN LOGIN FORM -->
-    <div class="portlet light " id="form_wizard_1" style="box-shadow: none !important; margin-bottom: 0 !important;">
+    <div class="portlet light " id="form_wizard_1" style="box-shadow: none !important; margin-bottom: 0 !important; ">
         <div class="portlet-title" hidden>
 
 
@@ -457,8 +457,20 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
                                                     <h4 class="panel-title bold">
-                                                        <a class="accordion-toggle" style="background-color: #<? echo $item['color'] ?>;" data-toggle="collapse" data-parent="#accordion1" href="#collapse_<?php echo $item["id"]?>" value="<?php echo $item["id"]?>"><img src="../../externo/img/logo-default.png"  class="img-responsive" /><?php echo $item["nombre"]?></a>
+                                                        <a class="accordion-toggle" style="background-color: #<? echo $item['color'] ?>;" data-toggle="collapse" data-parent="#accordion1" href="#collapse_<?php echo $item["id"]?>" value="<?php echo $item["id"]?>">
+
+                                                            <div class="row">
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                                    <img src="bienes/<?php echo $item["id"]?>/bien.png" width="60px" class="img-responsive"/>
+                                                                </div>
+                                                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="display: flex; justify-content: center; align-content: center; flex-direction: column;">
+                                                                    <b class="font-white"><?php echo $item["nombre"]?></b>
+                                                                </div>
+                                                            </div>
+
+                                                        </a>
                                                     </h4>
+
                                                 </div>
                                                 <div id="collapse_<?php echo $item["id"]?>" class="panel-collapse collapse">
                                                     <div class="panel-body"><?php
@@ -581,10 +593,9 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                 <a href="javascript:;" class="btn btn-outline green button-next"> Siguiente
                                     <i class="fa fa-angle-right"></i>
                                 </a>
-                                <button href="javascript:;" class="btn green button-submit" name="btn1" value="registrar"> Registrar
+                                <button type="submit" class="btn green button-submit" id="formulario" name="formulario" value="Registrar"> Registrar
                                     <i class="fa fa-check"></i>
                                 </button>
-                                <input type="hidden" id="formulario" name="formulario" value="Registrar"/>
 
                             </div>
                         </div>

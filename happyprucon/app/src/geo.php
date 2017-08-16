@@ -1,50 +1,17 @@
 <?php
-error_reporting(0);
+error_reporting(E_ALL ^ E_NOTICE);
 require_once'../../externo/plugins/PDOModel.php';
 include '../class/sessions.php';
 
 $objSe = new Sessions();
-$objSe->init();
-
-$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
-$rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
-$fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
-$name = isset($_SESSION['nombre']) ? $_SESSION['nombre'] : null ;
-$lastname = isset($_SESSION['apellido']) ? $_SESSION['apellido'] : null ;
-$genero = isset($_SESSION['genero']) ? $_SESSION['genero'] : null ;
-$tel = isset($_SESSION['telefono']) ? $_SESSION['telefono'] : null ;
-$correo = isset($_SESSION['correo']) ? $_SESSION['correo'] : null ;
-$meta = isset($_SESSION['suenos']) ? $_SESSION['suenos'] : null ;
-
-$id_user = "";
-
-if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
-{
-    $id_user = $_POST["id_usuario"];
-}
-elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
-{
-    $id_user = $_GET["id_usuario"];
-}
-$objUbicacion = new PDOModel();
-$objUbicacion->where("id_usuario", $id_user);
-$res_usuarios =  $objUbicacion->select("usuarios");
-foreach ($res_usuarios as $usuarios)
-{
-    $rol = $usuarios["rol"] ;
-    $fullname = $usuarios["fullname"] ;
-    $name = $usuarios["name"] ;
-    $lastname = $usuarios["lastname"] ;
-    $genero = $usuarios["genero"] ;
-    $tel = $usuarios["tel"] ;
-    $correo = $usuarios["correo"] ;
-}
-
-
 ?>
 <!DOCTYPE html>
 <html>
 <head>
+    <?php
+    include "include_css.php";
+    include "funciones.php";
+    ?>
     <title>Geolocation</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
@@ -61,36 +28,6 @@ foreach ($res_usuarios as $usuarios)
             padding: 0;
         }
     </style>
-    <script type="text/javascript">
-<?
-$objConn = new PDOModel();
-$objConn->where("id_roles", 2);
-$result =  $objConn->select("usuarios");
-
-?>
-        function init() {
-
-            var latlng = new google.maps.LatLng(<?php echo $result[0]['latitud']; ?>, <?php echo $result[0]['longitud']; ?>);
-
-            var myOptions = {
-                zoom: 15,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-
-            var map = new google.maps.Map(document.getElementById("map"), myOptions);
-
-            sucursal = new google.maps.Marker({
-                position: latlng,
-                icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
-                map: map
-            });
-
-        }
-
-        window.onload = init;
-
-    </script>
 </head>
 <body>
 <div id="map"></div>
@@ -101,11 +38,58 @@ $result =  $objConn->select("usuarios");
     // locate you.
 
     function initMap() {
+
         var map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: -34.397, lng: 150.644},
             zoom: 15
         });
         var infoWindow = new google.maps.InfoWindow({map: map});
+<?
+        $objConn = new PDOModel();
+        $objConn->where("id_roles",2);
+        $res_usu =  $objConn->select("usuarios");
+        foreach ($res_usu as $ubica){
+        ?>
+        var ubicaciones<? echo $ubica['id']?> = {lat: <? echo $ubica['latitud'] ?>, lng: <? echo $ubica['longitud'] ?>};
+
+        var contentString<? echo $ubica['id']?> =
+        '<div id="content" style="padding-left: 20px !important; border-radius: 20px;">' +
+            '<div class="mt-widget-2" style="border: 0 !important" >'+
+                '<div class="mt-head" style="background-image: url(usuarios/<?echo$ubica["id"];?>/perfil/mid_perfil.jpg); height: 100px;" >'+
+                    '<div class="mt-head-user-img"></div>'+
+                '</div>'+
+            '</div>'+
+            '<div class="mt-body" style="padding-top: 80px !important;">'+
+                '<h3 class="mt-body-title bold"> <? echo $ubica["nombre"]; ?> </h3>'+
+                    '<ul class="mt-body-stats">'+
+                        '<? echo $ubica["id"]; ?>'+
+                    '</ul>'+
+                '<div class="btn-group-circle">'+
+                    '<input type="hidden" name="id_usuario" id="id_usuario" value="<? echo $ubica["id"]; ?>"/>'+
+                    '<center><a href="disponibilidad_emprendedor.php?id_usuario=<? echo $ubica["id"]; ?>" type="submit" class="btn red-mint btn-outline sbold uppercase" style="border-radius: 10px;">DISPONIBILIDAD</button></center>'+
+                '</div>'+
+            '</div>'+
+        '</div>';
+
+
+        var infowindow<? echo $ubica['id']?> = new google.maps.InfoWindow({
+            content: contentString<? echo $ubica['id']?>
+        });
+
+        var marker<? echo $ubica['id']?> = new google.maps.Marker({
+            position: ubicaciones<? echo $ubica['id']?>,
+            map: map
+            ,
+            title: 'Prueba de ubicacion<? echo $ubica['id']?>'
+        });
+        marker<? echo $ubica['id']?>.addListener('click', function () {
+            infowindow<? echo $ubica['id']?>.open(map, marker<? echo $ubica['id']?>);
+        });
+
+        <?
+        }
+        ?>
+
 
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
@@ -134,8 +118,12 @@ $result =  $objConn->select("usuarios");
             'Error: Your browser doesn\'t support geolocation.');
     }
 </script>
+<?
+include "include_js.php";
+?>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOTpZg3Uhl0AItmrXORFIsGfJQNJiLHGg&callback=initMap">
 </script>
+
 </body>
 </html>

@@ -39,6 +39,17 @@ foreach ($res_usuarios as $usuarios)
     $tel = $usuarios["tel"] ;
     $correo = $usuarios["correo"] ;
 }
+
+$buscar = "";
+
+if(isset($_POST["buscar"]) && $_POST["buscar"] != "")
+{
+    $buscar = $_POST["buscar"];
+}
+elseif(isset($_GET["buscar"]) && $_GET["buscar"] != "")
+{
+    $buscar = $_GET["buscar"];
+}
 /*if($rol!=2){
 
 }else{
@@ -71,17 +82,44 @@ License: You must have a valid license purchased only from themeforest(the above
 <head>
     <?php
     include "include_css.php";
+    include "funciones.php";
     ?>
 
-        <link href="../assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+
 
     <?php
+    $result="";
+    $fecha=date("Y-m-d H:i:s");
     $objConn = new PDOModel();
-    $result =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1;");
+    $query_todos = "SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin ";
+    
 
-    if(isset($_POST["formulario"]) && $_POST["formulario"] == "buscar" )
+        if(isset($_POST["buscar"]) && $_POST["buscar"] != "")
+        {
+            
+            $query_todos = $query_todos."AND (A.nombre LIKE '%$buscar%' OR A.descripcion LIKE '%$buscar%')";
+
+        }
+    
+    
+   // $consulta = $objConn->executeQuery("SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin AND (A.nombre LIKE '%$buscar%' OR A.descripcion LIKE '%$buscar%');");
+
+    if(isset($_POST["formulario"]) && $_POST["formulario"] == "fbuscar")
     {
-         $result1 =  $objConn->executeQuery("SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 AND ( A.nombre LIKE '%xxx%'  OR A.descripcion LIKE '%ham%' );");
+
+
+        if(isset($_POST["categoria"]) && $_POST["categoria"] != "")
+        {
+            $query_todos = $query_todos." AND A.id_categoria = '".$_POST["categoria"]."' ";
+        }
+
+         if(isset($_POST["emprendedor"]) && $_POST["emprendedor"] != "")
+        {
+            $query_todos = $query_todos." AND A.id_usuario = '".$_POST["emprendedor"]."' ";
+        }
+    
     }
 
     ?>
@@ -160,72 +198,196 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- BEGIN BOX BODY     CONTENIDO AQUI !!!!!!!!!! -->
 
             <div class="portlet light">
-                    <!-- Trigger the modal with a button -->
-                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+                <div class="portlet-body form">
+                    <div class="form-body"> 
+                        <form role="form" class="form-horizontal" name="1buscar" id="1buscar" action="buscar.php" enctype="multipart/form-data" method="POST">  
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="search" name="buscar" id="buscar" class="form-control" value="<? echo $buscar ?>">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit" name="buscarb" value="buscarb"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                            <input type="hidden" id="formulario" name="formulario" value="1buscar"/>
+                        </form>
+                        
+                         
+                        <!-- Trigger the modal with a button -->
+                        <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">Filtros</button>
 
-                    <!-- Modal -->
-                    <div id="myModal" class="modal fade" role="dialog">
-                      <div class="modal-dialog">
+                        <!-- Modal -->
+                        <div id="myModal" class="modal fade" role="dialog">
+                          <div class="modal-dialog">
 
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Filtros de busqueda</h4>
-                          </div>
-                          <div class="modal-body">
-                            <form role="form" class="form-horizontal" name="buscar" id="buscar" action="buscar.php" enctype="multipart/form-data" method="POST">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Filtros de busqueda</h4>
+                              </div>
+                              <div class="modal-body">
+                                <form role="form" class="form-horizontal" name="fbuscar" id="fbuscar" action="buscar.php" enctype="multipart/form-data" method="POST">
+                                    <?
+                                        $categoria_f = "";
+                                        $asociado_f = "";
+                                        $precio_max = 0;
+                                        $precio_min = 0;
+                                        $contador = 0;
+                                        $result =  $objConn->executeQuery($query_todos);
+                                        foreach ($result as $item ) 
+                                        {
+                                            $categoria_f["".$item["id_categoria"].""] = $categoria_f["".$item["id_categoria"].""]+1;
+                                            $asociado_f["".$item["id_usuario"].""] = $asociado_f["".$item["id_usuario"].""]+1;
 
-                                <p>Seleccione el filtro de busqueda.</p>
+                                            if($contador == 0)
+                                            {
+                                                $precio_max = $item["precio"];
+                                                $precio_min = $item["precio"];
+                                            }
+                                            else
+                                            {
+                                                if($item["precio"] < $precio_min)  
+                                                {
+                                                    $precio_min = $item["precio"];
+                                                }
+                                                else if($item["precio"] > $precio_max)  
+                                                {
+                                                    $precio_max = $item["precio"];
+                                                }
+                                            }
+                                        }
 
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Categoria</label>
-                                        <div class="col-md-4">
-                                            <div class="btn-group bootstrap-select bs-select form-control"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="Mustard"><span class="filter-option pull-left">Mustard</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox"><ul class="dropdown-menu inner" role="listbox" aria-expanded="false"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">Mustard</span><span class="fa fa-check check-mark"></span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Ketchup</span><span class="fa fa-check check-mark"></span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Relish</span><span class="fa fa-check check-mark"></span></a></li></ul></div>
-                                                <select class="bs-select form-control" tabindex="-98">
-                                                    <option>Mustard</option>
-                                                    <option>Ketchup</option>
-                                                    <option>Relish</option>
-                                                </select>
+                                    ?>
+                                    <p>Seleccione el filtro de busqueda.</p>
+
+                                        <div class="form-group">
+                                            <label for="categoria" class="control-label">categoria</label>
+                                            <select id="categoria" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="categoria" onchange="">
+                                                <option></option>
+                                                    <?
+                                                    foreach ($categoria_f as $key => $value) {
+                                                        ?>
+                                                        <option value="<? echo $key ?>"><? echo "$key - $value Productos"?></option>
+                                                        <?
+                                                    }
+                                                    ?>
+                                             </select>
+                                             
+                                        </div>
+
+                                         <div class="form-group">
+                                            <label for="emprendedor" class="control-label">emprendedor</label>
+                                            <select id="emprendedor" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="emprendedor" onchange="">
+                                                <option></option>
+                                                     <?
+                                                    foreach ($asociado_f as $key => $value) {
+                                                        ?>
+                                                        <option value="<? echo $key ?>"><? echo "$key - $value Productos"?></option>
+                                                        <?
+                                                    }
+                                                    ?>
+                                             </select>
+                                        </div>
+
+                                         <div class="form-group">
+                                            <label for="precio" class="control-label">precio</label>
+                                            <select id="precio" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="precio" onchange="">
+                                                <option></option>
+                                                    <?
+                                                    $i=0;
+                                                    for ($i=$precio_min; $i>= $precio_max; $i=$i+2000) {
+                                                        ?>
+                                                        <option value="<? echo $i ?>"><? echo $i?></option>
+                                                        <?
+                                                    }
+                                                    ?>
+                                                    
+                                             </select>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <div class="col-md-offset-3 col-md-9">
+                                                <button type="submit" class="btn btn-circle purple" name="enviar" id="enviar" value="enviar"> Enviar </button>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Emprendedor</label>
-                                        <div class="col-md-4">
-                                            <div class="btn-group bootstrap-select bs-select form-control"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="Mustard"><span class="filter-option pull-left">Mustard</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox"><ul class="dropdown-menu inner" role="listbox" aria-expanded="false"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">Mustard</span><span class="fa fa-check check-mark"></span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Ketchup</span><span class="fa fa-check check-mark"></span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Relish</span><span class="fa fa-check check-mark"></span></a></li></ul></div>
-                                                <select class="bs-select form-control" tabindex="-98">
-                                                    <option>Mustard</option>
-                                                    <option>Ketchup</option>
-                                                    <option>Relish</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Rango de precio</label>
-                                        <div class="col-md-4">
-                                            <div class="btn-group bootstrap-select bs-select form-control"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="Mustard"><span class="filter-option pull-left">Mustard</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox"><ul class="dropdown-menu inner" role="listbox" aria-expanded="false"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">Mustard</span><span class="fa fa-check check-mark"></span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Ketchup</span><span class="fa fa-check check-mark"></span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="false"><span class="text">Relish</span><span class="fa fa-check check-mark"></span></a></li></ul></div>
-                                                <select class="bs-select form-control" tabindex="-98">
-                                                    <option>Mustard</option>
-                                                    <option>Ketchup</option>
-                                                    <option>Relish</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                            </form>
-                            <input type="hidden" id="formulario" name="formulario" value="buscar"/>
-                            <input type="hidden" id="buscarf" name="buscarf" value="buscarf"/>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                
+                                <input type="hidden" id="formulario" name="formulario" value="fbuscar"/>
+                                <input type="hidden" name="buscar" id="buscar" value="<? echo $buscar ?>">
+                                <!--<input type="hidden" id="emprendedor" name="emprendedor" value="buscarf"/>
+                                <input type="hidden" id="categoria" name="categoria" value="buscarf"-->
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close <? echo $buscar ?></button>
+                              </div>
+                            </div>
+                                </form>
                           </div>
                         </div>
 
-                      </div>
-                    </div>
+                        <?
+                            echo "la categoria es:"."".$_POST["categoria"]."</br>";
+                            echo "el emprendedor es:"."".$_POST["emprendedor"]."</br>";
+                            echo "el precio es:"."".$_POST["precio"];
+                        ?>
+
+                        <div class="form-group form-md-line-input">
+                            <?
+                            //echo $query_todos;
+                            $result =  $objConn->executeQuery($query_todos);
+                            foreach ($result as $item ) 
+                            {
+                            ?>  
+                                <div class="portlet light portlet-fit ">
+                                    <div class="row">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-md-6" align="center">
+                                            <div class="mt-widget-2" >
+                                                <div class="mt-head" style="background-image: url(<? echo 'usuarios/'.$item['id_usuario'].'/bienes/'.$item['id_producto'].'/res_producto.jpg'?>);" >
+                                                    <div class="mt-head-label">
+                                                        <button type="button" class="btn btn-success">$ <?echo number_format($item["precio"],0)?></button>
+                                                    </div>
+                                                    <div class="mt-head-user" >
+                                                        <div class="mt-head-user-img">
+                                                            <img src="<? echo 'usuarios/'.$item['id_usuario'].'/perfil'.'/res_perfil.jpg'?>"> </div>
+                                                        <div class="mt-head-user-info" >
+                                                            <span class="mt-user-name"><?echo  nombre_usuario($item["id_usuario"])?></span>
+                                                            <span class="mt-user-time">
+                                                                    <i class="fa fa-star"></i><?echo  calificacion_usu($item["id_usuario"])?>  </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-body" >
+                                                    <h3 class="mt-body-title" > <?echo $item["nombre"]?> </h3>
+                                                    <p class="mt-body-description"> <?echo $item["descripcion"]?> </p>
+                                                    <ul class="mt-body-stats">
+                                                        <li class="font-yellow">
+                                                            <i class="fa fa-star" aria-hidden="true"></i> <?echo  calificacion_prod($item["id_producto"])?></li>
+                                                        <li class="font-green">
+                                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i> <?echo $item["cantidad_despachada"]?></li>
+                                                        <li class="font-red">
+                                                            <i class="icon-bubbles" aria-hidden="true"></i> <?echo  cantidad_coment_prod($item["id_producto"])?></li>
+                                                    </ul>
+                                                    <div class="mt-body-actions">
+                                                        <div class="btn-group btn-group btn-group-justified">
+                                                            <a href="../src/crear_pedido.php?id_producto=<? echo $item["id_producto"]?>" class="btn">Hacer pedido </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3"></div>
+                                    </div>
+                                </div>
+                                <?//echo "<pre>";print_r($GLOBALS); echo "</pre>";?>
+                                <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id_producto"] ?>" />
+                                </br></br>
+                            <?     
+                            }?>
+                        </div>
+                    </div> 
+                </div> 
             </div>
         </div>
         <!-- END CONTENT BODY -->
@@ -247,7 +409,12 @@ include "footer.php";
 <?
 include "include_js.php";
 ?>
-<script src="../assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
+ <!--<script src="../assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>-->
+ <script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+
+ <script src="../assets/pages/scripts/components-select2.min.js" type="text/javascript"></script>
+
+
 
 
 </body>
