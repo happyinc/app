@@ -86,6 +86,7 @@ License: You must have a valid license purchased only from themeforest(the above
     include "funciones.php";
     ?>
     <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -108,10 +109,9 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
     <!--FIN Archivos para bootstrap file input -->
 
-
 </head>
 <!-- END HEAD -->
-<body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaActulizacion()">
 <!-- BEGIN HEADER -->
 <div class="page-header navbar navbar-fixed-top">
     <!-- BEGIN HEADER INNER -->
@@ -186,19 +186,23 @@ License: You must have a valid license purchased only from themeforest(the above
                 if(isset($_POST["btn1"])) {
                     $btn = $_POST["btn1"];
 
+                    $actualiza_contrasena = 0;
                     if ($btn == "Guardar") {
                         $objConn = new PDOModel();
                         $updateUserData["password"] = md5($_POST['password']);
                         $objConn->where("id", $usu_id);
                         $objConn->update("usuarios", $updateUserData);
 
+                        $actualiza_contrasena = $objConn->rowsChanged;
+
                         if ($objConn != "") {
-                            echo "<script> alert('Cambio exitoso');</script>";
+
                         } else {
                             echo "<script> alert('Error: La contraseña no se pudo actualizar');</script>";
                         }
                     }
 
+                    $actualiza_datos = 0;
                     if ($btn == "Actualizar"){
                         $objConn = new PDOModel();
                         $updateUserData["nombre_completo"] = $_POST['fullname']." ".$_POST['lastname'];
@@ -210,6 +214,8 @@ License: You must have a valid license purchased only from themeforest(the above
                         $updateUserData["meta"] = $_POST['meta'];
                         $objConn->where("id", $_POST['iduser']);
                         $objConn->update("usuarios", $updateUserData);
+
+                        $actualiza_datos = $objConn->rowsChanged;
 
                         if($objConn != ""){
                             $objConn = new PDOModel();
@@ -289,8 +295,6 @@ License: You must have a valid license purchased only from themeforest(the above
 
                             }
 
-                            echo "<script> alert('Usuario actualizado correctamente');
-                        window.location.assign('../../app/src/editar_perfil.php');</script>";
                         } else {
                             echo "<script> alert('No se pudo actualizar');</script>";
                         }
@@ -338,7 +342,48 @@ License: You must have a valid license purchased only from themeforest(the above
                     imagejpeg($tmp,$ruta.$nombreN,$calidad);
 
                 }
+
+
+                //variables para mensajes de atualizacion del sweat alert
+                if($actualiza_contrasena > 0){
+                    $actualizar = $actualiza_contrasena;
+                    $txt_actualiza_datos = "Contraseña actualizada correctamente";
+                }
+
+                if($actualiza_datos > 0){
+                    $actualizar = $actualiza_datos;
+                    $txt_actualiza_datos = "Datos actulizados correctamente";
+                }
+
+
                 ?>
+
+
+                <script>
+                    function alertaActulizacion()
+                    {
+                        var id_actualiza=<?echo $actualizar?>;
+                        if(id_actualiza >=1)
+                        {
+                            swal({
+                                    title:"<? echo $txt_actualiza_datos?>",
+                                    type: "success",
+                                    showCancelButton: false,
+                                    confirmButtonClass: "btn-success",
+                                    confirmButtonText: "Aceptar",
+                                    cancelButtonText: "No",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false
+                                },
+                                function(isConfirm) {
+                                    if (isConfirm) {
+                                        swal("", "Te devolveremos a la pagina de tu perfil", "success");
+                                        location.href="editar_perfil.php";
+                                    }
+                                });
+                        }
+                    }
+                </script>
 
                 <!-- BEGIN FORM-->
                 <form role="form" action="editar_perfil.php" class="form-horizontal" name="upd_datos" id="upd_datos" enctype="multipart/form-data" method="post">
@@ -691,5 +736,7 @@ include "footer.php";
 <script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <script src="../assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
 </body>
 </html>

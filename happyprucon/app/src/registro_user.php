@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 require_once'../../externo/plugins/PDOModel.php';
 include '../class/sessions.php';
 
@@ -57,6 +57,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="../assets/layouts/layout2/css/layout.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/layouts/layout2/css/themes/blue.min.css" rel="stylesheet" type="text/css" id="style_color" />
     <link href="../assets/layouts/layout2/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
     <!-- END THEME LAYOUT STYLES -->
     <link rel="shortcut icon" href="favicon.ico" />
     <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAOTpZg3Uhl0AItmrXORFIsGfJQNJiLHGg" type="text/javascript"></script>
@@ -85,6 +86,7 @@ if($rol_emp != ""){
     $rol = $rol_emp;
     $gustos = "TU ESPECIALIDAD";
     $escoge_gusto = "Cuales son tus especialidades";
+    $fotos_sitio = "Ya casi terminas, sube las fotos del sitio";
     $index = "fotos_sitio.php";
 }
 
@@ -92,7 +94,7 @@ if($rol_cli != ""){
     $rol = $rol_cli;
     $gustos = "TUS GUSTOS";
     $escoge_gusto = "Cuales son tus gustos";
-    $index = "gestion_pedido.php";
+    $index = "main.php";
 }
 
 //condicionales para unificar variables de correo
@@ -103,7 +105,7 @@ if($correo != ""){
 if($mail_face != ""){
     $mail = $mail_face;
 }
-
+$id_usuario = 0;
 if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
 
 
@@ -215,11 +217,9 @@ if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
 
         }
 
-        echo "<script> alert('Registrado correctamente');
-						window.location.assign('$index');</script>";
+
     } else {
-        echo "<script> alert('Usuario ya existe');
-						window.location.assign('../../app/src/logueo.html');</script>";
+
     }
 }
 
@@ -265,7 +265,51 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
 
 
 ?>
-<body class=" login">
+
+<script>
+    function alertaUsuarioCreado()
+    {
+        var id_usu=<?echo $id_usuario?>;
+        if(id_usu >=1)
+        {
+            swal({
+                    title:"Registro exitoso",
+                    text: "<? echo $fotos_sitio;?>",
+                    type: "success",
+                    showCancelButton: false,
+                    confirmButtonClass: "btn-success",
+                    confirmButtonText: "Aceptar",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        swal("", "En un momento sera dirigido a la pagina.", "success");
+                        location.href="<?echo $index?>";
+                    }
+                });
+        }
+        else if(id_usu == 0)
+        {
+            swal({
+                    title:"Usuario ya existe",
+                    type: "warning",
+                    showCancelButton: false,
+                    confirmButtonClass: "btn-warning",
+                    confirmButtonText: "Aceptar",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        swal("", "Verifique sus datos y vuelva a intentarlo.", "success");
+                        location.href="selec_reg.php";
+                    }
+                });
+        }
+    }
+</script>
+<body class=" login" onload="alertaUsuarioCreado()">
 <div class="content" style="padding-bottom: 0 !important; padding-top: 5px !important; padding-left: 20px !important; padding-right: 20px !important;">
     <!-- BEGIN LOGIN FORM -->
     <div class="portlet light " id="form_wizard_1" style="box-shadow: none !important; margin-bottom: 0 !important; ">
@@ -304,10 +348,6 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                             <div class="progress-bar progress-bar-success"> </div>
                         </div>
                         <div class="tab-content">
-                            <div class="alert alert-danger display-none">
-                                <button class="close" data-dismiss="alert"></button> You have some form errors. Please check below. </div>
-                            <div class="alert alert-success display-none">
-                                <button class="close" data-dismiss="alert"></button> Your form validation is successful! </div>
                             <div class="tab-pane active" id="tab1">
 
                                 <div class="row">
@@ -643,6 +683,8 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
 <script src="../assets/layouts/layout2/scripts/demo.min.js" type="text/javascript"></script>
 <script src="../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
 <script src="../assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
+<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
+<script src="../assets/pages/scripts/ui-sweetalert.min.js" type="text/javascript"></script>
 <!-- END THEME LAYOUT SCRIPTS -->
 <script>
     $(document).ready(function()
