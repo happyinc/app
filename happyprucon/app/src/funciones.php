@@ -223,4 +223,20 @@ function nombre_producto($id_producto)
     }
     return $cuenta;
 }
+
+
+function nombre_categoria($id_categoria)
+{
+    $objComent = new PDOModel();
+    $objComent->where("id", $id_categoria);
+    $objComent->columns = array("descripcion");
+    $cuentaTotal = $objComent->select("categoria");
+    foreach ($cuentaTotal as $cuentaTot) {
+
+        $cuenta = $cuentaTot["descripcion"];
+    }
+    return $cuenta;
+}
+
+
 ?>

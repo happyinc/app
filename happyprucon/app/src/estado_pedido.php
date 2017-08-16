@@ -298,8 +298,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <a href="disponibilidad_emprendedor.php"><input  name="navegar" type="button" class="btn btn-circle red" id="navegar" value="Seguir navegando" /></a>
                                                 <input type="hidden" id="formulario" name="formulario" value="estado_pedido"/>
                                             </div>
-                                            <div class="col-md-4">
-                                        </div>
+                                            <div class="col-md-4"></div>
                                     </div>
                                     
                                 </form>

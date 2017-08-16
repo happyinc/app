@@ -102,24 +102,27 @@ License: You must have a valid license purchased only from themeforest(the above
             $query_todos = $query_todos."AND (A.nombre LIKE '%$buscar%' OR A.descripcion LIKE '%$buscar%')";
 
         }
-    
-    
-   // $consulta = $objConn->executeQuery("SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin AND (A.nombre LIKE '%$buscar%' OR A.descripcion LIKE '%$buscar%');");
 
     if(isset($_POST["formulario"]) && $_POST["formulario"] == "fbuscar")
     {
-
 
         if(isset($_POST["categoria"]) && $_POST["categoria"] != "")
         {
             $query_todos = $query_todos." AND A.id_categoria = '".$_POST["categoria"]."' ";
         }
 
-         if(isset($_POST["emprendedor"]) && $_POST["emprendedor"] != "")
+        if(isset($_POST["emprendedor"]) && $_POST["emprendedor"] != "")
         {
             $query_todos = $query_todos." AND A.id_usuario = '".$_POST["emprendedor"]."' ";
         }
-    
+
+         if(isset($_POST["precio"]) && $_POST["precio"] != "")
+        {
+            $techo = $_POST["precio"]+2000;
+
+            $query_todos = $query_todos." AND A.precio BETWEEN '".$_POST["precio"]."' AND '".$techo."'  ";
+        }
+
     }
 
     ?>
@@ -256,34 +259,36 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     $precio_max = $item["precio"];
                                                 }
                                             }
+                                            $contador++;
                                         }
 
                                     ?>
                                     <p>Seleccione el filtro de busqueda.</p>
 
                                         <div class="form-group">
-                                            <label for="categoria" class="control-label">categoria</label>
-                                            <select id="categoria" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="categoria" onchange="">
-                                                <option></option>
+                                            <label for="categoria" class="control-label col-md-3">categoria</label>
+                                            
+                                            <select id="categoria" class="form-control col-md-9" style="width: 250px;" tabindex="-1" aria-hidden="true" name="categoria" ">
+                                                <option value= "" disabled selected>Seleccione la categoria</option>
                                                     <?
                                                     foreach ($categoria_f as $key => $value) {
                                                         ?>
-                                                        <option value="<? echo $key ?>"><? echo "$key - $value Productos"?></option>
+                                                        <option value="<? echo $key ?>"><? echo nombre_categoria($key) . "- $value Productos"?></option>
                                                         <?
                                                     }
                                                     ?>
                                              </select>
-                                             
+                                            
                                         </div>
 
                                          <div class="form-group">
-                                            <label for="emprendedor" class="control-label">emprendedor</label>
-                                            <select id="emprendedor" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="emprendedor" onchange="">
-                                                <option></option>
+                                            <label for="emprendedor" class="control-label col-md-3">emprendedor</label>
+                                            <select id="emprendedor" class="form-control col-md-9" style="width: 250px;" tabindex="-1" aria-hidden="true" name="emprendedor">
+                                                 <option value= "" disabled selected>Seleccione la categoria</option>
                                                      <?
                                                     foreach ($asociado_f as $key => $value) {
                                                         ?>
-                                                        <option value="<? echo $key ?>"><? echo "$key - $value Productos"?></option>
+                                                        <option value="<? echo $key?>"><? echo  nombre_usuario($key) . "- $value Productos"?></option>
                                                         <?
                                                     }
                                                     ?>
@@ -291,16 +296,16 @@ License: You must have a valid license purchased only from themeforest(the above
                                         </div>
 
                                          <div class="form-group">
-                                            <label for="precio" class="control-label">precio</label>
-                                            <select id="precio" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="precio" onchange="">
-                                                <option></option>
-                                                    <?/*
+                                            <label for="precio" class="control-label col-md-3">precio</label>
+                                            <select id="precio" class="form-control col-md-9" style="width: 250px;" tabindex="-1" aria-hidden="true" name="precio" >
+                                                <option value= "" disabled selected>Seleccione el precio</option>
+                                                    <?
                                                     $i=0;
-                                                    for ($i=$precio_min; $i>= $precio_max; $i=$i+2000) {
+                                                    for ($i=$precio_min; $i<= $precio_max; $i=$i+2000) {
                                                         ?>
-                                                        <option value="<? echo $i ?>"><? echo $i?></option>
+                                                        <option value="<? echo $i ?>"><? echo "$".number_format($i,0)." - $".number_format($i+2000,0)?></option>
                                                         <?
-                                                    }*/
+                                                    }
                                                     ?>
                                                     
                                              </select>
@@ -315,26 +320,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                 
                                 <input type="hidden" id="formulario" name="formulario" value="fbuscar"/>
                                 <input type="hidden" name="buscar" id="buscar" value="<? echo $buscar ?>">
-                                <!--<input type="hidden" id="emprendedor" name="emprendedor" value="buscarf"/>
-                                <input type="hidden" id="categoria" name="categoria" value="buscarf"-->
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close <? echo $buscar ?></button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                               </div>
                             </div>
                                 </form>
                           </div>
                         </div>
 
-                        <?
-                            echo "la categoria es:"."".$_POST["categoria"]."</br>";
-                            echo "el emprendedor es:"."".$_POST["emprendedor"]."</br>";
-                            echo "el precio es:"."".$_POST["precio"];
-                        ?>
-
                         <div class="form-group form-md-line-input">
                             <?
-                            //echo $query_todos;
+
                             $result =  $objConn->executeQuery($query_todos);
                             foreach ($result as $item ) 
                             {
@@ -413,9 +410,6 @@ include "include_js.php";
  <script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
 
  <script src="../assets/pages/scripts/components-select2.min.js" type="text/javascript"></script>
-
-
-
 
 </body>
 
