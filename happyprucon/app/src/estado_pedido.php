@@ -280,7 +280,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <div class="col-lg-4"></div>
                                             <div class="col-md-4">
                                                 <label class="control-label">Estado: </label>
-                                                <?
+                                                <?php
                                                     $objEst = new PDOModel();
                                                     $objEst->where("id",  $pedido[0]['id_estado']);
                                                     $estado =  $objEst->select("estado");
