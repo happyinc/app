@@ -85,29 +85,6 @@ $objSe = new Sessions();
 </ul>
 </nav>
 
-<!--add-->
-<div class="add_place none" id="pl">
-<div class="place_form">
-<i class="fa fa-times close_window" id="close"></i>
-<h3>Add new place<span></span></h3>
-<form>
-<label>Place name:<input type="text"></label>
-<label>latitude:<input type="text"></label>
-<label>longitude:<input type="text"></label>
-<label>Categori:
-<select>
-<option value="Cafe">Cafe</option>
-<option value="Bar">Bar</option>
-<option value="Cinema">Cinema</option>
-<option value="Shop">Shop</option>
-<option value="Club">Club</option>
-<option value="Bank">Bank</option>
-</select>
-</label>
-<a href="#" class="green_btn_header" id="add">Add</a>
-</form>
-</div>
-</div>
 
 <!--autorization-->
 <div class="add_place none" id="autorized">
@@ -129,12 +106,7 @@ $objSe = new Sessions();
 <!--Header-->
 <div class="container-fluid header inner_head">
 
-<div class="fixed_w">
-<div class="row">
-<div class="col-md-12"><a href="index.html" class="logo"><img src="../../externo/geo/img/logoin.png" alt="Mycity"/></a>
-<input type="text" class="search" placeholder="search"><a href="#" class="green_btn_header" id="ad">Add place</a></div>
-</div>
-</div>
+
 </div>
 
 <!--categori menu-->
@@ -180,19 +152,6 @@ $objSe = new Sessions();
 <script src="../../externo/geo/js/bootstrap.min.js"></script>
 <!--Map js-->
 <script type="text/javascript">
-    (function(A) {
-
-        if (!Array.prototype.forEach)
-            A.forEach = A.forEach || function(action, that) {
-                    for (var i = 0, l = this.length; i < l; i++)
-                        if (i in this)
-                            action.call(that, this[i], i, this);
-                };
-
-    })(Array.prototype);
-
-
-
 
     var
         mapObject,
@@ -224,7 +183,7 @@ $objSe = new Sessions();
     function initialize (a,b) {
 
     var mapOptions = {
-        zoom: 15,
+        zoom: 16,
         center: new google.maps.LatLng(a, b),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
 
@@ -304,7 +263,7 @@ $objSe = new Sessions();
         return new InfoBox({
             content:
             '<div class="marker_info none" id="marker_info">' +
-            '<div class="info" id="info" style="height: 220px !important;">'+
+            '<div class="info" id="info">'+
             '<img src="' + item.map_image_url + '" class="logotype" alt=""/>' +
             '<h2>'+ item.name_point +'<span></span></h2>' +
             '<span>'+ item.description_point +'</span>' +
