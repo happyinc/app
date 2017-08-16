@@ -102,24 +102,25 @@ License: You must have a valid license purchased only from themeforest(the above
             $query_todos = $query_todos."AND (A.nombre LIKE '%$buscar%' OR A.descripcion LIKE '%$buscar%')";
 
         }
-    
-    
-   // $consulta = $objConn->executeQuery("SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin AND (A.nombre LIKE '%$buscar%' OR A.descripcion LIKE '%$buscar%');");
 
     if(isset($_POST["formulario"]) && $_POST["formulario"] == "fbuscar")
     {
-
 
         if(isset($_POST["categoria"]) && $_POST["categoria"] != "")
         {
             $query_todos = $query_todos." AND A.id_categoria = '".$_POST["categoria"]."' ";
         }
 
-         if(isset($_POST["emprendedor"]) && $_POST["emprendedor"] != "")
+        if(isset($_POST["emprendedor"]) && $_POST["emprendedor"] != "")
         {
             $query_todos = $query_todos." AND A.id_usuario = '".$_POST["emprendedor"]."' ";
         }
-    
+
+         if(isset($_POST["precio"]) && $_POST["precio"] != "")
+        {
+            $query_todos = $query_todos." AND A.precio = '".$_POST["precio"]."' ";
+        }
+
     }
 
     ?>
@@ -268,7 +269,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <?
                                                     foreach ($categoria_f as $key => $value) {
                                                         ?>
-                                                        <option value="<? echo $key ?>"><? echo "$key - $value Productos"?></option>
+                                                        <option value="<? echo $key ?>"><? echo nombre_categoria($key) . "- $value Productos"?></option>
                                                         <?
                                                     }
                                                     ?>
@@ -283,7 +284,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                      <?
                                                     foreach ($asociado_f as $key => $value) {
                                                         ?>
-                                                        <option value="<? echo $key ?>"><? echo "$key - $value Productos"?></option>
+                                                        <option value="<? echo $key?>"><? echo  nombre_usuario($key) . "- $value Productos"?></option>
                                                         <?
                                                     }
                                                     ?>
@@ -315,26 +316,17 @@ License: You must have a valid license purchased only from themeforest(the above
                                 
                                 <input type="hidden" id="formulario" name="formulario" value="fbuscar"/>
                                 <input type="hidden" name="buscar" id="buscar" value="<? echo $buscar ?>">
-                                <!--<input type="hidden" id="emprendedor" name="emprendedor" value="buscarf"/>
-                                <input type="hidden" id="categoria" name="categoria" value="buscarf"-->
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close <? echo $buscar ?></button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                               </div>
                             </div>
                                 </form>
                           </div>
                         </div>
 
-                        <?
-                            echo "la categoria es:"."".$_POST["categoria"]."</br>";
-                            echo "el emprendedor es:"."".$_POST["emprendedor"]."</br>";
-                            echo "el precio es:"."".$_POST["precio"];
-                        ?>
-
                         <div class="form-group form-md-line-input">
                             <?
-                            //echo $query_todos;
                             $result =  $objConn->executeQuery($query_todos);
                             foreach ($result as $item ) 
                             {
