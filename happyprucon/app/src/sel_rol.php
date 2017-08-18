@@ -73,19 +73,19 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
 	?>
-    <body class=" login">
+    <body class=" login" style="background-color: #21f97c !important;">
         <!-- BEGIN LOGIN -->
-        <div class="content centrado-porcentual">
-			<div align="center" style="padding-bottom: 50px;"><a href="logueo.html">
-                    <img src="../../externo/img/logo-default.png" width="230px" alt="" /> </a>
-                </div>
-            <!-- BEGIN LOGIN FORM -->
+        <div class="content" style="background-image: url('../../externo/img/rol.jpg'); background-size: cover; height: 100% !important; background-repeat: no-repeat;">
+			<!-- BEGIN LOGIN FORM -->
             <form class="login-form" action="terms_cond.php" method="post">
+                <div style=""></div>
+                <div style="margin-top: 80px;">
+                    <h3><p class="bold" style="color: white; margin-top: 250px;">¿COMO <br> QUIERES SER PARTE DE HAPPY HAPPY?</p></h3>
+                </div>
                <div class="row" style="padding-bottom: 10px;">
-                        
                         <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
 						<input type="hidden" name="cliente" id="cliente" value="3"/>
-						<button type="submit"  class="btn btn-circle red-flamingo btn-block bold" style="padding:40px;"> CLIENTE </button>
+						<button type="submit"  class="btn btn-block btn-social btn-circle purple-studio bold" style="text-align: center; background-color: #5F059E; padding: 10px; font-size: 13px; margin-top: 30px;"> CLIENTE </button>
 						</div>
 					
 				</div>
@@ -96,7 +96,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         
 						<div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
 						<input type="hidden" name="emprende" id="emprende" value="2" />
-						<button type="submit"  class="btn btn-circle purple-studio btn-block bold" style="padding:40px;"> EMPRENDEDOR </button>
+						<button type="submit"  class="btn btn-circle purple-studio btn-block bold" style="text-align: center; background-color: transparent; color: #5F059E; padding: 10px; font-size: 13px; margin-bottom: 20px;"> EMPRENDEDOR </button>
 						</div>
 					
 					

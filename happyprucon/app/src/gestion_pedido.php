@@ -247,7 +247,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <div class="portlet-title">
                             <div class="caption">
                                 <i class="icon-microphone font-dark hide"></i>
-                                <span class="caption-subject bold font-dark uppercase"> HAPPY FOOD </span>
+                                <span class="caption-subject bold font-dark uppercase"> GESTION PEDIDOS</span>
                             </div>
                         </div>
                             <div class="portlet-body">

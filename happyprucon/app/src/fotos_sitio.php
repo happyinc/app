@@ -6,8 +6,15 @@ include '../class/sessions.php';
 $objSe = new Sessions();
 $objSe->init();
 
+session_start();
+
 $usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
 $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+
+if($rol == "" && isset($_GET["roles"]) && $_GET["roles"] != "")
+{
+    $rol = $_GET["roles"];
+}
 ?>
 <!DOCTYPE html>
 <!--
@@ -59,10 +66,12 @@ License: You must have a valid license purchased only from themeforest(the above
 
 </head>
 <!-- END HEAD -->
-<body class=" login">
+<body class=" login" style="background-color: white !important;">
 <!-- BEGIN LOGIN -->
 <div class="content centrado-porcentual">
     <!-- BEGIN LOGIN FORM -->
+
+    <? print_r($_SESSION);?>
     <form role="form" enctype="multipart/form-data" class="form-horizontal">
         <div class="form-body">
             <div class="form-group">

@@ -79,6 +79,15 @@ $objSe->set('emprende',$rol_emp);
 $rol_cli = $_POST['cliente'];
 $objSe->set('cliente',$rol_cli);
 
+if(isset($_POST['cliente']) && $_POST['cliente'] != "")
+{
+    $rol = 3;
+}
+else if(isset($_POST['emprende']) && $_POST['emprende'] != "")
+{
+    $rol = 2;
+}
+
 if($rol_emp == 2){
 
     $objConn = new PDOModel();
@@ -104,7 +113,7 @@ if($rol_emp == 2){
 
 
 ?>
-<body class=" login">
+<body class=" login" style="background-color: white !important;">
 <!-- BEGIN LOGIN -->
 <div class="content centrado-porcentual">
     <div align="center" style="padding-bottom: 40px;"><a href="logueo.html">
@@ -122,7 +131,8 @@ if($rol_emp == 2){
             <div class="col-lg-3 col-md-3 col-xs-3" style="margin-bottom: 10px"></div>
             <div class="col-lg-6 col-md-6 col-xs-6" style="margin-bottom: 10px">
                 <input type="hidden" name="acepta" id="acepta" value="<?php echo $id_termino; ?>"/>
-                <button type="submit"  class="btn btn-circle red-flamingo btn-block bold" > Aceptar </button>
+                <input type="hidden" name="rol" id="rol" value="<?php echo $rol; ?>"/>
+                <button type="submit"  class="btn btn-circle purple-studio btn-block bold" style="background-color: #5F059E;"> Aceptar </button>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-3" style="margin-bottom: 10px"></div>
         </div>
@@ -133,7 +143,7 @@ if($rol_emp == 2){
             <div class="col-lg-3 col-md-3 col-xs-3" style="margin-bottom: 10px"></div>
             <div class="col-lg-6 col-md-6 col-xs-6" style="margin-bottom: 10px">
                 <input type="hidden" name="cancela" id="cancela" value="0" />
-                <button type="submit"  class="btn btn-circle purple-studio btn-block bold" > Cancelar </button>
+                <button type="submit"  class="btn btn-circle red-flamingo btn-block bold" style="background: transparent; color: red;"> Cancelar </button>
             </div>
             <div class="col-lg-3 col-md-3 col-xs-3" style="margin-bottom: 10px"></div>
 

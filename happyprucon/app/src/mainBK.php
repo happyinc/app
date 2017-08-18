@@ -1,5 +1,5 @@
 <?php
-//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE);
 require_once'../../externo/plugins/PDOModel.php';
 include '../class/sessions.php';
 
@@ -66,42 +66,21 @@ $objSe = new Sessions();
 
     <?php
 
+    $categoria = "";
+    $fecha=date("Y-m-d H:i:s");
+    $objConn = new PDOModel();
+    $query_todos = "SELECT A.*, B.*, C.*  FROM producto A, producto_disponibilidad B, disponibilidad C WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1 and B.id_disponibilidad= C.id and '".$fecha."' between C.fecha_inicio and C.fecha_fin ";
+    foreach ($query_todos as $productos) {
+        $categoria["".$productos["id_categoria"].""][] = $productos["id"];
+    }
+
     $bienes = "";
     $objCat = new PDOModel();
-    $resulta = $objCat->executeQuery("SELECT id_bienes, id FROM categoria WHERE id_estado = '1'");
-    foreach ($resulta as $item) {
+    $result = $objCat->executeQuery("SELECT A.id_estado, A.nombre, B.id_estado, B.id_bienes, B.id count(*) as tipobien FROM bienes as A, categoria as B WHERE A.id_estado = '1' and A.id = B.id_bienes and B.id_estado = '1' group by B.id_bienes");
+    foreach ($result as $item) {
 
         $bienes["".$item['id_bienes'].""][] = $item['id'];
     }
-
-
-    $contador = 0;
-    $todos = "";
-    $fecha=date("Y-m-d H:i:s");
-    $objConn = new PDOModel();
-    $query_todos = "SELECT A.*, B.*  FROM producto A, producto_disponibilidad B WHERE B.id_producto = A.id AND B.cantidad_disponible > 0 and B.id_estado = 1  ";
-    $result =  $objConn->executeQuery($query_todos);
-    foreach ($result as $productos ) {
-
-
-        foreach ($bienes as $clave => $valor)
-        {
-            $bien = $clave;
-            foreach ($valor as $cl => $vr)
-            {
-                if($productos["id_categoria"] == $vr)
-                {
-                    $todos[$contador]["id_bienes"] = $bien;
-                }
-            }
-        }
-        $todos[$contador]["id_usuario"] = $productos["id_usuario"];
-        $todos[$contador]["id_categoria"] = $productos["id_categoria"];
-
-        $contador++;
-    }
-
-
     ?>
 </head>
 <body onload="initialize(a,b)" class="inmap innerpage">
@@ -212,46 +191,32 @@ $objSe = new Sessions();
         mapObject,
         markers = [],
         markersData = {
-            <?
-            foreach ($todos as $cl => $vr)
-            {
-                $valor = $vr["id_bienes"];
-                if($valor == 1)
-                {
-                    ?>'Cafe':<?
-                }
+                        <?
+                        $objCat = new PDOModel();
+                        $result = $objCat->executeQuery("SELECT A.id_estado, A.nombre, B.id_estado, B.id_bienes, count(*) as tipobien FROM bienes as A, categoria as B WHERE A.id_estado = '1' and A.id = B.id_bienes and B.id_estado = '1' group by B.id_bienes");
+                        foreach ($result as $item) {
 
-                if($valor == 2)
-                {
-                    ?>'Club':<?
-                }
+                        }
+                        ?>
+            'Cafe':
+                [
+                    <?
+                    $objConn = new PDOModel();
+                    $objConn->where("id_roles",2);
+                    $res_usu =  $objConn->select("usuarios");
+                    foreach ($res_usu as $ubica)
+                    {
+                        ?>
+                        {
+                            name: 'Cronulla Beach',location_latitude: <? echo $ubica['latitud'] ?>,location_longitude:  <? echo $ubica['longitud'] ?>,map_image_url: 'usuarios/<?echo$ubica['id'];?>/perfil/mid_perfil.jpg',name_point: '<? echo $ubica['nombre']; ?>',
+                            description_point:"<? calificacion_usuario($ubica['id']); ?>",
+                            url_point: 'disponibilidad_emprendedor.php?id_usuario=<? echo $ubica['id']; ?>'
+                        },
+                        <?
+                    }
+                    ?>
 
-                if($valor == 3)
-                {
-                    ?>'Port':<?
-                }
-                ?>
-                        [
-                            <?
-                            $ubicacion = ubicacion_usuario($vr["id_usuario"]);
-
-                            $temp_ubicacion = explode("|",$ubicacion);
-                            $latitud = $temp_ubicacion[0];
-                            $longitud = $temp_ubicacion[1];
-                            ?>
-                            {
-                                name: 'Cronulla Beach',location_latitude: <? echo $latitud ?>,location_longitude:  <? echo $longitud ?>,map_image_url: 'usuarios/<?echo $vr["id_usuario"];?>/perfil/mid_perfil.jpg',name_point: '<? echo nombre_usuario($vr["id_usuario"]); ?>',
-                                description_point:"<? calificacion_usuario($vr["id_usuario"]); ?>",
-                                url_point: 'disponibilidad_emprendedor.php?id_usuario=<? echo $vr["id_usuario"]; ?>'
-                            },
-                            <?
-
-                            ?>
-
-                        ],
-                <?
-            }
-            ?>
+                ],
 
         };
 
@@ -342,9 +307,9 @@ $objSe = new Sessions();
             '<div class="marker_info none" id="marker_info">' +
             '<div class="info" id="info">'+
             '<img src="' + item.map_image_url + '" class="logotype" alt=""/>' +
-            '<h2><small style="color: white;"><b>'+ item.name_point +'<span></span></b></small></h2>' +
+            '<h2>'+ item.name_point +'<span></span></h2>' +
             '<span>'+ item.description_point +'</span>' +
-            '<a href="'+ item.url_point + '" class="green_btn" style="bottom: 15px !important; "><b>DISPONIBILIDAD</b></a>' +
+            '<a href="'+ item.url_point + '" class="green_btn" style="padding-left: 40px !important; bottom: 15px !important; "><b>DISPONIBILIDAD</b></a>' +
             '<span class="arrow"></span>' +
             '</div>' +
             '</div>',

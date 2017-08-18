@@ -62,254 +62,304 @@ License: You must have a valid license purchased only from themeforest(the above
     <link rel="shortcut icon" href="favicon.ico" />
     <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAOTpZg3Uhl0AItmrXORFIsGfJQNJiLHGg" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
-</head>
-<!-- END HEAD -->
-<?php
-$acep_terms = $_POST['acepta'];
 
-$objSe->init();
-//variables recibidas para registro facebook
-$user_face = isset($_SESSION['nom-face']) ? $_SESSION['nom-face'] : null ;
-$ape_face = isset($_SESSION['ape-face']) ? $_SESSION['ape-face'] : null ;
-$mail_face = isset($_SESSION['mail']) ? $_SESSION['mail'] : null ;
+    <?php
+    $acep_terms = $_POST['acepta'];
 
-//variables de sesion para accounkit
-$cell = $_SESSION['phone']['national_number'];
+    $objSe->init();
+    //variables recibidas para registro facebook
+    $user_face = isset($_SESSION['nom-face']) ? $_SESSION['nom-face'] : null ;
+    $ape_face = isset($_SESSION['ape-face']) ? $_SESSION['ape-face'] : null ;
+    $mail_face = isset($_SESSION['mail']) ? $_SESSION['mail'] : null ;
 
-$correo = $_SESSION['email']['address'];
+    //variables de sesion para accounkit
+    $cell = $_SESSION['phone']['national_number'];
 
-$rol_emp = isset($_SESSION['emprende']) ? $_SESSION['emprende'] : null ;
-$rol_cli = isset($_SESSION['cliente']) ? $_SESSION['cliente'] : null ;
+    $correo = $_SESSION['email']['address'];
 
-//variables recibidas del rol escogido
-if($rol_emp != ""){
-    $rol = $rol_emp;
-    $gustos = "TU ESPECIALIDAD";
-    $escoge_gusto = "Cuales son tus especialidades";
-    $fotos_sitio = "Ya casi terminas, sube las fotos del sitio";
-    $index = "fotos_sitio.php";
-}
-
-if($rol_cli != ""){
-    $rol = $rol_cli;
-    $gustos = "TUS GUSTOS";
-    $escoge_gusto = "Cuales son tus gustos";
-    $index = "main.php";
-}
-
-//condicionales para unificar variables de correo
-if($correo != ""){
-    $mail = $correo;
-}
-
-if($mail_face != ""){
-    $mail = $mail_face;
-}
-$id_usuario = 0;
-if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
-
-
-    $objConn = new PDOModel();
-    $insertUserData["id_doc"] = $_POST['tipodoc'];
-    $insertUserData["id_termino"] = $_POST['acep-terms'];
-    $insertUserData["id_estado"] = 1;
-    $insertUserData["id_roles"] = $_POST['roles'];
-    $insertUserData["nombre_completo"] = $_POST['fullname'] . " " . $_POST['lastname'];
-    $insertUserData["nombre"] = $_POST['fullname'];
-    $insertUserData["apellido"] = $_POST['lastname'];
-    $insertUserData["genero"] = $_POST['genero'];
-    $insertUserData["telefono"] = $_POST['cell'];
-    $insertUserData["correo"] = $_POST['username'];
-    $insertUserData["password"] = md5($_POST['password']);
-    $insertUserData["numero_doc"] = $_POST['cedula'];
-    $insertUserData["direccion"] = $_POST['direccion'];
-    $insertUserData["latitud"] = $_POST['latitud'];
-    $insertUserData["longitud"] = $_POST['longitu'];
-    $insertUserData["meta"] = $_POST['meta'];
-    $objConn->insert("usuarios", $insertUserData);
-    $id_usuario = $objConn->lastInsertId;
-
-    $insertSe["id_usuario"] = $id_usuario;
-    $insertSe["origen"] = "W";
-    $insertSe["f_login"] = date("Y-m-d H:i:s");
-    $insertSe["estado"] = "A";
-    $insertSe["ip"] = $_SERVER['REMOTE_ADDR'];
-    $objConn->insert("sesion", $insertSe);
-    $ultima_sesion = $objConn->lastInsertId;
-
-    if ($id_usuario != "") {
-
-        $objConn->where("id",$id_usuario);
-        $res_usu =  $objConn->select("usuarios");
-
-        $objSe->init();
-        $objSe->set('sesion_activa',$ultima_sesion);
-        $objSe->set('id_usuario', $res_usu[0]['id']);
-        $objSe->set('id_roles', $res_usu[0]['id_roles']);
-        $objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
-        $objSe->set('nombre', $res_usu[0]['nombre']);
-        $objSe->set('apellido', $res_usu[0]['apellido']);
-        $objSe->set('genero', $res_usu[0]['genero']);
-        $objSe->set('telefono', $res_usu[0]['telefono']);
-        $objSe->set('correo', $res_usu[0]['correo']);
-        $objSe->set('suenos', $res_usu[0]['meta']);
-        $objSe->set('origen',$_POST['form_login']);
-
-
-        //Recorre el array para insertar los datos en la tabla de gustos
-        $bienes = $_POST["categoria"];
-
-        foreach ($bienes  as $clave => $valor){
-            $id_catagoria = $valor;
-            $objConn = new PDOModel();
-            $insertUserGusto["id_usuario"] = $id_usuario;
-            $insertUserGusto["id_categoria"] = $id_catagoria;
-            $insertUserGusto["id_estado"] = 1;
-            $objConn->insert("gustos", $insertUserGusto);
+    if(isset($_POST["rol"]) && $_POST["rol"] != "")
+    {
+        if($_POST["rol"] == 3)
+        {
+            $rol_emp = "";
+            $rol_cli = 3;
         }
+        else if($_POST["rol"] == 2)
+        {
+            $rol_emp = 2;
+            $rol_cli = "";
+        }
+    }
+
+
+    if(isset($_POST["roles"]) && $_POST["roles"] != "")
+    {
+        if($_POST["roles"] == 3)
+        {
+            $rol_emp = "";
+            $rol_cli = 3;
+        }
+        else if($_POST["roles"] == 2)
+        {
+            $rol_emp = 2;
+            $rol_cli = "";
+        }
+    }
+
+
+    //variables recibidas del rol escogido
+    if($rol_emp != ""){
+        $rol = $rol_emp;
+        $gustos = "TU ESPECIALIDAD";
+        $escoge_gusto = "Cuales son tus especialidades";
+        $fotos_sitio = "Ya casi terminas, sube las fotos del sitio";
+        $index = "fotos_sitio.php";
+    }
+
+    if($rol_cli != ""){
+        $rol = $rol_cli;
+        $gustos = "TUS GUSTOS";
+        $escoge_gusto = "Cuales son tus gustos";
+        $index = "main.php";
+    }
+
+    //condicionales para unificar variables de correo
+    if($correo != ""){
+        $mail = $correo;
+    }
+
+    if($mail_face != ""){
+        $mail = $mail_face;
+    }
+    $id_usuario = "";
+    if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
 
         $objConn = new PDOModel();
-        $insertVigenciAcepta["id_usuario"] = $id_usuario;
-        $insertVigenciAcepta["termino_condicion_id"] = $_POST['acep-terms'];
-        $insertVigenciAcepta["rol_id"] = $_POST['roles'];
-        $objConn->insert("vigencias_aceptadas", $insertVigenciAcepta);
+        $query_todos = "select count(*) as validador from  usuarios where correo = '".$_POST['username']."'";
+        $result =  $objConn->executeQuery($query_todos);
 
-        if ($_FILES['foto']["size"] >= 1) {
-            // Primero, hay que validar que se trata de un JPG/GIF/PNG
-            $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
-            $extension = end(explode(".", $_FILES["foto"]["name"]));
-            if ((($_FILES["foto"]["type"] == "image/gif")
-                    || ($_FILES["foto"]["type"] == "image/jpeg")
-                    || ($_FILES["foto"]["type"] == "image/png")
-                    || ($_FILES["foto"]["type"] == "image/gif")
-                    || ($_FILES["foto"]["type"] == "image/bmp"))
-                && in_array($extension, $allowedExts)) {
-                // el archivo es un JPG/GIF/PNG, entonces...
+        $objConn = new PDOModel();
+        $insertUserData["id_doc"] = $_POST['tipodoc'];
+        $insertUserData["id_termino"] = $_POST['acep-terms'];
+        $insertUserData["id_estado"] = 1;
+        $insertUserData["id_roles"] = $_POST['roles'];
+        $insertUserData["nombre_completo"] = $_POST['fullname'] . " " . $_POST['lastname'];
+        $insertUserData["nombre"] = $_POST['fullname'];
+        $insertUserData["apellido"] = $_POST['lastname'];
+        $insertUserData["genero"] = $_POST['genero'];
+        $insertUserData["telefono"] = $_POST['cell'];
+        $insertUserData["correo"] = $_POST['username'];
+        $insertUserData["password"] = md5($_POST['password']);
+        $insertUserData["numero_doc"] = $_POST['cedula'];
+        $insertUserData["direccion"] = $_POST['direccion'];
+        $insertUserData["latitud"] = $_POST['latitud'];
+        $insertUserData["longitud"] = $_POST['longitu'];
+        $insertUserData["meta"] = $_POST['meta'];
+        $objConn->insert("usuarios", $insertUserData);
+        $id_usuario = $objConn->lastInsertId;
 
-                $extension = end(explode('.', $_FILES['foto']['name']));
-                $foto = "perfil". "." . $extension;
-                $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
-                if (file_exists($directorio)) {
+        $insertSe["id_usuario"] = $id_usuario;
+        $insertSe["origen"] = "W";
+        $insertSe["f_login"] = date("Y-m-d H:i:s");
+        $insertSe["estado"] = "A";
+        $insertSe["ip"] = $_SERVER['REMOTE_ADDR'];
+        $objConn->insert("sesion", $insertSe);
+        $ultima_sesion = $objConn->lastInsertId;
 
-                } else {
-                    mkdir($directorio, 0777, true);
-                }
+        if ($id_usuario != "") {
 
-                // almacenar imagen en el servidor
-                move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
-                $minFoto = 'min_' . $foto;
-                $midFoto = 'mid_' . $foto;
-                $resFoto = 'res_' . $foto;
-                resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
-                resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
-                resizeImagen($directorio . '/', $foto, 600, 600, $resFoto, $extension);
-                unlink($directorio . '/' . $foto);
+            $objConn->where("id",$id_usuario);
+            $res_usu =  $objConn->select("usuarios");
 
-            } else { // El archivo no es JPG/GIF/PNG
-                $malformato = $_FILES["foto"]["type"];
-                ?>
-                <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto")</script>
-                <?
-                //header("Location: crear_producto.php?id=echo $usu_id");
+            /*
+            $objSe->init();
+            $objSe->set('sesion_activa',$ultima_sesion);
+            $objSe->set('id_usuario', $res_usu[0]['id']);
+            $objSe->set('id_roles', $res_usu[0]['id_roles']);
+            $objSe->set('nombre_completo', $res_usu[0]['nombre_completo']);
+            $objSe->set('nombre', $res_usu[0]['nombre']);
+            $objSe->set('apellido', $res_usu[0]['apellido']);
+            $objSe->set('genero', $res_usu[0]['genero']);
+            $objSe->set('telefono', $res_usu[0]['telefono']);
+            $objSe->set('correo', $res_usu[0]['correo']);
+            $objSe->set('suenos', $res_usu[0]['meta']);
+            $objSe->set('origen',$_POST['form_login']);
+            */
+            session_start();
+
+            $_SESSION["sesion_activa"] = $ultima_sesion;
+            $_SESSION["id_usuario"] = $res_usu[0]['id'];
+            $_SESSION["id_roles"] = $res_usu[0]['id_roles'];
+            $_SESSION["nombre_completo"] = $res_usu[0]['nombre_completo'];
+            $_SESSION["nombre"] = $res_usu[0]['nombre'];
+            $_SESSION["apellido"] = $res_usu[0]['apellido'];
+            $_SESSION["genero"] = $res_usu[0]['genero'];
+            $_SESSION["telefono"] = $res_usu[0]['telefono'];
+            $_SESSION["correo"] = $res_usu[0]['correo'];
+            $_SESSION["suenos"] = $res_usu[0]['meta'];
+            $_SESSION["origen"] = $_POST['form_login'];
+
+            //Recorre el array para insertar los datos en la tabla de gustos
+            $bienes = $_POST["categoria"];
+
+            foreach ($bienes  as $clave => $valor){
+                $id_catagoria = $valor;
+                $objConn = new PDOModel();
+                $insertUserGusto["id_usuario"] = $id_usuario;
+                $insertUserGusto["id_categoria"] = $id_catagoria;
+                $insertUserGusto["id_estado"] = 1;
+                $objConn->insert("gustos", $insertUserGusto);
             }
 
-        } else { // El campo foto NO contiene una imagen
+            $objConn = new PDOModel();
+            $insertVigenciAcepta["id_usuario"] = $id_usuario;
+            $insertVigenciAcepta["termino_condicion_id"] = $_POST['acep-terms'];
+            $insertVigenciAcepta["rol_id"] = $_POST['roles'];
+            $objConn->insert("vigencias_aceptadas", $insertVigenciAcepta);
 
-        }
+            if ($_FILES['foto']["size"] >= 1) {
+                // Primero, hay que validar que se trata de un JPG/GIF/PNG
+                $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
+                $extension = end(explode(".", $_FILES["foto"]["name"]));
+                if ((($_FILES["foto"]["type"] == "image/gif")
+                        || ($_FILES["foto"]["type"] == "image/jpeg")
+                        || ($_FILES["foto"]["type"] == "image/png")
+                        || ($_FILES["foto"]["type"] == "image/gif")
+                        || ($_FILES["foto"]["type"] == "image/bmp"))
+                    && in_array($extension, $allowedExts)) {
+                    // el archivo es un JPG/GIF/PNG, entonces...
 
+                    $extension = end(explode('.', $_FILES['foto']['name']));
+                    $foto = "perfil". "." . $extension;
+                    $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
+                    if (file_exists($directorio)) {
 
-    } else {
-
-    }
-}
-
-function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
-    $rutaImagenOriginal = $ruta.$nombre;
-    if($extension == 'GIF' || $extension == 'gif'){
-        $img_original = imagecreatefromgif($rutaImagenOriginal);
-    }
-    if($extension == 'jpg' || $extension == 'JPG'){
-        $img_original = imagecreatefromjpeg($rutaImagenOriginal);
-    }
-    if($extension == 'png' || $extension == 'PNG'){
-        $img_original = imagecreatefrompng($rutaImagenOriginal);
-    }
-    if($extension == 'bmp' || $extension == 'BMP'){
-        $img_original = imagecreatefrombmp($rutaImagenOriginal);
-    }
-    if($extension == 'jpeg' || $extension == 'JPEG'){
-        $img_original = imagecreatefromjpeg($rutaImagenOriginal);
-    }
-    $max_ancho = $ancho;
-    $max_alto = $alto;
-    list($ancho,$alto)=getimagesize($rutaImagenOriginal);
-    $x_ratio = $max_ancho / $ancho;
-    $y_ratio = $max_alto / $alto;
-    if( ($ancho <= $max_ancho) && ($alto <= $max_alto) ){//Si ancho
-        $ancho_final = $ancho;
-        $alto_final = $alto;
-    } elseif (($x_ratio * $alto) < $max_alto){
-        $alto_final = ceil($x_ratio * $alto);
-        $ancho_final = $max_ancho;
-    } else{
-        $ancho_final = ceil($y_ratio * $ancho);
-        $alto_final = $max_alto;
-    }
-    $tmp=imagecreatetruecolor($ancho_final,$alto_final);
-    imagecopyresampled($tmp,$img_original,0,0,0,0,$ancho_final, $alto_final,$ancho,$alto);
-    imagedestroy($img_original);
-    $calidad=70;
-    imagejpeg($tmp,$ruta.$nombreN,$calidad);
-
-}
-
-
-?>
-
-<script>
-    function alertaUsuarioCreado()
-    {
-        var id_usu=<?echo $id_usuario?>;
-        if(id_usu >=1)
-        {
-            swal({
-                    title:"Registro exitoso",
-                    text: "<? echo $fotos_sitio;?>",
-                    type: "success",
-                    showCancelButton: false,
-                    confirmButtonClass: "btn-success",
-                    confirmButtonText: "Aceptar",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function(isConfirm) {
-                    if (isConfirm) {
-                        swal("", "En un momento sera dirigido a la pagina.", "success");
-                        location.href="<?echo $index?>";
+                    } else {
+                        mkdir($directorio, 0777, true);
                     }
-                });
-        }
-        else if(id_usu == 0)
-        {
-            swal({
-                    title:"Usuario ya existe",
-                    type: "warning",
-                    showCancelButton: false,
-                    confirmButtonClass: "btn-warning",
-                    confirmButtonText: "Aceptar",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function(isConfirm) {
-                    if (isConfirm) {
-                        swal("", "Verifique sus datos y vuelva a intentarlo.", "success");
-                        location.href="selec_reg.php";
-                    }
-                });
+
+                    // almacenar imagen en el servidor
+                    move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
+                    $minFoto = 'min_' . $foto;
+                    $midFoto = 'mid_' . $foto;
+                    $resFoto = 'res_' . $foto;
+                    resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
+                    resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
+                    resizeImagen($directorio . '/', $foto, 600, 600, $resFoto, $extension);
+                    unlink($directorio . '/' . $foto);
+
+                } else { // El archivo no es JPG/GIF/PNG
+                    $malformato = $_FILES["foto"]["type"];
+                    ?>
+                    <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto <? echo $index?>")</script>
+                    <?
+                    //header("Location: crear_producto.php?id=echo $usu_id");
+                }
+
+            } else { // El campo foto NO contiene una imagen
+
+            }
+
+            if(isset($_POST["roles"]) && $_POST["roles"] != "")
+            {
+                if($_POST["roles"] == 3)
+                {
+                    $objSe->set('id_roles',3);
+                }
+                else if($_POST["roles"] == 2)
+                {
+                    $objSe->set('id_roles',2);
+                }
+            }
+            ?><script> location.href ="<?echo $index."?roles=".$_POST["roles"]?>";</script><?
+
+        } else {
+
         }
     }
-</script>
-<body class=" login" onload="alertaUsuarioCreado()">
+
+    function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
+        $rutaImagenOriginal = $ruta.$nombre;
+        if($extension == 'GIF' || $extension == 'gif'){
+            $img_original = imagecreatefromgif($rutaImagenOriginal);
+        }
+        if($extension == 'jpg' || $extension == 'JPG'){
+            $img_original = imagecreatefromjpeg($rutaImagenOriginal);
+        }
+        if($extension == 'png' || $extension == 'PNG'){
+            $img_original = imagecreatefrompng($rutaImagenOriginal);
+        }
+        if($extension == 'bmp' || $extension == 'BMP'){
+            $img_original = imagecreatefrombmp($rutaImagenOriginal);
+        }
+        if($extension == 'jpeg' || $extension == 'JPEG'){
+            $img_original = imagecreatefromjpeg($rutaImagenOriginal);
+        }
+        $max_ancho = $ancho;
+        $max_alto = $alto;
+        list($ancho,$alto)=getimagesize($rutaImagenOriginal);
+        $x_ratio = $max_ancho / $ancho;
+        $y_ratio = $max_alto / $alto;
+        if( ($ancho <= $max_ancho) && ($alto <= $max_alto) ){//Si ancho
+            $ancho_final = $ancho;
+            $alto_final = $alto;
+        } elseif (($x_ratio * $alto) < $max_alto){
+            $alto_final = ceil($x_ratio * $alto);
+            $ancho_final = $max_ancho;
+        } else{
+            $ancho_final = ceil($y_ratio * $ancho);
+            $alto_final = $max_alto;
+        }
+        $tmp=imagecreatetruecolor($ancho_final,$alto_final);
+        imagecopyresampled($tmp,$img_original,0,0,0,0,$ancho_final, $alto_final,$ancho,$alto);
+        imagedestroy($img_original);
+        $calidad=70;
+        imagejpeg($tmp,$ruta.$nombreN,$calidad);
+
+    }
+
+
+    ?>
+    <script>
+
+        function validar()
+        {
+
+            var acceso = 0;
+            if (document.registro_user.username.value == "")
+            {
+                document.registro_user.username.focus();
+                swal("USUARIO OBLIGATORIO","Debe Completar Los Campos", "error");
+                return false;
+            }
+            else
+            {
+                acceso = 1;
+            }
+
+
+
+            if (acceso === 1)
+            {
+                //document.form1.pass.value = hex_md5(document.form1.pass.value);
+                document.registro_user.x.value = "Registrando...";
+                document.registro_user.x.disabled=true;
+                document.registro_user.submit();
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+    </script>
+</head>
+<!-- END HEAD -->
+
+
+
+<body class=" login" style="background-color: white !important;">
 <div class="content" style="padding-bottom: 0 !important; padding-top: 5px !important; padding-left: 20px !important; padding-right: 20px !important;">
     <!-- BEGIN LOGIN FORM -->
     <div class="portlet light " id="form_wizard_1" style="box-shadow: none !important; margin-bottom: 0 !important; ">
@@ -320,7 +370,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
         <div class="portlet-body form">
             <form role="form" class="form-horizontal" action="registro_user.php" name="registro_user" id="registro_user" enctype="multipart/form-data" method="POST">
                 <div class="form-wizard">
-                    <div class="form-body">
+                    <div class="form-body" style="padding: 0 !important;">
                         <ul class="nav nav-pills nav-justified steps" hidden>
                             <li>
                                 <a href="#tab1" data-toggle="tab" class="step">
@@ -372,7 +422,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group form-md-line-input has-info" style="margin-top: 20px;">
+                                <!--<div class="form-group form-md-line-input has-info" style="margin-top: 20px;">
                                     <label class="control-label"></label>
                                     <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
@@ -381,32 +431,36 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                         <select name="tipodoc" id="tipodoc" class="form-control">
                                             <option></option >
                                             <?php
-                                            $objDoc = new PDOModel();
+                                            /*$objDoc = new PDOModel();
                                             $objDoc->where("id_estado", 1);
                                             $objDoc->orderByCols = array("descripcion");
                                             $result =  $objDoc->select("tipos_doc");
                                             foreach($result as $item){
                                                 ?><option value="<?php echo $item["id"]?>"><?php echo $item["descripcion"]?></option><?php
-                                            }
+                                            }*/
                                             ?>
                                         </select>
                                     </div>
+                                </div>-->
+                                <!--Campos escondidos para la cedula-->
+                                <input type="hidden" name="tipodoc" id="tipodoc" value="1">
+                                <input type="hidden" name="cedula" id="cedula" value="1">
+                            <!--<div class="form-group form-md-line-input has-info">
+                                <div class="input-group left-addon">
+                                                    <span class="required input-group-addon">
+                                                    <i class="fa fa-cc"></i>
+                                                    </span>
+                                    <input type="number" class="form-control" name="cedula" id="cedula" placeholder="Identificación" />
+                                    <span class="help-block"></span>
                                 </div>
-
-                                <div class="form-group form-md-line-input has-info">
-                                    <div class="input-group left-addon">
-                                                        <span class="required input-group-addon">
-                                                        <i class="fa fa-cc"></i>
-                                                        </span>
-                                        <input type="number" class="form-control" name="cedula" id="cedula" placeholder="Identificación" />
-                                        <span class="help-block"></span>
-                                    </div>
-                                </div>
+                            </div>-->
                                 <input type="hidden" id="form_login" name="form_login" value="W">
                                 <!--Campos escondidos de rol y aceptacion de terminos-->
                                 <input class="form-control placeholder-no-fix" type="hidden" name="roles" value="<?php echo $rol; ?>"/>
                                 <input class="form-control placeholder-no-fix" type="hidden" name="acep-terms" value="<?php echo $acep_terms; ?>"/>
+                                <div class="form-group form-md-line-input has-info">
 
+                                </div>
                                 <div class="form-group form-md-line-input has-info">
                                     <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
@@ -428,6 +482,15 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                 <div class="form-group form-md-line-input has-info">
                                     <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
+                                                        <i class="fa fa-envelope"></i>
+                                                        </span>
+                                        <input type="email" class="form-control" name="username" value="<?php echo $mail; ?>" placeholder="Correo electrónico" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
+                                                        <span class="required input-group-addon">
                                                         <i class="fa fa-tablet"></i>
                                                         </span>
                                         <input type="number" class="form-control" name="cell" id="cell" value="<?php echo $cell; ?>" placeholder="Celular"/>
@@ -435,14 +498,6 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                     </div>
                                 </div>
 
-                                <div class="form-group form-md-line-input has-info">
-                                    <div class="input-group left-addon">
-                                                        <span class="required input-group-addon">
-                                                        <i class="fa fa-envelope"></i>
-                                                        </span>
-                                        <input type="email" class="form-control" name="username" value="<?php echo $mail; ?>" placeholder="Correo electrónico" />
-                                    </div>
-                                </div>
                                 <div class="form-group form-md-line-input has-info">
                                     <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
@@ -457,7 +512,7 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-line-chart"></i>
                                                         </span>
-                                        <textarea class="form-control" name="meta" id="meta" rows="5" placeholder="Sueños"></textarea>
+                                        <textarea class="form-control" name="meta" id="meta" placeholder="Lo que quieres"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -587,26 +642,15 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-flag"></i>
                                                         </span>
-                                        <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
-                                        <!-- Campo escondido que toma valor de ciudad -->
-                                        <input type="hidden" name="resciu" id="resciu" >
-                                    </div>
-                                </div>
-
-                                <div class="form-group form-md-line-input has-info">
-                                    <div class="input-group left-addon">
-                                                        <span class="required input-group-addon">
-                                                        <i class="fa fa-home"></i>
-                                                        </span>
-                                        <select name="tipodom" id="tipodom" class="form-control">
-                                            <option value="">Tipo vivienda</option>
-                                            <option value="1">Apartamento</option>
-                                            <option value="2">Casa</option>
-                                            <option value="3">Oficina</option>
+                                        <!-- <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
+                                        Campo escondido que toma valor de ciudad -->
+                                        <input name="ciudad" id="ciudad" type="hidden" value="Cali - Valle del Cauca, Colombia"/>
+                                        <select name="resciu" id="resciu" class="form-control">
+                                            <option value=""></option>
+                                            <option value="Cali - Valle del Cauca, Colombia">Santiago de Cali</option>
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="form-group form-md-line-input has-info">
                                     <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
@@ -622,22 +666,38 @@ function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){
                                     <div><input type="hidden" id="latitud" name="latitud"/></div>
                                     <div><input type="hidden" id="longitu" name="longitu"/></div>
                                 </div>
+                                <div class="form-group form-md-line-input has-info">
+                                    <div class="input-group left-addon">
+                                                        <span class="required input-group-addon">
+                                                        <i class="fa fa-home"></i>
+                                                        </span>
+                                        <select name="tipodom" id="tipodom" class="form-control">
+                                            <option value="">Tipo vivienda</option>
+                                            <option value="1">Apartamento</option>
+                                            <option value="2">Casa</option>
+                                            <option value="3">Oficina</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+
                             </div>
                         </div>
                     </div>
+                    <hr>
                     <div class="form-actions" style="border-bottom: 0 !important;">
-                        <div class="row">
-                            <div class="col-md-offset-3 col-md-9">
-                                <a href="javascript:;" class="btn default button-previous">
-                                    <i class="fa fa-angle-left"></i> Atras </a>
-                                <a href="javascript:;" class="btn btn-outline green button-next"> Siguiente
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
-                                <button type="submit" class="btn green button-submit" id="formulario" name="formulario" value="Registrar"> Registrar
+                        <div class="row" align="center">
+                                <input type="hidden" name="formulario" id="formulario" value="Registrar">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><a href="javascript:;" class="button-previous" style="text-decoration: none; color: grey"> Atras </a></div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><a href="javascript:;" class="button-next" style="text-decoration: none; color: grey"> Siguiente </a>
+                                <button type="submit" class="btn green button-submit" id="x" name="x" value="Registrar" onclick="javascript: validar();"> Registrar
                                     <i class="fa fa-check"></i>
-                                </button>
+                                </button></div>
 
-                            </div>
+
                         </div>
                     </div>
                 </div>

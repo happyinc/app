@@ -105,6 +105,21 @@ function nombre_usuario($id_usuario)
     return $nombre;
 }
 
+
+// funcion que trae la ubicacion del asociado
+function ubicacion_usuario($id_usuario)
+{
+    $ubicacion = "";
+    $objusu = new PDOModel();
+    $objusu->where("id", $id_usuario);
+    $usuario = $objusu->select("usuarios");
+    foreach ($usuario as $datos) {
+        $ubicacion = $datos["latitud"]."|".$datos["longitud"];
+    }
+    return $ubicacion;
+}
+
+
 /// calcula el promedio del emprendedor
 
 /// solo trae el valor numerico de la calificacion del emprendedor
@@ -237,6 +252,7 @@ function nombre_categoria($id_categoria)
     }
     return $cuenta;
 }
+
 
 
 ?>

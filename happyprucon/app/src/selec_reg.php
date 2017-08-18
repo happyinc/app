@@ -57,9 +57,9 @@ License: You must have a valid license purchased only from themeforest(the above
 		</head>
     <!-- END HEAD -->
 	
-    <body class=" login">
+    <body class=" login" style="background-color: white !important;">
         <!-- BEGIN LOGIN -->
-        <div class="content centrado-porcentual">
+        <div class="content centrado-porcentual" style="padding: 0 !important;">
 			<div align="center" style="padding-bottom: 10px"><a href="logueo.html">
                     <img src="../../externo/img/logo-default.png" width="230px" alt="" /> </a>
                 </div>
@@ -80,10 +80,10 @@ License: You must have a valid license purchased only from themeforest(the above
                     <input type="hidden" name="ape-face" id="ape-face">
                     <input type="hidden" name="mail" id="mail">
                     <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px;">
-                        <a href="sel_rol.php" class="btn btn-block btn-social btn-circle green-jungle" style="text-align: center" ><span class="fa fa-list"></span> REGISTRO MANUAL </a>
+                        <a href="sel_rol.php" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center; background-color: #5F059E; padding: 10px;" ><span class="fa fa-list"></span> REGISTRO MANUAL </a>
                     </div>
                     <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px; margin-top: 20px;">
-                        <a href="#" type="submit" id="login" class="btn btn-block btn-social  btn-circle blue-steel" style="text-align: center" ><span class="fa fa-facebook"></span> REGISTRATE CON FACEBOOK </a>
+                        <a href="#" type="submit" id="login" class="btn btn-block btn-social  btn-circle purple-studio" style="text-align: center; background-color: #5F059E; padding: 10px; " ><span class="fa fa-facebook"></span> REGISTRO CON FACEBOOK </a>
                     </div>
                     <script>
                         (function(d, s, id){
@@ -102,10 +102,10 @@ License: You must have a valid license purchased only from themeforest(the above
 
                 <div class="social-icons">
                     <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
-                        <button onclick="loginWithEmail();" class="btn btn-block btn-social btn-circle red-mint" style="text-align: center" ><span class="fa fa-envelope"></span> REGISTRATE CON TU CORREO </button>
+                        <button onclick="loginWithEmail();" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center; background-color: #5F059E; padding: 10px;" ><span class="fa fa-envelope"></span> REGISTRO CON CORREO </button>
                     </div>
                     <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
-                        <button onclick="loginWithSMS();" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center" ><span class="fa fa-tablet"></span> REGISTRATE CON TU CELULAR </button>
+                        <button onclick="loginWithSMS();" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center; background-color: #5F059E; padding: 10px;" ><span class="fa fa-tablet"></span> REGISTRO CON CELULAR </button>
                     </div>
                     <form id="accountkit_form" name="accountkit_form" action="../class/fb_api_response.php" method="POST" style="display: none;">
                         <input type="text" id="form_login_kit" name="form_login_kit" value="W">
