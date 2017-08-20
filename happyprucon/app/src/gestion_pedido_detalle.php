@@ -21,12 +21,12 @@
                 $fullname = $usuarios["fullname"] ;                                                        
         }
 
-        if($rol!=2){
+       /* if($rol!=2){
 
     echo "<script> alert('Usuario no autorizado');
         window.location.assign('logueo.html');</script>";
 
-}
+}*/
             
 ?>
 <!DOCTYPE html>
@@ -89,6 +89,8 @@ License: You must have a valid license purchased only from themeforest(the above
         $result1="";
         $objConn = new PDOModel();
 
+
+
         if($id_producto !="")
         {
             $result1 = $objConn->executeQuery("SELECT C.* FROM (SELECT A.id, A.id_usuario,A.id_zona, A.id_estado,A.id_producto,A.id_ubicacion_cliente,A.fecha,A.precio,A.forma_adquisicion,A.cantidad,A.comision,A.cxp, B.id_categoria,B.nombre,B.descripcion  FROM pedido A, producto B WHERE B.id_usuario = '".$id_usuario."' AND B.id = A.id_producto AND A.id_estado = 7 ) C WHERE C.id_producto = '".$id_producto."';");
@@ -136,7 +138,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 {
                     ?>
                         <script type="text/javascript">alert("No se pudo actualizar el pedido")
-                        window.history.back();
+                        //window.history.back();
                         </script>
                     <?
                 }
@@ -166,7 +168,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 {
                     ?>
                         <script type="text/javascript">alert("No se pudo actualizar el pedido")
-                        window.history.back();
+                        //window.history.back();
                         </script>
                     <?
                 }
@@ -195,7 +197,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 function(isConfirm) {
                     if (isConfirm) {
                         swal("", "", "success");
-                        location.href="gestion_pedido_detalle.php?id_usuario=<? echo $id_usuario ?>";
+                        location.href="gestion_pedido.php";
                     } 
                 });
                     
@@ -431,10 +433,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         //echo "<pre>"; print_r($GLOBALS); echo "</pre>";
                                      ?>
                             </div>
-                                     
-                                    ?>
-                                   
-                                </div>
+                         </div>
 
                         </div>
                     </div>

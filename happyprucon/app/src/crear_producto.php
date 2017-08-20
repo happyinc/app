@@ -1,5 +1,5 @@
 <?php
-	//error_reporting(E_ERROR | E_WARNING | E_PARSE);
+	error_reporting(E_ERROR | E_WARNING | E_PARSE);
 	require_once'../../externo/plugins/PDOModel.php';
 	require'../class/sessions.php';
 	$id_usuario = "";
@@ -20,12 +20,7 @@
 		        $rol = $usuarios["id_roles"] ;
 		        $fullname = $usuarios["fullname"] ;                                                        
 		}
-	if($rol!=2){
 
-    echo "<script> alert('Usuario no autorizado');
-        window.location.assign('logueo.html');</script>";
-
-}
 			
 ?>
 <!DOCTYPE html>
@@ -555,6 +550,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <div class="col-md-offset-3 col-md-9">
 											<button type="submit" class="btn btn-circle purple" name="guardar" id="guardar" value="guardar"> Crear producto </button>
 											<input type="hidden" id="formulario" name="formulario" value="crear_producto"/>
+											<input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
 										</div>
 									</div>
 								</div>

@@ -107,7 +107,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 $objConn->insert('disponibilidad', $insertData);
 
                 $id_disponibilidad= $objConn->lastInsertId;
-                //print_r($objConn->error);
+                print_r($objConn->error);
 
                 if($id_disponibilidad!= "")
                 {

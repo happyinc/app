@@ -10,7 +10,7 @@
         }
         elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
         {
-             $usuid_usuario_id = $_GET["id_usuario"];
+             $id_usuario = $_GET["id_usuario"];
         }
 		$objUbicacion = new PDOModel();
 		$objUbicacion->where("id", $id_usuario);
@@ -659,6 +659,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                             ?>
 
                                                             <!-- END: Comments -->
+															<input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
                                                         </div>
                                                     </div>
 

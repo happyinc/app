@@ -10,10 +10,7 @@
     $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
 
 
-    if($rol!=3){
-        echo "<script> alert('Usuario no autorizado');
-                        window.location.assign('logueo.html');</script>";
-    }   
+  
 ?>  
 <!DOCTYPE html>
 <!-- 
