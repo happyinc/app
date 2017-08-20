@@ -2,6 +2,8 @@
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
     require_once'../../externo/plugins/PDOModel.php';
     require'../class/sessions.php';
+    $objSe = new Sessions();
+    $objSe->init();
     $id_usuario = "";
     
         if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
@@ -138,7 +140,6 @@ License: You must have a valid license purchased only from themeforest(the above
                 {
                     ?>
                         <script type="text/javascript">alert("No se pudo actualizar el pedido")
-                        //window.history.back();
                         </script>
                     <?
                 }
@@ -168,7 +169,6 @@ License: You must have a valid license purchased only from themeforest(the above
                 {
                     ?>
                         <script type="text/javascript">alert("No se pudo actualizar el pedido")
-                        //window.history.back();
                         </script>
                     <?
                 }
@@ -179,25 +179,26 @@ License: You must have a valid license purchased only from themeforest(the above
         ?>
         <script type="text/javascript">
         
-            function alertaPedido(id) 
+            function alertaPedido(id,tipo) 
             {
                 
                 var id = id;
+                var tipo = tipo;
                 swal({
-                        title:"Pedido con el id:" + id +"ha sido gestionado",
+                        title:"Desea "+ tipo + " el Pedido con el id:" + id +"?",
                         text: "",
                         type: "success",
-                        showCancelButton: false,
+                        showCancelButton: true,
                         confirmButtonClass: "btn-success",
-                        confirmButtonText: "Pedido actualizado!",
+                        confirmButtonText: "Si, Deseo Gestionar!",
                         cancelButtonText: "No",
                         closeOnConfirm: false,
-                        closeOnCancel: false
+                        closeOnCancel: true
                 },
                 function(isConfirm) {
                     if (isConfirm) {
                         swal("", "", "success");
-                        location.href="gestion_pedido.php";
+                        location.href="gestion_pedido.php?id_pedido="+id+"&tipo="+tipo;
                     } 
                 });
                     
@@ -358,8 +359,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                     foreach($result1 as $item)
                                         {
                                         ?>
-                                            <form role="form" class="form-horizontal" name="gestion_pedido_detalle<?echo $i?>"  id="gestion_pedido_detalle<?echo $i?>" action="gestion_pedido_detalle.php" enctype="multipart/form-data" method="post">
-                                                <div class="form-group form-md-line-input">
+                                            
+                                                <div class="row">
                                                     <div class="col-lg-4"></div>
                                                     <div class="col-md-4 well well-lg">
                                                         <div class="col-md-3" align="center">
@@ -398,22 +399,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                     if($item['forma_adquisicion']== 1)
                                                                     {
                                                                         ?>
-                                                                            <input class="btn  btn-circle purple" name="despachar" type="submit" id="despachar" value="Despachar" onclick="alertaPedido(<? echo $item['id'] ?>)">
-                                                                            <input type="hidden" id="id_pedido" name="id_pedido" value="<? echo $item['id'] ?>" />
-                                                                            <input type="hidden" id="forma_ad" name="forma_ad" value="<? echo $item['forma_adquisicion'] ?>" />
-                                                                            <input type="hidden" id="formulario" name="formulario" value="gestion_pedido_detalle"/>
-                                                                             
-                                                                                
+                                                                            <input class="btn  btn-circle purple" name="despachar" type="button" id="despachar" value="Despachar" onclick="alertaPedido(<? echo $item['id'] ?>, 'despachar')">
                                                                              
                                                                         <?
                                                                     }
                                                                     else if ($item['forma_adquisicion']== 2 || $item['forma_adquisicion']== 3 )
                                                                     {
                                                                         ?>
-                                                                            <input class="btn  btn-circle purple" name="entregar" type="submit" id="entregar" value="Entregar" onclick="alertaPedido(<? echo $item['id'] ?>)">
-                                                                            <input type="hidden" id="id_pedido" name="id_pedido" value="<? echo $item['id'] ?>" />
-                                                                            <input type="hidden" id="forma_ad" name="forma_ad" value="<? echo $item['forma_adquisicion'] ?>" />
-                                                                            <input type="hidden" id="formulario" name="formulario" value="gestion_pedido_detalle"/>
+                                                                            <input class="btn  btn-circle purple" name="entregar" type="button" id="entregar" value="Entregar" onclick="alertaPedido(<? echo $item['id'] ?>, 'entregar')">
                                                                            
                                                                                 
                                                                         <?
@@ -425,12 +418,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                                     <div class="col-lg-4"></div>
                                                 </div> 
                                                 <input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
-                                            </form>
+                                            
                                         <?
                                             $i++;
                                         }
-
-                                        //echo "<pre>"; print_r($GLOBALS); echo "</pre>";
                                      ?>
                             </div>
                          </div>

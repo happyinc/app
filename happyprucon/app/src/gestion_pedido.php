@@ -36,7 +36,92 @@ License: You must have a valid license purchased only from themeforest(the above
     <head><?php
         include "include_css.php";
         include "funciones.php";
-        ?> </head>
+        $objConn = new PDOModel();
+
+        $id_pedido = "";
+        if(isset($_POST["id_pedido"]) && $_POST["id_pedido"] != "")
+        {
+            $id_pedido = $_POST["id_pedido"];
+        }
+        else if(isset($_GET["id_pedido"]) && $_GET["id_pedido"] != "")
+        {
+            $id_pedido = $_GET["id_pedido"];
+        }
+        //manejo de la fecha para hacer el insert en la tabla detalle pedido
+        $fecha = date("Y-m-d H:i:s");
+        $fecha1 = explode(" ", $fecha);
+        $fecha_act=$fecha1[0];
+        $hora=$fecha1[1];
+        
+
+        if($id_pedido != "" && isset($_GET["tipo"]) && $_GET["tipo"] != "")
+        {
+            
+            if($_GET["tipo"] == "despachar" )
+            {
+
+                $updateData["id_estado"] = 8; 
+                $objConn->where("id",   $id_pedido);
+                $objConn->update('pedido', $updateData);
+
+
+
+                
+                $pedido_actualizado= $objConn->rowsChanged;
+
+                if($pedido_actualizado == 1)
+                {
+                    //insert en la tabla detalle_pedido
+                    $insertDet["id_pedido"] = $id_pedido;
+                    $insertDet["id_estado"] = 8;
+                    $insertDet["fecha"] = $fecha_act; 
+                    $insertDet["hora"] = $hora; 
+                    $objConn->insert('detalle_pedido', $insertDet);
+
+                    $id_pedido_detalle= $objConn->lastInsertId;
+                }
+                else 
+                {
+                    ?>
+                        <script type="text/javascript">alert("No se pudo actualizar el pedido")
+                        </script>
+                    <?
+                }
+            }
+            else if($_GET["tipo"] == "entregar" )
+            {
+
+                $updateData["id_estado"] = 9; 
+                $objConn->where("id", $id_pedido);
+                $objConn->update('pedido', $updateData);
+
+                $pedido_actualizado= $objConn->rowsChanged;
+                if($pedido_actualizado == 1)
+                {
+                    //insert en la tabla detalle_pedido
+                    $insertDet["id_pedido"] =  $id_pedido;
+                    $insertDet["id_estado"] = 9;
+                    $insertDet["fecha"] = $fecha_act; 
+                    $insertDet["hora"] = $hora; 
+                    $objConn->insert('detalle_pedido', $insertDet);
+
+                     $id_pedido_detalle= $objConn->lastInsertId;
+                }
+                else 
+                {
+                    ?>
+                        <script type="text/javascript">alert("No se pudo actualizar el pedido")
+                        </script>
+                    <?
+                }
+
+            }
+        }   
+
+        ?> 
+
+
+        </head>
     <!-- END HEAD -->
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">

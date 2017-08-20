@@ -12,22 +12,22 @@
         {
              $id_usuario = $_GET["id_usuario"];
         }
+
+
 		$objUbicacion = new PDOModel();
 		$objUbicacion->where("id", $id_usuario);
 		$res_usuarios =  $objUbicacion->select("usuarios");
 		foreach ($res_usuarios as $usuarios)
 		{
 		        $rol = $usuarios["rol"] ;
-		        $fullname = $usuarios["fullname"] ;                                                        
+		        $fullname = $usuarios["fullname"] ; 
+		        $id_usuario =$usuarios["id"] ;                                                     
 		}
-	/*if($rol!=2){
-
-    echo "<script> alert('Usuario no autorizado');
-        window.location.assign('logueo.html');</script>";
-
-}	*/	
+	
 		
-?>	
+?>
+
+
 
 <!DOCTYPE html>
 <!-- 
@@ -215,20 +215,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		}		
 		
 
-		if(isset($_GET["eliminar"]) && $_GET["eliminar"] == 1)
-			{
-				$objConn = new PDOModel();
-				$updateData["id_estado"] = 2;
-				$objConn->where("id", $id_producto);
-				$objConn->update('producto', $updateData);
-
-				$producto_eliminado= $objConn->rowsChanged;
-				if($producto_eliminado < 1){
-					?>
-						<script type="text/javascript">location.href="gestion_producto.php?id_usuario=<? echo $id_usuario ?>";</script>
-					<?
-				}
-			}  
+		  
 		####
 		## Función para redimencionar las imágenes
 		## utilizando las librerías de GD de PHP
@@ -321,14 +308,14 @@ License: You must have a valid license purchased only from themeforest(the above
 						{
 							if (isConfirm) {
 								swal("Ir", "El producto ha sido eliminado", "success");
-								location.href="editar_producto.php?id_producto="+<? echo $id_producto?>+"&eliminar=1";
+								location.href="gestion_producto.php?id_usuario="+<? echo $id_usuario?>+"&eliminar=<? echo $id_producto?>";
 							
 							} else {
 								swal("Cancelar","se cancelo la eliminacion del producto");
-								location.href="gestion_producto.php?id_usuario=<? echo $id_usuario ?>"
+								location.href="editar_producto.php?id_usuario=<? echo $id_usuario?>"+"&id_producto=<? echo $id_producto?>"
 							}
 						});
-		  	}	
+		  	}
 		</script>
 
 
@@ -610,7 +597,7 @@ License: You must have a valid license purchased only from themeforest(the above
 									<div class="form-actions">
                                         <div class="col-md-offset-3 col-md-9">
 										
-											<input class="btn  btn-circle purple" name="editar" type="submit" id="editar" value="Editar">
+											<input class="btn  btn-circle purple" name="editar" type="submit" id="editar" value="Actualizar">
 											<input class="btn btn-circle red" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick=" eliminarProducto();">
 											<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
 											<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
@@ -662,7 +649,7 @@ License: You must have a valid license purchased only from themeforest(the above
 															<input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
                                                         </div>
                                                     </div>
-
+													<? //echo "<pre>";print_r($GLOBALS);echo "</pre>";?>
                                                 </div>
                                             </div>
                                         </div>
