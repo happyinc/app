@@ -131,42 +131,52 @@ License: You must have a valid license purchased only from themeforest(the above
     if($mail_face != ""){
         $mail = $mail_face;
     }
+
     $id_usuario = "";
     if(isset($_POST["formulario"]) && $_POST["formulario"] == "Registrar" ) {
 
+
         $objConn = new PDOModel();
-        $query_todos = "select count(*) as validador from  usuarios where correo = '".$_POST['username']."'";
+        $query_todos = "select count(*) as validador from  usuarios where correo = '".$_POST['username']."' or telefono = '".$_POST['cell']."' ";
         $result =  $objConn->executeQuery($query_todos);
+        $validador = $result[0]["validador"];
 
-        $objConn = new PDOModel();
-        $insertUserData["id_doc"] = $_POST['tipodoc'];
-        $insertUserData["id_termino"] = $_POST['acep-terms'];
-        $insertUserData["id_estado"] = 1;
-        $insertUserData["id_roles"] = $_POST['roles'];
-        $insertUserData["nombre_completo"] = $_POST['fullname'] . " " . $_POST['lastname'];
-        $insertUserData["nombre"] = $_POST['fullname'];
-        $insertUserData["apellido"] = $_POST['lastname'];
-        $insertUserData["genero"] = $_POST['genero'];
-        $insertUserData["telefono"] = $_POST['cell'];
-        $insertUserData["correo"] = $_POST['username'];
-        $insertUserData["password"] = md5($_POST['password']);
-        $insertUserData["numero_doc"] = $_POST['cedula'];
-        $insertUserData["direccion"] = $_POST['direccion'];
-        $insertUserData["latitud"] = $_POST['latitud'];
-        $insertUserData["longitud"] = $_POST['longitu'];
-        $insertUserData["meta"] = $_POST['meta'];
-        $objConn->insert("usuarios", $insertUserData);
-        $id_usuario = $objConn->lastInsertId;
+        if($validador >= 1)
+        {
+            ?><script>alert("ERROR: El usuario con el Mail() y/o Telefono() Ya existe en la base datos")</script><?
+        }
+        else{
+            $objConn = new PDOModel();
+            $insertUserData["id_doc"] = $_POST['tipodoc'];
+            $insertUserData["id_termino"] = $_POST['acep-terms'];
+            $insertUserData["id_estado"] = 1;
+            $insertUserData["id_roles"] = $_POST['roles'];
+            $insertUserData["nombre_completo"] = $_POST['fullname'] . " " . $_POST['lastname'];
+            $insertUserData["nombre"] = $_POST['fullname'];
+            $insertUserData["apellido"] = $_POST['lastname'];
+            $insertUserData["genero"] = $_POST['genero'];
+            $insertUserData["telefono"] = $_POST['cell'];
+            $insertUserData["correo"] = $_POST['username'];
+            $insertUserData["password"] = md5($_POST['password']);
+            $insertUserData["numero_doc"] = $_POST['cedula'];
+            $insertUserData["direccion"] = $_POST['direccion'];
+            $insertUserData["latitud"] = $_POST['latitud'];
+            $insertUserData["longitud"] = $_POST['longitu'];
+            $insertUserData["fecha"] = "".date("Y-m-d H:i:s")."";
+            $insertUserData["meta"] = $_POST['meta'];
+            $objConn->insert("usuarios", $insertUserData);
 
-        $insertSe["id_usuario"] = $id_usuario;
-        $insertSe["origen"] = "W";
-        $insertSe["f_login"] = date("Y-m-d H:i:s");
-        $insertSe["estado"] = "A";
-        $insertSe["ip"] = $_SERVER['REMOTE_ADDR'];
-        $objConn->insert("sesion", $insertSe);
-        $ultima_sesion = $objConn->lastInsertId;
+            $id_usuario = $objConn->lastInsertId;
 
-        if ($id_usuario != "") {
+            $insertSe["id_usuario"] = $id_usuario;
+            $insertSe["origen"] = "W";
+            $insertSe["f_login"] = date("Y-m-d H:i:s");
+            $insertSe["estado"] = "A";
+            $insertSe["ip"] = $_SERVER['REMOTE_ADDR'];
+            $objConn->insert("sesion", $insertSe);
+            $ultima_sesion = $objConn->lastInsertId;
+
+            if ($id_usuario != "") {
 
             $objConn->where("id",$id_usuario);
             $res_usu =  $objConn->select("usuarios");
@@ -218,64 +228,66 @@ License: You must have a valid license purchased only from themeforest(the above
             $objConn->insert("vigencias_aceptadas", $insertVigenciAcepta);
 
             if ($_FILES['foto']["size"] >= 1) {
-                // Primero, hay que validar que se trata de un JPG/GIF/PNG
-                $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
-                $extension = end(explode(".", $_FILES["foto"]["name"]));
-                if ((($_FILES["foto"]["type"] == "image/gif")
-                        || ($_FILES["foto"]["type"] == "image/jpeg")
-                        || ($_FILES["foto"]["type"] == "image/png")
-                        || ($_FILES["foto"]["type"] == "image/gif")
-                        || ($_FILES["foto"]["type"] == "image/bmp"))
-                    && in_array($extension, $allowedExts)) {
-                    // el archivo es un JPG/GIF/PNG, entonces...
+            // Primero, hay que validar que se trata de un JPG/GIF/PNG
+            $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
+            $extension = end(explode(".", $_FILES["foto"]["name"]));
+            if ((($_FILES["foto"]["type"] == "image/gif")
+                || ($_FILES["foto"]["type"] == "image/jpeg")
+                || ($_FILES["foto"]["type"] == "image/png")
+                || ($_FILES["foto"]["type"] == "image/gif")
+                || ($_FILES["foto"]["type"] == "image/bmp"))
+            && in_array($extension, $allowedExts)) {
+                // el archivo es un JPG/GIF/PNG, entonces...
 
-                    $extension = end(explode('.', $_FILES['foto']['name']));
-                    $foto = "perfil". "." . $extension;
-                    $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
-                    if (file_exists($directorio)) {
+                $extension = end(explode('.', $_FILES['foto']['name']));
+                $foto = "perfil". "." . $extension;
+                $directorio = "usuarios/" . $id_usuario . "/perfil/"; // directorio de tu elección
+                if (file_exists($directorio)) {
 
-                    } else {
-                        mkdir($directorio, 0777, true);
-                    }
-
-                    // almacenar imagen en el servidor
-                    move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
-                    $minFoto = 'min_' . $foto;
-                    $midFoto = 'mid_' . $foto;
-                    $resFoto = 'res_' . $foto;
-                    resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
-                    resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
-                    resizeImagen($directorio . '/', $foto, 600, 600, $resFoto, $extension);
-                    unlink($directorio . '/' . $foto);
-
-                } else { // El archivo no es JPG/GIF/PNG
-                    $malformato = $_FILES["foto"]["type"];
-                    ?>
-                    <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto <? echo $index?>")</script>
-                    <?
-                    //header("Location: crear_producto.php?id=echo $usu_id");
+                } else {
+                    mkdir($directorio, 0777, true);
                 }
+
+                // almacenar imagen en el servidor
+                move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . '/' . $foto);
+                $minFoto = 'min_' . $foto;
+                $midFoto = 'mid_' . $foto;
+                $resFoto = 'res_' . $foto;
+                resizeImagen($directorio . '/', $foto, 45, 45, $minFoto, $extension);
+                resizeImagen($directorio . '/', $foto, 80, 80, $midFoto, $extension);
+                resizeImagen($directorio . '/', $foto, 600, 600, $resFoto, $extension);
+                unlink($directorio . '/' . $foto);
+
+            } else { // El archivo no es JPG/GIF/PNG
+            $malformato = $_FILES["foto"]["type"];
+            ?>
+                <script type="text/javascript">alert("La imagen se encuentra con formato incorrecto <? echo $index?>")</script>
+                <?
+                //header("Location: crear_producto.php?id=echo $usu_id");
+            }
 
             } else { // El campo foto NO contiene una imagen
 
             }
 
-            if(isset($_POST["roles"]) && $_POST["roles"] != "")
-            {
-                if($_POST["roles"] == 3)
+                if(isset($_POST["roles"]) && $_POST["roles"] != "")
                 {
-                    $objSe->set('id_roles',3);
+                    if($_POST["roles"] == 3)
+                    {
+                        $objSe->set('id_roles',3);
+                    }
+                    else if($_POST["roles"] == 2)
+                    {
+                        $objSe->set('id_roles',2);
+                    }
                 }
-                else if($_POST["roles"] == 2)
-                {
-                    $objSe->set('id_roles',2);
-                }
+                ?><script> location.href ="<?echo $index."?roles=".$_POST["roles"]?>";</script><?
+
+            } else {
+                ?><script>alert("ERROR: en la creacion del usuario, contacte a Servicio al cliente")</script><?
             }
-            ?><script> location.href ="<?echo $index."?roles=".$_POST["roles"]?>";</script><?
-
-        } else {
-
         }
+
     }
 
     function resizeImagen($ruta, $nombre, $alto, $ancho,$nombreN,$extension){

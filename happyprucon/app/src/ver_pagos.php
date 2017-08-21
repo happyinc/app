@@ -23,12 +23,6 @@
                 $fullname = $usuarios["fullname"] ;                                                        
         }
 
-    if($rol!=2){
-
-    echo "<script> alert('Usuario no autorizado');
-        window.location.assign('logueo.html');</script>";
-
-}
             
 ?>
 <!DOCTYPE html>

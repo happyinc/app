@@ -155,100 +155,30 @@ License: You must have a valid license purchased only from themeforest(the above
     </form>
     <!-- END FORGOT PASSWORD FORM -->
     <div class="row">
-        <div class="col-lg-2 col-md-2 col-sm-2"></div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
+        <div class="col-lg-2 col-md-2 col-sm-2">
 
-            <form class="login-form" name="form-face" id="form-face" action="../../seguridad/verificarf.php"
-                  method="post">
-
-                <!--Campos escondidos para envio de datos de facebook -->
-                <input type="hidden" id="form_login_face" name="form_login_face" value="W">
-                <input type="hidden" name="nom-face" id="nom-face">
-                <input type="hidden" name="ape-face" id="ape-face">
-                <input type="hidden" name="mail" id="mail">
-
-                <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
-                    <a href="#" type="submit" id="login"
-                       class="socicon-btn socicon-btn-circle font-white bg-hover-grey-salsa tooltips"
-                       style="text-align: center; background-color: #5F059E; "><i class="fa fa-facebook"></i></a>
-                </div>
-                <script>
-                    (function (d, s, id) {
-                        var js, fjs = d.getElementsByTagName(s)[0];
-                        if (d.getElementById(id)) {
-                            return;
-                        }
-                        js = d.createElement(s);
-                        js.id = id;
-                        js.src = "//connect.facebook.net/es_ES/sdk.js";
-                        fjs.parentNode.insertBefore(js, fjs);
-                    }(document, 'script', 'facebook-jssdk'));
-                </script>
-
-            </form>
         </div>
 
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
-            <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
-                <a onclick="loginWithEmail();"
-                   class="socicon-btn socicon-btn-circle font-white bg-hover-grey-salsa socicon-mail tooltips"
-                   style="background-color: #5F059E;">
-                </a>
-            </div>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
-            <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
-                <a onclick="loginWithSMS();"
-                   class="socicon-btn socicon-btn-circle font-white bg-hover-grey-salsa tooltips"
-                   style="background-color: #5F059E;"><i class="fa fa-tablet"></i>
-                </a>
-            </div>
-        </div>
-        <form id="accountkit_form" name="accountkit_form" action="../class/fb_api_response.php" method="POST"
-              style="display: none;">
-            <input type="text" id="form_login_kit" name="form_login_kit" value="W">
-            <input type="text" id="code" name="code">
-            <input type="text" id="csrf_nonce" name="csrf_nonce">
-            <input type="submit" value="Submit" hidden>
-        </form>
 
         <div class="col-lg-3 col-md-3 col-sm-3"></div>
     </div>
     <script>
-        // initialize Account Kit with CSRF protection
-        AccountKit_OnInteractive = function () {
-            console.log("{{csrf}}")
-            AccountKit.init(
-                {
-                    appId: "144420376110647",
-                    state: "{{csrf}}",
-                    version: "v2.10"
-                }
-            );
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '144420376110647',
+                xfbml      : true,
+                version    : 'v2.10'
+            });
+            FB.AppEvents.logPageView();
         };
-        // login callback
-        function loginCallback(response) {
-            console.log(response);
-            if (response.status === "PARTIALLY_AUTHENTICATED") {
-                document.getElementById("code").value = response.code;
-                document.getElementById("csrf_nonce").value = response.state;
-                document.getElementById("accountkit_form").submit();
-            }
-            else if (response.status === "NOT_AUTHENTICATED") {
-                // handle authentication failure
-                console.log("NOT_AUTHENTICATED");
-            }
-            else if (response.status === "BAD_PARAMS") {
-                // handle bad parameters
-                console.log("BAD_PARAMS");
-            }
-        }
-        function loginWithSMS() {
-            AccountKit.login("PHONE", {}, loginCallback);
-        }
-        function loginWithEmail() {
-            AccountKit.login("EMAIL", {}, loginCallback);
-        }
+
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
     </script>
     <!-- END LOGIN FORM -->
 
