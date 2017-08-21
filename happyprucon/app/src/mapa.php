@@ -4,14 +4,9 @@
         
 
         <?
-            require_once'../../externo/plugins/PDOModel.php';
-            require'../class/sessions.php';
-            $objSe = new Sessions();
-            $objSe->init();
             include("include_css.php");
             include("nombre_cabezera.php");
             include("menu_modal.php");
-            include "funciones.php";
         ?>
         <title><? echo $nombre_pagina ?></title>
         <style>

@@ -408,9 +408,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                                                 foreach ($result3 as $key) 
                                                                 {
                                                                 ?>
-                                                                    <label> <input type="radio" id="forma_adquisicion" name="forma_adquisicion" value="<?php echo $key["id"]?>" data-title="si" onclick="mostrarReferencia(<?php echo $key["id"]?>);"/><? echo $key["descripcion"]?></label>
+                                                                    <label> <input type="radio" id="forma_adquisicion" name="forma_adquisicion" value="<?php echo $key["id"]?>" data-title="si" onclick="mostrarReferencia(<?php echo $key["id"]?>);"/><? echo $key["descripcion"]?>
+                                                                    </label>
+                                                                    <br>
                                                         </div>
-                                                        <br>
+                                                        
                                                                          
                                                                 <?
 																}
@@ -419,7 +421,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 </div>
 											</div>
                                         
-										<div id="dat_com" style="display:none;" >
+										  <div id="dat_com" style="display:none;" >
                                                 <div class="form-group form-md-line-input">
                                                     <div class="col-lg-4"></div>
                                                     <div class="col-md-4">
@@ -698,7 +700,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                  <div class="col-lg-4"></div>
                                             </div>
                                             
-                                            <div class="form-group form-md-line-input">
+                                            <div class="form-group form-md-line-input" style="display:none;">
                                                 <div class="col-lg-4"></div>
                                                 <div class="col-md-4">
                                                     <div class="input-icon">
@@ -770,8 +772,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <div class="col-lg-4"></div>
                                             </div>
                                         </div>
-                                           
-                                       </div>  
+                                            
                                     </form>
                                 </div>
                             </div>

@@ -293,6 +293,9 @@ License: You must have a valid license purchased only from themeforest(the above
 		  	
 		  	function eliminarProducto()
 		  	{
+		  		//var producto elimnado= <? echo $producto_eliminado?>;
+		  		//if(producto elimnado >= 1)
+					//{
 		  				swal({
 							title:"¿Desea eliminar el producto:" + <? echo $id_producto?>+"?",
 							text: "Si elimina el producto no se podra recuperar",
@@ -315,6 +318,7 @@ License: You must have a valid license purchased only from themeforest(the above
 								location.href="editar_producto.php?id_usuario=<? echo $id_usuario?>"+"&id_producto=<? echo $id_producto?>"
 							}
 						});
+					//}
 		  	}
 		</script>
 
