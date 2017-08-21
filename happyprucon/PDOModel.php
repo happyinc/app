@@ -7,15 +7,14 @@
  * Last Updated Date: 2/15/2017
  * Copyright (c) 2016 Pritesh Gupta. All Rights Reserved.
 
-/* ABOUT THIS FILE:
----------------------------------------------------------------------------------------------------------------
+  /* ABOUT THIS FILE:
+  ---------------------------------------------------------------------------------------------------------------
  * PDOModel Class provides set of functions for interacting database using PDO extension.
  * You don't need to write any query to perform insert, update, delete and select operations(CRUD operations).
- * You need to call these functions with appropriate parameters and these functions will perform required
- * Database operations.
----------------------------------------------------------------------------------------------------------------
+ * You need to call these functions with appropriate parameters and these functions will perform required 
+ * Database operations. 
+  ---------------------------------------------------------------------------------------------------------------
  */
-
 Class PDOModel {
 
     public $columns = "*";              //columns of table

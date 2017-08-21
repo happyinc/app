@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5e95fc51-9bda-426a-bd48-7567235e242d" name="Default" comment="" />
+    <list default="true" id="5e95fc51-9bda-426a-bd48-7567235e242d" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/happyprucon/app/src/funciones_new.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/happyprucon/app/src/usuarios/23/perfil/min_perfil.jpg" afterPath="$PROJECT_DIR$/happyprucon/app/src/usuarios/23/perfil/min_perfil.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/happyprucon/app/src/domicilios.php" afterPath="$PROJECT_DIR$/happyprucon/app/src/domicilios.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/happyprucon/externo/plugins/PDOModel.php" afterPath="$PROJECT_DIR$/happyprucon/externo/plugins/PDOModel.php" />
+    </list>
     <ignored path="app.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -15,7 +21,6 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="app" />
   </component>
@@ -24,31 +29,103 @@
       <file leaf-file-name="crear_producto.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/happyprucon/app/src/crear_producto.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2193">
-              <caret line="150" column="52" lean-forward="true" selection-start-line="150" selection-start-column="52" selection-end-line="150" selection-end-column="52" />
+            <state relative-caret-position="0">
+              <caret line="120" column="16" lean-forward="false" selection-start-line="120" selection-start-column="16" selection-end-line="129" selection-end-column="58" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="editar_producto.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/happyprucon/app/src/editar_producto.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="512" column="50" lean-forward="false" selection-start-line="512" selection-start-column="50" selection-end-line="512" selection-end-column="50" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="verificar.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/happyprucon/seguridad/verificar.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-172">
+              <caret line="93" column="49" lean-forward="false" selection-start-line="93" selection-start-column="49" selection-end-line="93" selection-end-column="49" />
               <folding>
-                <marker date="1500036087149" expanded="true" signature="382:468" ph="..." />
-                <marker date="1500036087149" expanded="true" signature="25662:25671" ph="..." />
+                <marker date="1503072744563" expanded="true" signature="8045:8180" ph="..." />
+                <marker date="1503072744563" expanded="true" signature="8236:8332" ph="..." />
+                <marker date="1503072744563" expanded="true" signature="8386:8500" ph="..." />
+                <marker date="1503072744563" expanded="true" signature="8549:8642" ph="..." />
+                <marker date="1503072744563" expanded="true" signature="8812:8919" ph="..." />
+                <marker date="1503072744563" expanded="true" signature="8975:9082" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="editar_producto.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/happyprucon/app/src/editar_producto.php">
+      <file leaf-file-name="domicilios.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/happyprucon/app/src/domicilios.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="683">
-              <caret line="512" column="50" lean-forward="false" selection-start-line="512" selection-start-column="50" selection-end-line="512" selection-end-column="50" />
+            <state relative-caret-position="248">
+              <caret line="186" column="165" lean-forward="false" selection-start-line="186" selection-start-column="165" selection-end-line="186" selection-end-column="165" />
               <folding>
-                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <marker date="1500068307760" expanded="true" signature="380:466" ph="..." />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <marker date="1503159833371" expanded="true" signature="3643:3663" ph="select * fro... pedido" />
+                <marker date="1503159833371" expanded="true" signature="9215:9237" ph="select * fro... usuarios" />
+                <marker date="1503159833371" expanded="true" signature="9215:9254" ph="select * fro... usuarios" />
+                <marker date="1503159833371" expanded="true" signature="9502:9558" ph="select * fro... asociado_disponible_view" />
+                <marker date="1503159833371" expanded="true" signature="9502:9559" ph="select * fro... asociado_disponible_view" />
+                <marker date="1503159833371" expanded="true" signature="9502:9577" ph="select * fro... asociado_disponible_view" />
+                <marker date="1503159833371" expanded="true" signature="9502:9587" ph="select * fro... asociado_disponible_view" />
+                <marker date="1503159833371" expanded="true" signature="9502:9600" ph="select * fro... asociado_disponible_view" />
+                <marker date="1503159833371" expanded="true" signature="43349:43415" ph="select * fro... pedido" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="funciones_new.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/happyprucon/app/src/funciones_new.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="8" column="12" lean-forward="false" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
+              <folding>
+                <marker date="1503155080636" expanded="true" signature="221:269" ph="select nombr... usuarios" />
+                <marker date="1503155080636" expanded="true" signature="221:270" ph="select nombr... usuarios" />
+                <marker date="1503155080636" expanded="true" signature="457:510" ph="select direc... ubicaciones_cliente" />
+                <marker date="1503155080636" expanded="true" signature="697:736" ph="select nombr... producto" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="gestion_pedido.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/happyprucon/app/src/gestion_pedido.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1088">
+              <caret line="64" column="47" lean-forward="false" selection-start-line="64" selection-start-column="41" selection-end-line="64" selection-end-column="47" />
+              <folding>
+                <marker date="1503072736709" expanded="true" signature="435:535" ph="..." />
+                <marker date="1503072736709" expanded="true" signature="14120:14323" ph="SELECT A.id_... pedido" />
+                <marker date="1503072736709" expanded="true" signature="17892:18125" ph="SELECT A.id_... pedido" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>form</find>
+      <find>asignar</find>
+      <find>hidden</find>
+      <find>modal</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -59,6 +136,11 @@
         <option value="$PROJECT_DIR$/happyprucon/app/class/sessions.php" />
         <option value="$PROJECT_DIR$/happyprucon/app/src/crear_producto.php" />
         <option value="$PROJECT_DIR$/happyprucon/app/src/editar_producto.php" />
+        <option value="$PROJECT_DIR$/happyprucon/externo/plugins/PDOModel.php" />
+        <option value="$PROJECT_DIR$/happyprucon/app/src/funciones.php" />
+        <option value="$PROJECT_DIR$/happyprucon/app/src/funciones_steven.php" />
+        <option value="$PROJECT_DIR$/happyprucon/app/src/connect.php" />
+        <option value="$PROJECT_DIR$/happyprucon/app/src/domicilios.php" />
       </list>
     </option>
   </component>
@@ -90,83 +172,64 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="happyprucon" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="happyprucon" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="happyprucon" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
+          <expand>
+            <path>
+              <item name="app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="happyprucon" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="happyprucon" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="happyprucon" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="happyprucon" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="externo" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="happyprucon" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="externo" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="plugins" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="happyprucon" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="seguridad" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+          </expand>
+          <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="settings.github" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../DeliveryWebService" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -195,6 +258,8 @@
       <workItem from="1499264557263" duration="1510000" />
       <workItem from="1499878324836" duration="2277000" />
       <workItem from="1500057614154" duration="2540000" />
+      <workItem from="1503073087475" duration="8371000" />
+      <workItem from="1503148932191" duration="10158000" />
     </task>
     <task id="LOCAL-00001" summary="prueba">
       <created>1498315746556</created>
@@ -214,14 +279,15 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6739000" />
+    <option name="totallyTimeSpent" value="25268000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14861111" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13577023" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13577023" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -239,7 +305,7 @@
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="processedProjectFiles" value="true" />
+    <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -258,18 +324,110 @@
     <option name="LAST_COMMIT_MESSAGE" value="v" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/happyprucon/app/src/crear_producto.php">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2040">
+          <caret line="120" column="16" lean-forward="false" selection-start-line="120" selection-start-column="16" selection-end-line="129" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/editar_producto.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8704">
+          <caret line="512" column="50" lean-forward="false" selection-start-line="512" selection-start-column="50" selection-end-line="512" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/seguridad/verificar.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1581">
+          <caret line="93" column="49" lean-forward="true" selection-start-line="93" selection-start-column="49" selection-end-line="93" selection-end-column="49" />
+          <folding>
+            <marker date="1503072744563" expanded="true" signature="8045:8180" ph="..." />
+            <marker date="1503072744563" expanded="true" signature="8236:8332" ph="..." />
+            <marker date="1503072744563" expanded="true" signature="8386:8500" ph="..." />
+            <marker date="1503072744563" expanded="true" signature="8549:8642" ph="..." />
+            <marker date="1503072744563" expanded="true" signature="8812:8919" ph="..." />
+            <marker date="1503072744563" expanded="true" signature="8975:9082" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/gestion_pedido.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1088">
+          <caret line="64" column="47" lean-forward="false" selection-start-line="64" selection-start-column="41" selection-end-line="64" selection-end-column="47" />
+          <folding>
+            <marker date="1503072736709" expanded="true" signature="435:535" ph="..." />
+            <marker date="1503072736709" expanded="true" signature="14120:14323" ph="SELECT A.id_... pedido" />
+            <marker date="1503072736709" expanded="true" signature="17892:18125" ph="SELECT A.id_... pedido" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/funciones.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4522">
+          <caret line="266" column="1" lean-forward="false" selection-start-line="266" selection-start-column="1" selection-end-line="266" selection-end-column="1" />
+          <folding>
+            <marker date="1503073562443" expanded="true" signature="404:417" ph="..." />
+            <marker date="1503073562443" expanded="true" signature="585:598" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/domicilios.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3519">
+          <caret line="207" column="74" lean-forward="false" selection-start-line="207" selection-start-column="74" selection-end-line="207" selection-end-column="74" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1503159833371" expanded="true" signature="3643:3663" ph="select * fro... pedido" />
+            <marker date="1503159833371" expanded="true" signature="9215:9237" ph="select * fro... usuarios" />
+            <marker date="1503159833371" expanded="true" signature="9215:9254" ph="select * fro... usuarios" />
+            <marker date="1503159833371" expanded="true" signature="9502:9558" ph="select * fro... asociado_disponible_view" />
+            <marker date="1503159833371" expanded="true" signature="9502:9559" ph="select * fro... asociado_disponible_view" />
+            <marker date="1503159833371" expanded="true" signature="9502:9577" ph="select * fro... asociado_disponible_view" />
+            <marker date="1503159833371" expanded="true" signature="9502:9587" ph="select * fro... asociado_disponible_view" />
+            <marker date="1503159833371" expanded="true" signature="9502:9600" ph="select * fro... asociado_disponible_view" />
+            <marker date="1503159833371" expanded="true" signature="43349:43415" ph="select * fro... pedido" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/crear_producto.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2550">
+          <caret line="150" column="45" lean-forward="true" selection-start-line="150" selection-start-column="45" selection-end-line="150" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/editar_producto.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8704">
+          <caret line="512" column="50" lean-forward="false" selection-start-line="512" selection-start-column="50" selection-end-line="512" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/crear_producto.php">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1292">
           <caret line="76" column="53" lean-forward="false" selection-start-line="76" selection-start-column="53" selection-end-line="76" selection-end-column="53" />
-          <folding>
-            <marker date="1500036087149" expanded="true" signature="382:468" ph="..." />
-            <marker date="1500036087149" expanded="true" signature="25662:25671" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -277,11 +435,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3281">
           <caret line="193" column="28" lean-forward="true" selection-start-line="193" selection-start-column="28" selection-end-line="193" selection-end-column="28" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <marker date="1500068307760" expanded="true" signature="380:466" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -289,10 +443,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1500036087149" expanded="true" signature="382:468" ph="..." />
-            <marker date="1500036087149" expanded="true" signature="25662:25671" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -326,34 +477,156 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/happyprucon/app/class/sessions.php">
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/class/producto.php" />
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/gestion_pedido.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="13" column="8" lean-forward="false" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+        <state relative-caret-position="1088">
+          <caret line="64" column="47" lean-forward="false" selection-start-line="64" selection-start-column="41" selection-end-line="64" selection-end-column="47" />
+          <folding>
+            <marker date="1503072736709" expanded="true" signature="435:535" ph="..." />
+            <marker date="1503072736709" expanded="true" signature="14120:14323" ph="SELECT A.id_... pedido" />
+            <marker date="1503072736709" expanded="true" signature="17892:18125" ph="SELECT A.id_... pedido" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/superglobals/_superglobals.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="88" column="3" lean-forward="false" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/happyprucon/app/class/producto.php" />
     <entry file="file://$PROJECT_DIR$/happyprucon/app/src/crear_producto.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2193">
-          <caret line="150" column="52" lean-forward="true" selection-start-line="150" selection-start-column="52" selection-end-line="150" selection-end-column="52" />
+        <state relative-caret-position="0">
+          <caret line="120" column="16" lean-forward="false" selection-start-line="120" selection-start-column="16" selection-end-line="129" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/seguridad/verificar.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-172">
+          <caret line="93" column="49" lean-forward="false" selection-start-line="93" selection-start-column="49" selection-end-line="93" selection-end-column="49" />
           <folding>
-            <marker date="1500036087149" expanded="true" signature="382:468" ph="..." />
-            <marker date="1500036087149" expanded="true" signature="25662:25671" ph="..." />
+            <marker date="1503072744563" expanded="true" signature="8045:8180" ph="..." />
+            <marker date="1503072744563" expanded="true" signature="8236:8332" ph="..." />
+            <marker date="1503072744563" expanded="true" signature="8386:8500" ph="..." />
+            <marker date="1503072744563" expanded="true" signature="8549:8642" ph="..." />
+            <marker date="1503072744563" expanded="true" signature="8812:8919" ph="..." />
+            <marker date="1503072744563" expanded="true" signature="8975:9082" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/happyprucon/app/src/editar_producto.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="683">
+        <state relative-caret-position="17">
           <caret line="512" column="50" lean-forward="false" selection-start-line="512" selection-start-column="50" selection-end-line="512" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/class/sessions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-136">
+          <caret line="13" column="8" lean-forward="false" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/externo/plugins/PDOModel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <marker date="1500068307760" expanded="true" signature="380:466" ph="..." />
+            <element signature="e#6#817#0#PHP" expanded="true" />
+            <marker date="1503152861169" expanded="true" signature="28121:28213" ph="select colum... COLUMNS" />
+            <marker date="1503152861169" expanded="true" signature="28421:28506" ph="SELECT COLUM... COLUMNS" />
+            <marker date="1503152861169" expanded="true" signature="29132:29181" ph="SELECT name sqlite_master" />
+            <marker date="1503152861169" expanded="true" signature="29266:29380" ph="SELECT TABLE... TABLES" />
+            <marker date="1503152861169" expanded="true" signature="30150:30279" ph="select colum... COLUMNS" />
+            <marker date="1503152861169" expanded="true" signature="30486:31261" ph="SELECT c.nam... columns" />
+            <marker date="1503152861169" expanded="true" signature="32399:32629" ph="SELECT a.att... pg_index" />
+            <marker date="1503152861169" expanded="true" signature="32831:33232" ph="SELECT Col.C... TABLE_CONSTRAINTS" />
+            <marker date="1503152861169" expanded="true" signature="34189:34200" ph="DROP TABLE $... " />
+            <marker date="1503152861169" expanded="true" signature="34734:34746" ph="DELETE FROM " />
+            <marker date="1503152861169" expanded="true" signature="35590:35655" ph="ALTER TABLE ${$this-&gt;parseTable($oldDBTableName)}... " />
+            <marker date="1503152861169" expanded="true" signature="36324:36419" ph="INSERT INTO ${$this-&gt;parseTable($dbTableName)}... " />
+            <marker date="1503152861169" expanded="true" signature="37173:37259" ph="DELETE FROM " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/include_css.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/include_js.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/funciones.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3876">
+          <caret line="228" column="9" lean-forward="false" selection-start-line="228" selection-start-column="9" selection-end-line="228" selection-end-column="9" />
+          <folding>
+            <marker date="1503073562443" expanded="true" signature="404:417" ph="..." />
+            <marker date="1503073562443" expanded="true" signature="585:598" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/connect.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="12" column="32" lean-forward="false" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/funciones_new.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="8" column="12" lean-forward="false" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
+          <folding>
+            <marker date="1503155080636" expanded="true" signature="221:269" ph="select nombr... usuarios" />
+            <marker date="1503155080636" expanded="true" signature="221:270" ph="select nombr... usuarios" />
+            <marker date="1503155080636" expanded="true" signature="457:510" ph="select direc... ubicaciones_cliente" />
+            <marker date="1503155080636" expanded="true" signature="697:736" ph="select nombr... producto" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/happyprucon/app/src/domicilios.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="186" column="165" lean-forward="false" selection-start-line="186" selection-start-column="165" selection-end-line="186" selection-end-column="165" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1503159833371" expanded="true" signature="3643:3663" ph="select * fro... pedido" />
+            <marker date="1503159833371" expanded="true" signature="9215:9237" ph="select * fro... usuarios" />
+            <marker date="1503159833371" expanded="true" signature="9215:9254" ph="select * fro... usuarios" />
+            <marker date="1503159833371" expanded="true" signature="9502:9558" ph="select * fro... asociado_disponible_view" />
+            <marker date="1503159833371" expanded="true" signature="9502:9559" ph="select * fro... asociado_disponible_view" />
+            <marker date="1503159833371" expanded="true" signature="9502:9577" ph="select * fro... asociado_disponible_view" />
+            <marker date="1503159833371" expanded="true" signature="9502:9587" ph="select * fro... asociado_disponible_view" />
+            <marker date="1503159833371" expanded="true" signature="9502:9600" ph="select * fro... asociado_disponible_view" />
+            <marker date="1503159833371" expanded="true" signature="43349:43415" ph="select * fro... pedido" />
           </folding>
         </state>
       </provider>

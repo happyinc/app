@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 /**
  * Created by PhpStorm.
  * User: DESARROLLO HAPPY INC
@@ -13,8 +14,30 @@
 <head>
     <?php
     include "include_css.php";
-    include "funciones.php";
-    require_once '../../externo/plugins/PDOModel.php';
+    include "funciones_new.php";
+
+    $id_usario = "";
+    if (isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "") {
+        $id_usario = $_POST["id_usuario"];
+    } else if (isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "") {
+        $id_usario = $_GET["id_usuario"];
+    }
+
+    if (isset($_POST["formulario"]) && $_POST["formulario"] == "asignacion_domiciliario") {
+        if (isset($_POST["id_usuario_domiciliario"]) && $_POST["id_usuario_domiciliario"] != "" && isset($_POST["id_pedido"]) && $_POST["id_pedido"] != "") {
+            /*$objConn = new PDOModel();
+            $insertData["id_usuario_coordinador"] = $id_usario;
+            $insertData["id_usuario_domiciliario"] = $_POST["id_usuario_domiciliario"];
+            $insertData["id_pedido"] = $_POST["id_pedido"];
+            $insertData["id_estado"] = 1;
+            $insertData["fecha_creacion"] = date("Y-m-d H:i:s");
+
+            $objConn->insert('pedidos_asignados_domiciliario', $insertData);*/
+        } else {
+            ?>
+            <script>alert("Por Favor Seleccione el Domiciliario para asignar el Pedido")</script><?
+        }
+    }
     ?>
 </head>
 
@@ -25,12 +48,6 @@
 
     <!-- BEGIN CONTENT -->
     <div class="page-content-wrapper">
-
-        <?php
-        if (isset($_POST["btn_delivery_assign"])) {
-
-        }
-        ?>
 
         <!-- BEGIN CONTENT BODY -->
         <div class="page-content">
@@ -65,13 +82,18 @@
 
                                         <?php
                                         //informacion del pedido
-                                        $objUsuariosDomic = new PDOModel();
+                                        /*$objUsuariosDomic = new PDOModel();
                                         $objUsuariosDomic->andOrOperator = "AND";
                                         $objUsuariosDomic->where("id_estado", 7);
                                         $objUsuariosDomic->where("forma_adquisicion", 1);
                                         $result = $objUsuariosDomic->select("pedido");
 
-                                        foreach ($result as $pedido) {
+                                        foreach ($result as $pedido) {*/
+
+                                        $sql = "select * from pedido";
+                                        $rs = mysql_query($sql);
+
+                                        while ($pedido = mysql_fetch_array($rs)) {
 
                                             ?>
 
@@ -84,7 +106,8 @@
                                                         echo $pedido['id_usuario']; ?>/perfil/min_perfil.jpg"/>
                                                     </div>
                                                     <div class="mt-comment-body">
-                                                        <b>PEDIDO N° <? echo $pedido["id"] ?></b>
+                                                        <b>PEDIDO
+                                                            N° <? echo $pedido["id"] ?></b>
                                                         <br>
                                                         <br>
                                                         <div class="mt-comment-info">
@@ -102,7 +125,8 @@
                                                             <ul class="mt-comment-actions">
                                                                 <li>
                                                                     <a data-toggle="modal"
-                                                                       href="#responsive">Asignar</a>
+                                                                       href="#responsive"
+                                                                       onclick="document.getElementById('id_pedido').value=<? echo $pedido["id"] ?>;">Asignar</a>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -134,59 +158,89 @@
 
                 <!-- MODAL -->
                 <div id="responsive" class="modal fade" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                <h4 class="modal-title">Domiciliarios Disponibles</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="scroller" style="height:100px" data-always-visible="1"
-                                     data-rail-visible1="1">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <h4>Nombre</h4>
+                    <form role="form" class="form-horizontal" action="domicilios.php"
+                          name="asignacion_domiciliario" id="asignacion_domiciliario" method="POST">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true"></button>
+                                    <h4 class="modal-title">Domiciliarios Disponibles</h4>
+                                </div>
 
-                                            <select name="usuarios" id="usuarios" class="col-md-12 form-control">
-                                                <?
-                                                //informacion del pedido
-                                                $objUsuariosDomic = new PDOModel();
-                                                $objUsuariosDomic->where("id_roles", 5);
-                                                $lol = $objUsuariosDomic->select("usuarios");
+                                <div class="modal-body">
+                                    <div class="scroller" style="height:100px" data-always-visible="1"
+                                         data-rail-visible1="1">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h4>Nombre</h4>
 
-                                                foreach ($lol as $users) {
+                                                <select name="id_usuario_domiciliario" id="id_usuario_domiciliario"
+                                                        class="col-md-12 form-control">
+                                                    <?
+                                                    //informacion del pedido
 
-                                                    $obj = new PDOModel();
-                                                    $obj->andOrOperator = "AND";
-                                                    $obj->where("id_usuario", $users["id"]);
-                                                    $obj->where("estado", 1);
-                                                    $result2 = $obj->select("asociado_disponible_view");
+                                                    $sql = "select * from usuarios where id_roles=5";
+                                                    $rs = mysql_query($sql);
 
-                                                    foreach ($result2 as $user) {
-                                                        $name = nombre_usuario($user["id_usuario"]);
-                                                        ?>
+                                                    while ($domiciliarios = mysql_fetch_array($rs)) {
+                                                        $sql2 = "select * from asociado_disponible_view where id_usuario= " . $domiciliarios['id'] . " and estado=1";
+                                                        $rs2 = mysql_query($sql2);
 
-                                                        <option value="<? echo $users["id_usuario"]; ?>"><? echo $users["nombre_completo"]; ?></option>
-
-                                                        <?
+                                                        while ($domiciliariosActivos = mysql_fetch_array($rs2)) {
+                                                            ?>
+                                                            <option value=" <? echo $domiciliariosActivos["id_usuario"]; ?>">
+                                                                <? echo $domiciliarios["nombre_completo"]; ?>
+                                                            </option>
+                                                            <?
+                                                        }
                                                     }
-                                                }
-                                                ?>
 
-                                            </select>
+                                                    /*$objUsuariosDomic = new PDOModel();
+                                                    $objUsuariosDomic->where("id_roles", 5);
+                                                    $lol = $objUsuariosDomic->select("usuarios");
 
+                                                    foreach ($lol as $users) {
+
+                                                        $obj = new PDOModel();
+                                                        $obj->andOrOperator = "AND";
+                                                        $obj->where("id_usuario", $users["id"]);
+                                                        $obj->where("estado", 1);
+                                                        $result2 = $obj->select("asociado_disponible_view");
+
+                                                        foreach ($result2 as $user) {
+                                                            $name = nombre_usuario($user["id_usuario"]);
+                                                            ?>
+
+                                                            <option value="<? echo $users["id_usuario"]; ?>"><? echo $users["nombre_completo"]; ?></option>
+
+                                                            <?
+                                                        }
+                                                    }*/
+                                                    ?>
+
+                                                </select>
+
+                                            </div>
                                         </div>
                                     </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" data-dismiss="modal" class="btn dark btn-outline">Cerrar
+                                    </button>
+                                    <button type="submit" name="btn_delivery_assign" class="btn green">Asignar Este
+                                        Domiciliario
+                                    </button>
+                                    <input type="hidden" id="formulario" name="formulario"
+                                           value="asignacion_domiciliario"/>
+                                    <input type="hidden" id="id_pedido" name="id_pedido" value="0"/>
+                                    <input type="hidden" id="id_usuario" name="id_usuario"
+                                           value="<? echo $_SESSION["id_usuario"] ?>"/>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" data-dismiss="modal" class="btn dark btn-outline">Cerrar</button>
-                                <button type="button" name="btn_delivery_assign" class="btn green">Asignar Este
-                                    Domiciliario
-                                </button>
-                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <!-- END MODAL -->
 
@@ -586,13 +640,18 @@
 
                                         <?php
                                         //informacion del pedido
-                                        $objUsuariosDomic = new PDOModel();
+                                        /*$objUsuariosDomic = new PDOModel();
                                         $objUsuariosDomic->andOrOperator = "AND";
                                         $objUsuariosDomic->where("id_estado", 7);
                                         $objUsuariosDomic->where("forma_adquisicion", 1);
                                         $result = $objUsuariosDomic->select("pedido");
 
-                                        foreach ($result as $pedido) {
+                                        foreach ($result as $pedido) {*/
+
+                                        $sql = "select * from pedido where id_estado = 7 and forma_adquisicion = 1";
+                                        $rs = mysql_query($sql);
+
+                                        while ($pedido = mysql_fetch_array($rs)) {
 
                                             ?>
 
@@ -672,7 +731,6 @@ include "footer.php";
 include "include_js.php";
 ?>
 
-<script src="../assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <script src="../assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
