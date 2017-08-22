@@ -22,12 +22,6 @@ foreach ($res_usuarios as $usuarios)
         $fullname = $usuarios["fullname"] ;                                                        
 }
 	
-if($rol!=2){
-
-    echo "<script> alert('Usuario no autorizado');
-        window.location.assign('logueo.html');</script>";
-
-}
 		
 ?>	
 <!DOCTYPE html>
@@ -58,6 +52,25 @@ License: You must have a valid license purchased only from themeforest(the above
 	?>
 	<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
     <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />	
+        <?
+
+        if(isset($_GET["eliminar"]) && $_GET["eliminar"] >= 1 && $id_usuario != "")
+            {
+                
+                $objConn = new PDOModel();
+                $updateData["id_estado"] = 2;
+                $objConn->where("id",$_GET["eliminar"]);
+                $objConn->update('producto', $updateData);
+
+                $producto_eliminado= $objConn->rowsChanged;
+                if($producto_eliminado < 1){
+                    ?>
+                        <script type="text/javascript">alert("EXITO: Producto Eliminado Satisfactoriamente");</script>
+                    <?
+                }
+
+            }
+        ?>
 		<?
 		$objProd = new PDOModel();
 		$objProd->andOrOperator = "AND";
@@ -72,10 +85,10 @@ License: You must have a valid license purchased only from themeforest(the above
            $objProd->where("id_producto", $_GET["anular"] );
            $objProd->update('producto_disponibilidad', $updateData);
            $disponibilidad_eliminado= $objProd->rowsChanged;
-           if($disponibilidad_eliminado != 1)
+           if($disponibilidad_eliminado > 1)
             {
                 ?><script type="text/javascript">
-                    alert("No se elimino la disponibilidad del producto");</script>
+                    alert("ERROR: No se elimino la disponibilidad del producto");</script>
                 <?
             }
         }
@@ -104,12 +117,14 @@ License: You must have a valid license purchased only from themeforest(the above
 					}
 					else 
                     {
-						swal("Cancelar","se cancelo la eliminacion del producto");
+						swal("Cancelar","se cancelo la eliminacion de la disponibilidad del producto");
 						location.href="gestion_producto.php?id_usuario=<? echo $id_usuario ?>";
 					}
 				});
 		  	}	
 		</script>
+
+        
 	</head>
     <!-- END HEAD -->
 
@@ -260,7 +275,7 @@ License: You must have a valid license purchased only from themeforest(the above
 								<div class="form-body">
 									<div class="form-group form-md-line-input">
 										<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
-											<a href="../src/crear_producto.php"><i class="fa fa-plus-circle fa-5x" style="color:gray" aria-hidden="true"></i></a>
+											<a href="../src/crear_producto.php?id_usuario=<? echo $id_usuario?>"><i class="fa fa-plus-circle fa-5x" style="color:gray" aria-hidden="true"></i></a>
 										</div>
 										<div class="col-md-9 col-lg-9 col-xs-8 col-sm-8">
 											Crear Bien o Servicio
@@ -274,7 +289,7 @@ License: You must have a valid license purchased only from themeforest(the above
 												<div class="col-md-3 col-lg-3 col-xs-2 col-sm-2">
 
 													<div class="fileinput-new thumbnail img-circle" style="width: 150px; height: 150px;">
-                                                        <a href="../src/editar_producto.php?id_producto=<? echo $item["id"]?>"><img src="<? echo "usuarios/".$id_usuario."/bienes/".$item["id"]."/res_producto.jpg"?>" alt="">
+                                                        <a href="../src/editar_producto.php?id_usuario=<? echo $id_usuario?>&id_producto=<? echo $item["id"]?>"><img src="<? echo "usuarios/".$id_usuario."/bienes/".$item["id"]."/res_producto.jpg"?>" alt="">
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn purple-studio">Editar</div> </a>
 
 													</div>
@@ -294,20 +309,20 @@ License: You must have a valid license purchased only from themeforest(the above
 													{
 														?>
                                                         
-                                                        <a  href="gestion_producto.php?anular=<? echo $item["id"] ?>" onclick="eliminarDisponibilidad(<? echo $item["id"] ?>);">
+                                                        <a  href="gestion_producto.php?id_usuario=<? echo $id_usuario?>&anular=<? echo $item["id"] ?>" onclick="eliminarDisponibilidad(<? echo $item["id"] ?>);">
                                                             <i class="fa fa-toggle-on fa-4x" style="color:green" aria-hidden="true"></i></a>
                                                          <?php
                                                     }
 													else if($result <= 0 || $relacion[0]["id_estado"]==2)
 													{
-														?><a  href="../src/crear_disponibilidad.php?id_producto=<? echo $item["id"]?>">
+														?><a  href="../src/crear_disponibilidad.php?id_usuario=<? echo $id_usuario?>&id_producto=<? echo $item["id"]?>">
 															<i class="fa fa-toggle-off fa-4x" style="color:red" aria-hidden="true"></i></a>
                                                     <?php
 													}
 													?>
 												</div>
                                                 <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id"] ?>" />
-                                                <input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
+                                                <input type="hidden" id="id_usuario" name="id_usuario" value="<? echo  $item["id_usuario"] ?>" />
 											</div><?php
 										}
 										?>

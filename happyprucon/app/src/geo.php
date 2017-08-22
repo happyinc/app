@@ -9,8 +9,8 @@ $objSe = new Sessions();
 <html>
 <head>
     <?php
-    include "include_css.php";
     include "funciones.php";
+    include "include_css.php";
     ?>
     <title>Geolocation</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">

@@ -253,6 +253,18 @@ function nombre_categoria($id_categoria)
     return $cuenta;
 }
 
+function nombre_rol($id_rol)
+{
+    $objComent = new PDOModel();
+    $objComent->where("id", $id_rol);
+    $objComent->columns = array("descripcion");
+    $cuentaTotal = $objComent->select("roles");
+    foreach ($cuentaTotal as $cuentaTot) {
+
+        $cuenta = $cuentaTot["descripcion"];
+    }
+    return $cuenta;
+}
 
 
 ?>

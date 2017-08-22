@@ -114,7 +114,7 @@ $objSe = new Sessions();
                                                     $objSe->set('suenos', $res_usu[0]['meta']);
                                                     $objSe->set('origen',$_POST['form_login']);
 
-                                                    echo "<script> window.location.assign('../app/src/gestion_pedido.php'); </script>";
+                                                    echo "<script> window.location.assign('../app/src/principal_final.php'); </script>";
 												}
 										}else{
 											$fallo = $res_usu[0]["acceso_fallido"]+1;

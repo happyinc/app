@@ -10,7 +10,7 @@
         }
         elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
         {
-             $usuid_usuario_id = $_GET["id_usuario"];
+             $id_usuario = $_GET["id_usuario"];
         }
         $objUbicacion = new PDOModel();
         $objUbicacion->where("id", $id_usuario);
@@ -18,15 +18,10 @@
         foreach ($res_usuarios as $usuarios)
         {
                 $rol = $usuarios["rol"] ;
-                $fullname = $usuarios["fullname"] ;                                                        
+                $fullname = $usuarios["fullname"] ;  
+                $id_usuario =$usuarios["id"] ;                                                       
         }
-    /*if($rol!=2){
-
-    echo "<script> alert('Usuario no autorizado');
-        window.location.assign('logueo.html');</script>";
-
-}   */  
-        
+   
 ?>  
 <!DOCTYPE html>
 <!-- 
@@ -98,16 +93,16 @@ License: You must have a valid license purchased only from themeforest(the above
 
             //insert a la tabla disponibilidad
             $objConn = new PDOModel();
-                //$insertData["id_tipo_disponibilidad"] = $_POST["categoria"];//pdt cambiar
+                //$insertData["id_tipo_disponibilidad"] = $_POST["categoria"];//pdt cambiar  
                 $insertData["id_estado"] = 1;
                 $insertData["fecha_inicio"] = $fec_inicio;
                 $insertData["fecha_fin"] = $fec_fin;
                 $insertData["fecha"] = date("Y-m-d H:i:s"); 
-                $insertData["id_usuario"] = $usu_id ;
+                $insertData["id_usuario"] = $id_usuario ;
                 $objConn->insert('disponibilidad', $insertData);
 
                 $id_disponibilidad= $objConn->lastInsertId;
-                //print_r($objConn->error);
+                $error=$objConn->error;
 
                 if($id_disponibilidad!= "")
                 {
@@ -167,7 +162,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         function(isConfirm) {
                             if (isConfirm) {
                                 swal("", "Disponibilidad creada y asignada al producto"+<? echo $id_producto?>, "success");
-                                location.href="gestion_producto.php";
+                                location.href="gestion_producto.php?id_usuario=<? echo $id_usuario ?>";
                             }
                         });
             }
@@ -343,7 +338,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </div>
                                              
                                             <div class="col-md-3">
-                                                <div class="input-group date form_datetime bs-datetime" data-date-format="yyyy mm dd HH:ii p"><!--Y-m-d H:i:s-->
+                                                <div class="input-group date form_datetime bs-datetime" data-date-format="yyyy mm dd HH:ii p">
                                                     <input class="form-control" size="16" type="text" name="fecha_fin" id="fecha_fin" value="" readonly="">
                                                     <span class="input-group-addon">
                                                         <button class="btn default date-reset" type="button">
@@ -401,6 +396,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <button type="submit" class="btn btn-circle purple" name="guardar" id="guardar" value="guardar"> Crear disponibilidad </button>
                                             <input type="hidden" id="formulario" name="formulario" value="crear_disponibilidad"/>
                                             <input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
+                                            <input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
                                         </div>
                                     </div>
 
