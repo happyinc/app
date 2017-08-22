@@ -36,3 +36,12 @@ function nombre_producto($id_producto)
     $nombre = mysql_fetch_array($rs);
     return $nombre["nombre"];
 }
+
+function nombre_estado($id_estado)
+{
+    $sql = "select descripcion from estado where id = $id_estado";
+    $rs = mysql_query($sql);
+
+    $nombre = mysql_fetch_array($rs);
+    return $nombre["descripcion"];
+}
