@@ -253,17 +253,18 @@ function nombre_categoria($id_categoria)
     return $cuenta;
 }
 
-function direccion_cliente($id_ubicacion_cliente)
+function nombre_rol($id_rol)
 {
     $objComent = new PDOModel();
-    $objComent->where("id", $id_ubicacion_cliente);
-    $objComent->columns = array("direccion");
-    $cuentaTotal = $objComent->select("ubicaciones_cliente");
+    $objComent->where("id", $id_rol);
+    $objComent->columns = array("descripcion");
+    $cuentaTotal = $objComent->select("roles");
     foreach ($cuentaTotal as $cuentaTot) {
 
-        $dir = $cuentaTot["direccion"];
+        $cuenta = $cuentaTot["descripcion"];
     }
-    return $dir;
+    return $cuenta;
 }
+
 
 ?>

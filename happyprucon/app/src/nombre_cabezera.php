@@ -50,6 +50,10 @@
                     $archivo_actual = nombre_usuario($_SESSION["id_usuario"]);
                     $nombre_pagina = "EDITAR PERFIL";
                     break;
+					
+			
+					
+				
             }
         
 ?>

@@ -1,116 +1,97 @@
-<?php
-	error_reporting(E_ERROR | E_WARNING | E_PARSE);
-	require_once'../../externo/plugins/PDOModel.php';
-	require'../class/sessions.php';
-	$id_usuario = "";
-    
-        if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
-        {
-            $id_usuario = $_POST["id_usuario"];
-        }
-        elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
-        {
-             $id_usuario = $_GET["id_usuario"];
-        }
-		$objUbicacion = new PDOModel();
-		$objUbicacion->where("id", $id_usuario);
-		$res_usuarios =  $objUbicacion->select("usuarios");
-		foreach ($res_usuarios as $usuarios)
-		{
-		        $rol = $usuarios["id_roles"] ;
-		        $fullname = $usuarios["fullname"] ;                                                        
-		}
 
-			
-?>
 <!DOCTYPE html>
-<!-- 
-Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
-Version: 4.7.5
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
 <html lang="en">
-    <!--<![endif]-->
-    <!-- BEGIN HEAD -->
-
-    <head>
-        <?php
-		
-		include "include_css.php";
-		
-		?>
-		<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
-		<script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
-		<script type="text/javascript">
-			//funcion que oculta y muestra div eniendo en cuenta la opcion seleccionada por el usuario
-			function mostrarReferencia(){
-				if (document.crear_producto.composicion[0].checked == true) {
-					document.getElementById('dat_com').style.display='block';
-				} 
-				else if (document.crear_producto.composicion[0].checked == false || document.crear_producto.composicion[1].checked == true){
-					document.getElementById('dat_com').style.display='none';
+    <head>  
+        <?
+			require_once'../../externo/plugins/PDOModel.php';
+			require'../class/sessions.php';
+			$objSe = new Sessions();
+            $objSe->init();
+			include "funciones.php";
+			$id_usuario = "";
+			
+				if(isset($_POST["id_usuario"]) && $_POST["id_usuario"] != "")
+				{
+					$id_usuario = $_POST["id_usuario"];
+				}
+				elseif(isset($_GET["id_usuario"]) && $_GET["id_usuario"] != "")
+				{
+					 $id_usuario = $_GET["id_usuario"];
+				}
+				$objUbicacion = new PDOModel();
+				$objUbicacion->where("id", $id_usuario);
+				$res_usuarios =  $objUbicacion->select("usuarios");
+				foreach ($res_usuarios as $usuarios)
+				{
+						$rol = $usuarios["id_roles"] ;
+						$fullname = $usuarios["nombre_completo"] ;                                                        
+				}
+            include("include_css.php");
+			?><link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+			  <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+			 <script type="text/javascript">
+				 //funcion que oculta y muestra div eniendo en cuenta la opcion seleccionada por el usuario
+				function mostrarReferencia(){
+					if (document.crear_producto.composicion[0].checked == true) {
+						document.getElementById('dat_com').style.display='block';
+					} 
+					else if (document.crear_producto.composicion[0].checked == false || document.crear_producto.composicion[1].checked == true){
+						document.getElementById('dat_com').style.display='none';
+					}
+					
+					else {
+						document.getElementById('dat_com').style.display='none';
+					}	
 				}
 				
-				else {
-					document.getElementById('dat_com').style.display='none';
-				}	
-			}
-			
-			// para buscar e insertar composiciones 
-			$(document).ready(function(){
-				var maxField = 10; //Input fields increment limitation
-				var addButton = $('.add_button'); //Add button selector
-				var wrapper = $('.field_wrapper'); //Input field wrapper
-				var fieldHTML = '<div>'+
-				'<select class="form-control" id="field_name[]" name="field_name[]">'+
-				'<option selected="selected" value=""></option>'+
-					<?
-					$objConn1 = new PDOModel();
-					//$objConn1->andOrOperator = "AND";
-					$objConn1->where("id_estado", 1);
-					//$objConn1->where("id_bienes", $item["id"]);
-					$objConn1->orderByCols = array("nombre");
-					$result2 =  $objConn1->select("composicion");
-					foreach($result2 as $item2)
-					{
-						?>'<option value="<?php echo $item2["id"]?>"><?php echo $item2["nombre"]?></option>'+<?php
-					}
-					?>
-				'</select>'+
-				'<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-1x"></i></a></div>'; 
-				var x = 0; //Initial field counter is 1
-				$(addButton).click(function(){ //Once add button is clicked
-					if(x < maxField){ //Check maximum number of input fields
-						x++; //Increment field counter
-						$(wrapper).append(fieldHTML); // Add field html
-					}
-				});
-				$(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
-				e.preventDefault();
-				$(this).parent('div').remove(); //Remove field html
-				x--; //Decrement field counter
-				});
-			});
-			
-			//tooltip de nootificacion para el porcentaje correspondiente a happy
+				// para buscar e insertar composiciones 
 				$(document).ready(function(){
-					$('[data-toggle="tooltip"]').tooltip(); 
+					var maxField = 10; //Input fields increment limitation
+					var addButton = $('.add_button'); //Add button selector
+					var wrapper = $('.field_wrapper'); //Input field wrapper
+					var fieldHTML = '<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">'+
+					'<select class="form-control" id="field_name[]" name="field_name[]">'+
+					'<option selected="selected" value=""></option>'+
+						<?
+						$objConn1 = new PDOModel();
+						//$objConn1->andOrOperator = "AND";
+						$objConn1->where("id_estado", 1);
+						//$objConn1->where("id_bienes", $item["id"]);
+						$objConn1->orderByCols = array("nombre");
+						$result2 =  $objConn1->select("composicion");
+						foreach($result2 as $item2)
+						{
+							?>'<option value="<?php echo $item2["id"]?>"><?php echo $item2["nombre"]?></option>'+<?php
+						}
+						?>
+					'</select>'+
+					'<a href="javascript:void(0);" class="remove_button" title="Remove field"><i class="fa fa-minus-circle fa-1x"></i></a></div>'; 
+					var x = 0; //Initial field counter is 1
+					$(addButton).click(function(){ //Once add button is clicked
+						if(x < maxField){ //Check maximum number of input fields
+							x++; //Increment field counter
+							$(wrapper).append(fieldHTML); // Add field html
+						}
+					});
+					$(wrapper).on('click', '.remove_button', function(e){ //Once remove button is clicked
+					e.preventDefault();
+					$(this).parent('div').remove(); //Remove field html
+					x--; //Decrement field counter
+					});
 				});
+				
+				//tooltip de nootificacion para el porcentaje correspondiente a happy
+					$(document).ready(function(){
+						$('[data-toggle="tooltip"]').tooltip(); 
+					});
 			</script>
+			<?
+            include("nombre_cabezera.php");
+            include("menu_modal.php");
+            
 			
-	    <?
-		$id_producto=0;
+		
+			$id_producto=0;
 		if(isset($_POST["formulario"]) && $_POST["formulario"] == "crear_producto" ){
 		
 				$objConn = new PDOModel();
@@ -272,312 +253,205 @@ License: You must have a valid license purchased only from themeforest(the above
 			}
 		}
 		</script>
-	</head>
+        
+        <title><? echo $nombre_pagina ?></title>
+        
+    </head>
     <!-- END HEAD -->
+    <body class="page-header-default page-sidebar-closed-hide-logo page-container-bg-solid" style="text-align: center;background-color:white;" bgcolor="#ffffff" onload="alertaProductoCreado()">
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md" onload="alertaProductoCreado()">
         <!-- BEGIN HEADER -->
-        <div class="page-header navbar navbar-fixed-top">
+        <div class="">
             <!-- BEGIN HEADER INNER -->
-            <div class="page-header-inner">
-                <!-- BEGIN LOGO -->
-                <div class="page-logo">
-                    <a href="index.html">
-                        <img src="../assets/layouts/layout2/img/logo-default.png" alt="logo" class="logo-default" /> </a>
-                    <div class="menu-toggler sidebar-toggler">
-                        <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
-                    </div>
-                </div>
-                <!-- END LOGO -->
-                <!-- BEGIN RESPONSIVE MENU TOGGLER -->
-                <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
-                <!-- END RESPONSIVE MENU TOGGLER -->
-                <!-- BEGIN PAGE ACTIONS -->
-                <!-- DOC: Remove "hide" class to enable the page header actions -->
-               
-                <!-- END PAGE ACTIONS -->
-				<!-- BEGIN HEADER -->
-					<?php
-						include "cabecera.php";
-					?>
-				<!-- END HEADER -->
-			</div>
+            <?
+            include("header.php");
+            ?>
             <!-- END HEADER INNER -->
         </div>
-        <!-- END HEADER -->
-        <!-- BEGIN HEADER & CONTENT DIVIDER -->
-        <div class="clearfix"> </div>
-        <!-- END HEADER & CONTENT DIVIDER -->
+
         <!-- BEGIN CONTAINER -->
-        <div class="page-container">
-			<!-- BEGIN SIDEBAR -->
-			<?php
-					include "menu.php";
-			?>
-			<!-- END SIDEBAR -->
-            <!-- BEGIN CONTENT -->
-            <div class="page-content-wrapper">
-                <!-- BEGIN CONTENT BODY -->
-                <div class="page-content">
-                    <!-- BEGIN PAGE HEADER-->
-                    <!-- BEGIN THEME PANEL -->
-                    <div class="theme-panel">
-						<div class="toggler-close">
-                            <i class="icon-close"></i>
+        <div class="page-content" style="text-align: center;background-color:white;">
+
+            <div class="page-wrapper-row full-height" style="text-align: center;background-color:white;">
+                <div class="page-wrapper-middle" style="text-align: center;background-color:white;">
+                    <!-- BEGIN CONTAINER -->
+                    <div class="page-container" style="text-align: center;background-color:white;">
+                        <!-- BEGIN CONTENT -->
+                        <div class="page-content-wrapper" style="text-align: center;background-color:white;">
+                            <!-- BEGIN CONTENT BODY -->
+                            <!-- BEGIN PAGE HEAD-->
+                            <div class="page-head" style="text-align: center;background-color:white;">
+                                <div class="container" style="text-align: center;background-color:white;">
+                                    <!-- BEGIN PAGE TITLE -->
+                                    <div class="page-title">
+                                        <!--
+                                        <h1>Dashboard
+                                            <small>dashboard & statistics</small>
+                                        </h1>
+                                        -->
+                                    </div>
+                                    <div class="page-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <!-- AQUI EMPIEZA EL CONTENIDO-->
+                                                <div class="portlet light ">
+                                                    <div class="portlet-body form">
+														<form role="form" class="form-horizontal" name="crear_producto"  id="crear_producto" action="crear_producto.php" enctype="multipart/form-data" method="post">
+															<div class="form-body">
+																<div class="form-group form-md-line-input">
+																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+																		<div class="input-icon">
+																			<select class="form-control" id="categoria" name="categoria">
+																				<?php
+																					$objCat = new PDOModel();
+																					$objCat->where("id_estado", 1);
+																					$objCat->orderByCols = array("nombre");
+																					$result =  $objCat->select("bienes");
+																					foreach($result as $item){
+																						?><optgroup label="<?php echo $item["nombre"]?>"> <?php
+																							$objCat->andOrOperator = "AND";
+																							$objCat->where("id_bienes", $item["id"]);
+																							$objCat->where("id_estado", 1);
+																							$objCat->orderByCols = array("descripcion");
+																							$result1 =  $objCat->select("categoria");
+																							
+																							foreach($result1 as $item1){
+																								?><option value="<?php echo $item1["id"]?>"><?php echo $item1["descripcion"]?></option><?php
+																							}
+																						?></optgroup><?php
+																					}
+																				?>
+																				<!--hacer input hidden-->
+																			</select>
+																			<div class="form-control-focus"> </div>
+																			<span class="help-block">Seleccione la categoria del producto a crear</span>
+																			<i class="fa fa-clone"></i>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="form-group form-md-line-input">
+																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+																		<div class="input-icon">
+																			<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del bien o servicio">
+																				<div class="form-control-focus"> </div>
+																				<span class="help-block required">Nombre del bien o servicio *</span>
+																				<i class="fa fa-tags"></i>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="form-group form-md-line-input">
+																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+																		<div class="input-icon">
+																			<textarea class="form-control" rows="3" id="descripcion" name="descripcion" placeholder="Descripcion"></textarea>
+																				<div class="form-control-focus"> </div>
+																				<span class="help-block">Descripcion</span>
+																				<i class="fa fa-file-text-o"></i>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="form-group form-md-line-input">
+																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+																		<div class="input-icon">
+																			<input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del bien o servicio" data-toggle="tooltip" data-placement="top" title="De este valor digitado a happy le corresponde el 2%.">
+																				<div class="form-control-focus"> </div>
+																				<span class="help-block required">Valor del bien o servicio *</span>
+																				<i class="fa fa-money"></i>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="form-group form-md-line-input">
+																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+																		<div class="input-icon">
+																			<div>
+																				<label class="control-label col-md-3">¿Tiene composicion?
+																					<span class="required"> * </span>
+																				</label>
+																			</div>
+																			<div class="row radio-list">
+																				<label class="radio-inline"> <input type="radio" id="composicion_0" name="composicion" value="si" data-title="si" onclick="mostrarReferencia();"/>Si</label>
+																				<label class="radio-inline"> <input type="radio" id="composicion_1" name="composicion" value="no" data-title="no" onclick="mostrarReferencia();"/> No </label>
+																			</div>
+																			<i class="fa fa-list-alt"></i>
+																		</div>
+																	</div>
+																</div>
+																<div id="dat_com" style="display:none;" >
+																	<div class="form-group form-md-line-input">
+																		<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+																			<div class="field_wrapper">
+																				Seleccione la composicion del producto
+																				<span class="required"> * </span>
+																				<a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus-circle fa-1x"></i></a>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="form-group form-md-line-input">
+																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+																		<div class="input-icon">
+																			<div>
+																			<label class="control-label col-md-3">¿El producto es su especialidad?
+																				<span class="required"> * </span>
+																			</label>
+																			</div>
+																			<div class="radio-list">
+																				<label class="radio-inline"> <input type="radio" id="especialidad_0" name="especialidad" value="s" data-title="si"/>Si</label>
+																				<label class="radio-inline"> <input type="radio" id="especialidad_1" name="especialidad" value="n" data-title="no"/> No </label>
+																			</div>
+																			<i class="fa fa-star"></i>
+																		</div>
+																	</div>
+																</div>
+																<div class="form-group form-md-line-input dropzone">
+																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+																		<div class="fileinput fileinput-new" data-provides="fileinput">
+																			<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
+																				<img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
+																			<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
+																			<div>
+																				<span class="btn default btn-file">
+																					<span class="fileinput-new"> Seleccione la imagen </span>
+																					<span class="fileinput-exists"> Cambiar </span>
+																					<input type="file" name="foto" id="foto"> 
+																				</span>
+																				
+																				<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+																			</div> 
+																		</div>
+																	</div>
+																</div>
+																<div class="form-actions">
+																	<div class="col-md-offset-3 col-md-9" align="center">
+																		<button type="submit" class="btn btn-circle" style="background-color: #5F059E;  color: white; padding: 10px; font-size: 13px;"  name="guardar" id="guardar" value="guardar"> Guardar </button>
+																		<input type="hidden" id="formulario" name="formulario" value="crear_producto"/>
+																		<input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
+																	</div>
+																</div>
+															</div>
+														</form>
+													</div>
+                                                </div>
+                                                <!-- AQUI TERMINA EL CONTENIDO -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="theme-options">
-                            <div class="theme-option theme-colors clearfix">
-                                <span> THEME COLOR </span>
-                                <ul>
-                                    <li class="color-default current tooltips" data-style="default" data-container="body" data-original-title="Default"> </li>
-                                    <li class="color-grey tooltips" data-style="grey" data-container="body" data-original-title="Grey"> </li>
-                                    <li class="color-blue tooltips" data-style="blue" data-container="body" data-original-title="Blue"> </li>
-                                    <li class="color-dark tooltips" data-style="dark" data-container="body" data-original-title="Dark"> </li>
-                                    <li class="color-light tooltips" data-style="light" data-container="body" data-original-title="Light"> </li>
-                                </ul>
-                            </div>
-                            <div class="theme-option">
-                                <span> Layout </span>
-                                <select class="layout-option form-control input-small">
-                                    <option value="fluid" selected="selected">Fluid</option>
-                                    <option value="boxed">Boxed</option>
-                                </select>
-                            </div>
-                            <div class="theme-option">
-                                <span> Header </span>
-                                <select class="page-header-option form-control input-small">
-                                    <option value="fixed" selected="selected">Fixed</option>
-                                    <option value="default">Default</option>
-                                </select>
-                            </div>
-                            <div class="theme-option">
-                                <span> Top Dropdown</span>
-                                <select class="page-header-top-dropdown-style-option form-control input-small">
-                                    <option value="light" selected="selected">Light</option>
-                                    <option value="dark">Dark</option>
-                                </select>
-                            </div>
-                            <div class="theme-option">
-                                <span> Sidebar Mode</span>
-                                <select class="sidebar-option form-control input-small">
-                                    <option value="fixed">Fixed</option>
-                                    <option value="default" selected="selected">Default</option>
-                                </select>
-                            </div>
-                            <div class="theme-option">
-                                <span> Sidebar Style</span>
-                                <select class="sidebar-style-option form-control input-small">
-                                    <option value="default" selected="selected">Default</option>
-                                    <option value="compact">Compact</option>
-                                </select>
-                            </div>
-                            <div class="theme-option">
-                                <span> Sidebar Menu </span>
-                                <select class="sidebar-menu-option form-control input-small">
-                                    <option value="accordion" selected="selected">Accordion</option>
-                                    <option value="hover">Hover</option>
-                                </select>
-                            </div>
-                            <div class="theme-option">
-                                <span> Sidebar Position </span>
-                                <select class="sidebar-pos-option form-control input-small">
-                                    <option value="left" selected="selected">Left</option>
-                                    <option value="right">Right</option>
-                                </select>
-                            </div>
-                            <div class="theme-option">
-                                <span> Footer </span>
-                                <select class="page-footer-option form-control input-small">
-                                    <option value="fixed">Fixed</option>
-                                    <option value="default" selected="selected">Default</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END THEME PANEL -->
-                    <h1 class="page-title"> Crear producto
-                        <small>creacion de producto</small>
-                    </h1>
-                    <div class="page-bar">
-                        <ul class="page-breadcrumb">
-                            <li>
-                                <i class="icon-home"></i>
-                                <a href="gestion_pedido.php">Home</a>
-                                <i class="fa fa-angle-right"></i>
-                            </li>
-                            <li>
-                                <a href="#">Crear producto</a>
-                                <i class="fa fa-angle-right"></i>
-                            </li>
-                            <li>
-                                <span>Creacion de productos</span>
-                            </li>
-                        </ul>
-                        
-                    <!-- END PAGE HEADER-->
-					</div>
-					<div class="portlet light">
-						<div class="portlet-body form">
-							<form role="form" class="form-horizontal" name="crear_producto"  id="crear_producto" action="crear_producto.php" enctype="multipart/form-data" method="post">
-								<div class="form-body">
-									<div class="form-group form-md-line-input">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="input-icon">
-												<select class="form-control" id="categoria" name="categoria">
-													<?php
-														$objCat = new PDOModel();
-														$objCat->where("id_estado", 1);
-														$objCat->orderByCols = array("nombre");
-														$result =  $objCat->select("bienes");
-														foreach($result as $item){
-															?><optgroup label="<?php echo $item["nombre"]?>"> <?php
-																$objCat->andOrOperator = "AND";
-																$objCat->where("id_bienes", $item["id"]);
-																$objCat->where("id_estado", 1);
-																$objCat->orderByCols = array("descripcion");
-																$result1 =  $objCat->select("categoria");
-																
-																foreach($result1 as $item1){
-																	?><option value="<?php echo $item1["id"]?>"><?php echo $item1["descripcion"]?></option><?php
-																}
-															?></optgroup><?php
-														}
-													?>
-													<!--hacer input hidden-->
-												</select>
-												<div class="form-control-focus"> </div>
-												<span class="help-block">Seleccione la categoria del producto a crear</span>
-												<i class="fa fa-clone"></i>
-											</div>
-										</div>
-									</div>
-
-									<div class="form-group form-md-line-input">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="input-icon">
-												<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto">
-													<div class="form-control-focus"> </div>
-													<span class="help-block required">Digite el nombre del producto a crear *</span>
-													<i class="fa fa-tags"></i>
-											</div>
-										</div>
-									</div>
-
-									<div class="form-group form-md-line-input">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="input-icon">
-												<textarea class="form-control" rows="3" id="descripcion" name="descripcion" placeholder="Descripcion del producto"></textarea>
-													<div class="form-control-focus"> </div>
-													<span class="help-block">Digite la descripcion del producto a crear</span>
-													<i class="fa fa-file-text-o"></i>
-											</div>
-										</div>
-									</div>
-
-									<div class="form-group form-md-line-input">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="input-icon">
-												<input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del producto" data-toggle="tooltip" data-placement="top" title="De este valor digitado a happy le corresponde el 2%.">
-													<div class="form-control-focus"> </div>
-													<span class="help-block required">Digite el valor del producto a crear *</span>
-													<i class="fa fa-money"></i>
-											</div>
-										</div>
-									</div>
-
-									<div class="form-group form-md-line-input">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="input-icon">
-												<div>
-												<label class="control-label col-md-3">¿Tiene composicion?
-													<span class="required"> * </span>
-												</label>
-												</div>
-												<div class="radio-list">
-													<label> <input type="radio" id="composicion_0" name="composicion" value="si" data-title="si" onclick="mostrarReferencia();"/>Si</label>
-													<label> <input type="radio" id="composicion_1" name="composicion" value="no" data-title="no" onclick="mostrarReferencia();"/> No </label>
-												</div>
-												<i class="fa fa-list-alt"></i>
-											</div>
-										</div>
-									</div>
-									<div id="dat_com" style="display:none;" >
-										<div class="form-group form-md-line-input">
-											<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-												<div class="field_wrapper">
-													Seleccione la composicion del producto
-													<span class="required"> * </span>
-													<a href="javascript:void(0);" class="add_button" title="Add field"><i class="fa fa-plus-circle fa-1x"></i></a>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="form-group form-md-line-input">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="input-icon">
-												<div>
-												<label class="control-label col-md-3">¿El producto es su especialidad?
-													<span class="required"> * </span>
-												</label>
-												</div>
-												<div class="radio-list">
-													<label> <input type="radio" id="especialidad_0" name="especialidad" value="s" data-title="si"/>Si</label>
-													<label> <input type="radio" id="especialidad_1" name="especialidad" value="n" data-title="no"/> No </label>
-												</div>
-												<i class="fa fa-star"></i>
-											</div>
-										</div>
-									</div>
-									<div class="form-group form-md-line-input dropzone">
-										<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-											<div class="fileinput fileinput-new" data-provides="fileinput">
-												<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
-													<img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>
-												<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
-												<div>
-													<span class="btn default btn-file">
-														<span class="fileinput-new"> Seleccione la imagen </span>
-														<span class="fileinput-exists"> Cambiar </span>
-														<input type="file" name="foto" id="foto"> 
-													</span>
-													
-													<a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
-												</div> 
-											</div>
-										</div>
-									</div>
-									<div class="form-actions">
-                                        <div class="col-md-offset-3 col-md-9">
-											<button type="submit" class="btn btn-circle purple" name="guardar" id="guardar" value="guardar"> Crear producto </button>
-											<input type="hidden" id="formulario" name="formulario" value="crear_producto"/>
-											<input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
                     </div>
                 </div>
-                <!-- END CONTENT BODY -->
-            </div>
-            <!-- END CONTENT -->
-            
+            </div>    
         </div>
         <!-- END CONTAINER -->
-		 <!-- BEGIN FOOTER -->
-        <?php
-            include "footer.php";
-        ?>
-        <!-- END FOOTER -->
-            <!--[if lt IE 9]>
-<script src="../assets/global/plugins/respond.min.js"></script>
-<script src="../assets/global/plugins/excanvas.min.js"></script> 
-<script src="../assets/global/plugins/ie8.fix.min.js"></script> 
-<![endif]-->
+
             <!-- BEGIN CORE PLUGINS -->
-            <?php
-            include "include_js.php";
-			?> 
+            <?
+            include("include_js.php");
+            ?>
 			<script src="../assets/global/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js" type="text/javascript"></script>
 			<script src="../assets/pages/scripts/components-bootstrap-select-splitter.min.js" type="text/javascript"></script>
 			<script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" type="text/javascript"></script>
@@ -601,5 +475,4 @@ License: You must have a valid license purchased only from themeforest(the above
 				}();
 			</script>
     </body>
-
-</html>
+</html> 

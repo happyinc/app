@@ -6,13 +6,14 @@
             require'../class/sessions.php';
             $objSe = new Sessions();
             $objSe->init();
+            include "funciones.php";
             include("include_css.php");
             include("nombre_cabezera.php");
             include("menu_modal.php");
-            include "funciones.php";
+
         ?>
         <title><? echo $nombre_pagina ?></title>
-        
+
     </head>
     <!-- END HEAD -->
     <body class="page-header-default page-sidebar-closed-hide-logo page-container-bg-solid" style="text-align: center;background-color:white;" bgcolor="#ffffff">
