@@ -53,6 +53,7 @@ $objSe->init();
                             $objSe->set('telefono', $res_usu[0]['telefono']);
                             $objSe->set('correo', $res_usu[0]['correo']);
                             $objSe->set('sueños', $res_usu[0]['meta']);
+                            $objSe->set('id_roles_alternativo', 3);
 
 							echo "<script> window.location.assign('../src/gestion_pedido.php'); </script>";
 						}
@@ -78,13 +79,10 @@ $objSe->init();
                             $objSe->set('telefono', $res_usu[0]['telefono']);
                             $objSe->set('correo', $res_usu[0]['correo']);
                             $objSe->set('sueños', $res_usu[0]['meta']);
+                            $objSe->set('id_roles_alternativo', "");
 
 							echo "<script> window.location.assign('../src/gestion_pedido.php'); </script>";
-						}else{
-                            echo "<script> alert('Usuario no autorizado');
-							window.location.assign('../src/logueo.html');</script>";
-
-                        }
+						}
 						
 					}
 					else
@@ -138,6 +136,7 @@ $objSe->init();
                             $objSe->set('telefono', $res_usu[0]['telefono']);
                             $objSe->set('correo', $res_usu[0]['correo']);
                             $objSe->set('suenos', $res_usu[0]['meta']);
+                            $objSe->set('id_roles_alternativo', 3);
 
                             echo "<script> window.location.assign('../src/gestion_pedido.php'); </script>";
                         }
@@ -163,12 +162,9 @@ $objSe->init();
                             $objSe->set('telefono', $res_usu[0]['telefono']);
                             $objSe->set('correo', $res_usu[0]['correo']);
                             $objSe->set('suenos', $res_usu[0]['meta']);
+                            $objSe->set('id_roles_alternativo', "");
 
                             echo "<script> window.location.assign('../src/gestion_pedido.php'); </script>";
-                        }else{
-                            echo "<script> alert('Usuario no autorizado');
-							window.location.assign('../src/logueo.html');</script>";
-
                         }
 						
 					}

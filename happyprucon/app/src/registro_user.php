@@ -522,7 +522,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <div class="form-group form-md-line-input has-info">
                                     <div class="input-group left-addon">
                                                         <span class="required input-group-addon">
-                                                        <i class="fa fa-line-chart"></i>
+                                                        <i class="fa fa-cloud"></i>
                                                         </span>
                                         <textarea class="form-control" name="meta" id="meta" placeholder="Lo que quieres"></textarea>
                                     </div>

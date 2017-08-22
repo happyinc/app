@@ -6,7 +6,11 @@
             require'../class/sessions.php';
             $objSe = new Sessions();
             $objSe->init();
+
 			include "funciones.php";
+			$usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
+			 $rol = isset($_SESSION['id_roles']) ? $_SESSION['id_roles'] : null ;
+			 $fullname = isset($_SESSION['nombre_completo']) ? $_SESSION['nombre_completo']:null;
             include("include_css.php");
 			?>
 			<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
@@ -58,10 +62,11 @@
 				// si el pedido va con domicilio
 				if($_POST['forma_adquisicion']==1)
 				{
+					
+
 					if ($_POST['direccion'] != "" && $_POST['tipodom'] != "" && $_POST['descripcion'] != "")
 					{
-						?>
-							 <script type="text/javascript">alert("campos no estan vacios") </script><?
+						
 						//se realiza el insert en la tabla ubicacion_cliente
 						$insertUbi["id_usuario"] = $usu_id;
 						$insertUbi["direccion"] = $_POST['direccion'];
@@ -274,7 +279,8 @@
 
 																				var mostrarUbicacion = function() {
 																					var ciudade;
-																					ciudade = document.getElementById('resciu').value = document.getElementById('ciudad').value;
+																					// = document.getElementById('resciu').value
+																					ciudade = document.getElementById('resciu').value= document.getElementById('ciudad').value;
 																					var dir;
 																					dir = document.getElementById('resdir').value = document.getElementById('direccion').value;
 
@@ -339,9 +345,14 @@
 																							<span class="required input-group-addon">
 																								<i class="fa fa-flag"></i>
 																							</span>
-																							<input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
+																						
+																							 <input name="ciudad" id="ciudad" type="hidden" value="Cali - Valle del Cauca, Colombia"/>
+													                                        <select name="resciu" id="resciu" class="form-control">
+													                                            <option value=""></option>
+													                                            <option value="Cali - Valle del Cauca, Colombia">Santiago de Cali</option>
+													                                        </select>
 																							<!-- Campo escondido que toma valor de ciudad -->
-																							<input type="hidden" name="resciu" id="resciu" >
+																							<input type="text" name="resciu" id="resciu" >
 																						</div>
 																					</div>
 
@@ -398,7 +409,11 @@
 																								<span class="required input-group-addon">
 																									<i class="fa fa-flag"></i>
 																								</span>
-																								<input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
+																								<input name="ciudad" id="ciudad" type="hidden" value="Cali - Valle del Cauca, Colombia"/>
+													                                        <select name="resciu" id="resciu" class="form-control">
+													                                            <option value=""></option>
+													                                            <option value="Cali - Valle del Cauca, Colombia">Santiago de Cali</option>
+													                                        </select>
 																								<!-- Campo escondido que toma valor de ciudad -->
 																								<input type="hidden" name="resciu" id="resciu" >
 																							</div>
