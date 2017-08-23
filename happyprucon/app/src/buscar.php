@@ -221,7 +221,7 @@
 																						 <?
 																						foreach ($asociado_f as $key => $value) {
 																							?>
-																							<option value="<? echo $key?>"><? echo  nombre_usuario($key) . "- $value Productos"?></option>
+																							<option value="<? echo $key?>"><? echo  nombre_usuario_new($key) . "- $value Productos"?></option>
 																							<?
 																						}
 																						?>
@@ -282,7 +282,7 @@
 																							<div class="mt-head-user-img">
 																								<img src="<? echo 'usuarios/'.$item['id_usuario'].'/perfil'.'/res_perfil.jpg'?>"> </div>
 																							<div class="mt-head-user-info" >
-																								<span class="mt-user-name"><?echo  nombre_usuario($item["id_usuario"])?></span>
+																								<span class="mt-user-name"><?echo  nombre_usuario_new($item["id_usuario"])?></span>
 																								<span class="mt-user-time">
 																										<i class="fa fa-star"></i><?echo  calificacion_usu($item["id_usuario"])?>  </span>
 																							</div>

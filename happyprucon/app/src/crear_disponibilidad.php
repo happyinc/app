@@ -101,7 +101,7 @@
                                                         
                                                         <div class='fuente-2'>
                                                             <!-- se neceita un icono, aqui !! -->
-                                                            <? echo nombre_producto($id_producto)?>
+                                                            <? echo nombre_producto_new($id_producto)?>
                                                         </div>
                                                     </div>
                                                     <div class="portlet-body form">

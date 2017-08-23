@@ -516,7 +516,7 @@
 																										<img src="<? echo 'usuarios/'.$valor['id_usuario_califica'].'/perfil/min_perfil.jpg' ?>" /> </div>
 																									<div class="mt-comment-body">
 																										<div class="mt-comment-info">
-																											<span class="mt-comment-author"><? echo nombre_usuario($valor['id_usuario_califica']);?></span>
+																											<span class="mt-comment-author"><? echo nombre_usuario_new($valor['id_usuario_califica']);?></span>
 																											<span class="mt-comment-date"><? echo $valor['fecha'];?></span>
 																										</div>
 																										<div class="mt-comment-text"><? echo $valor['comentario'] ;?></div>

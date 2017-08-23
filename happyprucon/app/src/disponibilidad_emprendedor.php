@@ -91,7 +91,7 @@
 																			<div class="mt-body">
 																				<h3 class="mt-username"><? echo calificacion_usuario($id_usuario); ?></h3>
 																					<div class="row" style="padding-top: 20px;">
-																						<label class="font-yellow" style="margin-right: 5px;"><? echo nombre_usuario($id_usuario) ?></label>                                       
+																						<label class="font-yellow" style="margin-right: 5px;"><? echo nombre_usuario_new($id_usuario) ?></label>
 																					</div>
 																					<div class="row" style="padding-top: 20px;">
 
@@ -135,7 +135,7 @@
 																								<div class="mt-head-user-img">
 																									<img src="<? echo 'usuarios/'.$item['id_usuario'].'/perfil/'.'/res_perfil.jpg'?>"> </div>
 																								<div class="mt-head-user-info" >
-																									<span class="mt-user-name"><?echo  nombre_usuario($item["id_usuario"])?></span>
+																									<span class="mt-user-name"><?echo  nombre_usuario_new($item["id_usuario"])?></span>
 																									<span class="mt-user-time">
 																										<i class="fa fa-star"></i><?echo  calificacion_usu($item["id_usuario"])?>  </span>
 																								</div>

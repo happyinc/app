@@ -368,7 +368,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         </div>
                                                             <div class="col-md-6">
                                                                 <div class="row">
-                                                                    <label class="control-label"><?php echo nombre_usuario( $item['id_usuario'] ) ?></label>
+                                                                    <label class="control-label"><?php echo nombre_usuario_new( $item['id_usuario'] ) ?></label>
                                                                 </div>
                                                                 <div class="row">
                                                                     <label class="control-label"><?

@@ -124,12 +124,12 @@ if ($rol != 4) {
                                                         <br>
                                                         <br>
                                                         <div class="mt-comment-info">
-                                                            <span class="mt-comment-author"><? echo nombre_usuario($pedido["id_usuario"]) ?></span>
-                                                            <span class="mt-comment-date"><? echo direccion_cliente($pedido["id_ubicacion_cliente"]) ?></span>
+                                                            <span class="mt-comment-author"><? echo nombre_usuario_new($pedido["id_usuario"]) ?></span>
+                                                            <span class="mt-comment-date"><? echo direccion_cliente_new($pedido["id_ubicacion_cliente"]) ?></span>
                                                         </div>
                                                         <div class="mt-comment-text">
                                                             <div class="mt-comment-info">
-                                                                <span class="mt-comment-author uppercase"><? echo nombre_producto($pedido["id_producto"]) ?></span>
+                                                                <span class="mt-comment-author uppercase"><? echo nombre_producto_new($pedido["id_producto"]) ?></span>
                                                                 <span class="mt-comment-date">Cantidad: <? echo $pedido["cantidad"] ?></span>
                                                             </div>
                                                         </div>
@@ -284,22 +284,22 @@ if ($rol != 4) {
                                             </div>
                                         </td>
                                         <td>
-                                            <? echo nombre_usuario($info_pedido_asignado["id_usuario_domiciliario"]) ?>
+                                            <? echo nombre_usuario_new($info_pedido_asignado["id_usuario_domiciliario"]) ?>
                                         </td>
                                         <td>
                                             <? echo $info_pedido_asignado["id_pedido"] ?>
                                         </td>
                                         <td>
-                                            <? echo nombre_usuario($info_pedido_asignado["id_usuario"]) ?>
+                                            <? echo nombre_usuario_new($info_pedido_asignado["id_usuario"]) ?>
                                         </td>
                                         <td>
-                                            <? echo direccion_cliente($info_pedido_asignado["id_ubicacion_cliente"]) ?>
+                                            <? echo direccion_cliente_new($info_pedido_asignado["id_ubicacion_cliente"]) ?>
                                         </td>
                                         <td>
-                                            <? echo nombre_estado($info_pedido_asignado["id_estado"]) ?>
+                                            <? echo nombre_estado_new($info_pedido_asignado["id_estado"]) ?>
                                         </td>
                                         <td>
-                                            <? echo nombre_producto($info_pedido_asignado["id_producto"]) ?>
+                                            <? echo nombre_producto_new($info_pedido_asignado["id_producto"]) ?>
                                         </td>
                                         <td>
                                             <? echo $info_pedido_asignado["fecha"] ?>
@@ -384,12 +384,12 @@ if ($rol != 4) {
                                                         <br>
                                                         <br>
                                                         <div class="mt-comment-info">
-                                                            <span class="mt-comment-author"><? echo nombre_usuario($pedido["id_usuario"]) ?></span>
-                                                            <span class="mt-comment-date"><? echo direccion_cliente($pedido["id_ubicacion_cliente"]) ?></span>
+                                                            <span class="mt-comment-author"><? echo nombre_usuario_new($pedido["id_usuario"]) ?></span>
+                                                            <span class="mt-comment-date"><? echo direccion_cliente_new($pedido["id_ubicacion_cliente"]) ?></span>
                                                         </div>
                                                         <div class="mt-comment-text">
                                                             <div class="mt-comment-info">
-                                                                <span class="mt-comment-author uppercase"><? echo nombre_producto($pedido["id_producto"]) ?></span>
+                                                                <span class="mt-comment-author uppercase"><? echo nombre_producto_new($pedido["id_producto"]) ?></span>
                                                                 <span class="mt-comment-date">Cantidad: <? echo $pedido["cantidad"] ?></span>
                                                             </div>
                                                         </div>

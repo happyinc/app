@@ -10,7 +10,7 @@ include "connect.php";
 
 $conexionHappy = AbrirConexionHappy();
 
-function nombre_usuario($id_usuario)
+function nombre_usuario_new($id_usuario)
 {
     $sql = "select nombre_completo from usuarios where id = $id_usuario";
     $rs = mysql_query($sql);
@@ -19,7 +19,7 @@ function nombre_usuario($id_usuario)
     return $nombre["nombre_completo"];
 }
 
-function direccion_cliente($id_ubicacion_cliente)
+function direccion_cliente_new($id_ubicacion_cliente)
 {
     $sql = "select direccion from ubicaciones_cliente where id = $id_ubicacion_cliente";
     $rs = mysql_query($sql);
@@ -28,7 +28,7 @@ function direccion_cliente($id_ubicacion_cliente)
     return $direccion["direccion"];
 }
 
-function nombre_producto($id_producto)
+function nombre_producto_new($id_producto)
 {
     $sql = "select nombre from producto where id = $id_producto";
     $rs = mysql_query($sql);
@@ -37,7 +37,7 @@ function nombre_producto($id_producto)
     return $nombre["nombre"];
 }
 
-function nombre_estado($id_estado)
+function nombre_estado_new($id_estado)
 {
     $sql = "select descripcion from estado where id = $id_estado";
     $rs = mysql_query($sql);
