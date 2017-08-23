@@ -347,7 +347,7 @@
                       });
 
                     var contentString = 
-                            '<div style="width: 150px; height: 200px;overflow-y: hidden; overflow-x: hidden;padding:0 !important">'+
+                            '<div style="width: 150px; height: 220px;overflow-y: hidden; overflow-x: hidden;padding:0 !important">'+
                                 '<!-- SIDEBAR USERPIC -->'+
                                 '<div class="profile-userpic" style="background:white;padding:0 !important">'+
                                     '<img src="usuarios/'+ asociado[5] +'/perfil/mid_perfil.jpg" class="img-responsive" alt="">'+

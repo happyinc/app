@@ -115,6 +115,11 @@
                     $nombre_pagina = "MIS PAGOS";
                     $archivo_herramienta = "";
                     break;
+                case "buscar.php":
+                    $archivo_actual = "FILTRAR";
+                    $nombre_pagina = "FILTRAR";
+                    $archivo_herramienta = "<a data-toggle='modal' data-target='#myModal'><i class='fa fa-sliders fa-2x' style='color: black;'></i></a>";
+                    break;
 
             }
         

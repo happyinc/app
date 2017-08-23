@@ -85,7 +85,6 @@ $objSe = new Sessions();
                                                     $objSe->set('correo', $res_usu[0]['correo']);
                                                     $objSe->set('suenos', $res_usu[0]['meta']);
                                                     $objSe->set('origen',$_POST['form_login']);
-                                                    $objSe->set('id_roles_alternativo', 3);
 
 
 																									
@@ -114,11 +113,13 @@ $objSe = new Sessions();
                                                     $objSe->set('correo', $res_usu[0]['correo']);
                                                     $objSe->set('suenos', $res_usu[0]['meta']);
                                                     $objSe->set('origen',$_POST['form_login']);
-                                                    $objSe->set('id_roles_alternativo', "");
 
-                                                    echo "<script> window.location.assign('../app/src/main.php'); </script>";
-												}else if($rol == 4){
-                                                    $objConn = new PDOModel();
+                                                    echo "<script> window.location.assign('../app/src/principal_final.php'); </script>";
+												}
+												else if($rol == 4)
+												{
+													$objConn = new PDOModel();
+
                                                     $insertSe["id_usuario"] = $id_usu;
                                                     $insertSe["origen"] = "W";
                                                     $insertSe["f_login"] = date("Y-m-d H:i:s");
@@ -137,10 +138,12 @@ $objSe = new Sessions();
                                                     $objSe->set('genero', $res_usu[0]['genero']);
                                                     $objSe->set('telefono', $res_usu[0]['telefono']);
                                                     $objSe->set('correo', $res_usu[0]['correo']);
+
                                                     $objSe->set('origen',$_POST['form_login']);
                                                     $objSe->set('id_roles_alternativo', "");
 
                                                     echo "<script> window.location.assign('../app/src/domicilios2.php'); </script>";
+
 												}
 										}else{
 											$fallo = $res_usu[0]["acceso_fallido"]+1;

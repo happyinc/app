@@ -331,7 +331,7 @@
 																</div>
 
 																<div class="form-group form-md-line-input">
-																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+																	<div class="col-md-4 col-lg-4 col-xs-4 col-sm-4">
 																		<div class="input-icon">
 																			<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del bien o servicio">
 																				<div class="form-control-focus"> </div>
@@ -425,8 +425,8 @@
 																	</div>
 																</div>
 																<div class="form-actions">
-																	<div class="col-md-offset-3 col-md-9" align="center">
-																		<button type="submit" class="btn btn-circle" style="background-color: #5F059E;  color: white; padding: 10px; font-size: 13px;"  name="guardar" id="guardar" value="guardar"> Guardar </button>
+																	<div class="col-md-offset-3 col-md-6" align="center">
+																		<button type="submit" class="btn btn-circle" style="background-color: #5F059E;  color: white; padding-right: 30px; padding-left:30px; padding-top: 10px; padding-bottom: 10px; font-size: 13px;"  name="guardar" id="guardar" value="guardar"> Guardar </button>
 																		<input type="hidden" id="formulario" name="formulario" value="crear_producto"/>
 																		<input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
 																	</div>
