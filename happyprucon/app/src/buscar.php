@@ -1,3 +1,6 @@
+<?
+error_reporting(0);
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>  
@@ -136,33 +139,36 @@
                                                 <div class="portlet light ">
                                                     <div class="portlet-body form">
 														<div class="form-body"> 
-															<form role="form" class="form-horizontal" name="1buscar" id="1buscar" action="buscar.php" enctype="multipart/form-data" method="POST">  
-																<div class="col-md-4">
-																	<div class="input-group">
-																		<input type="search" name="buscar" id="buscar" class="form-control" value="<? echo $buscar ?>">
-																		<span class="input-group-btn">
-																			<button class="btn btn-default" type="submit" name="buscarb" value="buscarb"><i class="fa fa-search"></i></button>
-																		</span>
-																	</div>
-																</div>
+															<form role="form" class="form-horizontal" name="1buscar" id="1buscar" action="buscar.php" enctype="multipart/form-data" method="POST">
+                                                                <div class="col-md-4">
+                                                                    <div class="input-group" style="box-shadow: 0px 0px 3px 1px #999; border-top-left-radius: 15px; border-bottom-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px;">
+                                                                        <span class="input-group-btn">
+                                                                            <a class="btn bold disabled" style="background-color:transparent; color:#5F059E; border-top-left-radius: 15px; border-bottom-left-radius: 15px;">Buscar</a>
+                                                                        </span>
+                                                                        <input type="search" name="buscar" id="buscar" class="form-control" style="border-top: 0; border-bottom: 0; border-color: #5F059E; " value="<? echo $buscar ?>">
+                                                                        <span class="input-group-btn">
+                                                                            <button class="btn" type="submit" name="buscarb" value="buscarb" style="background-color: transparent; color:#5F059E; border-top-right-radius: 15px; border-bottom-right-radius: 15px;"><i class="fa fa-search bold"></i></button>
+                                                                        </span>
+                                                                    </div>
+                                                                    <!-- /input-group -->
+                                                                </div>
 																<input type="hidden" id="formulario" name="formulario" value="1buscar"/>
 															</form>
-															
-															 
 															<!-- Trigger the modal with a button -->
-															<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">Filtros</button>
+															<!--<button type="button" class="btn  btn-circle" data-toggle="modal" data-target="#myModal" style="background-color:#5F059E; color: white; padding: 10px; font-size: 13px;">Filtros</button>-->
 
 															<!-- Modal -->
 															<div id="myModal" class="modal fade" role="dialog">
 															  <div class="modal-dialog">
+                                                                  <div class="col-md-5"></div>
 
 																<!-- Modal content-->
-																<div class="modal-content">
+																<div class="modal-content col-md-6">
 																  <div class="modal-header">
 																	<button type="button" class="close" data-dismiss="modal">&times;</button>
-																	<h4 class="modal-title">Filtros de busqueda</h4>
+																	<h4 class="modal-title bold" style="color: #5F059E;">Filtros de busqueda</h4>
 																  </div>
-																  <div class="modal-body">
+																  <div class="modal-body" style="margin-left: 10px !important; ">
 																	<form role="form" class="form-horizontal" name="fbuscar" id="fbuscar" action="buscar.php" enctype="multipart/form-data" method="POST">
 																		<?
 																			$categoria_f = "";
@@ -199,7 +205,7 @@
 																		<p>Seleccione el filtro de busqueda.</p>
 
 																			<div class="form-group">
-																				<label for="categoria" class="control-label col-md-3">categoria</label>
+																				<label for="categoria" class="control-label col-md-3">Categoria</label>
 																				
 																				<select id="categoria" class="form-control col-md-9" style="width: 250px;" tabindex="-1" aria-hidden="true" name="categoria" ">
 																					<option value= "" disabled selected>Seleccione la categoria</option>
@@ -215,7 +221,7 @@
 																			</div>
 
 																			 <div class="form-group">
-																				<label for="emprendedor" class="control-label col-md-3">emprendedor</label>
+																				<label for="emprendedor" class="control-label col-md-3">Emprendedor</label>
 																				<select id="emprendedor" class="form-control col-md-9" style="width: 250px;" tabindex="-1" aria-hidden="true" name="emprendedor">
 																					 <option value= "" disabled selected>Seleccione la categoria</option>
 																						 <?
@@ -229,7 +235,7 @@
 																			</div>
 
 																			 <div class="form-group">
-																				<label for="precio" class="control-label col-md-3">precio</label>
+																				<label for="precio" class="control-label col-md-3">Precio</label>
 																				<select id="precio" class="form-control col-md-9" style="width: 250px;" tabindex="-1" aria-hidden="true" name="precio" >
 																					<option value= "" disabled selected>Seleccione el precio</option>
 																						<?
@@ -245,8 +251,8 @@
 																			</div>
 
 																			<div class="form-actions">
-																				<div class="col-md-offset-3 col-md-9">
-																					<button type="submit" class="btn btn-circle purple" name="enviar" id="enviar" value="enviar"> Enviar </button>
+																				<div class="col-md-offset-3 col-md-6">
+																					<button type="submit" class="btn btn-circle" name="enviar" id="enviar" value="enviar" style="background-color: #5F059E; color: white; "> Enviar </button>
 																				</div>
 																			</div>
 
@@ -254,29 +260,26 @@
 																	<input type="hidden" id="formulario" name="formulario" value="fbuscar"/>
 																	<input type="hidden" name="buscar" id="buscar" value="<? echo $buscar ?>">
 																  </div>
-																  <div class="modal-footer">
-																	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-																  </div>
 																</div>
 																	</form>
 															  </div>
 															</div>
 
-															<div class="form-group form-md-line-input">
-																<?
-
-																$result =  $objConn->executeQuery($query_todos);
-																foreach ($result as $item ) 
-																{
-																?>  
+															<div class="form-group form-md-line-input" style="margin-top:30px;">
 																	<div class="portlet light portlet-fit ">
 																		<div class="row">
 																			<div class="col-lg-3"></div>
-																			<div class="col-md-6" align="center">
+                                                                            <?
+
+                                                                            $result =  $objConn->executeQuery($query_todos);
+                                                                            foreach ($result as $item )
+                                                                            {
+                                                                            ?>
+                                                                            <div class="col-md-4" align="center">
 																				<div class="mt-widget-2" >
 																					<div class="mt-head" style="background-image: url(<? echo 'usuarios/'.$item['id_usuario'].'/bienes/'.$item['id_producto'].'/res_producto.jpg'?>);" >
 																						<div class="mt-head-label">
-																							<button type="button" class="btn btn-success">$ <?echo number_format($item["precio"],0)?></button>
+																							<a type="button" class="btn bold" style="background-color:#00F85B; border-color: #5F059E; color: #5F059E; padding: 10px; font-size: 13px; border-radius: 10px;">$ <?echo number_format($item["precio"],0)?></a>
 																						</div>
 																						<div class="mt-head-user" >
 																							<div class="mt-head-user-img">
@@ -299,22 +302,20 @@
 																							<li class="font-red">
 																								<i class="icon-bubbles" aria-hidden="true"></i> <?echo  cantidad_coment_prod($item["id_producto"])?></li>
 																						</ul>
-																						<div class="mt-body-actions">
-																							<div class="btn-group btn-group btn-group-justified">
-																								<a href="../src/crear_pedido.php?id_producto=<? echo $item["id_producto"]?>" class="btn">Hacer pedido </a>
-																							</div>
-																						</div>
+                                                                                        <div class="btn-group-circle" style="margin-bottom: 20px;">
+                                                                                            <a href="../src/crear_pedido.php?id_producto=<? echo $item["id_producto"]?>" class="btn btn-circle purple-studio bold" style="text-align: center; background-color: transparent; color: #5F059E; font-size: 13px;">Hacer pedido </a>
+                                                                                        </div>
 																					</div>
 																				</div>
 																			</div>
+                                                                                <?//echo "<pre>";print_r($GLOBALS); echo "</pre>";?>
+                                                                                <input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id_producto"] ?>" />
+                                                                                </br></br>
+                                                                                <?
+                                                                            }?>
 																			<div class="col-lg-3"></div>
 																		</div>
 																	</div>
-																	<?//echo "<pre>";print_r($GLOBALS); echo "</pre>";?>
-																	<input type="hidden" id="id_producto" name="id_producto" value="<? echo $item["id_producto"] ?>" />
-																	</br></br>
-																<?     
-																}?>
 															</div>
 														</div> 
 													</div>
