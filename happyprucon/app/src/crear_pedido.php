@@ -78,7 +78,7 @@
 				if(id_pedido >=1)
 				{
 							swal({
-									title:"El pedido ha sido creado con el id:" + <? echo $id_pedido?>,
+									title:"El pedido haa sido creado con el id:" + <? echo $id_pedido?>,
 									text: "¿Desea continuar con la confirmacion del pedido?",
 									type: "success",
 									showCancelButton: true,
@@ -104,7 +104,7 @@
         
     </head>
     <!-- END HEAD -->
-    <body class="page-header-default page-sidebar-closed-hide-logo page-container-bg-solid" style="text-align: center;background-color:white;" bgcolor="#ffffff" onload="alertaPedidoCreado()">
+    <body class="page-header-default page-sidebar-closed-hide-logo page-container-bg-solid" style="text-align: center;background-color:white;" bgcolor="#ffffff" onload="alertaPedidoCreado()>
 
         <!-- BEGIN HEADER -->
         <div class="">
@@ -223,7 +223,7 @@
 																	</div>
 																	<div class="col-lg-4"></div>
 																</div>
-																 <?// echo "<pre>";print_r($GLOBALS);echo "</pre>";?>
+																 
 															</div>
 															
 														</form>

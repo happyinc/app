@@ -33,7 +33,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
-<html lang="en">
+<html lang="es">
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
 
@@ -71,10 +71,9 @@ License: You must have a valid license purchased only from themeforest(the above
 <div class="content centrado-porcentual">
     <!-- BEGIN LOGIN FORM -->
 
-    <? print_r($_SESSION);?>
     <form role="form" enctype="multipart/form-data" class="form-horizontal">
         <div class="form-body">
-            <div class="form-group">
+            <div class="form-group" align="center">
                 <h3 class="block bold" style="color: #520d9b">FOTOS DEL SITIO</h3>
                 <div style="padding-bottom: 50px">
                     <h4>

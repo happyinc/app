@@ -38,7 +38,7 @@
 			elseif(isset($_GET["id_producto"]) && $_GET["id_producto"] != "")
 			{
 				 $id_producto = $_GET["id_producto"];
-        	}
+        }
             include("include_css.php");
 			?>
 			<link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
@@ -94,10 +94,10 @@
 
         
 		if(isset($_POST["formulario"]) && $_POST["formulario"] == "editar_producto" )
-		{ 
-			if(isset($_POST["editar"]) && $_POST["editar"]== "Actualizar")
+		{
+			
+			if(isset($_POST["editar"]) && $_POST["editar"]== "Editar")
 			{
-				
 				$objConn = new PDOModel();
 				$updateData["nombre"] = $_POST["nombre"]; 
 				$updateData["descripcion"] = $_POST["descripcion"];
@@ -107,17 +107,14 @@
 				$objConn->where("id", $id_producto);
 				$objConn->update('producto', $updateData);
 
-				$error=$objConn->error;
 				
 				$producto_actualizado= $objConn->rowsChanged;
-				
 
 				if($producto_actualizado == 1)
 				{
 				
 					if($_FILES['foto']["size"]>=1)
 					{
-						
 						 // Primero, hay que validar que se trata de un JPG/GIF/PNG
 						$allowedExts = array("jpg", "jpeg", "gif", "png", "bmp", "JPG", "JPEG", "GIF", "PNG", "BMP");
 						$extension = end(explode(".", $_FILES["foto"]["name"]));
@@ -173,30 +170,19 @@
 						$objConn->where("id_producto", $id_producto);//setting where condition
 						$objConn->delete("composicion_producto");
 						$act=$objConn->rowsChanged;
-						if($_POST['field_name'] != "")
-						{
+
 							foreach($_POST['field_name'] as $clave => $valor)
 							{
 								$insertDataComp["id_composicion"] = $valor;
 								$insertDataComp["id_producto"] = $id_producto;
 								$objConn->insert('composicion_producto', $insertDataComp);
 							}
-						}
-
-						?>
-						<script type="text/javascript">alert("EXITO: EL producto ha sido actualizado")
-						window.location.assign("gestion_producto.php?id_usuario=<? echo $id_usuario ?>");
-						</script>
-					    <?
-
-
-							
 				}
 				else
 				{
 					?>
-						<script type="text/javascript">alert("No se pudo actualizar el producto");
-						
+						<script type="text/javascript">alert("No se pudo actualizar el producto")
+						window.history.back();
 						</script>
 					<?
 				}
@@ -252,7 +238,7 @@
 		?>
 		<script type="text/javascript">
 		
-			/*function alertaProducto(producto_actualizado) 
+			function alertaProducto(producto_actualizado) 
 			{
 				
 				var producto = producto_actualizado;
@@ -306,13 +292,13 @@
 							}
 						});
 					
-		  	}*/
+		  	}
 		</script>
         <title><? echo $nombre_pagina ?></title>
         
     </head>
     <!-- END HEAD -->
-    <body class="page-header-default page-sidebar-closed-hide-logo page-container-bg-solid" style="text-align: center;background-color:white;" bgcolor="#ffffff" ><!--  onload="alertaProducto(<? echo $producto_actualizado?>)"-->
+    <body class="page-header-default page-sidebar-closed-hide-logo page-container-bg-solid" style="text-align: center;background-color:white;" bgcolor="#ffffff" onload="alertaProducto(<? echo $producto_actualizado?>)>
 
         <!-- BEGIN HEADER -->
         <div class="">
@@ -483,7 +469,7 @@
 																	<div class="col-md-offset-3 col-md-9">
 																	
 																		<input class="btn  btn-circle purple" name="editar" type="submit" id="editar" value="Actualizar">
-																		<input class="btn btn-circle red" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick="window.location.href = 'gestion_producto.php?id_usuario=<? echo $id_usuario?>&eliminar=<? echo $id_producto?>';">
+																		<input class="btn btn-circle red" name="eliminar" type="button" id="eliminar" value="Eliminar" onclick=" eliminarProducto();">
 																		<input type="hidden" id="formulario" name="formulario" value="editar_producto"/>
 																		<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
 																		<input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />

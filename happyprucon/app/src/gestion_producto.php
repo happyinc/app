@@ -121,11 +121,9 @@
 
 			}
 
-
         if ( isset($_GET["anular"]) && $_GET["anular"] != '')
         {
-              
-		   $objProd = new PDOModel();			                                                 
+                                                                
            $updateData["id_estado"] = 2; 
            $objProd->where("id_producto", $_GET["anular"] );
            $objProd->update('producto_disponibilidad', $updateData);
@@ -136,20 +134,11 @@
                     alert("ERROR: No se elimino la disponibilidad del producto");</script>
                 <?
             }
-            else{
-
-            	?><script type="text/javascript">
-                    alert("EXITO:Se elimino la disponibilidad del producto");
-                    window.location.assign("gestion_producto.php?id_usuario=<? echo $id_usuario ?>");
-                    </script>
-
-                <?
-            }
         }
        
 		?>
 		<script>
-		/*function eliminarDisponibilidad(id)
+		function eliminarDisponibilidad(id)
 		  	{
                  var id = id
 		  		swal({
@@ -175,7 +164,7 @@
 						location.href="gestion_producto.php?id_usuario=<? echo $id_usuario ?>";
 					}
 				});
-		  	}	*/
+		  	}	
 		</script>
         <title><? echo $nombre_pagina ?></title>
         
@@ -277,16 +266,15 @@
 																		        $objConn = new PDOModel();
 																		        $objConn->andOrOperator = "AND";
 																		        $objConn->where("cantidad_disponible", 1,">=");
-																		        $objConn->where("id_estado", 1);
 																		        $objConn->where("id_producto", $item["id"]);
 																		        $result =  $objConn->select("producto_disponibilidad");
 																		        foreach ($result as $productos ) 
 																		        {
 																		        		$objConna = new PDOModel();
-																		        		//$objConna->andOrOperator = "AND";
+																		        		$objConna->andOrOperator = "AND";
 																				        $objConna->where("id", $productos["id_disponibilidad"]);
-																				        //$objConn->where("fecha_inicio", "$fecha" ,"<=");
-																				       // $objConn->where("fecha_fin", "$fecha" ,">=");
+																				        $objConn->where("fecha_inicio", "$fecha" ,"<=");
+																				        $objConn->where("fecha_fin", "$fecha" ,">=");
 																				        $resulta =  $objConn->select("disponibilidad");
 																				        foreach ($resulta as $disp ) 
 																				        {	
@@ -301,10 +289,7 @@
 																				{
 																					?>
 																					
-																					<a  href="gestion_producto.php?id_usuario=<? echo $id_usuario?>&anular=<? echo $item["id"] ?>" >
-
-																					
-
+																					<a  href="gestion_producto.php?id_usuario=<? echo $id_usuario?>&anular=<? echo $item["id"] ?>" onclick="eliminarDisponibilidad(<? echo $item["id"] ?>);">
 																						<i class="fa fa-toggle-on fa-4x" style="color:green" aria-hidden="true"></i></a>
 																					 <?php
 																				}

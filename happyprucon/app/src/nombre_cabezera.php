@@ -14,8 +14,7 @@
         .fuente-7{font-family:"Museo Sans 700";font-size: 18px;color: white}
         .fuente-8{font-family:"Museo Sans 700";font-size: 12px;color: grey}
         .fuente-9{font-family:"Museo Sans 700";font-size: 12px;color: #5F059E}
-        .fuente-10{font-family:"Museo Sans 700";font-size: 11px;color: white}
-        .fuente-11{font-family:"Museo Sans 700";font-size: 10px;color: grey}
+        .fuente-9{font-family:"Museo Sans 700";font-size: 11px;color: white}
 </style>
 <?  
             $archivo_temp = basename($_SERVER["PHP_SELF"]);
@@ -46,16 +45,6 @@
                     $nombre_pagina = "GESTION DE PEDIDOS";
                     $archivo_herramienta = "";
                     break; 
-                case "editar_producto.php":
-                    $archivo_actual = strtoupper(nombre_producto($id_producto));;
-                    $nombre_pagina = "EDITAR PRODUCTO";
-                    $archivo_herramienta = "";
-                    break;
-                case "crear_producto.php":
-                    $archivo_actual = 'CREAR BIEN - SERVICIO';
-                    $nombre_pagina = "CREAR BIEN O SERVICIO";
-                    $archivo_herramienta = "";
-                    break;    
                 case "nombre_cabezera.php":
                     $archivo_actual = 'HAPPY CABEZERA';
                     $nombre_pagina = "GESTION DE CABEZERA";
@@ -105,6 +94,7 @@
                         $archivo_herramienta = "";
                     }
                     break;
+<<<<<<< HEAD
                 default:
                     $archivo_actual = "<img src='logo_head.png' alt='logo' class='logo-default' height='25'/>";
                     $nombre_pagina = "HAPPY HAPPY";
@@ -120,6 +110,8 @@
                     $nombre_pagina = "FILTRAR";
                     $archivo_herramienta = "<a data-toggle='modal' data-target='#myModal'><i class='fa fa-sliders fa-2x' style='color: black;'></i></a>";
                     break;
+=======
+>>>>>>> 0f4ce9ab94f78e85f92c7201feb2cad996c0c8d6
 
             }
         

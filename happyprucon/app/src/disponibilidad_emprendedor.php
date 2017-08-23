@@ -105,11 +105,7 @@
 																						<i class="fa fa-group font-purple" style="margin-right: 10px;"></i>
 																					</div>
 																					 <div class="row" style="padding-top: 20px;">
-																						<p><b>Lo que quiero:</b></p><?
-																						/*$pdomodel->where("id", $id_usuario);
-																						$pdomodel->columns = array("meta");
-																						$result =  $pdomodel->select("usuarios");*/
-																						echo  ($usuarios["meta"])?>  </span>
+																						<p><b>Lo que quiero:</b></p><?echo  ($item["meta"])?>  </span>
 																					</div>
 																			</div>
 																		</div>
