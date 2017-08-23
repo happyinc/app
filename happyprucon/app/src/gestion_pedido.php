@@ -4,7 +4,6 @@
     <?
     require_once'../../externo/plugins/PDOModel.php';
     require'../class/sessions.php';
-    include "funciones.php";
     $objSe = new Sessions();
     $objSe->init();
     $usu_id = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null ;
@@ -98,7 +97,7 @@
         }
     }
 
-
+    include "funciones.php";
     include("include_css.php");
     include("nombre_cabezera.php");
     include("menu_modal.php");
