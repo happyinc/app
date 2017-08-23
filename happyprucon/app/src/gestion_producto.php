@@ -295,8 +295,6 @@
 																		        	
 																		        }
 
-																		       
-																				//echo "<pre>";print_r($cuenta); echo"<pre>";
 																				if($validacion == "SI")
 																				{
 																					?>
