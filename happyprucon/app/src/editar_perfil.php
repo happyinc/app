@@ -104,7 +104,12 @@ error_reporting(0);
                                                     $objConn->update("usuarios", $updateUserData);
 
                                                     if ($objConn != "") {
-                                                        echo "<script> alert('Actualizado correctamente'); window.location.assign('editar_perfil.php');</script>";
+                                                        ?>
+                                                        <script>
+                                                            alert('Actualizado correctamente');
+                                                            window.location.assign('editar_perfil.php?id_usuario=<? echo $id_usuario?>');
+                                                        </script>
+                                                        <?
                                                     } else {
                                                         echo "<script> alert('Error: La contraseña no se pudo actualizar');</script>";
                                                     }
@@ -482,17 +487,18 @@ error_reporting(0);
 
                                                     <div id="responsiveC" class="modal fade" tabindex="-1" aria-hidden="true">
                                                         <div class="modal-dialog">
-                                                            <div class="modal-content col-lg-6"  style="border-radius: 10px;">
+                                                            <div class="col-lg-4 col-md-4 col-sm-3"></div>
+                                                            <div class="modal-content col-lg-6 col-md-6 col-sm-6"  style="border-radius: 10px;">
                                                                 <div class="modal-header">
                                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                                                                     <h4 class="modal-title bold" style="color: #5F059E;">CAMBIAR CONTRASEÑA</h4>
                                                                 </div>
-                                                                <div class="modal-body">
-                                                                    <div class="scroller" style="height:150px" data-always-visible="1">
+                                                                <div style="padding-top: 15px !important;">
+                                                                    <div class="scroller" style="height:140px" data-always-visible="1">
                                                                         <div class="row">
                                                                             <div class="col-md-12">
                                                                                 <div class="form-group form-md-line-input has-info form-md-floating-label">
-                                                                                    <div style="margin-left: 20px;">
+                                                                                    <div style="margin-left: 10px;">
                                                                                         <div class="input-group left-addon ">
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-unlock-alt"></i>
@@ -502,7 +508,7 @@ error_reporting(0);
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="form-group form-md-line-input has-info form-md-floating-label">
-                                                                                    <div style="margin-left: 20px;">
+                                                                                    <div style="margin-left: 10px;">
                                                                                         <div class="input-group left-addon">
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-lock"></i>
@@ -515,8 +521,8 @@ error_reporting(0);
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="modal-footer" align="center">
-                                                                    <input type="submit" id="register-submit-btn" class="btn btn-circle btn-block bold" style="background-color: #00F85B; color: #5F059E; padding: 10px; font-size: 13px;" name="btn1" value="Guardar"/>
+                                                                <div align="center" style="padding-bottom: 15px;">
+                                                                    <input type="submit" id="register-submit-btn" class="btn btn-circle bold" style="background-color: #00F85B; color: #5F059E; padding: 10px; font-size: 13px;" name="btn1" value="Guardar"/>
                                                                 </div>
                                                             </div>
                                                         </div>

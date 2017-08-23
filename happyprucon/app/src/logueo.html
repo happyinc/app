@@ -153,6 +153,25 @@ License: You must have a valid license purchased only from themeforest(the above
             <button type="submit" class="btn btn-circle red-flamingo pull-right"> Enviar</button>
         </div>
     </form>
+    <?
+                    $web = 1;
+                    $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+                    if(stripos($ua,'android') !== false)
+                    {
+                        $web = 0;
+                    }
+                    
+                    $isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
+
+                    // iphone/ipod
+                    if(strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_AGENT'],'iPod'))
+                    {
+                        $web = 0;
+                    }
+
+                    if($web == 1)
+                    {
+    ?>
     <!-- END FORGOT PASSWORD FORM -->
     <div class="row">
         <div class="col-lg-2 col-md-2 col-sm-2"></div>
@@ -251,7 +270,9 @@ License: You must have a valid license purchased only from themeforest(the above
         }
     </script>
     <!-- END LOGIN FORM -->
-
+    <?
+    }
+    ?>
 </div>
 <!-- END LOGIN -->
 <!--[if lt IE 9]>

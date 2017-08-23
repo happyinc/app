@@ -82,39 +82,70 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px;">
                         <a href="sel_rol.php" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center; background-color: #5F059E; padding: 10px;" ><span class="fa fa-list"></span> REGISTRO MANUAL </a>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px; margin-top: 20px;">
-                        <a href="#" type="submit" id="login" class="btn btn-block btn-social  btn-circle purple-studio" style="text-align: center; background-color: #5F059E; padding: 10px; " ><span class="fa fa-facebook"></span> REGISTRO CON FACEBOOK </a>
-                    </div>
-                    <script>
-                        (function(d, s, id){
-                            var js, fjs = d.getElementsByTagName(s)[0];
-                            if (d.getElementById(id)) {return;}
-                            js = d.createElement(s); js.id = id;
-                            js.src = "//connect.facebook.net/es_ES/sdk.js";
-                            fjs.parentNode.insertBefore(js, fjs);
-                        }(document, 'script', 'facebook-jssdk'));
 
-                    </script>
+                    <?
+                    $web = 1;
+                    $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+                    if(stripos($ua,'android') !== false)
+                    {
+                        $web = 0;
+                    }
+                    
+                    $isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
+
+                    // iphone/ipod
+                    if(strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_AGENT'],'iPod'))
+                    {
+                        $web = 0;
+                    }
+
+                    if($web == 1)
+                    {
+                        ?>
+                        <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px; margin-top: 20px;">
+                            <a href="#" type="submit" id="login" class="btn btn-block btn-social  btn-circle purple-studio" style="text-align: center; background-color: #5F059E; padding: 10px; " ><span class="fa fa-facebook"></span> REGISTRO CON FACEBOOK </a>
+                        </div>
+                        <script>
+                            (function(d, s, id){
+                                var js, fjs = d.getElementsByTagName(s)[0];
+                                if (d.getElementById(id)) {return;}
+                                js = d.createElement(s); js.id = id;
+                                js.src = "//connect.facebook.net/es_ES/sdk.js";
+                                fjs.parentNode.insertBefore(js, fjs);
+                            }(document, 'script', 'facebook-jssdk'));
+
+                        </script>
+                        <?
+                    }
+                    ?>
+                    
                 </div>
             </form>
+            <?
+            if($web == 1)
+            {
+                ?>
+                    <div class="row">
 
-            <div class="row">
-
-                <div class="social-icons">
-                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
-                        <button onclick="loginWithEmail();" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center; background-color: #5F059E; padding: 10px;" ><span class="fa fa-envelope"></span> REGISTRO CON CORREO </button>
+                        <div class="social-icons">
+                            <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+                                <button onclick="loginWithEmail();" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center; background-color: #5F059E; padding: 10px;" ><span class="fa fa-envelope"></span> REGISTRO CON CORREO </button>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
+                                <button onclick="loginWithSMS();" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center; background-color: #5F059E; padding: 10px;" ><span class="fa fa-tablet"></span> REGISTRO CON CELULAR </button>
+                            </div>
+                            <form id="accountkit_form" name="accountkit_form" action="../class/fb_api_response.php" method="POST" style="display: none;">
+                                <input type="text" id="form_login_kit" name="form_login_kit" value="W">
+                                <input type="text" id="code" name="code">
+                                <input type="text" id="csrf_nonce" name="csrf_nonce">
+                                <input type="submit" value="Submit" hidden>
+                            </form>
+                        </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-xs-12" style="margin-bottom: 10px">
-                        <button onclick="loginWithSMS();" class="btn btn-block btn-social btn-circle purple-studio" style="text-align: center; background-color: #5F059E; padding: 10px;" ><span class="fa fa-tablet"></span> REGISTRO CON CELULAR </button>
-                    </div>
-                    <form id="accountkit_form" name="accountkit_form" action="../class/fb_api_response.php" method="POST" style="display: none;">
-                        <input type="text" id="form_login_kit" name="form_login_kit" value="W">
-                        <input type="text" id="code" name="code">
-                        <input type="text" id="csrf_nonce" name="csrf_nonce">
-                        <input type="submit" value="Submit" hidden>
-                    </form>
-                </div>
-            </div>
+                <?
+            }
+            ?>
+            
             <form class="login-form" action="" method="post">
                	<div class="row" style="margin-top: 30px">
 					<div class="col-lg-12 col-md-12 col-xs-12" style="text-align: center; margin-bottom: 20px">

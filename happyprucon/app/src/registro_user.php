@@ -654,13 +654,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                                         <span class="required input-group-addon">
                                                         <i class="fa fa-flag"></i>
                                                         </span>
-                                        <!-- <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
-                                        Campo escondido que toma valor de ciudad -->
-                                        <input name="ciudad" id="ciudad" type="hidden" value="Cali - Valle del Cauca, Colombia"/>
-                                        <select name="resciu" id="resciu" class="form-control">
-                                            <option value=""></option>
-                                            <option value="Cali - Valle del Cauca, Colombia">Santiago de Cali</option>
-                                        </select>
+                                        <input class="form-control" name="ciudad" id="ciudad" type="text" size="50" autocomplete="on" placeholder="Ciudad" />
+                                        <!-- Campo escondido que toma valor de ciudad -->
+                                        <input type="hidden" name="resciu" id="resciu" >
                                     </div>
                                 </div>
                                 <div class="form-group form-md-line-input has-info">
