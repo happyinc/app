@@ -52,6 +52,7 @@ if($result[0]['count(*)'] == 1){
         $objSe->set('correo', $res_usu[0]['correo']);
         $objSe->set('suenos', $res_usu[0]['meta']);
         $objSe->set('origen',$_POST['form_login_face']);
+        $objSe->set('id_roles_alternativo', 3);
 
         echo "<script> window.location.assign('../app/src/gestion_pedido.php'); </script>";
     }
@@ -78,6 +79,7 @@ if($result[0]['count(*)'] == 1){
         $objSe->set('correo', $res_usu[0]['correo']);
         $objSe->set('suenos', $res_usu[0]['meta']);
         $objSe->set('origen',$_POST['form_login']);
+        $objSe->set('id_roles_alternativo', "");
 
         echo "<script> window.location.assign('../app/src/gestion_pedido.php'); </script>";
     }
