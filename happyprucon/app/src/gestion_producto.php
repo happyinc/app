@@ -300,18 +300,15 @@
 																				if($validacion == "SI")
 																				{
 																					?>
-																					
-																					<a  href="gestion_producto.php?id_usuario=<? echo $id_usuario?>&anular=<? echo $item["id"] ?>" >
-
-																					
-
-																						<i class="fa fa-toggle-on fa-4x" style="color:green" aria-hidden="true"></i></a>
+																					<a href="gestion_producto.php?id_usuario=<? echo $id_usuario?>&anular=<? echo $item["id"] ?>"><img src="btn_enable_disable.png" alt="" height="35"/></a>
+																				
 																					 <?php
 																				}
 																				else if($validacion == "NO")
 																				{
 																					?><a  href="../src/crear_disponibilidad.php?id_usuario=<? echo $id_usuario?>&id_producto=<? echo $item["id"]?>">
-																						<i class="fa fa-toggle-off fa-4x" style="color:red" aria-hidden="true"></i></a>
+																						<img src="btn_disable_enable.png" alt="" height="35"></a>
+																						
 																				<?php
 																				}
 																				?>

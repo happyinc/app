@@ -47,7 +47,7 @@
                     $archivo_herramienta = "";
                     break; 
                 case "editar_producto.php":
-                    $archivo_actual = strtoupper(nombre_producto($id_producto));;
+                    $archivo_actual = strtoupper(nombre_producto($id_producto));
                     $nombre_pagina = "EDITAR PRODUCTO";
                     $archivo_herramienta = "";
                     break;
