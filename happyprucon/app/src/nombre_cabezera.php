@@ -120,6 +120,11 @@
                     $nombre_pagina = "FILTRAR";
                     $archivo_herramienta = "<a data-toggle='modal' data-target='#myModal'><i class='fa fa-sliders fa-2x' style='color: black;'></i></a>";
                     break;
+                case "crear_disponibilidad.php":
+                    $archivo_actual = "DISPONIBILIDAD";
+                    $nombre_pagina = "DISPONIBILIDAD";
+                    $archivo_herramienta = "";
+                    break;
 
             }
         

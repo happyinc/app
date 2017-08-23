@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>  
+    <head>
+        <style>
+            .icheckbox_line-purple, .iradio_line-purple{
+                background: #5F059E !important;
+                border-radius: 15px !important;
+            }
+
+        </style>
         <?
             require_once'../../externo/plugins/PDOModel.php';
             require'../class/sessions.php';
@@ -108,9 +115,10 @@
 														<form role="form" class="form-horizontal" name="crear_disponibilidad"  id="crear_disponibilidad" action="gestion_producto.php" enctype="multipart/form-data" method="post">
 															<div class="form-body">
 																<div class="form-group">
+                                                                    <div class="col-lg-1 col-md-1 col-sm-1"></div>
 																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-																		<label class="control-label col-md-4">Seleccione la vigencia de la disponibilidad</label>
-																		<div class="col-md-3">
+																		<label class="control-label col-md-4 col-sm-3">Seleccione la vigencia de la disponibilidad</label>
+																		<div class="col-md-4 col-sm-4">
 																			<div class="input-group date form_datetime bs-datetime" data-date-format="yyyy mm dd HH:ii p">
 																				<input class="form-control" size="16" type="text" name="fecha_inicio" id="fecha_inicio" value="" readonly="">
 																				<span class="input-group-addon">
@@ -127,7 +135,7 @@
 																			<span class="help-block">fecha inicio</span>
 																		</div>
 																		 
-																		<div class="col-md-3">
+																		<div class="col-md-4 col-sm-4">
 																			<div class="input-group date form_datetime bs-datetime" data-date-format="yyyy mm dd HH:ii p">
 																				<input class="form-control" size="16" type="text" name="fecha_fin" id="fecha_fin" value="" readonly="">
 																				<span class="input-group-addon">
@@ -148,9 +156,10 @@
 																</div>
 																
 																<div class="form-group">
+                                                                    <div class="col-lg-1 col-md-1"></div>
 																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-																		<label class="col-md-4 control-label">Seleccione la cantidad disponible</label>
-																			<div class="col-md-8">
+																		<label class="col-md-4 col-sm-3 control-label">Seleccione la cantidad disponible</label>
+																			<div class="col-md-8 col-sm-9">
 																				<input id="cantidad" name="cantidad_disponible"  value="" type="text" />
 																				<span class="help-block"> Establezca la cantidad disponible</span>
 																			</div>
@@ -158,9 +167,10 @@
 																</div>
 
 																<div class="form-group">
+                                                                    <div class="col-lg-1 col-md-1"></div>
 																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
-																		<label class="col-md-4 control-label">Seleccione la forma de adquisicion</label>
-																			<div class="col-md-8">
+																		<label class="col-md-4 col-sm-3 control-label">Seleccione la forma de adquisicion</label>
+																			<div class="col-md-8 col-sm-9">
 																				<div class="input-group">
 																					<div class="icheck-list">
 																					   <?php
@@ -182,8 +192,8 @@
 																	</div>
 																</div>
 															   <div class="form-actions">
-																	<div class="col-md-offset-3 col-md-9">
-																		<button type="submit" class="btn btn-circle purple" name="guardar" id="guardar" value="guardar"> Crear disponibilidad </button>
+																	<div class="col-md-offset-3 col-md-6">
+																		<button type="submit" class="btn btn-circle" name="guardar" id="guardar" value="guardar" style="background-color: #5F059E; color:white;"> Crear disponibilidad </button>
 																		<input type="hidden" id="formulario" name="formulario" value="crear_disponibilidad"/>
 																		<input type="hidden" id="id_producto" name="id_producto" value="<? echo $id_producto ?>" />
 																		<input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
