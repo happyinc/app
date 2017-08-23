@@ -136,7 +136,7 @@
 																<div class="form-actions">
 																	<div class="col-md-4"></div>
 																	<div class="col-md-4"  align="center">
-																		<input class="btn  btn-circle purple" name="consultar" type="submit" id="consultar" value="Consultar">
+																		<input class="btn  btn-circle" name="consultar" type="submit" id="consultar" value="Consultar" style="background-color:#5F059E; color: white; padding: 10px; font-size: 13px;">
 																		<input type="hidden" id="formulario" name="formulario" value="ver_pagos"/>
 																		<input type="hidden" id="id_usuario" name="id_usuario" value="<? echo $id_usuario ?>" />
 																	</div>
@@ -144,10 +144,10 @@
 																</div>
 															</div>
 														</form>
-														<div class="portlet box purple">
+														<div class="portlet box" style="background-color:#5F059E;">
 															<div class="portlet-title">
 																<div class="caption">
-																	<i class="fa fa-money"></i>Pagos de Happy
+																	<i class="fa fa-money" style="color:white;"></i>Pagos de Happy
 																</div>
 															</div>
 															<div class="portlet-body flip-scroll">
