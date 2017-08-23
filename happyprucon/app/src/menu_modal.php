@@ -17,7 +17,7 @@ else
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" >
                                             <!-- SIDEBAR USERPIC -->
                                             <div class="mt-img" style="margin-bottom: 10px !important;">
-                                                <img src="<? echo "usuarios/".$_SESSION["id_roles"]."/perfil/res_perfil.jpg"?>" width="90" class="img-circle" style="border-radius: 50%;">  
+                                                <img src="<? echo "usuarios/".$_SESSION["id_usuario"]."/perfil/res_perfil.jpg"?>" width="90" class="img-circle" style="border-radius: 50%;">  
                                             </div>
                                             <!-- END SIDEBAR USERPIC -->
                                         </div>

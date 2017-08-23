@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+    <head>  
         <?
             require_once'../../externo/plugins/PDOModel.php';
             require'../class/sessions.php';
@@ -54,7 +54,7 @@
                                                 <!-- AQUI EMPIEZA EL CONTENIDO-->
                                                 <div class="portlet light ">
                                                     <div class="portlet-title" style="text-align: left;">
-
+                                                        
                                                         <div class='fuente-2'>
                                                             <!-- se neceita un icono, aqui !! -->
                                                             <i class="fa fa-plus"></i>
@@ -62,7 +62,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="portlet-body">
-
+                                                                                    
                                                             CONTENIDO AQUI
 
                                                     </div>
@@ -76,7 +76,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>    
         </div>
         <!-- END CONTAINER -->
 

@@ -108,6 +108,7 @@
 																   <div class="col-lg-4"></div>
 																		 <div class="col-md-4">
 																		<label class="control-label">Nombre del plato: </label>
+																		<label class="control-label"><?php echo $producto[0]['nombre'] ?></label>
 																	</div>
 																	<div class="col-lg-4"></div>
 																</div>
