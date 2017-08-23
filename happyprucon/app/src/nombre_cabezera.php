@@ -47,7 +47,7 @@
                     $archivo_herramienta = "";
                     break; 
                 case "editar_producto.php":
-                    $archivo_actual = strtoupper(nombre_producto_new($id_producto));;
+                    $archivo_actual = strtoupper(nombre_producto($id_producto));;
                     $nombre_pagina = "EDITAR PRODUCTO";
                     $archivo_herramienta = "";
                     break;
@@ -82,7 +82,7 @@
                     $archivo_herramienta = "";
                     break;
                 case "perfil.php":
-                    $archivo_actual = strtoupper(nombre_usuario_new($id_usuario));
+                    $archivo_actual = strtoupper(nombre_usuario($id_usuario));
                     $nombre_pagina = "PERFIL USUARIO";
                     if($id_usuario == $_SESSION["id_usuario"])
                     {
@@ -94,7 +94,7 @@
                     }
                     break;
                 case "perfil_cliente.php":
-                    $archivo_actual = strtoupper(nombre_usuario_new($id_usuario));
+                    $archivo_actual = strtoupper(nombre_usuario($id_usuario));
                     $nombre_pagina = "PERFIL USUARIO";
                     if($id_usuario == $_SESSION["id_usuario"])
                     {

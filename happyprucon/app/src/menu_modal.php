@@ -28,7 +28,7 @@ else
                                             <!-- SIDEBAR USER TITLE -->
                                             <small>
                                             <div class="profile-usertitle" style="text-align: left;">
-                                                <div class='fuente-4'><? echo nombre_usuario_new($_SESSION["id_usuario"]) ?></div>
+                                                <div class='fuente-4'><? echo nombre_usuario($_SESSION["id_usuario"]) ?></div>
                                                 <div class='fuente-6'>
                                                     <i class="fa fa-street-view"></i> 
                                                     Perfil: <? echo nombre_rol($_SESSION["id_roles"]) ?> 

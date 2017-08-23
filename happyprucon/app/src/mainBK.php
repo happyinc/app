@@ -245,7 +245,7 @@ $objSe = new Sessions();
                             $longitud = $temp_ubicacion[1];
                             ?>
                             {
-                                name: 'Cronulla Beach',location_latitude: <? echo $latitud ?>,location_longitude:  <? echo $longitud ?>,map_image_url: 'usuarios/<?echo $vr["id_usuario"];?>/perfil/mid_perfil.jpg',name_point: '<? echo nombre_usuario_new($vr["id_usuario"]); ?>',
+                                name: 'Cronulla Beach',location_latitude: <? echo $latitud ?>,location_longitude:  <? echo $longitud ?>,map_image_url: 'usuarios/<?echo $vr["id_usuario"];?>/perfil/mid_perfil.jpg',name_point: '<? echo nombre_usuario($vr["id_usuario"]); ?>',
                                 description_point:"<? calificacion_usuario($vr["id_usuario"]); ?>",
                                 url_point: 'disponibilidad_emprendedor.php?id_usuario=<? echo $vr["id_usuario"]; ?>'
                             },
