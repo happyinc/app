@@ -45,3 +45,12 @@ function nombre_estado_new($id_estado)
     $nombre = mysql_fetch_array($rs);
     return $nombre["descripcion"];
 }
+
+function id_asociado_new($id_producto)
+{
+    $sql = "select id_usuario from producto where id = $id_producto";
+    $rs = mysql_query($sql);
+
+    $nombre = mysql_fetch_array($rs);
+    return $nombre["id_usuario"];
+}
