@@ -321,7 +321,7 @@
                                     $tipo_icon = "snacks";
                                 }
 
-                                ?>['<? echo nombre_usuario_new($vr["id_usuario"]); ?>', <? echo $latitud ?>, <? echo $longitud ?>, <? echo $contador ?>, <? echo $tipo_icon ?>, <? echo $vr["id_usuario"]; ?>, "<? echo calificacion_usuario($vr["id_usuario"])?>", "<? echo nombre_categoria($vr["id_categoria"])?>"],<?
+                                ?>['<? echo nombre_usuario($vr["id_usuario"]); ?>', <? echo $latitud ?>, <? echo $longitud ?>, <? echo $contador ?>, <? echo $tipo_icon ?>, <? echo $vr["id_usuario"]; ?>, "<? echo calificacion_usuario($vr["id_usuario"])?>", "<? echo nombre_categoria($vr["id_categoria"])?>"],<?
                                 $contador++;
                             }
                             ?>

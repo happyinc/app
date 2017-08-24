@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>  
+    <head>
         <?
 			require_once'../../externo/plugins/PDOModel.php';
 			require'../class/sessions.php';
@@ -299,7 +299,8 @@
 														<form role="form" class="form-horizontal" name="crear_producto"  id="crear_producto" action="crear_producto.php" enctype="multipart/form-data" method="post">
 															<div class="form-body">
 																<div class="form-group form-md-line-input">
-																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                    <div class="col-lg-4 col-md-4 col-sm-4"></div>
+																	<div class="col-md-4 col-lg-4 col-xs-12 col-sm-5">
 																		<div class="input-icon">
 																			<select class="form-control" id="categoria" name="categoria">
 																				<?php
@@ -331,7 +332,8 @@
 																</div>
 
 																<div class="form-group form-md-line-input">
-																	<div class="col-md-4 col-lg-4 col-xs-4 col-sm-4">
+                                                                    <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                                                                    <div class="col-md-4 col-lg-4 col-xs-12 col-sm-5">
 																		<div class="input-icon">
 																			<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del bien o servicio">
 																				<div class="form-control-focus"> </div>
@@ -342,7 +344,8 @@
 																</div>
 
 																<div class="form-group form-md-line-input">
-																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                    <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                                                                    <div class="col-md-4 col-lg-4 col-xs-12 col-sm-5">
 																		<div class="input-icon">
 																			<textarea class="form-control" rows="3" id="descripcion" name="descripcion" placeholder="Descripcion"></textarea>
 																				<div class="form-control-focus"> </div>
@@ -353,7 +356,8 @@
 																</div>
 
 																<div class="form-group form-md-line-input">
-																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                    <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                                                                    <div class="col-md-4 col-lg-4 col-xs-12 col-sm-5">
 																		<div class="input-icon">
 																			<input type="number" class="form-control" id="precio" name="precio" placeholder="Valor del bien o servicio" data-toggle="tooltip" data-placement="top" title="De este valor digitado a happy le corresponde el 2%.">
 																				<div class="form-control-focus"> </div>
@@ -364,7 +368,8 @@
 																</div>
 
 																<div class="form-group form-md-line-input">
-																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                    <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                                                                    <div class="col-md-4 col-lg-4 col-xs-12 col-sm-5">
 																		<div class="input-icon">
 																			<div>
 																				<label class="control-label col-md-3">¿Tiene composicion?
@@ -381,7 +386,8 @@
 																</div>
 																<div id="dat_com" style="display:none;" >
 																	<div class="form-group form-md-line-input">
-																		<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                        <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                                                                        <div class="col-md-4 col-lg-4 col-xs-12 col-sm-5">
 																			<div class="field_wrapper">
 																				Seleccione la composicion del producto
 																				<span class="required"> * </span>
@@ -391,7 +397,8 @@
 																	</div>
 																</div>
 																<div class="form-group form-md-line-input">
-																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                    <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                                                                    <div class="col-md-4 col-lg-4 col-xs-12 col-sm-5">
 																		<div class="input-icon">
 																			<div>
 																			<label class="control-label col-md-3">¿El producto es su especialidad?
@@ -407,7 +414,8 @@
 																	</div>
 																</div>
 																<div class="form-group form-md-line-input dropzone">
-																	<div class="col-md-10 col-lg-10 col-xs-12 col-sm-12">
+                                                                    <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                                                                    <div class="col-md-4 col-lg-4 col-xs-12 col-sm-5">
 																		<div class="fileinput fileinput-new" data-provides="fileinput">
 																			<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
 																				<img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt=""> </div>

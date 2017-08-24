@@ -175,7 +175,7 @@
 																			<tr>
 																				<td class="numeric"> <? echo $item["id"]?> </td>
 																				<td> <? echo $item["fecha"]?> </td>
-																				<td> <? echo  nombre_usuario_new($item["id_usuario"])?> </td>
+																				<td> <? echo  nombre_usuario($item["id_usuario"])?> </td>
 																				<td> <? echo $item["nombre"]?> </td>
 																				<td class="numeric"><? echo $item["precio"]?> </td>
 																				<td class="numeric"><? echo $item["total"]?> </td>
